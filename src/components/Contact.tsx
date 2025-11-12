@@ -19,8 +19,8 @@ export default function Contact() {
               <h3 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Contact Information</h3>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4 group">
-                  <div className="p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-300 transition-colors">
-                    <MapPin className="text-blue-600" size={24} />
+                  <div className="p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-600 transition-colors">
+                    <MapPin className="text-blue-800" size={24} />
                   </div>
                   <div>
                     <h4 className="text-gray-900 font-semibold mb-1">Address</h4>
@@ -33,14 +33,14 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-start space-x-4 group">
-                  <div className="p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-300 transition-colors">
-                    <Phone className="text-blue-600" size={24} />
+                  <div className="p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-600 transition-colors">
+                    <Phone className="text-blue-800" size={24} />
                   </div>
                   <div>
                     <h4 className="text-gray-900 font-semibold mb-1">Phone</h4>
                     <a
                       href="tel:+35973891041"
-                      className="text-gray-600 hover:text-blue-600 transition-colors"
+                      className="text-gray-600 hover:text-blue-800 transition-colors"
                     >
                       (+359) 73 891 041
                     </a>
@@ -48,14 +48,14 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-start space-x-4 group">
-                  <div className="p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-300 transition-colors">
-                    <Mail className="text-blue-600" size={24} />
+                  <div className="p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-600 transition-colors">
+                    <Mail className="text-blue-800" size={24} />
                   </div>
                   <div>
                     <h4 className="text-gray-900 font-semibold mb-1">Email</h4>
                     <a
                       href="mailto:info@leeukopf.com"
-                      className="text-gray-600 hover:text-blue-600 transition-colors"
+                      className="text-gray-600 hover:text-blue-800 transition-colors"
                     >
                       info@leeukopf.com
                     </a>
@@ -89,7 +89,7 @@ export default function Contact() {
                 <input
                   type="text"
                   id="name"
-                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all"
                   placeholder="John Doe"
                 />
               </div>
@@ -101,7 +101,7 @@ export default function Contact() {
                 <input
                   type="email"
                   id="email"
-                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all"
                   placeholder="john@example.com"
                 />
               </div>
@@ -113,7 +113,7 @@ export default function Contact() {
                 <input
                   type="text"
                   id="subject"
-                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all"
                   placeholder="Private Label Inquiry"
                 />
               </div>
@@ -125,14 +125,14 @@ export default function Contact() {
                 <textarea
                   id="message"
                   rows={5}
-                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all resize-none"
                   placeholder="Tell us about your project..."
                 ></textarea>
               </div>
 
               <button
                 type="submit"
-                className="w-full px-8 py-4 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 shadow-sm hover:shadow-md"
+                className="w-full px-8 py-4 bg-blue-800 text-white rounded-md font-semibold hover:bg-blue-900 transition-all duration-300 shadow-sm hover:shadow-md"
               >
                 Send Message
               </button>

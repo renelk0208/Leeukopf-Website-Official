@@ -124,13 +124,13 @@ export default function LiveFeedPage() {
         </div>
 
         {!embedsEnabled && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+          <div className="bg-blue-50 border border-blue-500 rounded-lg p-6 text-center">
             <p className="text-gray-700 mb-4 font-light">
               Enable social embeds to view posts directly on this page. This will load content from Instagram and TikTok.
             </p>
             <button
               onClick={handleEnableEmbeds}
-              className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-6 py-2 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors"
             >
               Enable Social Embeds
             </button>
@@ -142,7 +142,7 @@ export default function LiveFeedPage() {
             onClick={() => setFilter('all')}
             className={`px-6 py-3 font-semibold transition-colors ${
               filter === 'all'
-                ? 'text-blue-600 border-b-2 border-blue-600'
+                ? 'text-blue-800 border-b-2 border-blue-800'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -152,7 +152,7 @@ export default function LiveFeedPage() {
             onClick={() => setFilter('instagram')}
             className={`px-6 py-3 font-semibold transition-colors ${
               filter === 'instagram'
-                ? 'text-blue-600 border-b-2 border-blue-600'
+                ? 'text-blue-800 border-b-2 border-blue-800'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -162,7 +162,7 @@ export default function LiveFeedPage() {
             onClick={() => setFilter('tiktok')}
             className={`px-6 py-3 font-semibold transition-colors ${
               filter === 'tiktok'
-                ? 'text-blue-600 border-b-2 border-blue-600'
+                ? 'text-blue-800 border-b-2 border-blue-800'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -182,7 +182,7 @@ export default function LiveFeedPage() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300"
+                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-blue-600 hover:text-blue-800 transition-all duration-300"
               >
                 <Instagram size={20} className="mr-2" />
                 Visit Instagram
@@ -191,7 +191,7 @@ export default function LiveFeedPage() {
                 href="https://tiktok.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300"
+                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-blue-600 hover:text-blue-800 transition-all duration-300"
               >
                 <Music2 size={20} className="mr-2" />
                 Visit TikTok

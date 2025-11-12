@@ -39,9 +39,9 @@ export default function ProductsPage() {
           <Link
             key={category.path}
             to={category.path}
-            className="group block p-8 bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            className="group block p-8 bg-white rounded-lg border border-gray-200 hover:border-blue-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
           >
-            <div className="aspect-square bg-gray-100 rounded-lg mb-6 border border-gray-200 group-hover:border-blue-200 transition-colors overflow-hidden flex items-center justify-center">
+            <div className="aspect-square bg-gray-100 rounded-lg mb-6 border border-gray-200 group-hover:border-blue-500 transition-colors overflow-hidden flex items-center justify-center">
               {category.image ? (
                 <img
                   src={category.image}
@@ -50,13 +50,13 @@ export default function ProductsPage() {
                 />
               ) : null}
             </div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+            <h3 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-800 transition-colors">
               {category.title}
             </h3>
             <p className="text-gray-600 font-light leading-relaxed">
               {category.description}
             </p>
-            <div className="mt-4 text-blue-600 font-semibold group-hover:text-blue-700">
+            <div className="mt-4 text-blue-800 font-semibold group-hover:text-blue-900">
               Explore Collection →
             </div>
           </Link>

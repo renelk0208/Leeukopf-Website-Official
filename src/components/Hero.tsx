@@ -22,38 +22,38 @@ export default function Hero() {
             Premium Gel Polish Manufacturing & Private Label Excellence
           </p>
 
-          <p className="text-lg text-blue-600 max-w-2xl mx-auto font-medium">
+          <p className="text-lg text-blue-800 max-w-2xl mx-auto font-medium">
             Professional Gel Systems • Builder Gel • Nail Art • Bulgarian Cosmetics Excellence
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
             <button
               onClick={() => navigate('/products')}
-              className="px-8 py-4 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 shadow-sm hover:shadow-md"
+              className="px-8 py-4 bg-blue-800 text-white rounded-md font-semibold hover:bg-blue-900 transition-all duration-300 shadow-sm hover:shadow-md"
             >
               Explore Our Products
             </button>
             <button
               onClick={() => navigate('/contact')}
-              className="px-8 py-4 bg-white text-blue-600 rounded-md font-semibold border-2 border-blue-600 hover:bg-blue-50 transition-all duration-300"
+              className="px-8 py-4 bg-white text-blue-800 rounded-md font-semibold border-2 border-blue-800 hover:bg-blue-50 transition-all duration-300"
             >
               Contact Us
             </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto pt-16">
-            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-400 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl font-bold text-blue-600 mb-3 tracking-tight">3000+</div>
+            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-5xl font-bold text-blue-800 mb-3 tracking-tight">3000+</div>
               <div className="text-gray-800 font-semibold text-lg">Colours</div>
               <div className="text-gray-600 text-sm mt-2 font-light">Premium gel polish collection</div>
             </div>
-            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-400 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl font-bold text-blue-600 mb-3 tracking-tight">Builder</div>
+            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-5xl font-bold text-blue-800 mb-3 tracking-tight">Builder</div>
               <div className="text-gray-800 font-semibold text-lg">Gel Systems</div>
               <div className="text-gray-600 text-sm mt-2 font-light">Professional strength & durability</div>
             </div>
-            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-400 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl font-bold text-blue-600 mb-3 tracking-tight">Nail Art</div>
+            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-5xl font-bold text-blue-800 mb-3 tracking-tight">Nail Art</div>
               <div className="text-gray-800 font-semibold text-lg">& Consumables</div>
               <div className="text-gray-600 text-sm mt-2 font-light">Complete product range</div>
             </div>

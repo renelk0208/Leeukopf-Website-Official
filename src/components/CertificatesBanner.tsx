@@ -29,7 +29,7 @@ export default function CertificatesBanner() {
                 Certified. Compliant.{' '}
                 <span className="relative inline-block">
                   Trusted.
-                  <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-500/30"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-700/30"></span>
                 </span>
               </h3>
               <p className="text-lg text-gray-600 leading-relaxed font-light">
@@ -42,7 +42,7 @@ export default function CertificatesBanner() {
                 {certifications.map((cert, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all duration-300"
+                    className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-600 hover:shadow-md transition-all duration-300"
                   >
                     <img
                       src={cert.image}
@@ -58,7 +58,7 @@ export default function CertificatesBanner() {
                 onClick={() => {
                   window.location.href = '/certificates-and-compliance';
                 }}
-                className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 shadow-sm hover:shadow-md w-full lg:w-auto justify-center lg:justify-start"
+                className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-800 text-white rounded-md font-semibold hover:bg-blue-900 transition-all duration-300 shadow-sm hover:shadow-md w-full lg:w-auto justify-center lg:justify-start"
               >
                 <span>View Certificates</span>
                 <ArrowRight size={18} />

@@ -336,10 +336,10 @@ export default function PrivateLabelBottlesPage() {
 
         <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
-            <button className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+            <button className="px-8 py-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors">
               Request Bottle Specs (PDF)
             </button>
-            <button className="px-8 py-3 bg-white border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
+            <button className="px-8 py-3 bg-white border-2 border-blue-800 text-blue-800 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
               Get Pricing
             </button>
           </div>
@@ -437,8 +437,8 @@ export default function PrivateLabelBottlesPage() {
                     }}
                     className={`w-16 h-16 rounded border-2 overflow-hidden transition-all duration-300 ${
                       idx === currentImageIndex
-                        ? 'border-blue-600 ring-2 ring-blue-200'
-                        : 'border-gray-300 hover:border-blue-400 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer'
+                        ? 'border-blue-800 ring-2 ring-blue-600'
+                        : 'border-gray-300 hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer'
                     }`}
                     aria-label={`View image ${idx + 1}`}
                   >

@@ -18,7 +18,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
           {item.onClick ? (
             <button
               onClick={item.onClick}
-              className="text-gray-600 hover:text-blue-600 transition-colors"
+              className="text-gray-600 hover:text-blue-800 transition-colors"
             >
               {item.label}
             </button>

@@ -231,7 +231,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-cyan-500/20 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-700 bg-clip-text text-transparent">
             Admin Dashboard
           </h1>
           <div className="flex items-center space-x-4">
@@ -259,7 +259,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('products')}
             className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
               activeTab === 'products'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
                 : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
             }`}
           >
@@ -270,7 +270,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('brochures')}
             className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
               activeTab === 'brochures'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
                 : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
             }`}
           >
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('colors')}
             className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
               activeTab === 'colors'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
                 : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
             }`}
           >
@@ -345,7 +345,7 @@ export default function AdminDashboard() {
                 <button
                   type="submit"
                   disabled={bulkUploading}
-                  className="flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-400 transition-all disabled:opacity-50"
+                  className="flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-800 transition-all disabled:opacity-50"
                 >
                   <Upload size={20} />
                   <span>{bulkUploading ? 'Uploading...' : 'Upload All'}</span>
@@ -426,7 +426,7 @@ export default function AdminDashboard() {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-400 transition-all disabled:opacity-50"
+                  className="flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-800 transition-all disabled:opacity-50"
                 >
                   <Plus size={20} />
                   <span>{uploading ? 'Adding...' : 'Add Product'}</span>
@@ -613,7 +613,7 @@ export default function AdminDashboard() {
 
               <button
                 onClick={handleSaveColors}
-                className="flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-400 transition-all"
+                className="flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-800 transition-all"
               >
                 <Save size={20} />
                 <span>Save Colors</span>

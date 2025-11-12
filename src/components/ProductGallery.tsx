@@ -125,7 +125,7 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
     return (
       <section id="products" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="text-blue-600">Loading products...</div>
+          <div className="text-blue-800">Loading products...</div>
         </div>
       </section>
     );
@@ -174,7 +174,7 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
                 {currentProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                    className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-blue-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                   >
                     {product.image_url ? (
                       <div className="aspect-square bg-gray-50 overflow-hidden">
@@ -190,7 +190,7 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
                       </div>
                     )}
                     <div className="p-5">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-800 transition-colors">
                         {product.name}
                       </h4>
                       {product.description && (
