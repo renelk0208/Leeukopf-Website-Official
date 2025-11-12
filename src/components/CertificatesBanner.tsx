@@ -4,7 +4,7 @@ export default function CertificatesBanner() {
   const certifications = [
     {
       label: 'GMP Certified',
-      image: '/img/certifications/gmp-logo.png',
+      image: '/img/certifications/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview (1).png',
       alt: 'GMP Certified'
     },
     {
