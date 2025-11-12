@@ -7,6 +7,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import ProductsPage from './pages/ProductsPage';
 import PrivateLabelPage from './pages/PrivateLabelPage';
+import PrivateLabelBottlesPage from './pages/PrivateLabelBottlesPage';
 import OurBrandsPage from './pages/OurBrandsPage';
 import DistributorsWantedPage from './pages/DistributorsWantedPage';
 import CertificatesPage from './pages/CertificatesPage';
@@ -36,6 +37,7 @@ function App() {
         <Route path="/products/builder-systems" element={<BuilderSystemsPage />} />
 
         <Route path="/private-label" element={<PrivateLabelPage />} />
+        <Route path="/private-label/bottles" element={<PrivateLabelBottlesPage />} />
         <Route path="/our-brands" element={<OurBrandsPage />} />
         <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
         <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
