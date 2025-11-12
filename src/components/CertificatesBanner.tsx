@@ -14,7 +14,7 @@ export default function CertificatesBanner() {
     },
     {
       label: 'Leaping Bunny Approved',
-      image: '/572916675_122131040858961647_8170659271303111919_n.jpg',
+      image: '/viber_image_2025-11-12_13-55-24-523 copy copy.png',
       alt: 'Leaping Bunny Approved Cruelty Free Certification'
     },
   ];
