@@ -16,9 +16,12 @@ import LiveFeedPage from './pages/LiveFeedPage';
 import GelPolishPage from './pages/products/GelPolishPage';
 import TopsBasesPrimersPage from './pages/products/TopsBasesPrimersPage';
 import BuilderSystemsPage from './pages/products/BuilderSystemsPage';
+import FrenchCollectionPage from './pages/products/FrenchCollectionPage';
 
 import TopsPage from './pages/products/subcategories/TopsPage';
 import BasesPage from './pages/products/subcategories/BasesPage';
+
+import PrivateLabelJarsPage from './pages/PrivateLabelJarsPage';
 
 function App() {
   return (
@@ -31,6 +34,7 @@ function App() {
 
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/gel-polish" element={<GelPolishPage />} />
+        <Route path="/products/gel-polish/french-collection" element={<FrenchCollectionPage />} />
         <Route path="/products/tops-bases-primers" element={<TopsBasesPrimersPage />} />
         <Route path="/products/tops-bases-primers/tops" element={<TopsPage />} />
         <Route path="/products/tops-bases-primers/bases" element={<BasesPage />} />
@@ -38,6 +42,7 @@ function App() {
 
         <Route path="/private-label" element={<PrivateLabelPage />} />
         <Route path="/private-label/bottles" element={<PrivateLabelBottlesPage />} />
+        <Route path="/private-label/jars" element={<PrivateLabelJarsPage />} />
         <Route path="/our-brands" element={<OurBrandsPage />} />
         <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
         <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
