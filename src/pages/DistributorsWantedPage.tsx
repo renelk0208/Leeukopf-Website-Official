@@ -1,4 +1,4 @@
-import PageTemplate, { ImagePlaceholder } from '../components/PageTemplate';
+import PageTemplate from '../components/PageTemplate';
 
 export default function DistributorsWantedPage() {
   return (
@@ -23,7 +23,11 @@ export default function DistributorsWantedPage() {
           </p>
         </div>
         <div>
-          <ImagePlaceholder alt="Distribution partnership" />
+          <img
+            src="/ChatGPT Image Nov 13, 2025, 12_06_11 AM.png"
+            alt="Distribution partnership"
+            className="w-full h-auto rounded-lg shadow-sm object-cover"
+          />
         </div>
       </div>
 

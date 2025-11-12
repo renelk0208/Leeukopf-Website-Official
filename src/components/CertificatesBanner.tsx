@@ -1,11 +1,22 @@
-import { ArrowRight, CheckCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function CertificatesBanner() {
-  const badges = [
-    { label: 'GMP', verified: true },
-    { label: 'EU 1223/2009', verified: true },
-    { label: 'Leaping Bunny', verified: true },
-    { label: 'TPO/HEMA-Free', verified: true },
+  const certifications = [
+    {
+      label: 'GMP Certified',
+      image: '/viber_image_2025-11-12_13-54-57-521.png',
+      alt: 'GMP Certified Logo'
+    },
+    {
+      label: 'HEMA & TPO Free',
+      image: '/viber_image_2025-11-12_13-54-58-003.png',
+      alt: 'HEMA & TPO Free Logo'
+    },
+    {
+      label: 'CPNP',
+      image: '/viber_image_2025-11-12_13-55-24-523.png',
+      alt: 'CPNP Cosmetic Product Notification Portal Logo'
+    },
   ];
 
   return (
@@ -22,19 +33,23 @@ export default function CertificatesBanner() {
                 </span>
               </h3>
               <p className="text-lg text-gray-600 leading-relaxed font-light">
-                GMP manufacturing, EU 1223/2009 compliance, Leaping Bunny approval, and TPO/HEMA-free systems.
+                GMP manufacturing, EU 1223/2009 compliance, CPNP registered, and HEMA & TPO-free systems.
               </p>
             </div>
 
             <div className="space-y-6">
-              <div className="flex flex-wrap gap-3">
-                {badges.map((badge, index) => (
+              <div className="grid grid-cols-3 gap-6">
+                {certifications.map((cert, index) => (
                   <div
                     key={index}
-                    className="inline-flex items-center space-x-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full hover:border-primary-300 transition-colors"
+                    className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-md transition-all duration-300"
                   >
-                    <CheckCircle size={16} className="text-primary-500" />
-                    <span className="text-sm font-medium text-gray-700">{badge.label}</span>
+                    <img
+                      src={cert.image}
+                      alt={cert.alt}
+                      className="w-full h-24 object-contain mb-2"
+                    />
+                    <span className="text-xs font-medium text-gray-700 text-center">{cert.label}</span>
                   </div>
                 ))}
               </div>
