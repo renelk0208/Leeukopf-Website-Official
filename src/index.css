@@ -3,3 +3,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    background: linear-gradient(to bottom, #000000 0%, #ffffff 50%, #1E90FF 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-blue-500 text-white rounded-md font-semibold transition-all duration-300;
+  }
+
+  .btn-primary:hover {
+    @apply bg-white text-blue-500 border-2 border-blue-500;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-white text-blue-500 border-2 border-blue-500 rounded-md font-semibold transition-all duration-300;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-blue-500 text-white;
+  }
+
+  .section-dark {
+    @apply text-white;
+  }
+
+  .section-dark h1,
+  .section-dark h2,
+  .section-dark h3,
+  .section-dark h4,
+  .section-dark h5,
+  .section-dark h6 {
+    @apply text-white;
+  }
+
+  .section-light {
+    @apply text-gray-900;
+  }
+
+  .section-light h1,
+  .section-light h2,
+  .section-light h3,
+  .section-light h4,
+  .section-light h5,
+  .section-light h6 {
+    @apply text-gray-900;
+  }
+}

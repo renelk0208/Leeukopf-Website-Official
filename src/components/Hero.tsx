@@ -5,9 +5,7 @@ export default function Hero() {
   const navigate = useNavigate();
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptLTEyIDEyYzMuMzE0IDAgNiAyLjY4NiA2IDZzLTIuNjg2IDYtNiA2LTYtMi42ODYtNi02IDIuNjg2LTYgNi02eiIgc3Ryb2tlPSJyZ2JhKDU5LCAxMzAsIDE4NiwgMC4xKSIvPjwvZz48L3N2Zz4=')] opacity-50"></div>
-
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
         <div className="space-y-8">
           <div className="flex justify-center mb-8">
@@ -22,20 +20,20 @@ export default function Hero() {
             Premium Gel Polish Manufacturing & Private Label Excellence
           </p>
 
-          <p className="text-lg text-blue-800 max-w-2xl mx-auto font-medium">
+          <p className="text-lg text-gray-700 max-w-2xl mx-auto font-medium">
             Professional Gel Systems • Builder Gel • Nail Art • Bulgarian Cosmetics Excellence
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
             <button
               onClick={() => navigate('/products')}
-              className="px-8 py-4 bg-blue-800 text-white rounded-md font-semibold hover:bg-blue-900 transition-all duration-300 shadow-sm hover:shadow-md"
+              className="px-8 py-4 bg-blue-500 text-white rounded-md font-semibold hover:bg-white hover:text-blue-500 hover:border-2 hover:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md"
             >
               Explore Our Products
             </button>
             <button
               onClick={() => navigate('/contact')}
-              className="px-8 py-4 bg-white text-blue-800 rounded-md font-semibold border-2 border-blue-800 hover:bg-blue-50 transition-all duration-300"
+              className="px-8 py-4 bg-white text-blue-500 rounded-md font-semibold border-2 border-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300"
             >
               Contact Us
             </button>

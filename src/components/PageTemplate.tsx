@@ -35,8 +35,8 @@ export default function PageTemplate({
   };
 
   return (
-    <div className="min-h-screen bg-white pt-16">
-      <div className="bg-gradient-to-br from-white via-gray-50 to-white py-12 border-b border-gray-200">
+    <div className="min-h-screen pt-16">
+      <div className="bg-white/80 backdrop-blur-sm py-12 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center space-x-2 text-sm mb-6">
             {breadcrumbs.map((item, index) => (
@@ -45,7 +45,7 @@ export default function PageTemplate({
                 {item.path ? (
                   <Link
                     to={item.path}
-                    className="text-gray-600 hover:text-blue-800 transition-colors"
+                    className="text-gray-600 hover:text-blue-500 transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -59,7 +59,7 @@ export default function PageTemplate({
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
             {title}
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl font-light">
+          <p className="text-xl text-gray-700 max-w-3xl font-light">
             {subtitle}
           </p>
         </div>
@@ -70,13 +70,13 @@ export default function PageTemplate({
 
         {showCTA && (
           <div className="mt-16 text-center">
-            <div className="inline-block p-8 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="inline-block p-8 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 shadow-sm">
               <p className="text-gray-700 mb-6 text-lg">
                 Interested in learning more?
               </p>
               <button
                 onClick={handleCTA}
-                className="px-8 py-3 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
+                className="px-8 py-3 bg-blue-500 text-white rounded-md font-semibold hover:bg-white hover:text-blue-500 hover:border-2 hover:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md"
               >
                 {ctaText}
               </button>
