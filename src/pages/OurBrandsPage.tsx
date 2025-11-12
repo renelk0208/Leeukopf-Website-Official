@@ -36,7 +36,7 @@ export default function OurBrandsPage() {
           <Link
             key={brand.path}
             to={brand.path}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 bg-white rounded-lg border border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
           >
             <div className={index % 2 === 0 ? 'order-1' : 'order-1 lg:order-2'}>
               <ImagePlaceholder alt={`${brand.name} products`} />
@@ -47,7 +47,7 @@ export default function OurBrandsPage() {
                 {brand.description}
               </p>
               <div className="mt-6">
-                <span className="text-primary-600 font-semibold hover:text-primary-700">
+                <span className="text-blue-600 font-semibold hover:text-blue-700">
                   Explore {brand.name} →
                 </span>
               </div>

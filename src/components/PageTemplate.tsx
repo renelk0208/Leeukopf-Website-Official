@@ -45,7 +45,7 @@ export default function PageTemplate({
                 {item.path ? (
                   <Link
                     to={item.path}
-                    className="text-gray-600 hover:text-primary-600 transition-colors"
+                    className="text-gray-600 hover:text-blue-600 transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -90,9 +90,9 @@ export default function PageTemplate({
 
 export function ImagePlaceholder({ alt = 'Product image' }: { alt?: string }) {
   return (
-    <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center group hover:border-primary-300 transition-colors">
+    <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center group hover:border-blue-300 transition-colors">
       <div className="text-center">
-        <ImageIcon size={48} className="mx-auto text-gray-300 group-hover:text-primary-400 transition-colors" />
+        <ImageIcon size={48} className="mx-auto text-gray-300 group-hover:text-blue-400 transition-colors" />
         <p className="text-sm text-gray-400 mt-2">{alt}</p>
       </div>
     </div>
@@ -103,9 +103,9 @@ export function ContentCard({ title, description, to }: { title: string; descrip
   return (
     <Link
       to={to}
-      className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300"
+      className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
     >
-      <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600">
+      <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600">
         {title}
       </h3>
       <p className="text-gray-600 font-light">

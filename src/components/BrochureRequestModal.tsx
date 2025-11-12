@@ -206,7 +206,7 @@ export default function BrochureRequestModal({
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-3 border ${
                   errors.name ? 'border-red-300' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
                 placeholder="John Doe"
                 disabled={isSubmitting}
               />
@@ -228,7 +228,7 @@ export default function BrochureRequestModal({
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-3 border ${
                   errors.email ? 'border-red-300' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
                 placeholder="john@example.com"
                 disabled={isSubmitting}
               />
@@ -248,7 +248,7 @@ export default function BrochureRequestModal({
                 name="company"
                 value={formData.company}
                 onChange={handleChange}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 placeholder="Your Company"
                 disabled={isSubmitting}
               />
@@ -269,7 +269,7 @@ export default function BrochureRequestModal({
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-3 border ${
                   errors.country ? 'border-red-300' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
                 placeholder="United States"
                 disabled={isSubmitting}
               />
@@ -291,7 +291,7 @@ export default function BrochureRequestModal({
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-3 border ${
                   errors.contactNumber ? 'border-red-300' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all`}
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
                 placeholder="+1 (555) 123-4567"
                 disabled={isSubmitting}
               />

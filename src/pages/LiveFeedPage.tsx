@@ -130,7 +130,7 @@ export default function LiveFeedPage() {
             </p>
             <button
               onClick={handleEnableEmbeds}
-              className="px-6 py-2 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
+              className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
             >
               Enable Social Embeds
             </button>
@@ -142,7 +142,7 @@ export default function LiveFeedPage() {
             onClick={() => setFilter('all')}
             className={`px-6 py-3 font-semibold transition-colors ${
               filter === 'all'
-                ? 'text-primary-600 border-b-2 border-primary-600'
+                ? 'text-blue-600 border-b-2 border-blue-600'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -152,7 +152,7 @@ export default function LiveFeedPage() {
             onClick={() => setFilter('instagram')}
             className={`px-6 py-3 font-semibold transition-colors ${
               filter === 'instagram'
-                ? 'text-primary-600 border-b-2 border-primary-600'
+                ? 'text-blue-600 border-b-2 border-blue-600'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -162,7 +162,7 @@ export default function LiveFeedPage() {
             onClick={() => setFilter('tiktok')}
             className={`px-6 py-3 font-semibold transition-colors ${
               filter === 'tiktok'
-                ? 'text-primary-600 border-b-2 border-primary-600'
+                ? 'text-blue-600 border-b-2 border-blue-600'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -182,7 +182,7 @@ export default function LiveFeedPage() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-primary-300 hover:text-primary-600 transition-all duration-300"
+                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300"
               >
                 <Instagram size={20} className="mr-2" />
                 Visit Instagram
@@ -191,7 +191,7 @@ export default function LiveFeedPage() {
                 href="https://tiktok.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-primary-300 hover:text-primary-600 transition-all duration-300"
+                className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300"
               >
                 <Music2 size={20} className="mr-2" />
                 Visit TikTok

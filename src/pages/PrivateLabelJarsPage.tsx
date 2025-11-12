@@ -41,7 +41,7 @@ export default function PrivateLabelJarsPage() {
       <div className="space-y-12">
         {loading ? (
           <div className="text-center py-12">
-            <div className="text-primary-600">Loading jars...</div>
+            <div className="text-blue-600">Loading jars...</div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -77,10 +77,10 @@ export default function PrivateLabelJarsPage() {
 
         <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
-            <button className="px-8 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors">
+            <button className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
               Request Jar Specifications
             </button>
-            <button className="px-8 py-3 bg-white border-2 border-primary-600 text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors">
+            <button className="px-8 py-3 bg-white border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
               Get Pricing
             </button>
           </div>

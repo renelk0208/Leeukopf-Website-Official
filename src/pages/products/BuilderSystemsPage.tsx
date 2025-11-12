@@ -39,8 +39,8 @@ export default function BuilderSystemsPage() {
         <div className="mb-16">
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 p-8 md:p-12 text-center">
             <div className="max-w-3xl mx-auto">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-6">
-                <FileText size={32} className="text-primary-600" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
+                <FileText size={32} className="text-blue-600" />
               </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Complete Builder Systems Catalog</h2>
               <p className="text-lg text-gray-600 mb-8 font-light leading-relaxed">
@@ -118,23 +118,23 @@ export default function BuilderSystemsPage() {
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Professional Features</h2>
             <ul className="space-y-3 text-gray-600 font-light">
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
+                <span className="text-blue-600 mr-2">•</span>
                 <span>Superior adhesion to natural nail plate for extended wear</span>
               </li>
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
+                <span className="text-blue-600 mr-2">•</span>
                 <span>Self-leveling formulas for smooth, professional finish</span>
               </li>
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
+                <span className="text-blue-600 mr-2">•</span>
                 <span>Flexible yet strong formulations that move with natural nail</span>
               </li>
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
+                <span className="text-blue-600 mr-2">•</span>
                 <span>Non-yellowing formulas maintain clarity over time</span>
               </li>
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
+                <span className="text-blue-600 mr-2">•</span>
                 <span>Compatible with all gel polish and nail art products</span>
               </li>
             </ul>

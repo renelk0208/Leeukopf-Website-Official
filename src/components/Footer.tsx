@@ -33,7 +33,7 @@ const SocialLinks = () => {
           href={social.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-gray-400 hover:text-primary-400 transition-colors"
+          className="text-gray-400 hover:text-blue-400 transition-colors"
           aria-label={social.name}
         >
           {social.icon}

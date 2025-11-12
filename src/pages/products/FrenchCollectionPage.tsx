@@ -36,8 +36,8 @@ export default function FrenchCollectionPage() {
         <div className="space-y-12">
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 p-8 md:p-12 text-center">
             <div className="max-w-3xl mx-auto">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-6">
-                <FileText size={32} className="text-primary-600" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
+                <FileText size={32} className="text-blue-600" />
               </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">French Manicure Color Collection</h2>
               <p className="text-lg text-gray-600 mb-8 font-light leading-relaxed">

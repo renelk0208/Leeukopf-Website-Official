@@ -24,8 +24,8 @@ export default function DistributorsWantedPage() {
         </div>
         <div>
           <img
-            src="/ChatGPT Image Nov 13, 2025, 12_06_11 AM.png"
-            alt="Distribution partnership"
+            src="/World map.png"
+            alt="Global distribution network"
             className="w-full h-auto rounded-lg shadow-sm object-cover"
           />
         </div>
@@ -73,23 +73,23 @@ export default function DistributorsWantedPage() {
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">Requirements</h2>
           <ul className="space-y-3 text-gray-600 font-light">
             <li className="flex items-start">
-              <span className="text-primary-600 mr-2">•</span>
+              <span className="text-blue-600 mr-2">•</span>
               <span>Established business in beauty, cosmetics, or professional nail care sector</span>
             </li>
             <li className="flex items-start">
-              <span className="text-primary-600 mr-2">•</span>
+              <span className="text-blue-600 mr-2">•</span>
               <span>Existing distribution network or retail presence in your territory</span>
             </li>
             <li className="flex items-start">
-              <span className="text-primary-600 mr-2">•</span>
+              <span className="text-blue-600 mr-2">•</span>
               <span>Commitment to representing our brands professionally and ethically</span>
             </li>
             <li className="flex items-start">
-              <span className="text-primary-600 mr-2">•</span>
+              <span className="text-blue-600 mr-2">•</span>
               <span>Ability to meet minimum order requirements and maintain stock levels</span>
             </li>
             <li className="flex items-start">
-              <span className="text-primary-600 mr-2">•</span>
+              <span className="text-blue-600 mr-2">•</span>
               <span>Willingness to provide market feedback and collaborate on growth strategies</span>
             </li>
           </ul>
