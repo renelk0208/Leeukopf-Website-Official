@@ -36,7 +36,7 @@ export default function CertificatesPage() {
       showCTA={true}
       ctaText="Request Documentation"
     >
-      <div className="mb-16 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-8 flex items-center justify-center">
+      <div className="mb-16 bg-white rounded-xl p-8 flex items-center justify-center">
         <img
           src="/572916675_122131040858961647_8170659271303111919_n.jpg"
           alt="Leeukopf Laboratories Certifications - ISO 22716, ISO 9001, GMP, cPNP, FDA, MSDS, BNAF, Cruelty Free, HEMA & TPO Free"
