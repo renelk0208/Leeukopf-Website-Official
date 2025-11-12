@@ -7,11 +7,6 @@ export default function FacilityCarousel() {
 
   const images = [
     {
-      src: '/LEEUKOPF factory 2.png',
-      alt: 'Leeukopf Laboratories Private Label Products',
-      caption: 'Private Label Excellence'
-    },
-    {
       src: '/Leeukopf Factory (2).png',
       alt: 'Leeukopf Laboratories Consultation Team',
       caption: 'Expert Brand Consultation'
@@ -30,6 +25,11 @@ export default function FacilityCarousel() {
       src: '/Leeukopf Factory (5).png',
       alt: 'Leeukopf Laboratories Color Development',
       caption: 'Color Innovation Lab'
+    },
+    {
+      src: '/LEEUKOPF factory 2.png',
+      alt: 'Leeukopf Laboratories Private Label Products',
+      caption: 'Private Label Excellence'
     }
   ];
 
