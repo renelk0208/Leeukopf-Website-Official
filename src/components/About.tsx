@@ -1,25 +1,4 @@
 export default function About() {
-  const certifications = [
-    {
-      logo: '/572916675_122131040858961647_8170659271303111919_n.jpg',
-      title: 'Leaping Bunny Certified',
-      description: 'Cruelty-free approval ensuring no animal testing',
-      isFullImage: true
-    },
-    {
-      logo: '/img/certifications/gmp-certified.png',
-      title: 'GMP Certified',
-      description: 'Good Manufacturing Practice certified facilities',
-      isFullImage: false
-    },
-    {
-      logo: '/572916675_122131040858961647_8170659271303111919_n.jpg',
-      title: 'HEMA & TPO Free',
-      description: 'Safe formulations without harmful chemicals',
-      isFullImage: true
-    },
-  ];
-
   return (
     <section id="about" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,33 +10,6 @@ export default function About() {
             Leeukopf Laboratories is a leading cosmetics and private label brand company based in Bulgaria,
             providing exceptional support throughout the process of creating your Private Label Brand
           </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {certifications.map((cert, index) => (
-            <div
-              key={index}
-              className="group p-8 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-600 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
-            >
-              <div className="flex flex-col items-center text-center space-y-6">
-                <div className="w-32 h-32 flex items-center justify-center">
-                  <img
-                    src={cert.logo}
-                    alt={cert.title === 'GMP Certified' ? 'GMP Certified.' : cert.title}
-                    className={cert.title === 'GMP Certified'
-                      ? 'max-h-[28px] sm:max-h-[36px] w-auto object-contain'
-                      : 'w-full h-full object-contain'}
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-800 transition-colors">
-                  {cert.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed font-light">
-                  {cert.description}
-                </p>
-              </div>
-            </div>
-          ))}
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-200 p-8 sm:p-12 shadow-sm">

@@ -22,8 +22,15 @@ export default function AboutPage() {
             We specialize in gel polish systems, builder gels, acrylics, and complete nail care solutions. Every product is developed with meticulous attention to detail, ensuring safety, performance, and stunning results for nail professionals and their clients worldwide.
           </p>
         </div>
-        <div>
-          <ImagePlaceholder alt="Leeukopf Laboratory facility" />
+        <div className="relative overflow-hidden rounded-lg">
+          <img
+            src="/img/factory/leeukopf-facility-hero.jpg"
+            alt="Leeukopf Laboratories — Manufacturing Facility"
+            className="w-full h-full object-cover object-center aspect-[16/9] lg:aspect-[4/3]"
+          />
+          <p className="text-xs text-gray-500 mt-2 text-center font-light">
+            Leeukopf Laboratories — Manufacturing Facility
+          </p>
         </div>
       </div>
 

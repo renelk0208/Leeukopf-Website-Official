@@ -41,6 +41,32 @@ export default function Hero() {
             </button>
           </div>
 
+          <div className="flex items-center justify-center gap-6 pt-8">
+            <img
+              src="/572916675_122131040858961647_8170659271303111919_n.jpg"
+              alt="Leaping Bunny Certified"
+              className="h-10 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+            />
+            <span className="text-gray-400">·</span>
+            <img
+              src="/img/certifications/gmp-logo.png"
+              alt="GMP Certified"
+              className="h-7 sm:h-9 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+            />
+            <span className="text-gray-400">·</span>
+            <img
+              src="/viber_image_2025-11-12_13-55-24-523.png"
+              alt="EU 1223/2009 Compliant"
+              className="h-10 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+            />
+            <span className="text-gray-400">·</span>
+            <img
+              src="/viber_image_2025-11-12_13-54-58-003.png"
+              alt="HEMA & TPO Free"
+              className="h-10 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+            />
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto pt-16">
             <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
               <div className="text-3xl font-bold text-blue-800 mb-2 tracking-tight">3000+</div>

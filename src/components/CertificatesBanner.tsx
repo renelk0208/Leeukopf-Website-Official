@@ -4,8 +4,8 @@ export default function CertificatesBanner() {
   const certifications = [
     {
       label: 'GMP Certified',
-      image: '/img/certifications/gmp-certified.png',
-      alt: 'GMP Certified.'
+      image: '/img/certifications/gmp-logo.png',
+      alt: 'GMP Certified'
     },
     {
       label: 'HEMA & TPO Free',
