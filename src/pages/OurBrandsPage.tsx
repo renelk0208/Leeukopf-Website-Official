@@ -7,7 +7,7 @@ export default function OurBrandsPage() {
       name: 'GEL.IT.UP',
       description: 'Premium gel polish system with exceptional durability and shine. Professional quality for salon and home use.',
       path: '/our-brands/gel-it-up',
-      image: '/gelitup.jpg'
+      image: '/GEL.IT.UP-NEW-LOGO-2024_black_2.png'
     },
     {
       name: 'Gender Neutral',

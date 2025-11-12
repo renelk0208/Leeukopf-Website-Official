@@ -1,36 +1,22 @@
-import { Award, Shield, Globe, FileCheck, Heart, Building2 } from 'lucide-react';
-
 export default function About() {
   const certifications = [
     {
-      icon: <Heart className="text-blue-600" size={40} />,
+      logo: '/572916675_122131040858961647_8170659271303111919_n.jpg',
       title: 'Leaping Bunny Certified',
       description: 'Cruelty-free approval ensuring no animal testing',
+      isFullImage: true
     },
     {
-      icon: <Shield className="text-blue-600" size={40} />,
-      title: 'Good Manufacturing Practice',
-      description: 'GMP certified production facilities',
+      logo: '/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview.png',
+      title: 'GMP Certified',
+      description: 'Good Manufacturing Practice certified facilities',
+      isFullImage: false
     },
     {
-      icon: <FileCheck className="text-blue-600" size={40} />,
-      title: 'Medical Data Safety Sheets',
-      description: 'Complete safety documentation for all products',
-    },
-    {
-      icon: <Globe className="text-blue-600" size={40} />,
-      title: 'Free Sale Certification',
-      description: 'Certified for export to multiple countries',
-    },
-    {
-      icon: <Building2 className="text-blue-600" size={40} />,
-      title: 'BCA Member',
-      description: 'Bulgaria Cosmetics Association member',
-    },
-    {
-      icon: <Award className="text-blue-600" size={40} />,
-      title: 'Private Label Excellence',
-      description: 'Expert support for your brand development',
+      logo: '/572916675_122131040858961647_8170659271303111919_n.jpg',
+      title: 'HEMA & TPO Free',
+      description: 'Safe formulations without harmful chemicals',
+      isFullImage: true
     },
   ];
 
@@ -47,17 +33,21 @@ export default function About() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {certifications.map((cert, index) => (
             <div
               key={index}
-              className="group p-8 bg-white rounded-lg border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg"
+              className="group p-8 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
             >
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="p-4 bg-gray-50 rounded-lg group-hover:bg-blue-50 transition-colors duration-300">
-                  {cert.icon}
+              <div className="flex flex-col items-center text-center space-y-6">
+                <div className="w-32 h-32 flex items-center justify-center">
+                  <img
+                    src={cert.logo}
+                    alt={cert.title}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
                   {cert.title}
                 </h3>
                 <p className="text-gray-600 leading-relaxed font-light">

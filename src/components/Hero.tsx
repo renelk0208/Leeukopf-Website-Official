@@ -23,7 +23,7 @@ export default function Hero() {
           </p>
 
           <p className="text-lg text-blue-600 max-w-2xl mx-auto font-medium">
-            Over 4000 colors • Cruelty-Free Certified • Bulgarian Cosmetics Excellence
+            Professional Gel Systems • Builder Gel • Nail Art • Bulgarian Cosmetics Excellence
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
@@ -41,18 +41,21 @@ export default function Hero() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto pt-16">
-            <div className="p-8 bg-white rounded-lg border-2 border-blue-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-              <div className="text-4xl font-bold text-blue-600 mb-2 tracking-tight">4000+</div>
-              <div className="text-gray-700 font-medium">Color Options</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto pt-16">
+            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-400 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-5xl font-bold text-blue-600 mb-3 tracking-tight">3000+</div>
+              <div className="text-gray-800 font-semibold text-lg">Colours</div>
+              <div className="text-gray-600 text-sm mt-2 font-light">Premium gel polish collection</div>
             </div>
-            <div className="p-8 bg-white rounded-lg border-2 border-blue-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-              <div className="text-4xl font-bold text-blue-600 mb-2 tracking-tight">100%</div>
-              <div className="text-gray-700 font-medium">Cruelty-Free</div>
+            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-400 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-5xl font-bold text-blue-600 mb-3 tracking-tight">Builder</div>
+              <div className="text-gray-800 font-semibold text-lg">Gel Systems</div>
+              <div className="text-gray-600 text-sm mt-2 font-light">Professional strength & durability</div>
             </div>
-            <div className="p-8 bg-white rounded-lg border-2 border-blue-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-              <div className="text-4xl font-bold text-blue-600 mb-2 tracking-tight">GMP</div>
-              <div className="text-gray-700 font-medium">Certified</div>
+            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-400 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-5xl font-bold text-blue-600 mb-3 tracking-tight">Nail Art</div>
+              <div className="text-gray-800 font-semibold text-lg">& Consumables</div>
+              <div className="text-gray-600 text-sm mt-2 font-light">Complete product range</div>
             </div>
           </div>
         </div>
