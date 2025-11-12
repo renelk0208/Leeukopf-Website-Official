@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#000" stroke-width="3"/>
+  <circle cx="100" cy="100" r="85" fill="none" stroke="#000" stroke-width="3"/>
+  <circle cx="100" cy="100" r="65" fill="#000"/>
+  <text x="100" y="115" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#fff" text-anchor="middle">GMP</text>
+  <path id="topCurve" d="M 30,100 A 70,70 0 0,1 170,100" fill="none"/>
+  <text font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#000" letter-spacing="2">
+    <textPath href="#topCurve" startOffset="50%" text-anchor="middle">GOOD MANUFACTURING</textPath>
+  </text>
+  <path id="bottomCurve" d="M 30,100 A 70,70 0 0,0 170,100" fill="none"/>
+  <text font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#000" letter-spacing="2">
+    <textPath href="#bottomCurve" startOffset="50%" text-anchor="middle">PRACTICE</textPath>
+  </text>
+  <circle cx="30" cy="100" r="4" fill="#000"/>
+  <circle cx="170" cy="100" r="4" fill="#000"/>
+  <circle cx="60" cy="40" r="4" fill="#000"/>
+  <circle cx="140" cy="40" r="4" fill="#000"/>
+  <circle cx="60" cy="160" r="4" fill="#000"/>
+  <circle cx="140" cy="160" r="4" fill="#000"/>
+</svg>

@@ -4,8 +4,8 @@ export default function CertificatesBanner() {
   const certifications = [
     {
       label: 'GMP Certified',
-      image: '/viber_image_2025-11-12_13-54-57-521.png',
-      alt: 'GMP Certified Logo'
+      image: '/img/certifications/gmp-certified.svg',
+      alt: 'GMP Certified.'
     },
     {
       label: 'HEMA & TPO Free',
@@ -47,7 +47,9 @@ export default function CertificatesBanner() {
                     <img
                       src={cert.image}
                       alt={cert.alt}
-                      className="w-full h-24 object-contain mb-2"
+                      className={cert.label === 'GMP Certified'
+                        ? 'max-h-[28px] sm:max-h-[36px] w-auto object-contain mb-2'
+                        : 'w-full h-24 object-contain mb-2'}
                     />
                     <span className="text-xs font-medium text-gray-700 text-center">{cert.label}</span>
                   </div>

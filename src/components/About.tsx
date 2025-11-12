@@ -7,7 +7,7 @@ export default function About() {
       isFullImage: true
     },
     {
-      logo: '/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview.png',
+      logo: '/img/certifications/gmp-certified.svg',
       title: 'GMP Certified',
       description: 'Good Manufacturing Practice certified facilities',
       isFullImage: false
@@ -43,8 +43,10 @@ export default function About() {
                 <div className="w-32 h-32 flex items-center justify-center">
                   <img
                     src={cert.logo}
-                    alt={cert.title}
-                    className="w-full h-full object-contain"
+                    alt={cert.title === 'GMP Certified' ? 'GMP Certified.' : cert.title}
+                    className={cert.title === 'GMP Certified'
+                      ? 'max-h-[28px] sm:max-h-[36px] w-auto object-contain'
+                      : 'w-full h-full object-contain'}
                   />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-800 transition-colors">
