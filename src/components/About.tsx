@@ -75,7 +75,7 @@ export default function About() {
                 Your Partner in Brand Excellence
               </h3>
               <p className="text-gray-600 leading-relaxed text-lg font-light">
-                With over 2000 color options and comprehensive support, we help you create unique private label brands
+                With over 4000 color options and comprehensive support, we help you create unique private label brands
                 that stand out in the market. Our personalized consulting guides you through every step of the brand
                 development process.
               </p>
@@ -101,7 +101,7 @@ export default function About() {
 
             <div className="grid grid-cols-2 gap-6">
               <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                <div className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">2000+</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">4000+</div>
                 <div className="text-gray-600 font-light">Color Options Available</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">

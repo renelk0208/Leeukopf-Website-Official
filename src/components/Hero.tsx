@@ -27,7 +27,7 @@ export default function Hero() {
           </p>
 
           <p className="text-lg text-gray-500 max-w-2xl mx-auto font-light">
-            Over 2000 colors • Cruelty-Free Certified • Bulgarian Cosmetics Excellence
+            Over 4000 colors • Cruelty-Free Certified • Bulgarian Cosmetics Excellence
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
@@ -47,7 +47,7 @@ export default function Hero() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto pt-16">
             <div className="p-8 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">2000+</div>
+              <div className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">4000+</div>
               <div className="text-gray-600 font-light">Color Options</div>
             </div>
             <div className="p-8 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
