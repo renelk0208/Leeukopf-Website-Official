@@ -1,77 +1,111 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { FileText } from 'lucide-react';
 import PageTemplate from '../../components/PageTemplate';
+import BrochureRequestModal from '../../components/BrochureRequestModal';
 
 export default function TopsBasesPrimersPage() {
-  const categories = [
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const productCategories = [
     {
-      title: 'Tops',
-      description: 'Professional top coats including wipe-off, non-wipe, matt finish, and special effects formulations.',
-      path: '/products/tops-bases-primers/tops'
+      title: 'Top Coats',
+      items: ['Wipe-off', 'Non-wipe', 'Matt finish', 'Special effects']
     },
     {
-      title: 'Bases',
-      description: 'Foundation systems including classic base, 5-in-1 superior base, builder in a bottle, and flexible base options.',
-      path: '/products/tops-bases-primers/bases'
+      title: 'Base Coats',
+      items: ['Classic base', '5-in-1 superior', 'Builder in a bottle', 'Flexible base']
     },
     {
       title: 'Primers',
-      description: 'Professional nail preparation products for optimal adhesion and extended wear.',
-      path: '/products/tops-bases-primers/primers'
+      items: ['Acid-free primers', 'Dehydrators', 'Bond enhancers', 'pH balancers']
     }
   ];
 
   return (
-    <PageTemplate
-      title="Tops, Bases & Primers"
-      subtitle="Complete foundation and finishing systems for perfect gel polish application and extended wear."
-      breadcrumbs={[
-        { label: 'Home', path: '/' },
-        { label: 'Our Products', path: '/products' },
-        { label: 'Tops, Bases & Primers' }
-      ]}
-      showCTA={true}
-    >
-      <div className="mb-16">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Complete System Solutions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <Link
-              key={category.path}
-              to={category.path}
-              className="group block p-6 bg-white rounded-lg border border-gray-200 hover:border-primary-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            >
-              <div className="aspect-square bg-gray-100 rounded-lg mb-4 border border-gray-200"></div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">{category.title}</h3>
-              <p className="text-gray-600 font-light">{category.description}</p>
-            </Link>
-          ))}
-        </div>
-      </div>
+    <>
+      <PageTemplate
+        title="Tops, Bases & Primers"
+        subtitle="Complete foundation and finishing systems for perfect gel polish application and extended wear."
+        breadcrumbs={[
+          { label: 'Home', path: '/' },
+          { label: 'Our Products', path: '/products' },
+          { label: 'Tops, Bases & Primers' }
+        ]}
+      >
+        <div className="mb-16">
+          <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 p-8 md:p-12 text-center">
+            <div className="max-w-3xl mx-auto">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-6">
+                <FileText size={32} className="text-primary-600" />
+              </div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Complete Foundation & Finishing Systems</h2>
+              <p className="text-lg text-gray-600 mb-8 font-light leading-relaxed">
+                Discover our professional range of tops, bases, and primers. Request our comprehensive brochure for detailed product information and application techniques.
+              </p>
 
-      <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Why Use a Complete System</h2>
-        <p className="text-gray-600 font-light leading-relaxed mb-6">
-          Our tops, bases, and primers work synergistically to provide optimal adhesion, protection, and longevity. Each product is formulated to complement the others, creating a complete nail care ecosystem that delivers professional results every time.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Enhanced Adhesion</h3>
-            <p className="text-gray-600 font-light text-sm">Primers and bases create the perfect foundation for color application and extended wear.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Extended Durability</h3>
-            <p className="text-gray-600 font-light text-sm">Top coats seal and protect, preventing chips and maintaining glossy shine for weeks.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Nail Health</h3>
-            <p className="text-gray-600 font-light text-sm">Flexible formulas move with the natural nail, reducing stress and preventing breakage.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Professional Results</h3>
-            <p className="text-gray-600 font-light text-sm">Consistent performance across the entire system for salon-quality manicures.</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {productCategories.map((category) => (
+                  <div key={category.title} className="bg-white rounded-lg border border-gray-200 p-5 text-left">
+                    <h3 className="font-semibold text-gray-900 mb-3">{category.title}</h3>
+                    <ul className="space-y-1">
+                      {category.items.map((item) => (
+                        <li key={item} className="text-sm text-gray-600 font-light flex items-start">
+                          <span className="text-primary-600 mr-2">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                <FileText size={20} className="mr-2" />
+                Request Complete Brochure
+              </button>
+
+              <p className="text-sm text-gray-500 mt-6">
+                Our brochure includes product specifications, usage guidelines, and compatibility information
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </PageTemplate>
+
+        <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Why Use a Complete System</h2>
+          <p className="text-gray-600 font-light leading-relaxed mb-6">
+            Our tops, bases, and primers work synergistically to provide optimal adhesion, protection, and longevity. Each product is formulated to complement the others, creating a complete nail care ecosystem that delivers professional results every time.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">Enhanced Adhesion</h3>
+              <p className="text-gray-600 font-light text-sm">Primers and bases create the perfect foundation for color application and extended wear.</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">Extended Durability</h3>
+              <p className="text-gray-600 font-light text-sm">Top coats seal and protect, preventing chips and maintaining glossy shine for weeks.</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">Nail Health</h3>
+              <p className="text-gray-600 font-light text-sm">Flexible formulas move with the natural nail, reducing stress and preventing breakage.</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">Professional Results</h3>
+              <p className="text-gray-600 font-light text-sm">Consistent performance across the entire system for salon-quality manicures.</p>
+            </div>
+          </div>
+        </div>
+      </PageTemplate>
+
+      <BrochureRequestModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        categoryName="Tops, Bases & Primers"
+        categorySlug="tops-bases-primers"
+      />
+    </>
   );
 }

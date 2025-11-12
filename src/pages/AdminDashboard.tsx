@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase, ProductCategory, Product } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Edit2, Save } from 'lucide-react';
+import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Edit2, Save, FileText } from 'lucide-react';
 
 interface SiteSettings {
   primary_color: string;
@@ -11,10 +11,11 @@ interface SiteSettings {
 
 export default function AdminDashboard() {
   const { signOut, user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'products' | 'colors'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures'>('products');
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
+  const [brochureRequests, setBrochureRequests] = useState<BrochureRequest[]>([]);
   const [colors, setColors] = useState<SiteSettings>({
     primary_color: '#06b6d4',
     secondary_color: '#3b82f6',
@@ -34,6 +35,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     loadCategories();
     loadColors();
+    loadBrochureRequests();
   }, []);
 
   useEffect(() => {
@@ -71,6 +73,14 @@ export default function AdminDashboard() {
       });
       setColors(settings);
     }
+  };
+
+  const loadBrochureRequests = async () => {
+    const { data } = await supabase
+      .from('brochure_requests')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (data) setBrochureRequests(data);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -255,6 +265,22 @@ export default function AdminDashboard() {
           >
             <ImageIcon size={20} />
             <span>Manage Products</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('brochures')}
+            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+              activeTab === 'brochures'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
+                : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
+            }`}
+          >
+            <FileText size={20} />
+            <span>Brochure Requests</span>
+            {brochureRequests.length > 0 && (
+              <span className="ml-2 px-2 py-1 bg-cyan-500 text-white rounded-full text-xs">
+                {brochureRequests.length}
+              </span>
+            )}
           </button>
           <button
             onClick={() => setActiveTab('colors')}
@@ -444,6 +470,63 @@ export default function AdminDashboard() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'brochures' && (
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-cyan-500/20 p-6">
+            <h2 className="text-2xl font-bold text-white mb-6">Brochure Requests</h2>
+            <p className="text-gray-400 mb-6">
+              Customer requests for product brochures and catalogs
+            </p>
+
+            {brochureRequests.length === 0 ? (
+              <div className="text-center py-12">
+                <FileText size={48} className="mx-auto text-gray-600 mb-4" />
+                <p className="text-gray-400">No brochure requests yet</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-cyan-500/20">
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Date</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Name</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Email</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Company</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Country</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Contact</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Category</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {brochureRequests.map((request) => (
+                      <tr key={request.id} className="border-b border-cyan-500/10 hover:bg-slate-900/30">
+                        <td className="py-4 px-4 text-gray-400 text-sm">
+                          {new Date(request.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="py-4 px-4 text-white">{request.name}</td>
+                        <td className="py-4 px-4 text-cyan-400">
+                          <a href={`mailto:${request.email}`} className="hover:underline">
+                            {request.email}
+                          </a>
+                        </td>
+                        <td className="py-4 px-4 text-gray-300">
+                          {request.company || <span className="text-gray-600">-</span>}
+                        </td>
+                        <td className="py-4 px-4 text-gray-300">{request.country}</td>
+                        <td className="py-4 px-4 text-gray-300">{request.contact_number}</td>
+                        <td className="py-4 px-4">
+                          <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-sm">
+                            {request.category_name}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 

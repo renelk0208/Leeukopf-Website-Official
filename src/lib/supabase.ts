@@ -29,3 +29,15 @@ export interface Product {
   created_at: string;
   updated_at: string;
 }
+
+export interface BrochureRequest {
+  id: string;
+  name: string;
+  email: string;
+  company: string | null;
+  country: string;
+  contact_number: string;
+  category_name: string;
+  category_slug: string;
+  created_at: string;
+}
