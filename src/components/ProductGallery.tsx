@@ -1,30 +1,31 @@
 import { useState, useEffect } from 'react';
-import { Palette, Package, Droplet, Boxes, Sparkles, ChevronDown } from 'lucide-react';
+import { Package } from 'lucide-react';
 import { supabase, ProductCategory, Product } from '../lib/supabase';
+import Breadcrumbs from './Breadcrumbs';
 
-const categoryIcons: Record<string, JSX.Element> = {
-  'bottles': <Package className="text-cyan-400" size={32} />,
-  'jars': <Boxes className="text-cyan-400" size={32} />,
-  'bulk-products': <Droplet className="text-cyan-400" size={32} />,
-  'gel-polish-colors': <Palette className="text-cyan-400" size={32} />,
-  'builder-gel-systems': <Sparkles className="text-cyan-400" size={32} />,
-  'tops-bases-primers': <Sparkles className="text-cyan-400" size={32} />,
-  'tops': <Sparkles className="text-cyan-400" size={32} />,
-  'bases': <Sparkles className="text-cyan-400" size={32} />,
-  'primers': <Sparkles className="text-cyan-400" size={32} />,
-};
+interface ProductGalleryProps {
+  selectedCategoryId?: string;
+  onCategoryChange?: (categoryId: string | null) => void;
+}
 
-export default function ProductGallery() {
+export default function ProductGallery({ selectedCategoryId, onCategoryChange }: ProductGalleryProps) {
   const [categories, setCategories] = useState<ProductCategory[]>([]);
-  const [subcategories, setSubcategories] = useState<Record<string, ProductCategory[]>>({});
+  const [categoryTree, setCategoryTree] = useState<Map<string, ProductCategory[]>>(new Map());
+  const [allCategories, setAllCategories] = useState<Map<string, ProductCategory>>(new Map());
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-  const [expandedDropdown, setExpandedDropdown] = useState<string | null>(null);
   const [productsByCategory, setProductsByCategory] = useState<Record<string, Product[]>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadCategories();
   }, []);
+
+  useEffect(() => {
+    if (selectedCategoryId) {
+      setExpandedCategory(selectedCategoryId);
+      loadProducts(selectedCategoryId);
+    }
+  }, [selectedCategoryId]);
 
   const loadCategories = async () => {
     try {
@@ -36,19 +37,23 @@ export default function ProductGallery() {
       if (error) throw error;
 
       if (data) {
-        const parentCategories = data.filter(cat => !cat.parent_category_id);
-        setCategories(parentCategories);
+        const mainCategories = data.filter(cat => !cat.parent_category_id);
+        setCategories(mainCategories);
 
-        const subCatMap: Record<string, ProductCategory[]> = {};
+        const tree = new Map<string, ProductCategory[]>();
+        const allCats = new Map<string, ProductCategory>();
+
         data.forEach(cat => {
+          allCats.set(cat.id, cat);
           if (cat.parent_category_id) {
-            if (!subCatMap[cat.parent_category_id]) {
-              subCatMap[cat.parent_category_id] = [];
-            }
-            subCatMap[cat.parent_category_id].push(cat);
+            const children = tree.get(cat.parent_category_id) || [];
+            children.push(cat);
+            tree.set(cat.parent_category_id, children);
           }
         });
-        setSubcategories(subCatMap);
+
+        setCategoryTree(tree);
+        setAllCategories(allCats);
       }
     } catch (error) {
       console.error('Error loading categories:', error);
@@ -79,159 +84,117 @@ export default function ProductGallery() {
     }
   };
 
-  const toggleCategory = async (categoryId: string) => {
-    const hasSubcategories = subcategories[categoryId]?.length > 0;
+  const getBreadcrumbs = (categoryId: string) => {
+    const breadcrumbs: { label: string; onClick?: () => void }[] = [
+      { label: 'Products', onClick: () => handleCategoryChange(null) }
+    ];
 
-    if (hasSubcategories) {
-      if (expandedDropdown === categoryId) {
-        setExpandedDropdown(null);
-      } else {
-        setExpandedDropdown(categoryId);
-      }
-    } else {
-      if (expandedCategory === categoryId) {
-        setExpandedCategory(null);
-      } else {
-        setExpandedCategory(categoryId);
-        setExpandedDropdown(null);
-        await loadProducts(categoryId);
-      }
+    const category = allCategories.get(categoryId);
+    if (!category) return breadcrumbs;
+
+    const path: ProductCategory[] = [];
+    let current: ProductCategory | undefined = category;
+
+    while (current) {
+      path.unshift(current);
+      current = current.parent_category_id ? allCategories.get(current.parent_category_id) : undefined;
     }
+
+    path.forEach((cat, index) => {
+      if (index === path.length - 1) {
+        breadcrumbs.push({ label: cat.name });
+      } else {
+        breadcrumbs.push({ label: cat.name, onClick: () => handleCategoryChange(cat.id) });
+      }
+    });
+
+    return breadcrumbs;
   };
 
-  const selectSubcategory = async (categoryId: string) => {
+  const handleCategoryChange = (categoryId: string | null) => {
     setExpandedCategory(categoryId);
-    await loadProducts(categoryId);
+    if (onCategoryChange) {
+      onCategoryChange(categoryId);
+    }
+    if (categoryId) {
+      loadProducts(categoryId);
+    }
   };
 
   if (loading) {
     return (
-      <section id="products" className="py-20 bg-slate-900">
+      <section id="products" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="text-cyan-400">Loading products...</div>
+          <div className="text-primary-600">Loading products...</div>
         </div>
       </section>
     );
   }
 
-  const currentCategory = categories.find(c => c.id === expandedCategory);
+  const currentCategory = expandedCategory ? allCategories.get(expandedCategory) : null;
   const currentProducts = expandedCategory ? (productsByCategory[expandedCategory] || []) : [];
 
   return (
-    <section id="products" className="py-20 bg-slate-900 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptLTEyIDEyYzMuMzE0IDAgNiAyLjY4NiA2IDZzLTIuNjg2IDYtNiA2LTYtMi42ODYtNi02IDIuNjg2LTYgNi02eiIgc3Ryb2tlPSJyZ2JhKDYsIDE4MiwgMjEyLCAwLjA1KSIvPjwvZz48L3N2Zz4=')] opacity-20"></div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="products" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Our <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Products</span>
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+            Our Products
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Explore our comprehensive range of premium gel polish products and packaging solutions
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Premium gel polish products and packaging solutions for beauty professionals
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => {
-            const hasSubcategories = subcategories[category.id]?.length > 0;
-            const isDropdownOpen = expandedDropdown === category.id;
-            const isActive = expandedCategory === category.id || subcategories[category.id]?.some(sub => sub.id === expandedCategory);
+        {currentCategory && (
+          <div className="mb-12">
+            <Breadcrumbs items={getBreadcrumbs(currentCategory.id)} />
 
-            return (
-              <div key={category.id} className="relative">
-                <button
-                  onClick={() => toggleCategory(category.id)}
-                  className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 ${
-                    isActive
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
-                      : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20 hover:border-cyan-500/40'
-                  }`}
-                >
-                  <span className="hidden sm:inline">
-                    {categoryIcons[category.slug]}
-                  </span>
-                  <span>{category.name}</span>
-                  {hasSubcategories && (
-                    <ChevronDown
-                      size={20}
-                      className={`transition-transform duration-200 ${
-                        isDropdownOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  )}
-                </button>
-
-                {hasSubcategories && isDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-2 w-full min-w-[240px] bg-slate-800/95 backdrop-blur-sm border border-cyan-500/20 rounded-lg shadow-xl z-50 overflow-hidden">
-                    {subcategories[category.id].map((subcategory) => (
-                      <button
-                        key={subcategory.id}
-                        onClick={() => selectSubcategory(subcategory.id)}
-                        className={`block w-full text-left px-4 py-3 transition-colors ${
-                          expandedCategory === subcategory.id
-                            ? 'bg-cyan-500/20 text-cyan-300'
-                            : 'text-gray-300 hover:bg-slate-700/50 hover:text-cyan-400'
-                        }`}
-                      >
-                        {subcategory.name}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {expandedCategory && currentCategory && (
-          <>
-            <div className="mb-8 text-center">
-              <div className="inline-flex items-center justify-center space-x-3 p-4 bg-slate-800/30 backdrop-blur-sm rounded-xl border border-cyan-500/20">
-                {categoryIcons[currentCategory.slug]}
-                <div className="text-left">
-                  <h3 className="text-xl font-semibold text-white">{currentCategory.name}</h3>
-                  <p className="text-gray-400">{currentCategory.description}</p>
-                </div>
-              </div>
+            <div className="mb-8">
+              <h3 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+                {currentCategory.name}
+              </h3>
+              {currentCategory.description && (
+                <p className="text-lg text-gray-600">{currentCategory.description}</p>
+              )}
             </div>
 
             {currentProducts.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="inline-block p-6 bg-slate-800/30 backdrop-blur-sm rounded-xl border border-cyan-500/20">
-                  <p className="text-gray-400 text-lg mb-2">
-                    Products coming soon for this category
-                  </p>
-                  <p className="text-gray-500">
-                    Contact us to learn more about our {currentCategory.name.toLowerCase()}
-                  </p>
-                </div>
+              <div className="text-center py-16 bg-gray-50 rounded-lg border border-gray-200">
+                <Package size={48} className="mx-auto mb-4 text-gray-400" />
+                <p className="text-gray-600 text-lg mb-2">
+                  Products coming soon for this category
+                </p>
+                <p className="text-gray-500">
+                  Contact us to learn more about our {currentCategory.name.toLowerCase()}
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {currentProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="group bg-slate-800/30 backdrop-blur-sm rounded-xl border border-cyan-500/20 overflow-hidden hover:border-cyan-400/40 transition-all transform hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/20"
+                    className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-primary-400 hover:shadow-lg transition-all duration-300"
                   >
                     {product.image_url ? (
-                      <div className="aspect-square bg-slate-800/50 overflow-hidden">
+                      <div className="aspect-square bg-gray-50 overflow-hidden">
                         <img
                           src={product.image_url}
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
                     ) : (
-                      <div className="aspect-square bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
-                        {categoryIcons[currentCategory.slug || 'bottles']}
+                      <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center">
+                        <Package size={48} className="text-gray-300" />
                       </div>
                     )}
-                    <div className="p-4">
-                      <h4 className="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                    <div className="p-5">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
                         {product.name}
                       </h4>
                       {product.description && (
-                        <p className="text-gray-400 text-sm line-clamp-2">
+                        <p className="text-gray-600 text-sm line-clamp-2">
                           {product.description}
                         </p>
                       )}
@@ -240,22 +203,24 @@ export default function ProductGallery() {
                 ))}
               </div>
             )}
-          </>
+          </div>
         )}
 
-        <div className="text-center mt-12">
-          <p className="text-gray-400 mb-4">
-            Interested in our products or need custom solutions?
-          </p>
-          <button
-            onClick={() => {
-              const element = document.getElementById('contact');
-              if (element) element.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-400 transition-all transform hover:scale-105 shadow-lg shadow-cyan-500/30"
-          >
-            Get in Touch
-          </button>
+        <div className="text-center mt-16">
+          <div className="inline-block p-8 bg-gray-50 rounded-lg border border-gray-200">
+            <p className="text-gray-700 mb-6 text-lg">
+              Interested in our products or need custom solutions?
+            </p>
+            <button
+              onClick={() => {
+                const element = document.getElementById('contact');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="px-8 py-3 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
+            >
+              Get in Touch
+            </button>
+          </div>
         </div>
       </div>
     </section>

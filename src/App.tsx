@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -6,12 +7,23 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 function App() {
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(undefined);
+
+  const handleNavigate = (section: string, categoryId?: string) => {
+    if (section === 'products' && categoryId) {
+      setSelectedCategoryId(categoryId);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-900">
-      <Navigation />
+    <div className="min-h-screen bg-white">
+      <Navigation onNavigate={handleNavigate} />
       <Hero />
       <About />
-      <ProductGallery />
+      <ProductGallery
+        selectedCategoryId={selectedCategoryId}
+        onCategoryChange={(id) => setSelectedCategoryId(id || undefined)}
+      />
       <Contact />
       <Footer />
     </div>
