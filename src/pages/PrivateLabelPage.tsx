@@ -41,10 +41,10 @@ export default function PrivateLabelPage() {
             <Link
               key={category.path}
               to={category.path}
-              className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300"
+              className="group block p-6 bg-white rounded-lg border border-gray-200 hover:border-primary-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
             >
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">{category.title}</h3>
-              <p className="text-gray-600 font-light">{category.description}</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">{category.title}</h3>
+              <p className="text-gray-600 font-light group-hover:text-gray-700">{category.description}</p>
             </Link>
           ))}
         </div>
