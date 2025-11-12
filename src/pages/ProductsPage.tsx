@@ -12,7 +12,8 @@ export default function ProductsPage() {
     {
       title: 'Builder Systems',
       description: 'Advanced builder gels including 3-in-1 systems, fibreglass reinforcement, acrylics, and innovative polygel formulations.',
-      path: '/products/builder-systems'
+      path: '/products/builder-systems',
+      image: '/ChatGPT Image 17 Σεπ 2025, 03_25_09 μ.μ..png'
     },
     {
       title: 'Tops, Bases & Primers',
