@@ -1,22 +1,25 @@
 import { Link } from 'react-router-dom';
-import PageTemplate, { ImagePlaceholder } from '../components/PageTemplate';
+import PageTemplate from '../components/PageTemplate';
 
 export default function OurBrandsPage() {
   const brands = [
     {
       name: 'GEL.IT.UP',
       description: 'Premium gel polish system with exceptional durability and shine. Professional quality for salon and home use.',
-      path: '/our-brands/gel-it-up'
+      path: '/our-brands/gel-it-up',
+      image: '/gelitup.jpg'
     },
     {
       name: 'Gender Neutral',
       description: 'Inclusive beauty products designed for everyone. Breaking boundaries in nail care with universal appeal.',
-      path: '/our-brands/gender-neutral'
+      path: '/our-brands/gender-neutral',
+      image: '/gn_logo.png'
     },
     {
       name: 'The Gel Crew',
       description: 'Professional-grade gel systems trusted by nail technicians. Complete solutions for modern nail artistry.',
-      path: '/our-brands/the-gel-crew'
+      path: '/our-brands/the-gel-crew',
+      image: '/gel_crew_ad_post2.jpg'
     }
   ];
 
@@ -39,7 +42,11 @@ export default function OurBrandsPage() {
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
           >
             <div className={index % 2 === 0 ? 'order-1' : 'order-1 lg:order-2'}>
-              <ImagePlaceholder alt={`${brand.name} products`} />
+              <img
+                src={brand.image}
+                alt={`${brand.name} products`}
+                className="w-full h-auto rounded-lg object-contain"
+              />
             </div>
             <div className={`flex flex-col justify-center ${index % 2 === 0 ? 'order-2' : 'order-2 lg:order-1'}`}>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">{brand.name}</h2>
