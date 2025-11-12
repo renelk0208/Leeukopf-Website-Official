@@ -10,6 +10,7 @@ import PrivateLabelPage from './pages/PrivateLabelPage';
 import OurBrandsPage from './pages/OurBrandsPage';
 import DistributorsWantedPage from './pages/DistributorsWantedPage';
 import CertificatesPage from './pages/CertificatesPage';
+import LiveFeedPage from './pages/LiveFeedPage';
 
 import GelPolishPage from './pages/products/GelPolishPage';
 import TopsBasesPrimersPage from './pages/products/TopsBasesPrimersPage';
@@ -38,6 +39,7 @@ function App() {
         <Route path="/our-brands" element={<OurBrandsPage />} />
         <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
         <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
+        <Route path="/live" element={<LiveFeedPage />} />
       </Routes>
       <Footer />
     </div>
