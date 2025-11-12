@@ -59,7 +59,11 @@ export default function DistributorsWantedPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
-          <ImagePlaceholder alt="Global distribution network" />
+          <img
+            src="/Gemini_Generated_Image_l53oyml53oyml53o.png"
+            alt="Global distribution network"
+            className="w-full h-auto rounded-lg shadow-sm"
+          />
         </div>
         <div>
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">Requirements</h2>
