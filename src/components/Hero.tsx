@@ -1,12 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 
 export default function Hero() {
-  const scrollToProducts = () => {
-    const element = document.getElementById('products');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const navigate = useNavigate();
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-white via-gray-50 to-white">
@@ -36,16 +32,13 @@ export default function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
             <button
-              onClick={scrollToProducts}
+              onClick={() => navigate('/products')}
               className="px-8 py-4 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
             >
               Explore Our Products
             </button>
             <button
-              onClick={() => {
-                const element = document.getElementById('contact');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigate('/contact')}
               className="px-8 py-4 bg-white text-gray-900 rounded-md font-semibold border-2 border-gray-300 hover:border-gray-400 transition-all duration-300"
             >
               Contact Us
