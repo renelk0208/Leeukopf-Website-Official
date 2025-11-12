@@ -52,6 +52,132 @@ export default function AboutPage() {
       <div className="mb-16">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+            Manufacturing Process
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto font-light">
+            From raw materials to finished product, every step is carefully controlled to ensure the highest quality
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+            <img
+              src="/img/process/01-intake-qc.jpg"
+              alt="Raw Materials & QC Intake"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  1
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Raw Materials & QC Intake</h3>
+              </div>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                All incoming materials undergo rigorous quality control testing to ensure they meet our strict standards.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+            <img
+              src="/img/process/02-formulation-mix.jpg"
+              alt="Formulation & Mixing"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  2
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Formulation & Mixing</h3>
+              </div>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Precise formulations are mixed in controlled environments to achieve perfect consistency and color accuracy.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+            <img
+              src="/img/process/03-filling-capping.jpg"
+              alt="Filling & Capping"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  3
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Filling & Capping</h3>
+              </div>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Automated filling systems ensure precise volumes and contamination-free bottling of every product.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+            <img
+              src="/img/process/04-curing-settling.jpg"
+              alt="Curing/Settling"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  4
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Curing/Settling</h3>
+              </div>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Products are allowed to stabilize under optimal conditions to ensure long-term quality and performance.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+            <img
+              src="/img/process/05-label-batch.jpg"
+              alt="Label & Batch Coding"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  5
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Label & Batch Coding</h3>
+              </div>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Each product receives accurate labeling and batch codes for full traceability throughout the supply chain.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+            <img
+              src="/img/process/06-final-qa-pack.jpg"
+              alt="Final QA & Packing"
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  6
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Final QA & Packing</h3>
+              </div>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Final quality checks confirm product excellence before secure packaging and shipment to customers worldwide.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-16">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
             Our Facility
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto font-light">
