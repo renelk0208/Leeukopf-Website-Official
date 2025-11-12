@@ -173,6 +173,46 @@ const BOTTLES: BottleProduct[] = [
     images: [
       '/1280x1280_DH-1294A_13ml.jpg'
     ]
+  },
+  {
+    id: 'dh-1716',
+    name: 'DH-1716',
+    spec: '12ml • 31.00mm × 58.00mm',
+    images: [
+      '/1280x1280_DH-1716.jpg'
+    ]
+  },
+  {
+    id: 'dh-1882',
+    name: 'DH-1882',
+    spec: '9ml • 25.00mm × 62.00mm',
+    images: [
+      '/1280x1280_DH-1882_9ml.jpg'
+    ]
+  },
+  {
+    id: 'dh-439',
+    name: 'DH-439',
+    spec: '10ml • 28.00mm × 65.00mm',
+    images: [
+      '/1280x1280_DH-439.jpg'
+    ]
+  },
+  {
+    id: 'dh-459',
+    name: 'DH-459',
+    spec: '11ml • 30.00mm × 64.00mm',
+    images: [
+      '/1280x1280_DH-459 (1).jpg'
+    ]
+  },
+  {
+    id: 'dh-489',
+    name: 'DH-489',
+    spec: '12ml • 32.00mm × 66.00mm',
+    images: [
+      '/1280x1280_DH-489.jpg'
+    ]
   }
 ];
 
