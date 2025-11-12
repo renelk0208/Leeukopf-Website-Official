@@ -1,4 +1,5 @@
 import PageTemplate, { ImagePlaceholder } from '../components/PageTemplate';
+import FacilityCarousel from '../components/FacilityCarousel';
 
 export default function AboutPage() {
   return (
@@ -39,6 +40,18 @@ export default function AboutPage() {
             We are proud to be cruelty-free certified and committed to ethical manufacturing practices. Our formulations are TPO-free, HEMA-free where specified, and many products carry vegan certification, reflecting our dedication to both quality and responsibility.
           </p>
         </div>
+      </div>
+
+      <div className="mb-16">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+            Our Facility
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto font-light">
+            Take a look inside our state-of-the-art manufacturing facility and see how we bring innovation and quality to every product
+          </p>
+        </div>
+        <FacilityCarousel />
       </div>
 
       <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
