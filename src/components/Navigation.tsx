@@ -69,11 +69,12 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <Link
-              to="/"
-              className="text-2xl font-bold tracking-tight text-gray-900 hover:text-primary-600 transition-colors"
-            >
-              LEEUKOPF
+            <Link to="/" className="block">
+              <img
+                src="/viber_image_2025-10-08_09-58-15-243.jpg"
+                alt="Leeukopf Laboratories Logo"
+                className="h-10 md:h-[60px] w-auto object-contain hover:opacity-80 transition-opacity"
+              />
             </Link>
           </div>
 

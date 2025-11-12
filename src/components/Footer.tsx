@@ -1,4 +1,5 @@
 import { Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const SocialLinks = () => {
   const socialMedia = [
@@ -47,6 +48,16 @@ export default function Footer() {
     <footer className="bg-gray-900 border-t border-gray-800 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col space-y-8">
+          <div className="flex justify-center pb-6 border-b border-gray-800">
+            <Link to="/" className="block">
+              <img
+                src="/viber_image_2025-10-08_09-58-15-243.jpg"
+                alt="Leeukopf Laboratories Logo"
+                className="h-12 md:h-16 w-auto object-contain hover:opacity-80 transition-opacity"
+              />
+            </Link>
+          </div>
+
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div className="text-gray-400 text-sm font-light">
               &copy; {new Date().getFullYear()} Leeukopf Laboratories. All rights reserved.
