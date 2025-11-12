@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
@@ -20,29 +20,27 @@ import BasesPage from './pages/products/subcategories/BasesPage';
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-white">
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
+    <div className="min-h-screen bg-white">
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
 
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/gel-polish" element={<GelPolishPage />} />
-          <Route path="/products/tops-bases-primers" element={<TopsBasesPrimersPage />} />
-          <Route path="/products/tops-bases-primers/tops" element={<TopsPage />} />
-          <Route path="/products/tops-bases-primers/bases" element={<BasesPage />} />
-          <Route path="/products/builder-systems" element={<BuilderSystemsPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/products/gel-polish" element={<GelPolishPage />} />
+        <Route path="/products/tops-bases-primers" element={<TopsBasesPrimersPage />} />
+        <Route path="/products/tops-bases-primers/tops" element={<TopsPage />} />
+        <Route path="/products/tops-bases-primers/bases" element={<BasesPage />} />
+        <Route path="/products/builder-systems" element={<BuilderSystemsPage />} />
 
-          <Route path="/private-label" element={<PrivateLabelPage />} />
-          <Route path="/our-brands" element={<OurBrandsPage />} />
-          <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
-          <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+        <Route path="/private-label" element={<PrivateLabelPage />} />
+        <Route path="/our-brands" element={<OurBrandsPage />} />
+        <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
+        <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
+      </Routes>
+      <Footer />
+    </div>
   );
 }
 
