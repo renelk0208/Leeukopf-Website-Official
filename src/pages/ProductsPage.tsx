@@ -18,7 +18,8 @@ export default function ProductsPage() {
     {
       title: 'Tops, Bases & Primers',
       description: 'Complete foundation and finishing systems including wipe-off and non-wipe tops, superior bases, and professional primers.',
-      path: '/products/tops-bases-primers'
+      path: '/products/tops-bases-primers',
+      image: '/ChatGPT Image Oct 19, 2025, 12_39_51 AM.png'
     }
   ];
 
