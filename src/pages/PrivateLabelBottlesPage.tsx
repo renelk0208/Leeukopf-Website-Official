@@ -435,10 +435,10 @@ export default function PrivateLabelBottlesPage() {
                       setCurrentImageIndex(idx);
                       setIsZoomed(false);
                     }}
-                    className={`w-16 h-16 rounded border-2 overflow-hidden transition-all ${
+                    className={`w-16 h-16 rounded border-2 overflow-hidden transition-all duration-300 ${
                       idx === currentImageIndex
                         ? 'border-primary-600 ring-2 ring-primary-200'
-                        : 'border-gray-300 hover:border-gray-400'
+                        : 'border-gray-300 hover:border-primary-400 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer'
                     }`}
                     aria-label={`View image ${idx + 1}`}
                   >
