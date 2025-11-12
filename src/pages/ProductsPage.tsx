@@ -6,7 +6,8 @@ export default function ProductsPage() {
     {
       title: 'Gel Polish',
       description: 'Professional gel polish systems including French Collection, Solid Colours, Glitters, and complete Tops, Bases & Primers range.',
-      path: '/products/gel-polish'
+      path: '/products/gel-polish',
+      image: '/ChatGPT Image 17 Σεπ 2025, 03_16_17 μ.μ..png'
     },
     {
       title: 'Builder Systems',
@@ -38,7 +39,15 @@ export default function ProductsPage() {
             to={category.path}
             className="group block p-8 bg-white rounded-lg border border-gray-200 hover:border-primary-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
           >
-            <div className="aspect-square bg-gray-100 rounded-lg mb-6 border border-gray-200 group-hover:border-primary-200 transition-colors"></div>
+            <div className="aspect-square bg-gray-100 rounded-lg mb-6 border border-gray-200 group-hover:border-primary-200 transition-colors overflow-hidden flex items-center justify-center">
+              {category.image ? (
+                <img
+                  src={category.image}
+                  alt={category.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : null}
+            </div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
               {category.title}
             </h3>
