@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
+import CertificatesBanner from './components/CertificatesBanner';
 import About from './components/About';
 import ProductGallery from './components/ProductGallery';
 import Contact from './components/Contact';
@@ -19,6 +20,7 @@ function App() {
     <div className="min-h-screen bg-white">
       <Navigation onNavigate={handleNavigate} />
       <Hero />
+      <CertificatesBanner />
       <About />
       <ProductGallery
         selectedCategoryId={selectedCategoryId}
