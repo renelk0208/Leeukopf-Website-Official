@@ -4,7 +4,7 @@ export default function CertificatesBanner() {
   const certifications = [
     {
       label: 'GMP Certified',
-      image: '/img/certifications/gmp-certified.svg',
+      image: '/img/certifications/gmp-certified.png',
       alt: 'GMP Certified.'
     },
     {
@@ -13,9 +13,9 @@ export default function CertificatesBanner() {
       alt: 'HEMA & TPO Free Logo'
     },
     {
-      label: 'CPNP',
-      image: '/viber_image_2025-11-12_13-55-24-523.png',
-      alt: 'CPNP Cosmetic Product Notification Portal Logo'
+      label: 'Leaping Bunny Approved',
+      image: '/572916675_122131040858961647_8170659271303111919_n.jpg',
+      alt: 'Leaping Bunny Approved Cruelty Free Certification'
     },
   ];
 

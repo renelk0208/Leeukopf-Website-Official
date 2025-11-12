@@ -7,7 +7,7 @@ export default function About() {
       isFullImage: true
     },
     {
-      logo: '/img/certifications/gmp-certified.svg',
+      logo: '/img/certifications/gmp-certified.png',
       title: 'GMP Certified',
       description: 'Good Manufacturing Practice certified facilities',
       isFullImage: false
@@ -64,36 +64,43 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h3 className="text-3xl font-bold text-gray-900 tracking-tight">
-                Your Partner in Brand Excellence
+                Our Mission
               </h3>
               <p className="text-gray-600 leading-relaxed text-lg font-light">
-                With over 4000 color options and comprehensive support, we help you create unique private label brands
-                that stand out in the market. Our personalized consulting guides you through every step of the brand
-                development process.
+                At Thermitek Ltd and Leeukopf Laboratories, we're here to make creating your Private Label Brand feel exciting — not overwhelming.
+                From your first idea to your finished product, you'll have real people guiding you every step of the way.
+                Our trained consultants take the time to understand your vision, answer your questions, and help you make the right choices along the way.
+                We believe in keeping things simple, transparent, and personal — you'll never be left guessing what comes next.
+              </p>
+              <p className="text-gray-600 leading-relaxed text-lg font-light">
+                During your consultation, we'll cover everything that matters:
               </p>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <div className="mt-1.5 w-2 h-2 bg-blue-800 rounded-full flex-shrink-0"></div>
-                  <p className="text-gray-700">Complete product line development</p>
+                  <p className="text-gray-700">Choosing the right stock</p>
                 </div>
                 <div className="flex items-start space-x-3">
                   <div className="mt-1.5 w-2 h-2 bg-blue-800 rounded-full flex-shrink-0"></div>
-                  <p className="text-gray-700">Custom formulation services</p>
+                  <p className="text-gray-700">Selecting colours that match your brand identity</p>
                 </div>
                 <div className="flex items-start space-x-3">
                   <div className="mt-1.5 w-2 h-2 bg-blue-800 rounded-full flex-shrink-0"></div>
-                  <p className="text-gray-700">Packaging and branding solutions</p>
+                  <p className="text-gray-700">Picking bottles and packaging</p>
                 </div>
                 <div className="flex items-start space-x-3">
                   <div className="mt-1.5 w-2 h-2 bg-blue-800 rounded-full flex-shrink-0"></div>
-                  <p className="text-gray-700">International compliance and certification</p>
+                  <p className="text-gray-700">Setting you up for confident global growth</p>
                 </div>
               </div>
+              <p className="text-gray-600 leading-relaxed text-lg font-light">
+                We love seeing ideas turn into brands — and we'd love to help you build yours with skill, integrity, and genuine support from start to finish.
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                <div className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">4000+</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">3000+</div>
                 <div className="text-gray-600 font-light">Color Options Available</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
