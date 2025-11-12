@@ -42,20 +42,20 @@ export default function Hero() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto pt-16">
-            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl font-bold text-blue-800 mb-3 tracking-tight">3000+</div>
-              <div className="text-gray-800 font-semibold text-lg">Colours</div>
-              <div className="text-gray-600 text-sm mt-2 font-light">Premium gel polish collection</div>
+            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-3xl font-bold text-blue-800 mb-2 tracking-tight">3000+</div>
+              <div className="text-gray-800 font-semibold text-base">Colours</div>
+              <div className="text-gray-600 text-sm mt-1 font-light">Premium gel polish collection</div>
             </div>
-            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl font-bold text-blue-800 mb-3 tracking-tight">Builder</div>
-              <div className="text-gray-800 font-semibold text-lg">Gel Systems</div>
-              <div className="text-gray-600 text-sm mt-2 font-light">Professional strength & durability</div>
+            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-3xl font-bold text-blue-800 mb-2 tracking-tight">Builder</div>
+              <div className="text-gray-800 font-semibold text-base">Gel Systems</div>
+              <div className="text-gray-600 text-sm mt-1 font-light">Professional strength & durability</div>
             </div>
-            <div className="p-8 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-5xl font-bold text-blue-800 mb-3 tracking-tight">Nail Art</div>
-              <div className="text-gray-800 font-semibold text-lg">& Consumables</div>
-              <div className="text-gray-600 text-sm mt-2 font-light">Complete product range</div>
+            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-3xl font-bold text-blue-800 mb-2 tracking-tight">Nail Art</div>
+              <div className="text-gray-800 font-semibold text-base">& Consumables</div>
+              <div className="text-gray-600 text-sm mt-1 font-light">Complete product range</div>
             </div>
           </div>
         </div>

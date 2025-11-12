@@ -23,7 +23,21 @@ export default function Contact() {
                     <MapPin className="text-blue-800" size={24} />
                   </div>
                   <div>
-                    <h4 className="text-gray-900 font-semibold mb-1">Address</h4>
+                    <h4 className="text-gray-900 font-semibold mb-1">Head Office</h4>
+                    <p className="text-gray-600 leading-relaxed font-light">
+                      8 Racho Dimchev<br />
+                      Sofia, Bulgaria<br />
+                      1000
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4 group">
+                  <div className="p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-600 transition-colors">
+                    <MapPin className="text-blue-800" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-gray-900 font-semibold mb-1">Factory Address</h4>
                     <p className="text-gray-600 leading-relaxed font-light">
                       Zelendolsko shose 30<br />
                       Blagoevgrad 2700<br />
