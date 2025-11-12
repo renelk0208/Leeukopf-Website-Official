@@ -18,12 +18,13 @@ export default function Hero() {
             <Sparkles className="text-primary-500" size={40} />
           </div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 tracking-tight">
-            LEEUKOPF
-            <span className="block text-3xl sm:text-4xl lg:text-5xl text-gray-600 font-normal mt-2">
-              Laboratories
-            </span>
-          </h1>
+          <div className="flex justify-center mb-6">
+            <img
+              src="/viber_image_2025-10-08_09-58-15-243.jpg"
+              alt="Leeukopf Laboratories Logo"
+              className="h-32 sm:h-40 lg:h-48 w-auto object-contain"
+            />
+          </div>
 
           <p className="text-xl sm:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-light">
             Premium Gel Polish Manufacturing & Private Label Excellence
