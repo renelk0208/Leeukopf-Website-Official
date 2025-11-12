@@ -48,11 +48,11 @@ export default function GelPolishPage() {
               className="group block p-6 bg-white rounded-lg border border-gray-200 hover:border-primary-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
             >
               {sub.image ? (
-                <div className="aspect-video bg-gray-100 rounded-lg mb-4 border border-gray-200 overflow-hidden">
+                <div className="aspect-square bg-gray-100 rounded-lg mb-4 border border-gray-200 overflow-hidden">
                   <img src={sub.image} alt={sub.title} className="w-full h-full object-cover" />
                 </div>
               ) : (
-                <div className="aspect-video bg-gray-100 rounded-lg mb-4 border border-gray-200"></div>
+                <div className="aspect-square bg-gray-100 rounded-lg mb-4 border border-gray-200"></div>
               )}
               <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">{sub.title}</h3>
               <p className="text-gray-600 font-light">{sub.description}</p>
