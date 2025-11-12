@@ -174,7 +174,7 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
                 {currentProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-primary-400 hover:shadow-lg transition-all duration-300"
+                    className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-primary-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                   >
                     {product.image_url ? (
                       <div className="aspect-square bg-gray-50 overflow-hidden">

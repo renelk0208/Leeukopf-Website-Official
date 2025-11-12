@@ -38,10 +38,10 @@ export default function TopsBasesPrimersPage() {
             <Link
               key={category.path}
               to={category.path}
-              className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300"
+              className="group block p-6 bg-white rounded-lg border border-gray-200 hover:border-primary-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
             >
               <div className="aspect-square bg-gray-100 rounded-lg mb-4 border border-gray-200"></div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">{category.title}</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">{category.title}</h3>
               <p className="text-gray-600 font-light">{category.description}</p>
             </Link>
           ))}

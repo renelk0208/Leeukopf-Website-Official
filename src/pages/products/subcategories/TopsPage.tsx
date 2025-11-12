@@ -34,9 +34,9 @@ export default function TopsPage() {
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
         {products.map((product) => (
-          <div key={product.title} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+          <div key={product.title} className="group bg-white rounded-lg border border-gray-200 p-6 hover:border-primary-300 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
             <ImagePlaceholder alt={product.title} />
-            <h3 className="text-xl font-semibold text-gray-900 mt-4 mb-2">{product.title}</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-4 mb-2 group-hover:text-primary-600 transition-colors">{product.title}</h3>
             <p className="text-gray-600 font-light leading-relaxed">{product.description}</p>
           </div>
         ))}

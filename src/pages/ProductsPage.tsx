@@ -36,7 +36,7 @@ export default function ProductsPage() {
           <Link
             key={category.path}
             to={category.path}
-            className="group block p-8 bg-white rounded-lg border border-gray-200 hover:border-primary-300 hover:shadow-xl transition-all duration-300"
+            className="group block p-8 bg-white rounded-lg border border-gray-200 hover:border-primary-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
           >
             <div className="aspect-square bg-gray-100 rounded-lg mb-6 border border-gray-200 group-hover:border-primary-200 transition-colors"></div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
