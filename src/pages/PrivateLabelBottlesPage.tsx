@@ -9,39 +9,7 @@ interface BottleProduct {
   images: string[];
 }
 
-const loadBottleImages = () => {
-  const imageModules = import.meta.glob('/public/*bottles*.jpg', { eager: true, query: '?url', import: 'default' });
-  const bottleGroups = new Map<string, string[]>();
-
-  Object.keys(imageModules).forEach(path => {
-    const filename = path.split('/').pop()?.replace('.jpg', '') || '';
-    const match = filename.match(/bottles_DH-(\d+[A-Z]?)/i) || filename.match(/DH-(\d+[A-Z]?)_/i);
-
-    if (match) {
-      const bottleId = match[1];
-      const imagePath = path.replace('/public', '');
-
-      if (!bottleGroups.has(bottleId)) {
-        bottleGroups.set(bottleId, []);
-      }
-      bottleGroups.get(bottleId)!.push(imagePath);
-    }
-  });
-
-  const bottles: BottleProduct[] = [];
-  bottleGroups.forEach((images, bottleId) => {
-    bottles.push({
-      id: `dh-${bottleId.toLowerCase()}`,
-      name: `DH-${bottleId}`,
-      spec: 'Specifications available upon request',
-      images: images.sort()
-    });
-  });
-
-  return bottles.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
-};
-
-const OLD_BOTTLES: BottleProduct[] = [
+const BOTTLES: BottleProduct[] = [
   {
     id: 'dh-113a',
     name: 'DH-113A',
@@ -249,7 +217,6 @@ const OLD_BOTTLES: BottleProduct[] = [
 ];
 
 export default function PrivateLabelBottlesPage() {
-  const [bottles] = useState<BottleProduct[]>(() => loadBottleImages());
   const [selectedBottle, setSelectedBottle] = useState<BottleProduct | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -345,7 +312,7 @@ export default function PrivateLabelBottlesPage() {
     >
       <div className="space-y-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {bottles.map((bottle) => (
+          {BOTTLES.map((bottle) => (
             <div
               key={bottle.id}
               onClick={() => openModal(bottle)}
