@@ -25,6 +25,34 @@ export default function CertificatesPage() {
     }
   ];
 
+  const certificates = [
+    {
+      title: 'GMP Certificate 2025-2026',
+      image: '/certificates/gmp-certificate-2025-2026.jpg',
+      alt: 'GMP Certificate for Thermitek Ltd'
+    },
+    {
+      title: 'Leaping Bunny Certificate 2024-25',
+      image: '/certificates/leaping-bunny-2024-25.jpg',
+      alt: 'Cruelty Free Leaping Bunny Certificate for Thermitek Ltd'
+    },
+    {
+      title: 'Leaping Bunny Certificate 2023-24',
+      image: '/certificates/leaping-bunny-2023-24.jpg',
+      alt: 'Cruelty Free Leaping Bunny Certificate for Thermitek Ltd'
+    },
+    {
+      title: 'Leaping Bunny Certificate 2022-23',
+      image: '/certificates/leaping-bunny-2022-23.jpg',
+      alt: 'Cruelty Free Leaping Bunny Certificate for Thermitek Ltd'
+    },
+    {
+      title: 'Leaping Bunny Certificate 2021-22',
+      image: '/certificates/leaping-bunny-2021-22.jpg',
+      alt: 'Cruelty Free Leaping Bunny Certificate for Thermitek Ltd'
+    }
+  ];
+
   return (
     <PageTemplate
       title="Certificates & Compliance"
@@ -66,36 +94,36 @@ export default function CertificatesPage() {
       </div>
 
       <div className="bg-gray-50 rounded-lg p-8 border border-gray-200 mb-16">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Available Documentation</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-gray-900 mb-3">Safety Data Sheets (SDS)</h3>
-            <p className="text-gray-600 font-light text-sm mb-4">Comprehensive safety information for all products, including handling, storage, and emergency procedures.</p>
-            <button className="text-primary-600 hover:text-primary-700 font-semibold text-sm">
-              Download SDS →
-            </button>
-          </div>
-          <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-gray-900 mb-3">Product Information Files (PIF)</h3>
-            <p className="text-gray-600 font-light text-sm mb-4">Detailed formulation data, stability testing, and compliance documentation for regulatory requirements.</p>
-            <button className="text-primary-600 hover:text-primary-700 font-semibold text-sm">
-              Request PIF →
-            </button>
-          </div>
-          <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-gray-900 mb-3">Certificates of Analysis</h3>
-            <p className="text-gray-600 font-light text-sm mb-4">Batch-specific testing results confirming product specifications and quality standards.</p>
-            <button className="text-primary-600 hover:text-primary-700 font-semibold text-sm">
-              Request COA →
-            </button>
-          </div>
-          <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-gray-900 mb-3">Certification Documents</h3>
-            <p className="text-gray-600 font-light text-sm mb-4">Official certificates for GMP, cruelty-free status, and other compliance documentation.</p>
-            <button className="text-primary-600 hover:text-primary-700 font-semibold text-sm">
-              View Certificates →
-            </button>
-          </div>
+        <h2 className="text-2xl font-semibold text-gray-900 mb-6">View Our Certificates</h2>
+        <p className="text-gray-600 font-light mb-8">
+          Our official certification documents demonstrating our commitment to quality, safety, and ethical manufacturing practices.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {certificates.map((cert) => (
+            <div key={cert.title} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+              <div className="relative group">
+                <img
+                  src={cert.image}
+                  alt={cert.alt}
+                  className="w-full h-auto blur-sm group-hover:blur-md transition-all duration-300"
+                  style={{ filter: 'blur(4px)' }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300">
+                  <p className="text-white text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-60 px-4 py-2 rounded-md">
+                    Preview Only
+                  </p>
+                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="font-semibold text-gray-900 text-sm">{cert.title}</h3>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-8 p-6 bg-white rounded-lg border border-gray-200">
+          <p className="text-gray-600 font-light text-sm">
+            For full access to our certification documents, safety data sheets (SDS), product information files (PIF), or certificates of analysis (COA), please contact us directly. We provide complete documentation to verified business partners and distributors.
+          </p>
         </div>
       </div>
 
