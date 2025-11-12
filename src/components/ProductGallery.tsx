@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Palette, Package, Droplet, Boxes, Sparkles } from 'lucide-react';
+import { Palette, Package, Droplet, Boxes, Sparkles, ChevronDown } from 'lucide-react';
 import { supabase, ProductCategory, Product } from '../lib/supabase';
 
 const categoryIcons: Record<string, JSX.Element> = {
@@ -8,11 +8,17 @@ const categoryIcons: Record<string, JSX.Element> = {
   'bulk-products': <Droplet className="text-cyan-400" size={32} />,
   'gel-polish-colors': <Palette className="text-cyan-400" size={32} />,
   'builder-gel-systems': <Sparkles className="text-cyan-400" size={32} />,
+  'tops-bases-primers': <Sparkles className="text-cyan-400" size={32} />,
+  'tops': <Sparkles className="text-cyan-400" size={32} />,
+  'bases': <Sparkles className="text-cyan-400" size={32} />,
+  'primers': <Sparkles className="text-cyan-400" size={32} />,
 };
 
 export default function ProductGallery() {
   const [categories, setCategories] = useState<ProductCategory[]>([]);
+  const [subcategories, setSubcategories] = useState<Record<string, ProductCategory[]>>({});
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedDropdown, setExpandedDropdown] = useState<string | null>(null);
   const [productsByCategory, setProductsByCategory] = useState<Record<string, Product[]>>({});
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +36,19 @@ export default function ProductGallery() {
       if (error) throw error;
 
       if (data) {
-        setCategories(data);
+        const parentCategories = data.filter(cat => !cat.parent_category_id);
+        setCategories(parentCategories);
+
+        const subCatMap: Record<string, ProductCategory[]> = {};
+        data.forEach(cat => {
+          if (cat.parent_category_id) {
+            if (!subCatMap[cat.parent_category_id]) {
+              subCatMap[cat.parent_category_id] = [];
+            }
+            subCatMap[cat.parent_category_id].push(cat);
+          }
+        });
+        setSubcategories(subCatMap);
       }
     } catch (error) {
       console.error('Error loading categories:', error);
@@ -62,12 +80,28 @@ export default function ProductGallery() {
   };
 
   const toggleCategory = async (categoryId: string) => {
-    if (expandedCategory === categoryId) {
-      setExpandedCategory(null);
+    const hasSubcategories = subcategories[categoryId]?.length > 0;
+
+    if (hasSubcategories) {
+      if (expandedDropdown === categoryId) {
+        setExpandedDropdown(null);
+      } else {
+        setExpandedDropdown(categoryId);
+      }
     } else {
-      setExpandedCategory(categoryId);
-      await loadProducts(categoryId);
+      if (expandedCategory === categoryId) {
+        setExpandedCategory(null);
+      } else {
+        setExpandedCategory(categoryId);
+        setExpandedDropdown(null);
+        await loadProducts(categoryId);
+      }
     }
+  };
+
+  const selectSubcategory = async (categoryId: string) => {
+    setExpandedCategory(categoryId);
+    await loadProducts(categoryId);
   };
 
   if (loading) {
@@ -98,22 +132,55 @@ export default function ProductGallery() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => toggleCategory(category.id)}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 ${
-                expandedCategory === category.id
-                  ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
-                  : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20 hover:border-cyan-500/40'
-              }`}
-            >
-              <span className="hidden sm:inline">
-                {categoryIcons[category.slug]}
-              </span>
-              <span>{category.name}</span>
-            </button>
-          ))}
+          {categories.map((category) => {
+            const hasSubcategories = subcategories[category.id]?.length > 0;
+            const isDropdownOpen = expandedDropdown === category.id;
+            const isActive = expandedCategory === category.id || subcategories[category.id]?.some(sub => sub.id === expandedCategory);
+
+            return (
+              <div key={category.id} className="relative">
+                <button
+                  onClick={() => toggleCategory(category.id)}
+                  className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
+                      : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20 hover:border-cyan-500/40'
+                  }`}
+                >
+                  <span className="hidden sm:inline">
+                    {categoryIcons[category.slug]}
+                  </span>
+                  <span>{category.name}</span>
+                  {hasSubcategories && (
+                    <ChevronDown
+                      size={20}
+                      className={`transition-transform duration-200 ${
+                        isDropdownOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  )}
+                </button>
+
+                {hasSubcategories && isDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-2 w-full min-w-[240px] bg-slate-800/95 backdrop-blur-sm border border-cyan-500/20 rounded-lg shadow-xl z-50 overflow-hidden">
+                    {subcategories[category.id].map((subcategory) => (
+                      <button
+                        key={subcategory.id}
+                        onClick={() => selectSubcategory(subcategory.id)}
+                        className={`block w-full text-left px-4 py-3 transition-colors ${
+                          expandedCategory === subcategory.id
+                            ? 'bg-cyan-500/20 text-cyan-300'
+                            : 'text-gray-300 hover:bg-slate-700/50 hover:text-cyan-400'
+                        }`}
+                      >
+                        {subcategory.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {expandedCategory && currentCategory && (
