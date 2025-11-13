@@ -12,13 +12,13 @@ export default function ProductsPage() {
       title: 'Gel Polish',
       description: 'Professional gel polish systems including French Collection, Solid Colours, Glitters, and complete Tops, Bases & Primers range.',
       path: '/products/gel-polish',
-      image: '/ChatGPT Image 17 Σεπ 2025, 03_16_17 μ.μ..png'
+      image: '/chatgpt-image-sep-17-2025-a.png'
     },
     {
       title: 'Builder Systems',
       description: 'Advanced builder gels including 3-in-1 systems, fibreglass reinforcement, acrylics, and innovative polygel formulations.',
       path: '/products/builder-systems',
-      image: '/ChatGPT Image 17 Σεπ 2025, 03_25_09 μ.μ..png'
+      image: '/chatgpt-image-sep-17-2025-b.png'
     },
     {
       title: 'Tops, Bases & Primers',
