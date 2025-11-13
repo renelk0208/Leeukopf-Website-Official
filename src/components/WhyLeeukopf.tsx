@@ -2,7 +2,7 @@ import { CheckCircle2 } from 'lucide-react';
 
 export default function WhyLeeukopf() {
   const benefits = [
-    'Over 2,000 colours available for full customisation of your private label line.',
+    'Over 3,000 colours available for full customisation of your private label line.',
     'A step-by-step Private Label Process that makes brand creation simple and guided.',
     'All products developed under Good Manufacturing Practice (GMP) standards.',
     'Registered through the European CPNP Portal for full regulatory compliance.',

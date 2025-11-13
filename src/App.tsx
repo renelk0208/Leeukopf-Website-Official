@@ -21,7 +21,7 @@ import PrivateLabelJarsPage from './pages/PrivateLabelJarsPage';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <Navigation />
       <Routes>
         <Route path="/" element={<HomePage />} />

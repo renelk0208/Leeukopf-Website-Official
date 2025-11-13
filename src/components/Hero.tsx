@@ -27,31 +27,31 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
             <button
               onClick={() => navigate('/products')}
-              className="px-8 py-4 bg-blue-500 text-white rounded-md font-semibold hover:bg-white hover:text-blue-500 hover:border-2 hover:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md"
+              className="btn-primary px-8 py-4"
             >
               Explore Our Products
             </button>
             <button
               onClick={() => navigate('/contact')}
-              className="px-8 py-4 bg-white text-blue-500 rounded-md font-semibold border-2 border-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300"
+              className="btn-secondary px-8 py-4"
             >
               Contact Us
             </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto pt-16">
-            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-3xl font-bold text-blue-800 mb-2 tracking-tight">3000+</div>
+            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-[#1E90FF] transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-3xl font-bold text-[#1E90FF] mb-2 tracking-tight">3000+</div>
               <div className="text-gray-800 font-semibold text-base">Colours</div>
               <div className="text-gray-600 text-sm mt-1 font-light">Premium gel polish collection</div>
             </div>
-            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-3xl font-bold text-blue-800 mb-2 tracking-tight">Builder</div>
+            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-[#1E90FF] transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-3xl font-bold text-[#1E90FF] mb-2 tracking-tight">Builder</div>
               <div className="text-gray-800 font-semibold text-base">Gel Systems</div>
               <div className="text-gray-600 text-sm mt-1 font-light">Professional strength & durability</div>
             </div>
-            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-blue-700 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-3xl font-bold text-blue-800 mb-2 tracking-tight">Nail Art</div>
+            <div className="p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-[#1E90FF] transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-3xl font-bold text-[#1E90FF] mb-2 tracking-tight">Nail Art</div>
               <div className="text-gray-800 font-semibold text-base">& Consumables</div>
               <div className="text-gray-600 text-sm mt-1 font-light">Complete product range</div>
             </div>

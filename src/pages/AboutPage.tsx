@@ -1,5 +1,6 @@
 import PageTemplate, { ImagePlaceholder } from '../components/PageTemplate';
 import FacilityCarousel from '../components/FacilityCarousel';
+import WhyLeeukopf from '../components/WhyLeeukopf';
 
 export default function AboutPage() {
   return (
@@ -187,32 +188,7 @@ export default function AboutPage() {
         <FacilityCarousel />
       </div>
 
-      <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Why Choose Us</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl font-bold text-blue-800">EU</span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">European Standards</h3>
-            <p className="text-sm text-gray-600 font-light">Full compliance with EU cosmetics regulations</p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl font-bold text-blue-800">GMP</span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">GMP Certified</h3>
-            <p className="text-sm text-gray-600 font-light">Manufactured under Good Manufacturing Practices</p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🐰</span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">Cruelty-Free</h3>
-            <p className="text-sm text-gray-600 font-light">Never tested on animals, certified ethical</p>
-          </div>
-        </div>
-      </div>
+      <WhyLeeukopf />
     </PageTemplate>
   );
 }

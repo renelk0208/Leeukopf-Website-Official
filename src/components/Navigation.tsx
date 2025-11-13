@@ -34,7 +34,7 @@ const SocialLinks = () => {
           href={social.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-gray-600 hover:text-blue-800 transition-colors"
+          className="text-gray-600 hover:text-[#1E90FF] transition-colors"
           aria-label={social.name}
         >
           {social.icon}
@@ -85,8 +85,8 @@ export default function Navigation() {
                 to={item.path}
                 className={`px-3 py-2 text-sm font-medium transition-colors ${
                   isActive(item.path)
-                    ? 'text-blue-800 border-b-2 border-blue-800'
-                    : 'text-gray-700 hover:text-blue-800'
+                    ? 'text-[#1E90FF] border-b-2 border-[#1E90FF]'
+                    : 'text-gray-700 hover:text-[#1E90FF]'
                 }`}
               >
                 {item.label}
@@ -101,7 +101,7 @@ export default function Navigation() {
             <div className="lg:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-700 hover:text-blue-800 transition-colors"
+                className="text-gray-700 hover:text-[#1E90FF] transition-colors"
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -120,8 +120,8 @@ export default function Navigation() {
                 onClick={() => setIsOpen(false)}
                 className={`block w-full text-left px-3 py-3 rounded-md transition-colors font-medium text-sm ${
                   isActive(item.path)
-                    ? 'text-blue-800 bg-blue-50'
-                    : 'text-gray-700 hover:text-blue-800 hover:bg-gray-50'
+                    ? 'text-[#1E90FF] bg-blue-50'
+                    : 'text-gray-700 hover:text-[#1E90FF] hover:bg-gray-50'
                 }`}
               >
                 {item.label}

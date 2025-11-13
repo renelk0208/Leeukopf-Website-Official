@@ -14,19 +14,19 @@
 
 @layer components {
   .btn-primary {
-    @apply px-6 py-3 bg-blue-500 text-white rounded-md font-semibold transition-all duration-300;
+    @apply px-6 py-3 bg-[#1E90FF] text-white rounded-md font-semibold transition-all duration-300 border-2 border-transparent;
   }
 
   .btn-primary:hover {
-    @apply bg-white text-blue-500 border-2 border-blue-500;
+    @apply bg-white text-[#1E90FF] border-2 border-[#1E90FF];
   }
 
   .btn-secondary {
-    @apply px-6 py-3 bg-white text-blue-500 border-2 border-blue-500 rounded-md font-semibold transition-all duration-300;
+    @apply px-6 py-3 bg-white text-[#1E90FF] border-2 border-[#1E90FF] rounded-md font-semibold transition-all duration-300;
   }
 
   .btn-secondary:hover {
-    @apply bg-blue-500 text-white;
+    @apply bg-[#1E90FF] text-white;
   }
 
   .section-dark {
