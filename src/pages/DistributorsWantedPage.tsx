@@ -64,8 +64,8 @@ export default function DistributorsWantedPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
           <img
-            src="/Gemini_Generated_Image_l53oyml53oyml53o.png"
-            alt="Global distribution network"
+            src="/distribution partnership.png"
+            alt="Distribution partnership"
             className="w-full h-auto rounded-lg shadow-sm"
           />
         </div>
