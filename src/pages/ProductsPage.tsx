@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
+import VideoModal from '../components/VideoModal';
+import { Play } from 'lucide-react';
 
 export default function ProductsPage() {
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState<{ src: string; isYouTube: boolean }>({ src: '', isYouTube: false });
   const categories = [
     {
       title: 'Gel Polish',
@@ -22,6 +27,38 @@ export default function ProductsPage() {
       image: '/ChatGPT Image Oct 19, 2025, 12_39_51 AM.png'
     }
   ];
+
+  const mixingVideos = [
+    {
+      title: 'Colour Mixing Process',
+      poster: '/img/videos/mixing-poster-1.jpg',
+      videoSrc: '/videos/mixing/process.mp4',
+      isYouTube: false,
+    },
+    {
+      title: 'Custom Shade Creation',
+      poster: '/img/videos/mixing-poster-2.jpg',
+      videoSrc: '/videos/mixing/custom-shades.mp4',
+      isYouTube: false,
+    },
+    {
+      title: 'Quality Control Testing',
+      poster: '/img/videos/mixing-poster-3.jpg',
+      videoSrc: '/videos/mixing/quality-control.mp4',
+      isYouTube: false,
+    },
+    {
+      title: 'Pigment Blending Techniques',
+      poster: '/img/videos/mixing-poster-4.jpg',
+      videoSrc: '/videos/mixing/blending.mp4',
+      isYouTube: false,
+    },
+  ];
+
+  const openVideo = (videoSrc: string, isYouTube: boolean) => {
+    setCurrentVideo({ src: videoSrc, isYouTube });
+    setVideoModalOpen(true);
+  };
 
   return (
     <PageTemplate
@@ -63,7 +100,7 @@ export default function ProductsPage() {
         ))}
       </div>
 
-      <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
+      <div className="bg-gray-50 rounded-lg p-8 border border-gray-200 mb-16">
         <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Why Our Products Stand Out</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center">
@@ -83,6 +120,43 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
+
+      <div className="bg-white rounded-lg p-8 border border-gray-200">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-3">Colour Mixing — Behind the Scenes</h2>
+          <p className="text-gray-600 font-light">Watch how we create perfect shades in our state-of-the-art laboratory.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {mixingVideos.map((video, index) => (
+            <div
+              key={index}
+              className="group relative cursor-pointer rounded-lg overflow-hidden bg-gray-100 hover:shadow-xl transition-all duration-300"
+              onClick={() => openVideo(video.videoSrc, video.isYouTube)}
+            >
+              <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-blue-800 bg-opacity-90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Play size={28} className="text-white ml-1" fill="white" />
+                  </div>
+                </div>
+                <span className="text-gray-400 text-sm">Video Placeholder</span>
+              </div>
+              <div className="p-4 bg-white">
+                <h3 className="font-semibold text-gray-900 text-sm">{video.title}</h3>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {videoModalOpen && (
+        <VideoModal
+          videoSrc={currentVideo.src}
+          isYouTube={currentVideo.isYouTube}
+          onClose={() => setVideoModalOpen(false)}
+        />
+      )}
     </PageTemplate>
   );
 }

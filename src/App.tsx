@@ -22,6 +22,7 @@ import BuilderSystemsPage from './pages/products/BuilderSystemsPage';
 import FrenchCollectionPage from './pages/products/FrenchCollectionPage';
 import PrivateLabelJarsPage from './pages/PrivateLabelJarsPage';
 import ClientRegistrationPage from './pages/ClientRegistrationPage';
+import SeasonTrendsPage from './pages/SeasonTrendsPage';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
         <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
         <Route path="/client-registration" element={<ClientRegistrationPage />} />
+        <Route path="/season-trends" element={<SeasonTrendsPage />} />
         <Route path="/terms-of-use" element={<TermsOfUsePage />} />
         <Route path="/live" element={<LiveFeedPage />} />
       </Routes>
