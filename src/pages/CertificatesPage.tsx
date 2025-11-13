@@ -1,4 +1,4 @@
-import PageTemplate, { ImagePlaceholder } from '../components/PageTemplate';
+import PageTemplate from '../components/PageTemplate';
 import { FileText, ShieldCheck, Leaf, Award } from 'lucide-react';
 
 export default function CertificatesPage() {
@@ -127,50 +127,45 @@ export default function CertificatesPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Product Safety Features</h2>
-          <div className="space-y-4">
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
-                <span className="text-green-600 text-sm">✓</span>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">TPO-Free Formulations</h3>
-                <p className="text-gray-600 font-light text-sm">No triphenyl phosphate, prioritizing user safety and health.</p>
-              </div>
+      <div className="bg-white rounded-lg border border-gray-200 p-8">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Product Safety Features</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
+              <span className="text-green-600 text-sm">✓</span>
             </div>
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
-                <span className="text-green-600 text-sm">✓</span>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">HEMA-Free Options</h3>
-                <p className="text-gray-600 font-light text-sm">Specialized products available without hydroxyethyl methacrylate for sensitive users.</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
-                <span className="text-green-600 text-sm">✓</span>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">Dermatologically Tested</h3>
-                <p className="text-gray-600 font-light text-sm">Products tested for skin compatibility and safety.</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
-                <span className="text-green-600 text-sm">✓</span>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">Long Shelf Life</h3>
-                <p className="text-gray-600 font-light text-sm">Stable formulations with documented shelf life and storage requirements.</p>
-              </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">TPO-Free Formulations</h3>
+              <p className="text-gray-600 font-light text-sm">No triphenyl phosphate, prioritizing user safety and health.</p>
             </div>
           </div>
-        </div>
-        <div>
-          <ImagePlaceholder alt="Quality control laboratory" />
+          <div className="flex items-start">
+            <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
+              <span className="text-green-600 text-sm">✓</span>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">HEMA-Free Options</h3>
+              <p className="text-gray-600 font-light text-sm">Specialized products available without hydroxyethyl methacrylate for sensitive users.</p>
+            </div>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
+              <span className="text-green-600 text-sm">✓</span>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">Dermatologically Tested</h3>
+              <p className="text-gray-600 font-light text-sm">Products tested for skin compatibility and safety.</p>
+            </div>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
+              <span className="text-green-600 text-sm">✓</span>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">Long Shelf Life</h3>
+              <p className="text-gray-600 font-light text-sm">Stable formulations with documented shelf life and storage requirements.</p>
+            </div>
+          </div>
         </div>
       </div>
     </PageTemplate>
