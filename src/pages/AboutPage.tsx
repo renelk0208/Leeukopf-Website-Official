@@ -76,7 +76,7 @@ export default function AboutPage() {
 
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
             <img
-              src="/img/process/02-formulation-mix.jpg"
+              src="/img/factory/Leeukopf Factory (4).png"
               alt="Formulation & Mixing"
               className="w-full h-48 object-cover"
             />
