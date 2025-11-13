@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
+import BackButton from './components/BackButton';
 
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -12,6 +14,7 @@ import OurBrandsPage from './pages/OurBrandsPage';
 import DistributorsWantedPage from './pages/DistributorsWantedPage';
 import CertificatesPage from './pages/CertificatesPage';
 import LiveFeedPage from './pages/LiveFeedPage';
+import TermsOfUsePage from './pages/TermsOfUsePage';
 
 import GelPolishPage from './pages/products/GelPolishPage';
 import TopsBasesPrimersPage from './pages/products/TopsBasesPrimersPage';
@@ -42,9 +45,12 @@ function App() {
         <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
         <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
         <Route path="/client-registration" element={<ClientRegistrationPage />} />
+        <Route path="/terms-of-use" element={<TermsOfUsePage />} />
         <Route path="/live" element={<LiveFeedPage />} />
       </Routes>
       <Footer />
+      <ScrollToTop />
+      <BackButton />
     </div>
   );
 }

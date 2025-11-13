@@ -61,6 +61,7 @@ export default function Navigation() {
     { label: 'Our Brands', path: '/our-brands' },
     { label: 'Distributors Wanted', path: '/distributors-wanted' },
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
+    { label: 'Client Registration', path: '/client-registration' },
     { label: 'Contact', path: '/contact' },
   ];
 

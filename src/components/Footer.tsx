@@ -51,29 +51,29 @@ const SocialLinks = () => {
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-t border-gray-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           <div className="lg:col-span-1">
-            <Link to="/" className="block mb-6">
+            <Link to="/" className="block mb-4">
               <img
                 src="/viber_image_2025-10-08_09-58-15-243.jpg"
                 alt="Leeukopf Laboratories"
-                className="h-14 w-auto object-contain hover:opacity-90 transition-opacity"
+                className="h-12 w-auto object-contain hover:opacity-90 transition-opacity"
               />
             </Link>
-            <p className="text-gray-400 text-sm font-light leading-relaxed mb-6">
+            <p className="text-gray-400 text-sm font-light leading-relaxed mb-4">
               Premium beauty products manufactured in Bulgaria, trusted by professionals worldwide.
             </p>
             <div className="flex items-center space-x-2 text-gray-400 text-sm font-light">
               <span>Made with</span>
-              <Heart className="text-red-400 fill-red-400" size={16} />
+              <Heart className="text-red-400 fill-red-400" size={14} />
               <span>in Bulgaria</span>
             </div>
           </div>
 
           <div className="lg:col-span-1">
-            <h3 className="text-white font-semibold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-3">
+            <h3 className="text-white font-semibold text-base mb-3">Quick Links</h3>
+            <ul className="space-y-2">
               <li>
                 <Link to="/products" className="text-gray-400 hover:text-white transition-colors text-sm font-light">
                   Our Products
@@ -90,8 +90,23 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/private-label" className="text-gray-400 hover:text-white transition-colors text-sm font-light">
+                  Private Label
+                </Link>
+              </li>
+              <li>
                 <Link to="/distributors-wanted" className="text-gray-400 hover:text-white transition-colors text-sm font-light">
                   Become a Distributor
+                </Link>
+              </li>
+              <li>
+                <Link to="/client-registration" className="text-gray-400 hover:text-white transition-colors text-sm font-light">
+                  Client Registration
+                </Link>
+              </li>
+              <li>
+                <Link to="/certificates-and-compliance" className="text-gray-400 hover:text-white transition-colors text-sm font-light">
+                  Certificates
                 </Link>
               </li>
               <li>
@@ -99,22 +114,27 @@ export default function Footer() {
                   Contact Us
                 </Link>
               </li>
+              <li>
+                <Link to="/terms-of-use" className="text-gray-400 hover:text-white transition-colors text-sm font-light">
+                  Terms of Use
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div className="lg:col-span-1">
-            <h3 className="text-white font-semibold text-lg mb-4">Follow Us</h3>
-            <p className="text-gray-400 text-sm font-light mb-6">
+            <h3 className="text-white font-semibold text-base mb-3">Follow Us</h3>
+            <p className="text-gray-400 text-sm font-light mb-4">
               Connect with us on social media for the latest updates, product launches, and beauty inspiration.
             </p>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               <SocialLinks />
             </div>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-700">
-          <div className="text-center text-gray-400 text-sm font-light">
+        <div className="pt-6 border-t border-gray-700">
+          <div className="text-center text-gray-400 text-xs font-light">
             &copy; {new Date().getFullYear()} Leeukopf Laboratories. All rights reserved.
           </div>
         </div>
