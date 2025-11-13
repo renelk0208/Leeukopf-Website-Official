@@ -477,7 +477,7 @@ export default function AdminDashboard() {
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-cyan-500/20 p-6">
             <h2 className="text-2xl font-bold text-white mb-6">Brochure Requests</h2>
             <p className="text-gray-400 mb-6">
-              Customer requests for product brochures and catalogs
+              Customer requests for product brochures and catalogues
             </p>
 
             {brochureRequests.length === 0 ? (

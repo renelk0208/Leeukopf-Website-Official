@@ -32,7 +32,7 @@ export default function ProductsPage() {
         { label: 'Our Products' }
       ]}
       showCTA={true}
-      ctaText="Request Product Catalog"
+      ctaText="Request Product Catalogue"
     >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
         {categories.map((category) => (

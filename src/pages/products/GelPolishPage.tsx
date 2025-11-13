@@ -38,7 +38,7 @@ export default function GelPolishPage() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
                 <FileText size={32} className="text-blue-800" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Complete Gel Polish Catalog</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Complete Gel Polish Catalogue</h2>
               <p className="text-lg text-gray-600 mb-8 font-light leading-relaxed">
                 Explore our comprehensive range of gel polish products. Request our detailed brochure to discover our full collection of colors, finishes, and formulations.
               </p>
