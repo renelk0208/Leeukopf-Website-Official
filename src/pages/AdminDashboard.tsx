@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Edit2, Save, FileText } from 'lucide-react';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText } from 'lucide-react';
 
 interface SiteSettings {
   primary_color: string;

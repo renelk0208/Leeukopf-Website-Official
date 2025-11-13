@@ -1,4 +1,4 @@
-import PageTemplate, { ImagePlaceholder } from '../components/PageTemplate';
+import PageTemplate from '../components/PageTemplate';
 import FacilityCarousel from '../components/FacilityCarousel';
 import WhyLeeukopf from '../components/WhyLeeukopf';
 

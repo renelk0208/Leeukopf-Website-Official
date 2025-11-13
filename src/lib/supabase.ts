@@ -15,6 +15,7 @@ export interface ProductCategory {
   slug: string;
   description: string;
   display_order: number;
+  parent_category_id: string | null;
   created_at: string;
 }
 

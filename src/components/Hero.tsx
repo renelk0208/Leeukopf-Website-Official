@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
 
 export default function Hero() {
   const navigate = useNavigate();

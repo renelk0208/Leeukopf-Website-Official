@@ -9,8 +9,6 @@ interface ProductGalleryProps {
 }
 
 export default function ProductGallery({ selectedCategoryId, onCategoryChange }: ProductGalleryProps) {
-  const [categories, setCategories] = useState<ProductCategory[]>([]);
-  const [categoryTree, setCategoryTree] = useState<Map<string, ProductCategory[]>>(new Map());
   const [allCategories, setAllCategories] = useState<Map<string, ProductCategory>>(new Map());
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [productsByCategory, setProductsByCategory] = useState<Record<string, Product[]>>({});
@@ -37,22 +35,12 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
       if (error) throw error;
 
       if (data) {
-        const mainCategories = data.filter(cat => !cat.parent_category_id);
-        setCategories(mainCategories);
-
-        const tree = new Map<string, ProductCategory[]>();
         const allCats = new Map<string, ProductCategory>();
 
         data.forEach(cat => {
           allCats.set(cat.id, cat);
-          if (cat.parent_category_id) {
-            const children = tree.get(cat.parent_category_id) || [];
-            children.push(cat);
-            tree.set(cat.parent_category_id, children);
-          }
         });
 
-        setCategoryTree(tree);
         setAllCategories(allCats);
       }
     } catch (error) {
