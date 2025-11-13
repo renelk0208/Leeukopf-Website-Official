@@ -18,6 +18,7 @@ import TopsBasesPrimersPage from './pages/products/TopsBasesPrimersPage';
 import BuilderSystemsPage from './pages/products/BuilderSystemsPage';
 import FrenchCollectionPage from './pages/products/FrenchCollectionPage';
 import PrivateLabelJarsPage from './pages/PrivateLabelJarsPage';
+import ClientRegistrationPage from './pages/ClientRegistrationPage';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path="/our-brands" element={<OurBrandsPage />} />
         <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
         <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
+        <Route path="/client-registration" element={<ClientRegistrationPage />} />
         <Route path="/live" element={<LiveFeedPage />} />
       </Routes>
       <Footer />
