@@ -57,7 +57,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
             <img
-              src="/img/process/01-intake-qc.jpg"
+              src="/Raw Materials Intake.png"
               alt="Raw Materials & QC Intake"
               className="w-full h-48 object-cover"
             />
