@@ -25,7 +25,7 @@ export default function AboutPage() {
         </div>
         <div className="relative overflow-hidden rounded-lg">
           <img
-            src="/img/factory/leeukopf-facility-hero.jpg"
+            src="/img/factory/Firefly_Gemini Flash_create an image of Leeukopf Laboratory facility - factory about 1500 sqaure meters, d 93539.png"
             alt="Leeukopf Laboratories — Manufacturing Facility"
             className="w-full h-full object-cover object-center aspect-[16/9] lg:aspect-[4/3]"
           />
