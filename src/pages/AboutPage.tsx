@@ -95,7 +95,7 @@ export default function AboutPage() {
 
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
             <img
-              src="/img/process/03-filling-capping.jpg"
+              src="/Labelling and Packaging.png"
               alt="Filling & Capping"
               className="w-full h-48 object-cover"
             />
@@ -114,33 +114,14 @@ export default function AboutPage() {
 
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
             <img
-              src="/img/process/04-curing-settling.jpg"
-              alt="Curing/Settling"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                  4
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">Curing/Settling</h3>
-              </div>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                Products are allowed to stabilize under optimal conditions to ensure long-term quality and performance.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-            <img
-              src="/img/process/05-label-batch.jpg"
+              src="/Labelling.png"
               alt="Label & Batch Coding"
               className="w-full h-48 object-cover"
             />
             <div className="p-6">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                  5
+                  4
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Label & Batch Coding</h3>
               </div>
@@ -152,14 +133,14 @@ export default function AboutPage() {
 
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
             <img
-              src="/img/process/06-final-qa-pack.jpg"
+              src="/Final QC.png"
               alt="Final QA & Packing"
               className="w-full h-48 object-cover"
             />
             <div className="p-6">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-8 h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                  6
+                  5
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Final QA & Packing</h3>
               </div>
