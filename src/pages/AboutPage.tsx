@@ -35,19 +35,14 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-        <div>
-          <ImagePlaceholder alt="Manufacturing process" />
-        </div>
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Quality & Compliance</h2>
-          <p className="text-gray-600 mb-4 font-light leading-relaxed">
-            Our products are manufactured under strict GMP guidelines and comply with EU Regulation 1223/2009. We maintain comprehensive Safety Data Sheets and Product Information Files for all formulations. Every batch undergoes rigorous testing to ensure consistency and safety.
-          </p>
-          <p className="text-gray-600 font-light leading-relaxed">
-            We are proud to be cruelty-free certified and committed to ethical manufacturing practices. Our formulations are TPO-free, HEMA-free where specified, and many products carry vegan certification, reflecting our dedication to both quality and responsibility.
-          </p>
-        </div>
+      <div className="mb-16">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Quality & Compliance</h2>
+        <p className="text-gray-600 mb-4 font-light leading-relaxed">
+          Our products are manufactured under strict GMP guidelines and comply with EU Regulation 1223/2009. We maintain comprehensive Safety Data Sheets and Product Information Files for all formulations. Every batch undergoes rigorous testing to ensure consistency and safety.
+        </p>
+        <p className="text-gray-600 font-light leading-relaxed">
+          We are proud to be cruelty-free certified and committed to ethical manufacturing practices. Our formulations are TPO-free, HEMA-free where specified, and many products carry vegan certification, reflecting our dedication to both quality and responsibility.
+        </p>
       </div>
 
       <div className="mb-16">
