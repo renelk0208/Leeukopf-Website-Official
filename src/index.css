@@ -1,4 +1,9 @@
-@import url('https://fonts.google.com/selection?query=Montserrat');
+<head>
+  ...
+  <link rel="icon" type="image/jpg" href="/viber_image_2025-10-08_09-58-15-243.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  ...
+</head>
 
 @tailwind base;
 @tailwind components;
