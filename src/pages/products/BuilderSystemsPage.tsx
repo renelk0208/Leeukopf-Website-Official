@@ -37,6 +37,14 @@ export default function BuilderSystemsPage() {
         ]}
       >
         <div className="mb-16">
+          <div className="mb-12 rounded-xl overflow-hidden">
+            <img
+              src="/img/products/builder_gels_category_2.jpg"
+              alt="Professional Builder Systems Collection"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 p-8 md:p-12 text-center">
             <div className="max-w-3xl mx-auto">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
