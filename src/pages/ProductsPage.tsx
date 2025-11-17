@@ -30,29 +30,53 @@ export default function ProductsPage() {
 
   const mixingVideos = [
     {
-      title: 'Colour Mixing Process',
-      poster: '/img/videos/mixing-poster-1.jpg',
-      videoSrc: '/videos/mixing/process.mp4',
-      isYouTube: false,
+      src: "/videos/mixing/video1.mp4",
+      title: "Deep Red Pigment Blend",
+      description:
+        "Highly pigmented red gel polish being mixed to a perfectly smooth consistency under strict EU-regulated conditions."
     },
     {
-      title: 'Custom Shade Creation',
-      poster: '/img/videos/mixing-poster-2.jpg',
-      videoSrc: '/videos/mixing/custom-shades.mp4',
-      isYouTube: false,
+      src: "/videos/mixing/video2.mp4",
+      title: "Nude Base Adjustment",
+      description:
+        "Fine-tuning our nude gel base for flawless coverage while following all factory safety and quality protocols."
     },
     {
-      title: 'Quality Control Testing',
-      poster: '/img/videos/mixing-poster-3.jpg',
-      videoSrc: '/videos/mixing/quality-control.mp4',
-      isYouTube: false,
+      src: "/videos/mixing/video3.mp4",
+      title: "Violet Concentrate Pouring",
+      description:
+        "A behind-the-scenes look at precision pouring of violet concentrate to achieve intense colour with stable viscosity."
     },
     {
-      title: 'Pigment Blending Techniques',
-      poster: '/img/videos/mixing-poster-4.jpg',
-      videoSrc: '/videos/mixing/blending.mp4',
-      isYouTube: false,
+      src: "/videos/mixing/video4.mp4",
+      title: "Cool-Tone Balancing",
+      description:
+        "Balancing cool pigments to keep tone consistent from batch to batch, fully aligned with current EU cosmetic regulations."
     },
+    {
+      src: "/videos/mixing/video5.mp4",
+      title: "Warm Beige Formula Blend",
+      description:
+        "Mixing a warm beige creamy gel using high-grade raw materials in a controlled, safe production environment."
+    },
+    {
+      src: "/videos/mixing/video6.mp4",
+      title: "High-Coverage Black Mixing",
+      description:
+        "Our intensely pigmented black gel polish going through a slow blend process that minimises micro-bubbles and ensures opacity."
+    },
+    {
+      src: "/videos/mixing/video7.mp4",
+      title: "Shimmer Suspension Test",
+      description:
+        "Ensuring shimmer pigments stay evenly suspended in the gel while meeting all EU cosmetic safety standards."
+    },
+    {
+      src: "/videos/mixing/video8.mp4",
+      title: "Final Quality Check",
+      description:
+        "Final verification of texture, opacity, and stability of each batch, carried out under strict factory safety procedures."
+    }
   ];
 
   const openVideo = (videoSrc: string, isYouTube: boolean) => {
@@ -132,7 +156,7 @@ export default function ProductsPage() {
             <div
               key={index}
               className="group relative cursor-pointer rounded-lg overflow-hidden bg-gray-100 hover:shadow-xl transition-all duration-300"
-              onClick={() => openVideo(video.videoSrc, video.isYouTube)}
+              onClick={() => openVideo(video.src, false)}
             >
               <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
@@ -143,7 +167,8 @@ export default function ProductsPage() {
                 <span className="text-gray-400 text-sm">Video Placeholder</span>
               </div>
               <div className="p-4 bg-white">
-                <h3 className="font-semibold text-gray-900 text-sm">{video.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{video.title}</h3>
+                <p className="text-sm text-gray-600 font-light">{video.description}</p>
               </div>
             </div>
           ))}
