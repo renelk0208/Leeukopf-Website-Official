@@ -1,4 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/pf-futura-neu');
+@import url('https://fonts.google.com/selection?query=Montserrat');
 
 @tailwind base;
 @tailwind components;
@@ -54,4 +54,7 @@
   .section-light h6 {
     @apply text-gray-900;
   }
+}
+body {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 }
