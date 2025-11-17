@@ -1,6 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Image as ImageIcon } from 'lucide-react';
+import { ChevronRight, Image as ImageIcon, ArrowUp } from 'lucide-react';
+import Navigation from './Navigation';
+import Footer from './Footer';
+import ScrollToTop from './ScrollToTop';
+import BackButton from './BackButton';
 
 interface BreadcrumbItem {
   label: string;
@@ -14,6 +18,7 @@ interface PageTemplateProps {
   children?: ReactNode;
   showCTA?: boolean;
   ctaText?: string;
+  ctaLink?: string;
   ctaAction?: () => void;
 }
 
@@ -24,20 +29,44 @@ export default function PageTemplate({
   children,
   showCTA = false,
   ctaText = 'Get in Touch',
+  ctaLink,
   ctaAction
 }: PageTemplateProps) {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleCTA = () => {
     if (ctaAction) {
       ctaAction();
+    } else if (ctaLink) {
+      window.location.href = ctaLink;
     } else {
       window.location.href = '/contact';
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen pt-16">
+    <>
+      <ScrollToTop />
+      <Navigation />
+      <div className="min-h-screen pt-16">
       <div className="bg-white/80 backdrop-blur-sm py-12 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton />
+          </div>
           <nav className="flex items-center space-x-2 text-sm mb-6">
             {breadcrumbs.map((item, index) => (
               <div key={index} className="flex items-center">
@@ -45,7 +74,7 @@ export default function PageTemplate({
                 {item.path ? (
                   <Link
                     to={item.path}
-                    className="text-gray-600 hover:text-[#1E90FF] transition-colors"
+                    className="text-gray-600 hover:text-blue-800 transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -84,7 +113,19 @@ export default function PageTemplate({
           </div>
         )}
       </div>
+
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-40 w-12 h-12 bg-blue-800 hover:bg-blue-900 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp size={20} />
+        </button>
+      )}
     </div>
+    <Footer />
+    </>
   );
 }
 
