@@ -101,14 +101,16 @@ export default function CertificatesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certificates.map((cert) => (
             <div key={cert.title} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="relative group aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                <div className="text-center p-6">
-                  <FileText size={48} className="mx-auto text-gray-400 mb-4" />
-                  <p className="text-gray-500 text-sm font-medium">{cert.title}</p>
-                </div>
+              <div className="relative group">
+                <img
+                  src={cert.image}
+                  alt={cert.alt}
+                  className="w-full h-auto blur-sm group-hover:blur-md transition-all duration-300"
+                  style={{ filter: 'blur(4px)' }}
+                />
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300">
                   <p className="text-white text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-60 px-4 py-2 rounded-md">
-                    Contact for Full Certificate
+                    Preview Only
                   </p>
                 </div>
               </div>
