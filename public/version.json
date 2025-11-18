@@ -1,6 +1,7 @@
 {
-  "version": "1.0.0",
-  "buildDate": "2025-11-18T09:32:00Z",
-  "commit": "initial",
-  "message": "If you can see this file with updated values, deployments are working"
+  "version": "0.0.0",
+  "buildDate": "2025-11-18T09:42:31.469Z",
+  "commit": "f718971",
+  "branch": "copilot/debug-netlify-deployment-issues",
+  "message": "Build deployed successfully"
 }
