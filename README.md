@@ -59,3 +59,32 @@ npm run dev
 npm run build
 npm run preview
 ```
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to:
+
+- Set up your development environment
+- Create and submit pull requests
+- Follow our coding standards
+- Report bugs and request features
+
+### Quick Start for Contributors
+
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/leeeukopf.git`
+3. Create a branch: `git checkout -b feature/your-feature-name`
+4. Make your changes and test them
+5. Commit: `git commit -m "feat: your feature description"`
+6. Push: `git push origin feature/your-feature-name`
+7. Open a Pull Request
+
+For more detailed instructions, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run typecheck` - Run TypeScript type checking
