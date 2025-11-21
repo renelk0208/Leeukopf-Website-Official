@@ -30,52 +30,68 @@ export default function ProductsPage() {
 
   const mixingVideos = [
     {
-      src: "/videos/mixing/video1.mp4",
       title: "Deep Red Pigment Blend",
       description:
-        "Highly pigmented red gel polish being mixed to a perfectly smooth consistency under strict EU-regulated conditions."
+        "Highly pigmented red gel polish being mixed to a perfectly smooth consistency under strict EU-regulated conditions.",
+      poster: '/img/videos/mixing-poster-1.jpg',
+      videoSrc: "/videos/mixing/video1.mp4",
+      isYouTube: false,
     },
     {
-      src: "/videos/mixing/video2.mp4",
       title: "Nude Base Adjustment",
       description:
-        "Fine-tuning our nude gel base for flawless coverage while following all factory safety and quality protocols."
+        "Fine-tuning our nude gel base for flawless coverage while following all factory safety and quality protocols.",
+      poster: '/img/videos/mixing-poster-2.jpg',
+      videoSrc: "/videos/mixing/video2.mp4",
+      isYouTube: false,
     },
     {
-      src: "/videos/mixing/video3.mp4",
       title: "Violet Concentrate Pouring",
       description:
-        "A behind-the-scenes look at precision pouring of violet concentrate to achieve intense colour with stable viscosity."
+        "A behind-the-scenes look at precision pouring of violet concentrate to achieve intense colour with stable viscosity.",
+      poster: '/img/videos/mixing-poster-3.jpg',
+      videoSrc: "/videos/mixing/video3.mp4",
+      isYouTube: false,
     },
     {
-      src: "/videos/mixing/video4.mp4",
       title: "Cool-Tone Balancing",
       description:
-        "Balancing cool pigments to keep tone consistent from batch to batch, fully aligned with current EU cosmetic regulations."
+        "Balancing cool pigments to keep tone consistent from batch to batch, fully aligned with current EU cosmetic regulations.",
+      poster: '/img/videos/mixing-poster-4.jpg',
+      videoSrc: "/videos/mixing/video4.mp4",
+      isYouTube: false,
     },
     {
-      src: "/videos/mixing/video5.mp4",
       title: "Warm Beige Formula Blend",
       description:
-        "Mixing a warm beige creamy gel using high-grade raw materials in a controlled, safe production environment."
+        "Mixing a warm beige creamy gel using high-grade raw materials in a controlled, safe production environment.",
+      poster: '/img/videos/mixing-poster-5.jpg',
+      videoSrc: "/videos/mixing/video5.mp4",
+      isYouTube: false,
     },
     {
-      src: "/videos/mixing/video6.mp4",
       title: "High-Coverage Black Mixing",
       description:
-        "Our intensely pigmented black gel polish going through a slow blend process that minimises micro-bubbles and ensures opacity."
+        "Our intensely pigmented black gel polish going through a slow blend process that minimises micro-bubbles and ensures opacity.",
+      poster: '/img/videos/mixing-poster-6.jpg',
+      videoSrc: "/videos/mixing/video6.mp4",
+      isYouTube: false,
     },
     {
-      src: "/videos/mixing/video7.mp4",
       title: "Shimmer Suspension Test",
       description:
-        "Ensuring shimmer pigments stay evenly suspended in the gel while meeting all EU cosmetic safety standards."
+        "Ensuring shimmer pigments stay evenly suspended in the gel while meeting all EU cosmetic safety standards.",
+      poster: '/img/videos/mixing-poster-7.jpg',
+      videoSrc: "/videos/mixing/video7.mp4",
+      isYouTube: false,
     },
     {
-      src: "/videos/mixing/video8.mp4",
       title: "Final Quality Check",
       description:
-        "Final verification of texture, opacity, and stability of each batch, carried out under strict factory safety procedures."
+        "Final verification of texture, opacity, and stability of each batch, carried out under strict factory safety procedures.",
+      poster: '/img/videos/mixing-poster-8.jpg',
+      videoSrc: "/videos/mixing/video8.mp4",
+      isYouTube: false,
     }
   ];
 
@@ -151,24 +167,33 @@ export default function ProductsPage() {
           <p className="text-gray-600 font-light">Watch how we create perfect shades in our state-of-the-art laboratory.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {mixingVideos.map((video, index) => (
             <div
               key={index}
               className="group relative cursor-pointer rounded-lg overflow-hidden bg-gray-100 hover:shadow-xl transition-all duration-300"
-              onClick={() => openVideo(video.src, false)}
+              onClick={() => openVideo(video.videoSrc, video.isYouTube)}
+              role="button"
+              tabIndex={0}
+              aria-label={`Play video: ${video.title}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  openVideo(video.videoSrc, video.isYouTube);
+                }
+              }}
             >
               <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-blue-800 bg-opacity-90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Play size={28} className="text-white ml-1" fill="white" />
+                    <Play size={28} className="text-white ml-1" fill="white" aria-hidden="true" />
                   </div>
                 </div>
                 <span className="text-gray-400 text-sm">Video Placeholder</span>
               </div>
               <div className="p-4 bg-white">
-                <h3 className="font-semibold text-gray-900 mb-2">{video.title}</h3>
-                <p className="text-sm text-gray-600 font-light">{video.description}</p>
+                <h3 className="font-semibold text-gray-900 text-base mb-2">{video.title}</h3>
+                <p className="text-gray-600 text-sm font-light leading-relaxed">{video.description}</p>
               </div>
             </div>
           ))}
