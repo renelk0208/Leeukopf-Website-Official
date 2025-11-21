@@ -218,7 +218,7 @@ export default function MyComponent({ title, onAction }: MyComponentProps) {
 ### Data Fetching with Supabase
 
 ```typescript
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../lib/supabase';
 
 async function fetchData() {
   try {
