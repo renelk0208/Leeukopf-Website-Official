@@ -34,7 +34,7 @@ export default function CertificatesPage() {
     },
     {
       title: 'BNAEQPC Membership 2025',
-      image: '/certificates/С Е Р Т И Ф И К А Т за членство ТЕРМИТЕК 2025 1-1.jpg',
+      image: '/certificates/bnaeqpc-membership-2025.jpg',
       alt: 'BNAEQPC Membership Certificate 2025',
       description: 'Professional association membership certificate'
     }
@@ -52,15 +52,6 @@ export default function CertificatesPage() {
       ctaText="Request Documentation"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Certifications & Compliance
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 font-light">
-            Ensuring trust, safety and global regulatory alignment.
-          </p>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {certificates.map((cert) => (
             <div 
@@ -73,7 +64,6 @@ export default function CertificatesPage() {
                     src={cert.image}
                     alt={cert.alt}
                     className="w-full h-auto rounded-md"
-                    style={{ maxWidth: '100%', height: 'auto' }}
                   />
                 </div>
                 <div className="w-full border-t border-gray-200 pt-5 text-center">
