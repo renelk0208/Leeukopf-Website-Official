@@ -31,26 +31,58 @@ export default function ProductsPage() {
   const mixingVideos = [
     {
       title: 'Colour Mixing Process',
+      description: 'Discover our precision colour mixing process using highly pigmented formulas manufactured under strict EU regulations in our controlled production facility.',
       poster: '/img/videos/mixing-poster-1.jpg',
       videoSrc: '/videos/mixing/process.mp4',
       isYouTube: false,
     },
     {
       title: 'Custom Shade Creation',
+      description: 'See how our technicians create custom shades with highly pigmented formulas, ensuring consistent quality while meeting stringent EU safety compliance standards.',
       poster: '/img/videos/mixing-poster-2.jpg',
       videoSrc: '/videos/mixing/custom-shades.mp4',
       isYouTube: false,
     },
     {
       title: 'Quality Control Testing',
+      description: 'Experience our rigorous quality control procedures in our state-of-the-art facility, where every batch is tested to exceed EU regulatory requirements.',
       poster: '/img/videos/mixing-poster-3.jpg',
       videoSrc: '/videos/mixing/quality-control.mp4',
       isYouTube: false,
     },
     {
       title: 'Pigment Blending Techniques',
+      description: 'Watch expert blending of highly pigmented formulas in our EU-compliant factory, where controlled production ensures optimal color saturation.',
       poster: '/img/videos/mixing-poster-4.jpg',
       videoSrc: '/videos/mixing/blending.mp4',
+      isYouTube: false,
+    },
+    {
+      title: 'Factory Safety Standards',
+      description: 'Tour our controlled production environment with comprehensive safety protocols, adhering to strict EU regulations while handling highly pigmented materials.',
+      poster: '/img/videos/mixing-poster-5.jpg',
+      videoSrc: '/videos/mixing/safety-standards.mp4',
+      isYouTube: false,
+    },
+    {
+      title: 'EU Compliance Verification',
+      description: 'Learn about our certification process ensuring all highly pigmented formulas meet and exceed EU regulatory standards in our controlled facility.',
+      poster: '/img/videos/mixing-poster-6.jpg',
+      videoSrc: '/videos/mixing/compliance.mp4',
+      isYouTube: false,
+    },
+    {
+      title: 'Batch Production Process',
+      description: 'Follow the journey of our highly pigmented formulas from raw materials to finished product in our EU-regulated, safety-controlled production lines.',
+      poster: '/img/videos/mixing-poster-7.jpg',
+      videoSrc: '/videos/mixing/batch-production.mp4',
+      isYouTube: false,
+    },
+    {
+      title: 'Color Consistency Lab',
+      description: 'Explore our laboratory where highly pigmented formulas are analyzed and perfected under strict EU guidelines, ensuring factory-wide consistency and safety.',
+      poster: '/img/videos/mixing-poster-8.jpg',
+      videoSrc: '/videos/mixing/lab-consistency.mp4',
       isYouTube: false,
     },
   ];
@@ -127,23 +159,33 @@ export default function ProductsPage() {
           <p className="text-gray-600 font-light">Watch how we create perfect shades in our state-of-the-art laboratory.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {mixingVideos.map((video, index) => (
             <div
               key={index}
               className="group relative cursor-pointer rounded-lg overflow-hidden bg-gray-100 hover:shadow-xl transition-all duration-300"
               onClick={() => openVideo(video.videoSrc, video.isYouTube)}
+              role="button"
+              tabIndex={0}
+              aria-label={`Play video: ${video.title}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  openVideo(video.videoSrc, video.isYouTube);
+                }
+              }}
             >
               <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-blue-800 bg-opacity-90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Play size={28} className="text-white ml-1" fill="white" />
+                    <Play size={28} className="text-white ml-1" fill="white" aria-hidden="true" />
                   </div>
                 </div>
                 <span className="text-gray-400 text-sm">Video Placeholder</span>
               </div>
               <div className="p-4 bg-white">
-                <h3 className="font-semibold text-gray-900 text-sm">{video.title}</h3>
+                <h3 className="font-semibold text-gray-900 text-base mb-2">{video.title}</h3>
+                <p className="text-gray-600 text-sm font-light leading-relaxed">{video.description}</p>
               </div>
             </div>
           ))}
