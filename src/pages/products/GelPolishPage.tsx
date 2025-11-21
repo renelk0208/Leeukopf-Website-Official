@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FileText } from 'lucide-react';
 import PageTemplate from '../../components/PageTemplate';
 import BrochureRequestModal from '../../components/BrochureRequestModal';
+import ProductCarousel from '../../components/ProductCarousel';
 
 export default function GelPolishPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +19,45 @@ export default function GelPolishPage() {
     {
       title: 'Glitters',
       description: 'Dazzling glitter formulations for stunning nail art'
+    }
+  ];
+
+  const autumnWinterImages = [
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
+      alt: 'Autumn Winter 25/26 gel polish collection cover'
+    },
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_warm_colors.jpg',
+      alt: 'Autumn Winter 25/26 gel polish warm colors collection'
+    },
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_rose_jewels_glitters.jpg',
+      alt: 'Autumn Winter 25/26 gel polish rose jewels and glitters'
+    },
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_red_cat_eye.jpg',
+      alt: 'Autumn Winter 25/26 gel polish red cat eye collection'
+    },
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cofee_cat_eye.jpg',
+      alt: 'Autumn Winter 25/26 gel polish coffee cat eye collection'
+    },
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_galaxy_cat_eye.jpg',
+      alt: 'Autumn Winter 25/26 gel polish galaxy cat eye collection'
+    },
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_gold_leaf.jpg',
+      alt: 'Autumn Winter 25/26 gel polish gold leaf collection'
+    },
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_laser_glitters.jpg',
+      alt: 'Autumn Winter 25/26 gel polish laser glitters collection'
+    },
+    {
+      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_xmas_glitters.jpg',
+      alt: 'Autumn Winter 25/26 gel polish Christmas glitters collection'
     }
   ];
 
@@ -72,6 +112,27 @@ export default function GelPolishPage() {
                 Our brochure includes detailed color charts, product specifications, and application guidelines
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Autumn Winter '25/26 Subcategory */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold text-gray-900 mb-3">Autumn Winter '25/26</h3>
+            <p className="text-lg text-gray-600 font-light max-w-2xl mx-auto">
+              Discover our latest seasonal collection featuring warm, sophisticated shades perfect for the colder months. 
+              From rich cat eyes to festive glitters, this collection brings elegance and trend to your fingertips.
+            </p>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            <ProductCarousel images={autumnWinterImages} autoPlay={true} autoPlayInterval={4000} />
+          </div>
+
+          <div className="text-center mt-8">
+            <p className="text-sm text-gray-500 italic">
+              Featuring cat eye effects, glitters, and seasonal must-haves
+            </p>
           </div>
         </div>
 
