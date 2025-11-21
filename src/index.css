@@ -6,7 +6,7 @@
 @layer base {
   body {
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-    background: linear-gradient(to bottom, #000000 0%, #ffffff 50%, #1E90FF 100%);
+    background: linear-gradient(to bottom, #FDFCFA 0%, #F5F3F0 30%, #EDE9E3 60%, #F8F6F3 100%);
     background-attachment: fixed;
     min-height: 100vh;
   }
