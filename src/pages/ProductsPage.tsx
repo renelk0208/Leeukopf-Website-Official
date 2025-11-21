@@ -30,61 +30,69 @@ export default function ProductsPage() {
 
   const mixingVideos = [
     {
-      title: 'Colour Mixing Process',
-      description: 'Discover our precision colour mixing process using highly pigmented formulas manufactured under strict EU regulations in our controlled production facility.',
+      title: "Deep Red Pigment Blend",
+      description:
+        "Highly pigmented red gel polish being mixed to a perfectly smooth consistency under strict EU-regulated conditions.",
       poster: '/img/videos/mixing-poster-1.jpg',
-      videoSrc: '/videos/mixing/process.mp4',
+      videoSrc: "/videos/mixing/video1.mp4",
       isYouTube: false,
     },
     {
-      title: 'Custom Shade Creation',
-      description: 'See how our technicians create custom shades with highly pigmented formulas, ensuring consistent quality while meeting stringent EU safety compliance standards.',
+      title: "Nude Base Adjustment",
+      description:
+        "Fine-tuning our nude gel base for flawless coverage while following all factory safety and quality protocols.",
       poster: '/img/videos/mixing-poster-2.jpg',
-      videoSrc: '/videos/mixing/custom-shades.mp4',
+      videoSrc: "/videos/mixing/video2.mp4",
       isYouTube: false,
     },
     {
-      title: 'Quality Control Testing',
-      description: 'Experience our rigorous quality control procedures in our state-of-the-art facility, where every batch is tested to exceed EU regulatory requirements.',
+      title: "Violet Concentrate Pouring",
+      description:
+        "A behind-the-scenes look at precision pouring of violet concentrate to achieve intense colour with stable viscosity.",
       poster: '/img/videos/mixing-poster-3.jpg',
-      videoSrc: '/videos/mixing/quality-control.mp4',
+      videoSrc: "/videos/mixing/video3.mp4",
       isYouTube: false,
     },
     {
-      title: 'Pigment Blending Techniques',
-      description: 'Watch expert blending of highly pigmented formulas in our EU-compliant factory, where controlled production ensures optimal color saturation.',
+      title: "Cool-Tone Balancing",
+      description:
+        "Balancing cool pigments to keep tone consistent from batch to batch, fully aligned with current EU cosmetic regulations.",
       poster: '/img/videos/mixing-poster-4.jpg',
-      videoSrc: '/videos/mixing/blending.mp4',
+      videoSrc: "/videos/mixing/video4.mp4",
       isYouTube: false,
     },
     {
-      title: 'Factory Safety Standards',
-      description: 'Tour our controlled production environment with comprehensive safety protocols, adhering to strict EU regulations while handling highly pigmented materials.',
+      title: "Warm Beige Formula Blend",
+      description:
+        "Mixing a warm beige creamy gel using high-grade raw materials in a controlled, safe production environment.",
       poster: '/img/videos/mixing-poster-5.jpg',
-      videoSrc: '/videos/mixing/safety-standards.mp4',
+      videoSrc: "/videos/mixing/video5.mp4",
       isYouTube: false,
     },
     {
-      title: 'EU Compliance Verification',
-      description: 'Learn about our certification process ensuring all highly pigmented formulas meet and exceed EU regulatory standards in our controlled facility.',
+      title: "High-Coverage Black Mixing",
+      description:
+        "Our intensely pigmented black gel polish going through a slow blend process that minimises micro-bubbles and ensures opacity.",
       poster: '/img/videos/mixing-poster-6.jpg',
-      videoSrc: '/videos/mixing/compliance.mp4',
+      videoSrc: "/videos/mixing/video6.mp4",
       isYouTube: false,
     },
     {
-      title: 'Batch Production Process',
-      description: 'Follow the journey of our highly pigmented formulas from raw materials to finished product in our EU-regulated, safety-controlled production lines.',
+      title: "Shimmer Suspension Test",
+      description:
+        "Ensuring shimmer pigments stay evenly suspended in the gel while meeting all EU cosmetic safety standards.",
       poster: '/img/videos/mixing-poster-7.jpg',
-      videoSrc: '/videos/mixing/batch-production.mp4',
+      videoSrc: "/videos/mixing/video7.mp4",
       isYouTube: false,
     },
     {
-      title: 'Color Consistency Lab',
-      description: 'Explore our laboratory where highly pigmented formulas are analyzed and perfected under strict EU guidelines, ensuring factory-wide consistency and safety.',
+      title: "Final Quality Check",
+      description:
+        "Final verification of texture, opacity, and stability of each batch, carried out under strict factory safety procedures.",
       poster: '/img/videos/mixing-poster-8.jpg',
-      videoSrc: '/videos/mixing/lab-consistency.mp4',
+      videoSrc: "/videos/mixing/video8.mp4",
       isYouTube: false,
-    },
+    }
   ];
 
   const openVideo = (videoSrc: string, isYouTube: boolean) => {
