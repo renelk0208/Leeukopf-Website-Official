@@ -4,37 +4,37 @@ export default function CertificatesPage() {
   const certificates = [
     {
       title: 'Chamber 2025 BCCI',
-      image: '/certificates/Chamber 2025 BCCI-1.jpg',
+      image: '/img/Certifications-And-Compliance/Chamber 2025 BCCI-1.jpg',
       alt: 'Chamber 2025 BCCI Certificate',
       description: 'Bulgarian Chamber of Commerce and Industry membership'
     },
     {
       title: 'Free Sale Certificate 2025-2026',
-      image: '/certificates/FREE SALE CERTIFICATE 2025-2026-1.jpg',
+      image: '/img/Certifications-And-Compliance/FREE SALE CERTIFICATE 2025-2026-1.jpg',
       alt: 'Free Sale Certificate 2025-2026',
       description: 'Official certification for international trade'
     },
     {
       title: 'GMP Certificate 2025-2026',
-      image: '/certificates/GMP CERTIFICATE 2025-2026-1.jpg',
+      image: '/img/Certifications-And-Compliance/GMP CERTIFICATE 2025-2026-1.jpg',
       alt: 'GMP Certificate 2025-2026 for Thermitek Ltd',
       description: 'Good Manufacturing Practice certification'
     },
     {
       title: 'ISO 9001 Certificate 2025-2026',
-      image: '/certificates/ISO 9001 certificate 2025-2026-1.jpg',
+      image: '/img/Certifications-And-Compliance/ISO 9001 certificate 2025-2026-1.jpg',
       alt: 'ISO 9001 Certificate 2025-2026',
       description: 'Quality management system certification'
     },
     {
       title: 'Leaping Bunny Certificate 2025-26',
-      image: '/certificates/Thermitek  Leaping Bunny Certificate 2025-26-1.jpg',
+      image: '/img/Certifications-And-Compliance/Thermitek  Leaping Bunny Certificate 2025-26-1.jpg',
       alt: 'Leaping Bunny Certificate 2025-26',
       description: 'Cruelty-free certification from Leaping Bunny'
     },
     {
       title: 'BNAEQPC Membership 2025',
-      image: '/certificates/bnaeqpc-membership-2025.jpg',
+      image: '/img/Certifications-And-Compliance/bnaeqpc-membership-2025.jpg',
       alt: 'BNAEQPC Membership Certificate 2025',
       description: 'Professional association membership certificate'
     }
