@@ -56,9 +56,9 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Link to="/" className="block mb-4">
               <img
-                src="/favicon.ico"
+                src="/leeukopf_black.png"
                 alt="Leeukopf Laboratories"
-                className="h-12 w-auto object-contain hover:opacity-90 transition-opacity"
+                className="h-12 w-auto object-contain hover:opacity-90 transition-opacity brightness-0 invert"
               />
             </Link>
             <p className="text-gray-400 text-sm font-light leading-relaxed mb-4">
