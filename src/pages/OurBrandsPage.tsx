@@ -54,8 +54,9 @@ export default function OurBrandsPage() {
       showCTA={true}
       ctaText="Become a Distributor"
     >
-      <div className="grid grid-cols-1 gap-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 bg-white rounded-lg border border-gray-200">
+      <div className="grid grid-cols-1 gap-8 sm:gap-10 md:gap-12">
+        {/* Responsive brand section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 p-4 sm:p-6 md:p-8 bg-white rounded-lg border border-gray-200">
           <div className="order-1">
             <img
               src="/GEL.IT.UP-NEW-LOGO-2024_black_2.png"
@@ -64,16 +65,16 @@ export default function OurBrandsPage() {
             />
           </div>
           <div className="flex flex-col justify-center order-2">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">GEL.IT.UP</h2>
-            <p className="text-gray-600 font-light leading-relaxed text-lg">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">GEL.IT.UP</h2>
+            <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base md:text-lg">
               Founded in 2011, GEL.IT.UP by GIUP® is rooted in the philosophy of "Superior Innovation." We deliver top-class nail products while strictly adhering to EU regulations and global GMP (good manufacturing practices). From the start, we've been dedicated to cruelty-free practices, with Leaping Bunny certification representing the gold standard. Professionals are at the heart of our brand—our products are exclusively distributed to industry experts to maintain nail industry standards. We emphasize personalized 1-on-1 customer service, keeping our rapidly growing global distributor network like a family. We actively promote environmental responsibility through our Waste Management Program, encouraging recycling of gel polish bottles from any brand. Inclusivity is a core value—we welcome everyone regardless of age, race, or gender. Our vision is for a healthier planet, sustainable beauty, and respect for diversity.
             </p>
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <a
                 href="https://www.gelitup.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-800 font-semibold hover:text-blue-900 inline-block"
+                className="text-blue-800 font-semibold hover:text-blue-900 inline-flex items-center min-h-[44px] text-sm sm:text-base"
               >
                 Explore GEL.IT.UP →
               </a>
@@ -82,8 +83,8 @@ export default function OurBrandsPage() {
         </div>
 
         {/* Product Carousel Section */}
-        <div className="mt-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Our Product Collection</h3>
+        <div className="mt-4 sm:mt-6 md:mt-8">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">Our Product Collection</h3>
           <ProductCarousel images={carouselImages} autoPlay={true} autoPlayInterval={3000} />
         </div>
       </div>

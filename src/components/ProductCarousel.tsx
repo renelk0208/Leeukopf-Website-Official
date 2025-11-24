@@ -47,17 +47,18 @@ export default function ProductCarousel({
   return (
     <div className="w-full">
       <div
-        className="relative w-full bg-white rounded-xl overflow-hidden shadow-lg border border-gray-200"
+        className="relative w-full bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-lg border border-gray-200"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(autoPlay)}
       >
-        <div className="relative aspect-[4/3] overflow-hidden">
+        {/* Responsive aspect ratio */}
+        <div className="relative aspect-square sm:aspect-[4/3] overflow-hidden">
           <div
             className="flex transition-all duration-500 ease-in-out h-full"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
             {images.map((image, index) => (
-              <div key={index} className="min-w-full h-full flex-shrink-0 flex items-center justify-center bg-white p-4">
+              <div key={index} className="min-w-full h-full flex-shrink-0 flex items-center justify-center bg-white p-2 sm:p-4">
                 <img
                   src={image.src}
                   alt={image.alt}
@@ -70,30 +71,32 @@ export default function ProductCarousel({
 
         {images.length > 1 && (
           <>
+            {/* Navigation buttons - accessible tap targets */}
             <button
               onClick={goToPrevious}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Previous image"
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
             </button>
 
             <button
               onClick={goToNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Next image"
             >
-              <ChevronRight size={24} />
+              <ChevronRight size={20} className="sm:w-6 sm:h-6" />
             </button>
 
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+            {/* Indicator dots */}
+            <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 sm:space-x-2">
               {images.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
+                  className={`h-2 rounded-full transition-all duration-300 min-w-[8px] ${
                     index === currentIndex
-                      ? 'bg-gray-800 w-8'
+                      ? 'bg-gray-800 w-6 sm:w-8'
                       : 'bg-gray-400 hover:bg-gray-600 w-2'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
