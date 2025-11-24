@@ -1,95 +1,93 @@
-import PageTemplate from '../components/PageTemplate';
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 
 export default function CertificatesPage() {
   const certificates = [
     {
-      title: 'Chamber 2025 BCCI',
-      image: '/img/Certifications-And-Compliance/Chamber 2025 BCCI-1.jpg',
-      alt: 'Chamber 2025 BCCI Certificate',
-      description: 'Bulgarian Chamber of Commerce and Industry membership'
+      name: 'Bulgarian Chamber of Commerce & Industry Membership',
+      image: '/img/Certifications-And-Compliance/bcci-chamber-2025.jpg',
+      alt: 'Bulgarian Chamber of Commerce and Industry membership – Thermitek Ltd, valid 2025',
+      description: 'Direct membership in the Bulgarian Chamber of Commerce and Industry, valid for 2025.'
     },
     {
-      title: 'Free Sale Certificate 2025-2026',
-      image: '/img/Certifications-And-Compliance/FREE SALE CERTIFICATE 2025-2026-1.jpg',
-      alt: 'Free Sale Certificate 2025-2026',
-      description: 'Official certification for international trade'
+      name: 'Free Sale Certificate – Gel/Gel Polish Products',
+      image: '/img/Certifications-And-Compliance/free-sale-certificate-2025-2026-1.jpg',
+      alt: 'Free Sale Certificate 2025–2026 for gel/gel polish nail products',
+      description: 'Confirms our gel/gel polish nail products are compliant and freely sold in Bulgaria and the European Community (valid 2025–2026).'
     },
     {
-      title: 'GMP Certificate 2025-2026',
-      image: '/img/Certifications-And-Compliance/GMP CERTIFICATE 2025-2026-1.jpg',
-      alt: 'GMP Certificate 2025-2026 for Thermitek Ltd',
-      description: 'Good Manufacturing Practice certification'
+      name: 'GMP Certificate – Cosmetics Manufacturing',
+      image: '/img/Certifications-And-Compliance/gmp-certificate-2025-2026-1.jpg',
+      alt: 'GMP Certificate 2025–2026 for manufacturing according to Good Manufacturing Practice for cosmetics',
+      description: 'Certification for manufacturing according to Good Manufacturing Practice for cosmetics (GMP), valid 2025–2026.'
     },
     {
-      title: 'ISO 9001 Certificate 2025-2026',
-      image: '/img/Certifications-And-Compliance/ISO 9001 certificate 2025-2026-1.jpg',
-      alt: 'ISO 9001 Certificate 2025-2026',
-      description: 'Quality management system certification'
+      name: 'ISO 9001:2015 – Quality Management System',
+      image: '/img/Certifications-And-Compliance/iso-9001-2025-2026.jpg',
+      alt: 'ISO 9001:2015 Quality Management System certificate for Thermitek Ltd',
+      description: 'ISO 9001:2015 certification for our quality management system and in-house laboratory.'
     },
     {
-      title: 'Leaping Bunny Certificate 2025-26',
-      image: '/img/Certifications-And-Compliance/Thermitek  Leaping Bunny Certificate 2025-26-1.jpg',
-      alt: 'Leaping Bunny Certificate 2025-26',
-      description: 'Cruelty-free certification from Leaping Bunny'
+      name: 'Leaping Bunny – Cruelty Free Certification',
+      image: '/img/Certifications-And-Compliance/leaping-bunny-2025-2026.jpg',
+      alt: 'Cruelty Free International Leaping Bunny Certificate of Approval, valid until 31 March 2026',
+      description: 'Cruelty Free International Leaping Bunny approval for cosmetic and personal care products.'
     },
     {
-      title: 'BNAEQPC Membership 2025',
-      image: '/img/Certifications-And-Compliance/bnaeqpc-membership-2025.jpg',
-      alt: 'BNAEQPC Membership Certificate 2025',
-      description: 'Professional association membership certificate'
+      name: 'BNAEOPC Membership – Essential Oils, Perfumery & Cosmetics',
+      image: '/img/Certifications-And-Compliance/bnaeopc-membership-2025.jpg',
+      alt: 'Bulgarian National Association Essential Oils, Perfumery and Cosmetics membership certificate 2025',
+      description: 'Membership in the Bulgarian National Association Essential Oils, Perfumery and Cosmetics for 2025.'
     }
   ];
 
   return (
-    <PageTemplate
-      title="Certifications & Compliance"
-      subtitle="Ensuring trust, safety and global regulatory alignment."
-      breadcrumbs={[
-        { label: 'Home', path: '/' },
-        { label: 'Certifications & Compliance' }
-      ]}
-      showCTA={true}
-      ctaText="Request Documentation"
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {certificates.map((cert) => (
-            <div 
-              key={cert.title} 
-              className="bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.08)] p-6 md:p-7 hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300"
-            >
-              <div className="flex flex-col items-center">
-                <div className="w-full mb-5">
-                  <img
-                    src={cert.image}
-                    alt={cert.alt}
-                    className="w-full h-auto rounded-md"
-                  />
-                </div>
-                <div className="w-full border-t border-gray-200 pt-5 text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {cert.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 font-light">
-                    {cert.description}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="min-h-screen flex flex-col">
+      <Navigation />
+      
+      <main className="flex-grow">
+        <section className="py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 text-center">
+              Certificates & Compliance
+            </h1>
 
-        <div className="mt-12 bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.08)] p-6 md:p-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Documentation & Compliance
-          </h2>
-          <p className="text-gray-600 font-light leading-relaxed">
-            For full access to our certification documents, safety data sheets (SDS), product information files (PIF), 
-            or certificates of analysis (COA), please contact us directly. We provide complete documentation to verified 
-            business partners and distributors to ensure compliance with all regulatory requirements.
-          </p>
-        </div>
-      </div>
-    </PageTemplate>
+            <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed max-w-4xl mx-auto text-center mb-12 md:mb-16">
+              Thermitek Ltd and Leeukopf Laboratories operate under strict European regulations and internationally recognised standards. Below you can view our key certifications – click any document to open it in full size.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {certificates.map((cert) => (
+                <a
+                  key={cert.name}
+                  href={cert.image}
+                  className="bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.08)] p-6 md:p-7 hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300 block"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="mb-5">
+                    <img
+                      src={cert.image}
+                      alt={cert.alt}
+                      className="w-full h-auto rounded-md"
+                    />
+                  </div>
+                  <div className="border-t border-gray-200 pt-5">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                      {cert.name}
+                    </h2>
+                    <p className="text-sm text-gray-600 font-light leading-relaxed">
+                      {cert.description}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
   );
 }
