@@ -136,9 +136,9 @@ export default function Footer() {
         <div className="pt-6 border-t border-gray-700">
           <div className="flex flex-col items-center gap-3">
             <img 
-              src="/favicon.ico" 
+              src="/favicon_leeukopf.jpg" 
               alt="Leeukopf Laboratories" 
-              className="w-8 h-8"
+              className="w-8 h-8 object-contain"
             />
             <div className="text-center text-gray-400 text-xs font-light">
               &copy; {new Date().getFullYear()} Leeukopf Laboratories. All rights reserved.
