@@ -1,12 +1,7 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
-import VideoModal from '../components/VideoModal';
-import { Play } from 'lucide-react';
 
 export default function ProductsPage() {
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
-  const [currentVideo, setCurrentVideo] = useState<{ src: string; isYouTube: boolean }>({ src: '', isYouTube: false });
   const categories = [
     {
       title: 'Gel Polish',
@@ -28,77 +23,17 @@ export default function ProductsPage() {
     }
   ];
 
-  const mixingVideos = [
-    {
-      title: "Deep Red Pigment Blend",
-      description:
-        "Highly pigmented red gel polish being mixed to a perfectly smooth consistency under strict EU-regulated conditions.",
-      poster: '/img/videos/mixing-poster-1.jpg',
-      videoSrc: "/videos/mixing/video1.mp4",
-      isYouTube: false,
-    },
-    {
-      title: "Nude Base Adjustment",
-      description:
-        "Fine-tuning our nude gel base for flawless coverage while following all factory safety and quality protocols.",
-      poster: '/img/videos/mixing-poster-2.jpg',
-      videoSrc: "/videos/mixing/video2.mp4",
-      isYouTube: false,
-    },
-    {
-      title: "Violet Concentrate Pouring",
-      description:
-        "A behind-the-scenes look at precision pouring of violet concentrate to achieve intense colour with stable viscosity.",
-      poster: '/img/videos/mixing-poster-3.jpg',
-      videoSrc: "/videos/mixing/video3.mp4",
-      isYouTube: false,
-    },
-    {
-      title: "Cool-Tone Balancing",
-      description:
-        "Balancing cool pigments to keep tone consistent from batch to batch, fully aligned with current EU cosmetic regulations.",
-      poster: '/img/videos/mixing-poster-4.jpg',
-      videoSrc: "/videos/mixing/video4.mp4",
-      isYouTube: false,
-    },
-    {
-      title: "Warm Beige Formula Blend",
-      description:
-        "Mixing a warm beige creamy gel using high-grade raw materials in a controlled, safe production environment.",
-      poster: '/img/videos/mixing-poster-5.jpg',
-      videoSrc: "/videos/mixing/video5.mp4",
-      isYouTube: false,
-    },
-    {
-      title: "High-Coverage Black Mixing",
-      description:
-        "Our intensely pigmented black gel polish going through a slow blend process that minimises micro-bubbles and ensures opacity.",
-      poster: '/img/videos/mixing-poster-6.jpg',
-      videoSrc: "/videos/mixing/video6.mp4",
-      isYouTube: false,
-    },
-    {
-      title: "Shimmer Suspension Test",
-      description:
-        "Ensuring shimmer pigments stay evenly suspended in the gel while meeting all EU cosmetic safety standards.",
-      poster: '/img/videos/mixing-poster-7.jpg',
-      videoSrc: "/videos/mixing/video7.mp4",
-      isYouTube: false,
-    },
-    {
-      title: "Final Quality Check",
-      description:
-        "Final verification of texture, opacity, and stability of each batch, carried out under strict factory safety procedures.",
-      poster: '/img/videos/mixing-poster-8.jpg',
-      videoSrc: "/videos/mixing/video8.mp4",
-      isYouTube: false,
-    }
+  // Video sources for colour mixing section
+  const mixingVideoSources = [
+    "/videos/mixing/Mixing (2).MP4",
+    "/videos/mixing/Mixing (3).MP4",
+    "/videos/mixing/Mixing (4).MP4",
+    "/videos/mixing/Mixing (5).MP4",
+    "/videos/mixing/Mixing (6).MP4",
+    "/videos/mixing/Mixing (23).MOV",
+    "/videos/mixing/Mixing (24).MOV",
+    "/videos/mixing/Mixing (25).MOV"
   ];
-
-  const openVideo = (videoSrc: string, isYouTube: boolean) => {
-    setCurrentVideo({ src: videoSrc, isYouTube });
-    setVideoModalOpen(true);
-  };
 
   return (
     <PageTemplate
@@ -161,52 +96,29 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg p-8 border border-gray-200">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-3">Colour Mixing — Behind the Scenes</h2>
-          <p className="text-gray-600 font-light">Watch how we create perfect shades in our state-of-the-art laboratory.</p>
-        </div>
+      <section className="mixing-videos-section">
+        <h2 className="mixing-title">Colour Mixing — Behind the Scenes</h2>
+        <p className="mixing-text">
+          Highly pigmented professional formulas created under strict EU regulations,
+          precision-measured, and hand-finished in our laboratory.
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {mixingVideos.map((video, index) => (
-            <div
+        <div className="mixing-grid">
+          {mixingVideoSources.map((videoSrc, index) => (
+            <video 
               key={index}
-              className="group relative cursor-pointer rounded-lg overflow-hidden bg-gray-100 hover:shadow-xl transition-all duration-300"
-              onClick={() => openVideo(video.videoSrc, video.isYouTube)}
-              role="button"
-              tabIndex={0}
-              aria-label={`Play video: ${video.title}`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  openVideo(video.videoSrc, video.isYouTube);
-                }
-              }}
+              className="mixing-video" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              preload="auto"
             >
-              <div className="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative">
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-blue-800 bg-opacity-90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Play size={28} className="text-white ml-1" fill="white" aria-hidden="true" />
-                  </div>
-                </div>
-                <span className="text-gray-400 text-sm">Video Placeholder</span>
-              </div>
-              <div className="p-4 bg-white">
-                <h3 className="font-semibold text-gray-900 text-base mb-2">{video.title}</h3>
-                <p className="text-gray-600 text-sm font-light leading-relaxed">{video.description}</p>
-              </div>
-            </div>
+              <source src={videoSrc} type="video/mp4" />
+            </video>
           ))}
         </div>
-      </div>
-
-      {videoModalOpen && (
-        <VideoModal
-          videoSrc={currentVideo.src}
-          isYouTube={currentVideo.isYouTube}
-          onClose={() => setVideoModalOpen(false)}
-        />
-      )}
+      </section>
     </PageTemplate>
   );
 }
