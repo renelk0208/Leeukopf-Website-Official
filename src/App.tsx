@@ -29,7 +29,7 @@ function App() {
       <Route path="/products/builder-systems" element={<BuilderSystemsPage />} />
       <Route path="/products/french-collection" element={<FrenchCollectionPage />} />
       <Route path="/contact" element={<ContactPage />} />
-      <Route path="/certificates" element={<CertificatesPage />} />
+      <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
       <Route path="/private-label" element={<PrivateLabelPage />} />
       <Route path="/private-label/bottles" element={<PrivateLabelBottlesPage />} />
       <Route path="/private-label/jars" element={<PrivateLabelJarsPage />} />
