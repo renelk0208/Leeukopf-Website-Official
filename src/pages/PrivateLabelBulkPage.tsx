@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { Package } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 
 interface BulkProduct {
@@ -47,6 +49,12 @@ const BULK_PRODUCTS: BulkProduct[] = [
 ];
 
 export default function PrivateLabelBulkPage() {
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+
+  const handleImageError = (productId: string) => {
+    setImageErrors(prev => new Set(prev).add(productId));
+  };
+
   return (
     <PageTemplate
       title="Bulk Packaging Options"
@@ -65,12 +73,20 @@ export default function PrivateLabelBulkPage() {
               className="group cursor-pointer bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="aspect-video bg-gray-50 relative overflow-hidden">
-                <img
-                  src={product.src}
-                  alt={product.alt}
-                  loading="lazy"
-                  className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                />
+                {imageErrors.has(product.id) ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center p-4">
+                    <Package size={48} className="text-gray-300 mb-2" />
+                    <p className="text-sm text-gray-500 text-center">Image not available</p>
+                  </div>
+                ) : (
+                  <img
+                    src={product.src}
+                    alt={product.alt}
+                    loading="lazy"
+                    onError={() => handleImageError(product.id)}
+                    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  />
+                )}
               </div>
               <div className="p-5 space-y-2">
                 <h2 className="text-lg font-semibold text-gray-900">{product.name}</h2>
