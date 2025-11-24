@@ -240,8 +240,9 @@ export default function PrivateLabelJarsPage() {
         { label: 'Jars' }
       ]}
     >
-      <div className="space-y-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="space-y-8 sm:space-y-10 md:space-y-12">
+        {/* Responsive jar grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {JARS.map((jar) => (
             <div
               key={jar.id}
@@ -249,9 +250,9 @@ export default function PrivateLabelJarsPage() {
             >
               <div className="aspect-square bg-gray-50 relative overflow-hidden">
                 {imageErrors.has(jar.id) ? (
-                  <div className="w-full h-full flex flex-col items-center justify-center p-4">
-                    <Package size={48} className="text-gray-300 mb-2" />
-                    <p className="text-sm text-gray-500 text-center">Image not available</p>
+                  <div className="w-full h-full flex flex-col items-center justify-center p-2 sm:p-4">
+                    <Package size={36} className="text-gray-300 mb-2 sm:w-12 sm:h-12" />
+                    <p className="text-xs sm:text-sm text-gray-500 text-center">Image not available</p>
                   </div>
                 ) : (
                   <img
@@ -259,28 +260,29 @@ export default function PrivateLabelJarsPage() {
                     alt={jar.alt}
                     loading="lazy"
                     onError={() => handleImageError(jar.id)}
-                    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-contain p-2 sm:p-4 group-hover:scale-105 transition-transform duration-300"
                   />
                 )}
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">{jar.name}</h3>
-                <p className="text-sm text-gray-600 font-light">{jar.description}</p>
+              <div className="p-2 sm:p-4">
+                <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{jar.name}</h3>
+                <p className="text-xs sm:text-sm text-gray-600 font-light">{jar.description}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
-            <button className="px-8 py-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors">
+        {/* Responsive CTA section */}
+        <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-4 sm:mb-6">
+            <button className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors min-h-[44px] text-sm sm:text-base">
               Request Jar Specifications
             </button>
-            <button className="px-8 py-3 bg-white border-2 border-blue-800 text-blue-800 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
+            <button className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-white border-2 border-blue-800 text-blue-800 font-semibold rounded-lg hover:bg-blue-50 transition-colors min-h-[44px] text-sm sm:text-base">
               Get Pricing
             </button>
           </div>
-          <p className="text-center text-sm text-gray-600 font-light">
+          <p className="text-center text-xs sm:text-sm text-gray-600 font-light">
             Available in multiple sizes • Custom colors available • Glossy and matte finishes
           </p>
         </div>
