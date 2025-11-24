@@ -104,19 +104,25 @@ export default function ProductsPage() {
         </p>
 
         <div className="mixing-grid">
-          {mixingVideoSources.map((videoSrc, index) => (
-            <video 
-              key={index}
-              className="mixing-video" 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
-              preload="auto"
-            >
-              <source src={videoSrc} type="video/mp4" />
-            </video>
-          ))}
+          {mixingVideoSources.map((videoSrc, index) => {
+            const fileExtension = videoSrc.split('.').pop()?.toLowerCase();
+            const videoType = fileExtension === 'mov' ? 'video/quicktime' : 'video/mp4';
+            
+            return (
+              <video 
+                key={index}
+                className="mixing-video" 
+                autoPlay 
+                muted 
+                loop 
+                playsInline 
+                preload="metadata"
+                aria-label={`Colour mixing process video ${index + 1}`}
+              >
+                <source src={videoSrc} type={videoType} />
+              </video>
+            );
+          })}
         </div>
       </section>
     </PageTemplate>
