@@ -5,28 +5,16 @@ export default function OurBrandsPage() {
   const brands = [
     {
       name: 'GEL.IT.UP',
-      description: 'Premium gel polish system with exceptional durability and shine. Professional quality for salon and home use.',
+      description: 'Founded in 2011, GEL.IT.UP by GIUP® is rooted in the philosophy of "Superior Innovation." We deliver top-class nail products while strictly adhering to EU regulations and global GMP (good manufacturing practices). From the start, we\'ve been dedicated to cruelty-free practices, with Leaping Bunny certification representing the gold standard. Professionals are at the heart of our brand—our products are exclusively distributed to industry experts to maintain nail industry standards. We emphasize personalized 1-on-1 customer service, keeping our rapidly growing global distributor network like a family. We actively promote environmental responsibility through our Waste Management Program, encouraging recycling of gel polish bottles from any brand. Inclusivity is a core value—we welcome everyone regardless of age, race, or gender. Our vision is for a healthier planet, sustainable beauty, and respect for diversity.',
       path: '/our-brands/gel-it-up',
       image: '/GEL.IT.UP-NEW-LOGO-2024_black_2.png'
-    },
-    {
-      name: 'Gender Neutral',
-      description: 'Inclusive beauty products designed for everyone. Breaking boundaries in nail care with universal appeal.',
-      path: '/our-brands/gender-neutral',
-      image: '/gn_logo.png'
-    },
-    {
-      name: 'The Gel Crew',
-      description: 'Professional-grade gel systems trusted by nail technicians. Complete solutions for modern nail artistry.',
-      path: '/our-brands/the-gel-crew',
-      image: '/gel_crew_ad_post2.jpg'
     }
   ];
 
   return (
     <PageTemplate
       title="Our Brands"
-      subtitle="Discover our family of professional beauty brands, each crafted with precision and passion."
+      subtitle="Discover GEL.IT.UP by GIUP® - our premium professional nail brand, crafted with superior innovation and dedication to excellence."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Brands' }
