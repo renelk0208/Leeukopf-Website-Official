@@ -77,7 +77,7 @@ export default function Navigation() {
           <div className="flex-shrink-0">
             <Link to="/" className="block">
               <img
-                src="/leeukopf_black.png"
+                src="/favicon.ico"
                 alt="Leeukopf Laboratories Logo"
                 className="h-10 md:h-[60px] w-auto object-contain hover:opacity-80 transition-opacity"
               />
