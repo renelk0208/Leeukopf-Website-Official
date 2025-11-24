@@ -27,11 +27,16 @@ export default function ProductsPage() {
   ];
 
   // Video sources for colour mixing section
-  // Note: Original files were numbered 2, 3, 4 - maintaining original numbering
+  // Videos: Mixing 2, 3, 4, 5, 10, 11, 12, 14
   const mixingVideoSources = [
     "/img/mixing/videos/Mixing-2.mp4",
     "/img/mixing/videos/Mixing-3.mp4",
-    "/img/mixing/videos/Mixing-4.mp4"
+    "/img/mixing/videos/Mixing-4.mp4",
+    "/img/mixing/videos/Mixing-5.mp4",
+    "/img/mixing/videos/Mixing-10.mp4",
+    "/img/mixing/videos/Mixing-11.mp4",
+    "/img/mixing/videos/Mixing-12.mp4",
+    "/img/mixing/videos/Mixing-14.mp4"
   ];
 
   // Ensure videos play on iOS devices
