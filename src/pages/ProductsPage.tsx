@@ -25,14 +25,14 @@ export default function ProductsPage() {
 
   // Video sources for colour mixing section
   const mixingVideoSources = [
-    "/videos/mixing/Mixing (2).MP4",
-    "/videos/mixing/Mixing (3).MP4",
-    "/videos/mixing/Mixing (4).MP4",
-    "/videos/mixing/Mixing (5).MP4",
-    "/videos/mixing/Mixing (6).MP4",
-    "/videos/mixing/Mixing (23).MOV",
-    "/videos/mixing/Mixing (24).MOV",
-    "/videos/mixing/Mixing (25).MOV"
+    "/img/mixing/videos/Mixing (2).MP4",
+    "/img/mixing/videos/Mixing (3).MP4",
+    "/img/mixing/videos/Mixing (4).MP4",
+    "/img/mixing/videos/Mixing (5).MP4",
+    "/img/mixing/videos/Mixing (6).MP4",
+    "/img/mixing/videos/Mixing (23).MOV",
+    "/img/mixing/videos/Mixing (24).MOV",
+    "/img/mixing/videos/Mixing (25).MOV"
   ];
 
   return (
