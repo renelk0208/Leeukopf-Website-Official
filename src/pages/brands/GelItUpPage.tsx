@@ -6,18 +6,44 @@ export default function GelItUpPage() {
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
 
   const brandImages = [
-    {
-      src: '/img/brands/gel-it-up/product-showcase-1.jpg',
-      alt: 'GEL.IT.UP Product Showcase 1'
-    },
-    {
-      src: '/img/brands/gel-it-up/product-showcase-2.jpg',
-      alt: 'GEL.IT.UP Product Showcase 2'
-    },
-    {
-      src: '/img/brands/gel-it-up/product-showcase-3.jpg',
-      alt: 'GEL.IT.UP Product Showcase 3'
-    }
+    { src: '/img/brands/gelitup/Gelitup1 (1).jpg', alt: 'GEL.IT.UP Product Image 1' },
+    { src: '/img/brands/gelitup/Gelitup1 (2).jpg', alt: 'GEL.IT.UP Product Image 2' },
+    { src: '/img/brands/gelitup/Gelitup1 (3).jpg', alt: 'GEL.IT.UP Product Image 3' },
+    { src: '/img/brands/gelitup/Gelitup1 (4).jpg', alt: 'GEL.IT.UP Product Image 4' },
+    { src: '/img/brands/gelitup/Gelitup1 (5).jpg', alt: 'GEL.IT.UP Product Image 5' },
+    { src: '/img/brands/gelitup/Gelitup1 (6).jpg', alt: 'GEL.IT.UP Product Image 6' },
+    { src: '/img/brands/gelitup/Gelitup1 (7).jpg', alt: 'GEL.IT.UP Product Image 7' },
+    { src: '/img/brands/gelitup/Gelitup1 (8).jpg', alt: 'GEL.IT.UP Product Image 8' },
+    { src: '/img/brands/gelitup/Gelitup1 (9).jpg', alt: 'GEL.IT.UP Product Image 9' },
+    { src: '/img/brands/gelitup/Gelitup1 (10).jpg', alt: 'GEL.IT.UP Product Image 10' },
+    { src: '/img/brands/gelitup/Gelitup1 (70).jpg', alt: 'GEL.IT.UP Product Image 11' },
+    { src: '/img/brands/gelitup/Gelitup1 (71).jpg', alt: 'GEL.IT.UP Product Image 12' },
+    { src: '/img/brands/gelitup/Gelitup1 (76).jpg', alt: 'GEL.IT.UP Product Image 13' },
+    { src: '/img/brands/gelitup/Gelitup1 (78).jpg', alt: 'GEL.IT.UP Product Image 14' },
+    { src: '/img/brands/gelitup/Gelitup1 (79).jpg', alt: 'GEL.IT.UP Product Image 15' },
+    { src: '/img/brands/gelitup/Gelitup1 (89).jpg', alt: 'GEL.IT.UP Product Image 16' },
+    { src: '/img/brands/gelitup/Gelitup1 (91).jpg', alt: 'GEL.IT.UP Product Image 17' },
+    { src: '/img/brands/gelitup/Gelitup1 (92).jpg', alt: 'GEL.IT.UP Product Image 18' },
+    { src: '/img/brands/gelitup/Gelitup1 (93).jpg', alt: 'GEL.IT.UP Product Image 19' },
+    { src: '/img/brands/gelitup/Gelitup1 (94).jpg', alt: 'GEL.IT.UP Product Image 20' },
+    { src: '/img/brands/gelitup/Gelitup1 (100).jpg', alt: 'GEL.IT.UP Product Image 21' },
+    { src: '/img/brands/gelitup/Gelitup1 (102).jpg', alt: 'GEL.IT.UP Product Image 22' },
+    { src: '/img/brands/gelitup/Gelitup1 (105).jpg', alt: 'GEL.IT.UP Product Image 23' },
+    { src: '/img/brands/gelitup/Gelitup1 (106).jpg', alt: 'GEL.IT.UP Product Image 24' },
+    { src: '/img/brands/gelitup/Gelitup1 (107).jpg', alt: 'GEL.IT.UP Product Image 25' },
+    { src: '/img/brands/gelitup/Gelitup1 (108).jpg', alt: 'GEL.IT.UP Product Image 26' },
+    { src: '/img/brands/gelitup/Gelitup1 (111).jpg', alt: 'GEL.IT.UP Product Image 27' },
+    { src: '/img/brands/gelitup/Gelitup1 (112).jpg', alt: 'GEL.IT.UP Product Image 28' },
+    { src: '/img/brands/gelitup/Gelitup1 (113).jpg', alt: 'GEL.IT.UP Product Image 29' },
+    { src: '/img/brands/gelitup/Gelitup1 (114).jpg', alt: 'GEL.IT.UP Product Image 30' },
+    { src: '/img/brands/gelitup/Gelitup1 (118).jpg', alt: 'GEL.IT.UP Product Image 31' },
+    { src: '/img/brands/gelitup/Gelitup1 (119).jpg', alt: 'GEL.IT.UP Product Image 32' },
+    { src: '/img/brands/gelitup/Gelitup1 (120).jpg', alt: 'GEL.IT.UP Product Image 33' },
+    { src: '/img/brands/gelitup/Gelitup1 (121).jpg', alt: 'GEL.IT.UP Product Image 34' },
+    { src: '/img/brands/gelitup/Gelitup1 (122).jpg', alt: 'GEL.IT.UP Product Image 35' },
+    { src: '/img/brands/gelitup/Gelitup1 (125).jpg', alt: 'GEL.IT.UP Product Image 36' },
+    { src: '/img/brands/gelitup/Gelitup1 (126).jpg', alt: 'GEL.IT.UP Product Image 37' },
+    { src: '/img/brands/gelitup/Gelitup1 (130).jpg', alt: 'GEL.IT.UP Product Image 38' },
   ];
 
   const handleImageError = (index: number) => {
@@ -43,11 +69,20 @@ export default function GelItUpPage() {
             className="w-full h-auto"
           />
         </div>
-        <p className="text-lg text-gray-600 font-light max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg text-gray-600 font-light max-w-3xl mx-auto leading-relaxed mb-6">
           GEL.IT.UP represents the pinnacle of gel polish innovation, combining cutting-edge formulation 
           technology with stunning color collections. Trusted by professionals worldwide for its 
           exceptional performance and long-lasting results.
         </p>
+        <a
+          href="https://www.gelitup.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg"
+        >
+          <ExternalLink size={18} className="mr-2" />
+          Visit www.gelitup.com
+        </a>
       </div>
 
       {/* Brand Story Section */}
@@ -69,7 +104,7 @@ export default function GelItUpPage() {
       {/* Product Gallery Section */}
       <div className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Explore GEL.IT.UP</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
           {brandImages.map((image, index) => (
             <div 
               key={index}
@@ -77,9 +112,8 @@ export default function GelItUpPage() {
             >
               <div className="aspect-square bg-gray-100 flex items-center justify-center">
                 {imageErrors[index] ? (
-                  <div className="text-center p-8">
-                    <p className="text-gray-400 text-sm">Image placeholder</p>
-                    <p className="text-gray-400 text-xs mt-2">Upload images to /public/img/brands/gel-it-up/</p>
+                  <div className="text-center p-4">
+                    <p className="text-gray-400 text-sm">Image unavailable</p>
                   </div>
                 ) : (
                   <img
@@ -92,12 +126,6 @@ export default function GelItUpPage() {
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="text-center">
-          <p className="text-sm text-gray-500 mb-6">
-            Upload your product images to <code className="bg-gray-100 px-2 py-1 rounded text-xs">/public/img/brands/gel-it-up/</code>
-          </p>
         </div>
       </div>
 
