@@ -312,7 +312,7 @@ export default function PrivateLabelBottlesPage() {
     >
       <div className="space-y-8 sm:space-y-10 md:space-y-12">
         {/* Responsive bottle grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {BOTTLES.map((bottle) => (
             <div
               key={bottle.id}
@@ -398,7 +398,7 @@ export default function PrivateLabelBottlesPage() {
                 className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Previous image"
               >
-                <ChevronLeft size={24} className="text-gray-700 sm:w-8 sm:h-8" />
+                <ChevronLeft className="text-gray-700 w-6 h-6 sm:w-8 sm:h-8" />
               </button>
 
               <button
@@ -409,7 +409,7 @@ export default function PrivateLabelBottlesPage() {
                 className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Next image"
               >
-                <ChevronRight size={24} className="text-gray-700 sm:w-8 sm:h-8" />
+                <ChevronRight className="text-gray-700 w-6 h-6 sm:w-8 sm:h-8" />
               </button>
             </>
           )}
