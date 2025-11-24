@@ -64,6 +64,7 @@ export default function CertificatesPage() {
                   className="bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.08)] p-6 md:p-7 hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300 block"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`View full size ${cert.name}`}
                 >
                   <div className="mb-5">
                     <img
