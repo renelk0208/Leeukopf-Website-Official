@@ -18,6 +18,7 @@ import GelPolishPage from './pages/products/GelPolishPage';
 import TopsBasesPrimersPage from './pages/products/TopsBasesPrimersPage';
 import BuilderSystemsPage from './pages/products/BuilderSystemsPage';
 import FrenchCollectionPage from './pages/products/FrenchCollectionPage';
+import GelItUpPage from './pages/brands/GelItUpPage';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
       <Route path="/private-label/jars" element={<PrivateLabelJarsPage />} />
       <Route path="/private-label/bulk" element={<PrivateLabelBulkPage />} />
       <Route path="/our-brands" element={<OurBrandsPage />} />
+      <Route path="/our-brands/gel-it-up" element={<GelItUpPage />} />
       <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
       <Route path="/client-registration" element={<ClientRegistrationPage />} />
       <Route path="/terms-of-use" element={<TermsOfUsePage />} />
