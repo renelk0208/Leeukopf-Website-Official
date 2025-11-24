@@ -48,28 +48,4 @@
   .section-light h6 {
     @apply text-gray-900;
   }
-
-  /* Colour Mixing Videos Section */
-  .mixing-videos-section {
-    @apply pt-12 pb-12 px-6;
-  }
-
-  .mixing-title {
-    @apply text-3xl font-semibold text-gray-900 mb-2 text-center;
-  }
-
-  .mixing-text {
-    @apply mb-8 max-w-2xl text-gray-600 font-light text-center mx-auto;
-  }
-
-  .mixing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .mixing-video {
-    @apply w-full rounded-lg bg-black;
-    object-fit: cover;
-  }
 }
