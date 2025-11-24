@@ -310,8 +310,9 @@ export default function PrivateLabelBottlesPage() {
         { label: 'Bottles' }
       ]}
     >
-      <div className="space-y-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="space-y-8 sm:space-y-10 md:space-y-12">
+        {/* Responsive bottle grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {BOTTLES.map((bottle) => (
             <div
               key={bottle.id}
@@ -323,35 +324,37 @@ export default function PrivateLabelBottlesPage() {
                   src={bottle.images[0]}
                   alt={bottle.name}
                   loading="lazy"
-                  className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain p-2 sm:p-4 group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">{bottle.name}</h3>
-                <p className="text-sm text-gray-600 font-light">{bottle.spec}</p>
+              <div className="p-2 sm:p-4">
+                <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{bottle.name}</h3>
+                <p className="text-xs sm:text-sm text-gray-600 font-light">{bottle.spec}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
-            <button className="px-8 py-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors">
+        {/* Responsive CTA section */}
+        <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-4 sm:mb-6">
+            <button className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors min-h-[44px] text-sm sm:text-base">
               Request Bottle Specs (PDF)
             </button>
-            <button className="px-8 py-3 bg-white border-2 border-blue-800 text-blue-800 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
+            <button className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-white border-2 border-blue-800 text-blue-800 font-semibold rounded-lg hover:bg-blue-50 transition-colors min-h-[44px] text-sm sm:text-base">
               Get Pricing
             </button>
           </div>
-          <p className="text-center text-sm text-gray-600 font-light">
+          <p className="text-center text-xs sm:text-sm text-gray-600 font-light">
             Available options: Caps (black/white/silver) • Brush types • Finish (glossy/matte)
           </p>
         </div>
       </div>
 
+      {/* Responsive modal */}
       {selectedBottle && (
         <div
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={closeModal}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
@@ -359,40 +362,43 @@ export default function PrivateLabelBottlesPage() {
           aria-modal="true"
           aria-label="Image carousel"
         >
+          {/* Close button - accessible on mobile */}
           <button
             onClick={closeModal}
-            className="absolute top-4 right-4 z-10 p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+            className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Close modal"
           >
-            <X size={24} className="text-gray-700" />
+            <X size={20} className="text-gray-700 sm:w-6 sm:h-6" />
           </button>
 
+          {/* Zoom button - hidden on very small screens where pinch-zoom is available */}
           <button
             onClick={(e) => {
               e.stopPropagation();
               toggleZoom();
             }}
-            className="absolute top-4 right-20 z-10 p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+            className="absolute top-2 right-14 sm:top-4 sm:right-20 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] hidden sm:flex items-center justify-center"
             aria-label={isZoomed ? "Zoom out" : "Zoom in"}
           >
             {isZoomed ? (
-              <ZoomOut size={24} className="text-gray-700" />
+              <ZoomOut size={20} className="text-gray-700 sm:w-6 sm:h-6" />
             ) : (
-              <ZoomIn size={24} className="text-gray-700" />
+              <ZoomIn size={20} className="text-gray-700 sm:w-6 sm:h-6" />
             )}
           </button>
 
           {selectedBottle.images.length > 1 && (
             <>
+              {/* Navigation buttons - responsive sizing */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   prevImage();
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Previous image"
               >
-                <ChevronLeft size={32} className="text-gray-700" />
+                <ChevronLeft className="text-gray-700 w-6 h-6 sm:w-8 sm:h-8" />
               </button>
 
               <button
@@ -400,34 +406,37 @@ export default function PrivateLabelBottlesPage() {
                   e.stopPropagation();
                   nextImage();
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Next image"
               >
-                <ChevronRight size={32} className="text-gray-700" />
+                <ChevronRight className="text-gray-700 w-6 h-6 sm:w-8 sm:h-8" />
               </button>
             </>
           )}
 
+          {/* Modal content - responsive sizing */}
           <div
-            className="max-w-5xl w-full max-h-[80vh] flex flex-col items-center"
+            className="max-w-5xl w-full max-h-[85vh] sm:max-h-[80vh] flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className={`relative bg-white rounded-lg overflow-hidden mb-4 ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}>
+            <div className={`relative bg-white rounded-lg overflow-hidden mb-2 sm:mb-4 ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}>
               <img
                 src={currentImage}
                 alt={`${selectedBottle.name} - Image ${currentImageIndex + 1}`}
-                className={`max-h-[70vh] w-auto transition-transform duration-300 ${isZoomed ? 'scale-150' : 'scale-100'}`}
+                className={`max-h-[60vh] sm:max-h-[70vh] w-auto transition-transform duration-300 ${isZoomed ? 'scale-150' : 'scale-100'}`}
                 onClick={toggleZoom}
               />
             </div>
 
-            <div className="bg-white rounded-lg px-6 py-3 mb-4">
-              <h3 className="text-xl font-semibold text-gray-900 text-center">{selectedBottle.name}</h3>
-              <p className="text-sm text-gray-600 font-light text-center">{selectedBottle.spec}</p>
+            {/* Product info - responsive */}
+            <div className="bg-white rounded-lg px-4 sm:px-6 py-2 sm:py-3 mb-2 sm:mb-4">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 text-center">{selectedBottle.name}</h3>
+              <p className="text-xs sm:text-sm text-gray-600 font-light text-center">{selectedBottle.spec}</p>
             </div>
 
+            {/* Thumbnails - responsive sizing */}
             {selectedBottle.images.length > 1 && (
-              <div className="flex gap-2 bg-white rounded-lg p-3">
+              <div className="flex gap-1.5 sm:gap-2 bg-white rounded-lg p-2 sm:p-3 overflow-x-auto max-w-full">
                 {selectedBottle.images.map((img, idx) => (
                   <button
                     key={idx}
@@ -435,7 +444,7 @@ export default function PrivateLabelBottlesPage() {
                       setCurrentImageIndex(idx);
                       setIsZoomed(false);
                     }}
-                    className={`w-16 h-16 rounded border-2 overflow-hidden transition-all duration-300 ${
+                    className={`w-12 h-12 sm:w-16 sm:h-16 rounded border-2 overflow-hidden transition-all duration-300 flex-shrink-0 ${
                       idx === currentImageIndex
                         ? 'border-blue-800 ring-2 ring-blue-600'
                         : 'border-gray-300 hover:border-blue-700 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer'

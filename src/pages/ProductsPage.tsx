@@ -62,59 +62,63 @@ export default function ProductsPage() {
       showCTA={true}
       ctaText="Request Product Catalogue"
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      {/* Responsive product category grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-12 md:mb-16">
         {categories.map((category) => (
           <Link
             key={category.path}
             to={category.path}
-            className="group block p-8 bg-white rounded-lg border border-gray-200 hover:border-blue-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            className="group block p-4 sm:p-6 md:p-8 bg-white rounded-lg border border-gray-200 hover:border-blue-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
           >
-            <div className="aspect-square bg-gray-100 rounded-lg mb-6 border border-gray-200 group-hover:border-blue-500 transition-colors overflow-hidden flex items-center justify-center">
+            <div className="aspect-square bg-gray-100 rounded-lg mb-4 sm:mb-6 border border-gray-200 group-hover:border-blue-500 transition-colors overflow-hidden flex items-center justify-center">
               {category.image ? (
                 <img
                   src={category.image}
                   alt={category.title}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               ) : null}
             </div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-blue-800 transition-colors">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-800 transition-colors">
               {category.title}
             </h3>
-            <p className="text-gray-600 font-light leading-relaxed">
+            <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
               {category.description}
             </p>
-            <div className="mt-4 text-blue-800 font-semibold group-hover:text-blue-900">
+            <div className="mt-3 sm:mt-4 text-blue-800 font-semibold group-hover:text-blue-900 text-sm sm:text-base">
               Explore Collection →
             </div>
           </Link>
         ))}
       </div>
 
-      <div className="bg-gray-50 rounded-lg p-8 border border-gray-200 mb-16">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Why Our Products Stand Out</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Responsive features section */}
+      <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center">Why Our Products Stand Out</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           <div className="text-center">
-            <div className="text-4xl mb-4">💎</div>
-            <h3 className="font-semibold text-gray-900 mb-2">Premium Quality</h3>
-            <p className="text-sm text-gray-600 font-light">Formulated with the finest ingredients for exceptional performance and durability.</p>
+            <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">💎</div>
+            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Premium Quality</h3>
+            <p className="text-xs sm:text-sm text-gray-600 font-light">Formulated with the finest ingredients for exceptional performance and durability.</p>
           </div>
           <div className="text-center">
-            <div className="text-4xl mb-4">🎨</div>
-            <h3 className="font-semibold text-gray-900 mb-2">Extensive Range</h3>
-            <p className="text-sm text-gray-600 font-light">From classic shades to trendy colors, we offer complete product ecosystems.</p>
+            <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🎨</div>
+            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Extensive Range</h3>
+            <p className="text-xs sm:text-sm text-gray-600 font-light">From classic shades to trendy colors, we offer complete product ecosystems.</p>
           </div>
           <div className="text-center">
-            <div className="text-4xl mb-4">⚡</div>
-            <h3 className="font-semibold text-gray-900 mb-2">Professional Grade</h3>
-            <p className="text-sm text-gray-600 font-light">Trusted by nail technicians worldwide for salon-quality results.</p>
+            <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚡</div>
+            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Professional Grade</h3>
+            <p className="text-xs sm:text-sm text-gray-600 font-light">Trusted by nail technicians worldwide for salon-quality results.</p>
           </div>
         </div>
       </div>
 
+      {/* Mixing videos section - uses responsive CSS classes from index.css */}
       <section className="mixing-videos-section">
-        <h2 className="mixing-title">Colour Mixing — Behind the Scenes</h2>
-        <p className="mixing-text">
+        <h2 className="mixing-title text-xl sm:text-2xl md:text-3xl">Colour Mixing — Behind the Scenes</h2>
+        <p className="mixing-text text-sm sm:text-base">
           Highly pigmented professional formulas created under strict EU regulations,
           precision-measured, and hand-finished in our laboratory.
         </p>
@@ -124,12 +128,12 @@ export default function ProductsPage() {
             <video 
               key={index}
               ref={el => videoRefs.current[index] = el}
-              className="mixing-video" 
+              className="mixing-video aspect-video" 
               autoPlay 
               muted 
               loop 
               playsInline 
-              preload="auto"
+              preload="metadata"
               aria-label={`Colour mixing process video ${index + 1}`}
               controls={false}
             >

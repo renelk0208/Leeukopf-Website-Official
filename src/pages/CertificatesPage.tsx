@@ -46,38 +46,41 @@ export default function CertificatesPage() {
       <Navigation />
       
       <main className="flex-grow">
-        <section className="py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+        {/* Responsive header section */}
+        <section className="py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
               Certificates & Compliance
             </h1>
 
-            <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed max-w-4xl mx-auto text-center mb-12 md:mb-16">
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 font-light leading-relaxed max-w-4xl mx-auto text-center mb-8 sm:mb-12 md:mb-16 px-2">
               Thermitek Ltd and Leeukopf Laboratories operate under strict European regulations and internationally recognised standards. Below you can view our key certifications – click any document to open it in full size.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* Responsive certificates grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {certificates.map((cert) => (
                 <a
                   key={cert.name}
                   href={cert.image}
-                  className="bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.08)] p-6 md:p-7 hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300 block"
+                  className="bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.08)] p-4 sm:p-6 md:p-7 hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300 block min-h-[44px]"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`View full size ${cert.name}`}
                 >
-                  <div className="mb-5">
+                  <div className="mb-4 sm:mb-5">
                     <img
                       src={cert.image}
                       alt={cert.alt}
                       className="w-full h-auto rounded-md"
+                      loading="lazy"
                     />
                   </div>
-                  <div className="border-t border-gray-200 pt-5">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                  <div className="border-t border-gray-200 pt-4 sm:pt-5">
+                    <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">
                       {cert.name}
                     </h2>
-                    <p className="text-sm text-gray-600 font-light leading-relaxed">
+                    <p className="text-xs sm:text-sm text-gray-600 font-light leading-relaxed">
                       {cert.description}
                     </p>
                   </div>

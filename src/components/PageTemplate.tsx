@@ -62,19 +62,21 @@ export default function PageTemplate({
       <ScrollToTop />
       <Navigation />
       <div className="min-h-screen pt-16">
-      <div className="bg-white/80 backdrop-blur-sm py-12 border-b border-gray-200">
+      {/* Responsive header section */}
+      <div className="bg-white/80 backdrop-blur-sm py-8 sm:py-10 md:py-12 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <BackButton />
           </div>
-          <nav className="flex items-center space-x-2 text-sm mb-6">
+          {/* Responsive breadcrumbs - wrap on small screens */}
+          <nav className="flex flex-wrap items-center gap-1 text-xs sm:text-sm mb-4 sm:mb-6" aria-label="Breadcrumb">
             {breadcrumbs.map((item, index) => (
               <div key={index} className="flex items-center">
-                {index > 0 && <ChevronRight size={16} className="mx-2 text-gray-400" />}
+                {index > 0 && <ChevronRight size={14} className="mx-1 sm:mx-2 text-gray-400 flex-shrink-0" />}
                 {item.path ? (
                   <Link
                     to={item.path}
-                    className="text-gray-600 hover:text-blue-800 transition-colors"
+                    className="text-gray-600 hover:text-blue-800 transition-colors min-h-[44px] inline-flex items-center"
                   >
                     {item.label}
                   </Link>
@@ -85,27 +87,29 @@ export default function PageTemplate({
             ))}
           </nav>
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+          {/* Responsive title */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight">
             {title}
           </h1>
-          <p className="text-xl text-gray-700 max-w-3xl font-light">
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl font-light">
             {subtitle}
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Responsive content area */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
         {children}
 
         {showCTA && (
-          <div className="mt-16 text-center">
-            <div className="inline-block p-8 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 shadow-sm">
-              <p className="text-gray-700 mb-6 text-lg">
+          <div className="mt-10 sm:mt-12 md:mt-16 text-center">
+            <div className="inline-block p-5 sm:p-6 md:p-8 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 shadow-sm max-w-md mx-auto">
+              <p className="text-gray-700 mb-4 sm:mb-6 text-base sm:text-lg">
                 Interested in learning more?
               </p>
               <button
                 onClick={handleCTA}
-                className="btn-primary px-8 py-3"
+                className="btn-primary w-full sm:w-auto px-6 sm:px-8 py-3 min-h-[44px]"
               >
                 {ctaText}
               </button>
@@ -114,10 +118,11 @@ export default function PageTemplate({
         )}
       </div>
 
+      {/* Scroll to top button - accessible size */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-40 w-12 h-12 bg-blue-800 hover:bg-blue-900 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+          className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-40 w-11 h-11 sm:w-12 sm:h-12 bg-blue-800 hover:bg-blue-900 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px]"
           aria-label="Scroll to top"
         >
           <ArrowUp size={20} />
