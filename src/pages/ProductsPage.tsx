@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import PageTemplate from '../components/PageTemplate';
 
 export default function ProductsPage() {
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  
   const categories = [
     {
       title: 'Gel Polish',
@@ -26,10 +29,22 @@ export default function ProductsPage() {
   // Video sources for colour mixing section
   // Note: Original files were numbered 2, 3, 4 - maintaining original numbering
   const mixingVideoSources = [
-    "/videos/mixing/mixing-2.mp4",
-    "/videos/mixing/mixing-3.mp4",
-    "/videos/mixing/mixing-4.mp4"
+    "/img/mixing/videos/Mixing-2.mp4",
+    "/img/mixing/videos/Mixing-3.mp4",
+    "/img/mixing/videos/Mixing-4.mp4"
   ];
+
+  // Ensure videos play on iOS devices
+  useEffect(() => {
+    videoRefs.current.forEach(video => {
+      if (video) {
+        video.play().catch(() => {
+          // Autoplay was prevented, which is expected on some devices
+          // Video will play when it becomes visible
+        });
+      }
+    });
+  }, []);
 
   return (
     <PageTemplate
@@ -103,15 +118,18 @@ export default function ProductsPage() {
           {mixingVideoSources.map((videoSrc, index) => (
             <video 
               key={index}
+              ref={el => videoRefs.current[index] = el}
               className="mixing-video" 
               autoPlay 
               muted 
               loop 
               playsInline 
-              preload="metadata"
+              preload="auto"
               aria-label={`Colour mixing process video ${index + 1}`}
+              controls={false}
             >
               <source src={videoSrc} type="video/mp4" />
+              Your browser does not support the video tag.
             </video>
           ))}
         </div>
