@@ -24,6 +24,7 @@ export default function ProductsPage() {
   ];
 
   // Video sources for colour mixing section
+  // Note: Original files were numbered 2, 3, 4 - maintaining original numbering
   const mixingVideoSources = [
     "/videos/mixing/mixing-2.mp4",
     "/videos/mixing/mixing-3.mp4",
