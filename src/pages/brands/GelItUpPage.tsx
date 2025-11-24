@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import PageTemplate from '../../components/PageTemplate';
 import { ExternalLink } from 'lucide-react';
 
 export default function GelItUpPage() {
+  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
+
   const brandImages = [
     {
       src: '/img/brands/gel-it-up/product-showcase-1.jpg',
@@ -16,6 +19,10 @@ export default function GelItUpPage() {
       alt: 'GEL.IT.UP Product Showcase 3'
     }
   ];
+
+  const handleImageError = (index: number) => {
+    setImageErrors(prev => ({ ...prev, [index]: true }));
+  };
 
   return (
     <PageTemplate
@@ -69,25 +76,19 @@ export default function GelItUpPage() {
               className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
             >
               <div className="aspect-square bg-gray-100 flex items-center justify-center">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback for missing images
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    const parent = target.parentElement;
-                    if (parent) {
-                      parent.innerHTML = `
-                        <div class="text-center p-8">
-                          <p class="text-gray-400 text-sm">Image placeholder</p>
-                          <p class="text-gray-400 text-xs mt-2">Upload images to /public/img/brands/gel-it-up/</p>
-                        </div>
-                      `;
-                    }
-                  }}
-                />
+                {imageErrors[index] ? (
+                  <div className="text-center p-8">
+                    <p className="text-gray-400 text-sm">Image placeholder</p>
+                    <p className="text-gray-400 text-xs mt-2">Upload images to /public/img/brands/gel-it-up/</p>
+                  </div>
+                ) : (
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full h-full object-cover"
+                    onError={() => handleImageError(index)}
+                  />
+                )}
               </div>
             </div>
           ))}
