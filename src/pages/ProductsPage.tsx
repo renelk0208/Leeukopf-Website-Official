@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import PageTemplate from '../components/PageTemplate';
 
 export default function ProductsPage() {
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  
   const categories = [
     {
       title: 'Gel Polish',
@@ -24,16 +27,29 @@ export default function ProductsPage() {
   ];
 
   // Video sources for colour mixing section
+  // Videos: Mixing 2, 3, 4, 5, 10, 11, 12, 14
   const mixingVideoSources = [
-    "/img/mixing/videos/Mixing (2).MP4",
-    "/img/mixing/videos/Mixing (3).MP4",
-    "/img/mixing/videos/Mixing (4).MP4",
-    "/img/mixing/videos/Mixing (5).MP4",
-    "/img/mixing/videos/Mixing (6).MP4",
-    "/img/mixing/videos/Mixing (23).MOV",
-    "/img/mixing/videos/Mixing (24).MOV",
-    "/img/mixing/videos/Mixing (25).MOV"
+    "/img/mixing/videos/Mixing-2.mp4",
+    "/img/mixing/videos/Mixing-3.mp4",
+    "/img/mixing/videos/Mixing-4.mp4",
+    "/img/mixing/videos/Mixing-5.mp4",
+    "/img/mixing/videos/Mixing-10.mp4",
+    "/img/mixing/videos/Mixing-11.mp4",
+    "/img/mixing/videos/Mixing-12.mp4",
+    "/img/mixing/videos/Mixing-14.mp4"
   ];
+
+  // Ensure videos play on iOS devices
+  useEffect(() => {
+    videoRefs.current.forEach(video => {
+      if (video) {
+        video.play().catch(() => {
+          // Autoplay was prevented, which is expected on some devices
+          // Video will play when it becomes visible
+        });
+      }
+    });
+  }, []);
 
   return (
     <PageTemplate
@@ -104,25 +120,23 @@ export default function ProductsPage() {
         </p>
 
         <div className="mixing-grid">
-          {mixingVideoSources.map((videoSrc, index) => {
-            const fileExtension = videoSrc.split('.').pop()?.toLowerCase();
-            const videoType = fileExtension === 'mov' ? 'video/quicktime' : 'video/mp4';
-            
-            return (
-              <video 
-                key={index}
-                className="mixing-video" 
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
-                preload="metadata"
-                aria-label={`Colour mixing process video ${index + 1}`}
-              >
-                <source src={videoSrc} type={videoType} />
-              </video>
-            );
-          })}
+          {mixingVideoSources.map((videoSrc, index) => (
+            <video 
+              key={index}
+              ref={el => videoRefs.current[index] = el}
+              className="mixing-video" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              preload="auto"
+              aria-label={`Colour mixing process video ${index + 1}`}
+              controls={false}
+            >
+              <source src={videoSrc} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          ))}
         </div>
       </section>
     </PageTemplate>
