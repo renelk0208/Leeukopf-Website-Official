@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-11-25T14:59:23.426Z",
-  "commit": "4c6c83d",
-  "branch": "copilot/update-certificates-page-blur",
+  "buildDate": "2025-11-25T18:05:57.256Z",
+  "commit": "ff00340",
+  "branch": "copilot/fix-certificate-display-issues",
   "message": "Build deployed successfully"
 }
