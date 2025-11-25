@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { Film } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 
 /** Video item for the colour mixing section */
@@ -10,29 +11,11 @@ interface VideoItem {
   src: string;
 }
 
-/**
- * Determines the MIME type for a video file based on its extension.
- * @param src - The video source path
- * @returns The appropriate MIME type string
- */
-function getVideoMimeType(src: string): string {
-  const extension = src.split('.').pop()?.toLowerCase();
-  switch (extension) {
-    case 'mov':
-      return 'video/quicktime';
-    case 'webm':
-      return 'video/webm';
-    case 'ogg':
-    case 'ogv':
-      return 'video/ogg';
-    case 'mp4':
-    default:
-      return 'video/mp4';
-  }
-}
-
 export default function ProductsPage() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [videoErrors, setVideoErrors] = useState<Set<string>>(new Set());
+  const [visibleVideos, setVisibleVideos] = useState<Set<string>>(new Set());
+  const [playingVideos, setPlayingVideos] = useState<Set<string>>(new Set());
   
   const categories = [
     {
@@ -56,7 +39,7 @@ export default function ProductsPage() {
   ];
 
   // All mixing videos available in the repository
-  // Located at: public/img/mixing/videos/
+  // Located at: public/videos/mixing/ (converted MP4 files for cross-browser compatibility)
   const videos: VideoItem[] = [
     {
       id: 'mixing-2',
@@ -80,51 +63,87 @@ export default function ProductsPage() {
       id: 'mixing-5',
       title: 'Laboratory Quality Standards',
       description: 'Manufactured under strict cleanroom protocols and safety regulations.',
-      src: '/img/mixing/videos/Mixing(5).MP4'
+      src: '/videos/mixing/Mixing (5).MP4'
     },
     {
       id: 'mixing-10',
       title: 'Viscosity Testing',
       description: 'Rigorous quality control ensures professional-grade performance.',
-      src: '/img/mixing/videos/Mixing(10).MOV'
+      src: '/videos/mixing/Mixing (10).mp4'
     },
     {
       id: 'mixing-11',
       title: 'Colour Mixing Expertise',
       description: 'Hand-finished with precision for true colour intensity and coverage.',
-      src: '/img/mixing/videos/Mixing(11).MOV'
+      src: '/videos/mixing/Mixing (11).mp4'
     },
     {
       id: 'mixing-12',
       title: 'Premium Ingredient Preparation',
       description: 'Only the finest EU-approved ingredients in our formulations.',
-      src: '/img/mixing/videos/Mixing(12).MOV'
+      src: '/videos/mixing/Mixing (12).mp4'
     },
     {
       id: 'mixing-13',
       title: 'Factory Production Process',
       description: 'Behind-the-scenes look at our state-of-the-art production line.',
-      src: '/img/mixing/videos/Mixing(13).MOV'
+      src: '/videos/mixing/Mixing (13).mp4'
     },
     {
       id: 'mixing-14',
       title: 'Final Quality Inspection',
       description: 'Every product undergoes thorough inspection before distribution.',
-      src: '/img/mixing/videos/Mixing(14).MOV'
+      src: '/videos/mixing/Mixing (14).mp4'
     }
   ];
 
-  // Ensure videos play on iOS devices
+  // Lazy loading with IntersectionObserver - only load videos when visible
   useEffect(() => {
-    videoRefs.current.forEach(video => {
-      if (video) {
-        video.play().catch(() => {
-          // Autoplay was prevented, which is expected on some devices
-          // Video will play when it becomes visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const videoId = entry.target.getAttribute('data-video-id');
+          if (videoId && entry.isIntersecting) {
+            setVisibleVideos((prev) => new Set([...prev, videoId]));
+          }
         });
+      },
+      { threshold: 0.25 }
+    );
+
+    videoRefs.current.forEach((video) => {
+      if (video) {
+        observer.observe(video);
       }
     });
+
+    return () => observer.disconnect();
   }, []);
+
+  // Handle video errors
+  const handleVideoError = useCallback((videoId: string) => {
+    setVideoErrors((prev) => new Set([...prev, videoId]));
+  }, []);
+
+  // Handle click-to-play
+  const handleVideoClick = useCallback((videoId: string, index: number) => {
+    const video = videoRefs.current[index];
+    if (!video) return;
+
+    if (playingVideos.has(videoId)) {
+      video.pause();
+      setPlayingVideos((prev) => {
+        const next = new Set(prev);
+        next.delete(videoId);
+        return next;
+      });
+    } else {
+      video.play().catch(() => {
+        handleVideoError(videoId);
+      });
+      setPlayingVideos((prev) => new Set([...prev, videoId]));
+    }
+  }, [playingVideos, handleVideoError]);
 
   return (
     <PageTemplate
@@ -201,21 +220,46 @@ export default function ProductsPage() {
         <div className="mixing-grid">
           {videos.map((video, index) => (
             <div key={video.id} className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-              <video 
-                ref={el => videoRefs.current[index] = el}
-                className="mixing-video aspect-video" 
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
-                preload="metadata"
-                aria-label={video.title}
-                controls={false}
-                title={video.title}
-              >
-                <source src={video.src} type={getVideoMimeType(video.src)} />
-                Your browser does not support the video tag.
-              </video>
+              {videoErrors.has(video.id) ? (
+                <div className="aspect-video bg-gray-100 flex flex-col items-center justify-center text-gray-500">
+                  <Film className="w-12 h-12 mb-2" />
+                  <p className="text-sm">Video format not supported</p>
+                  <p className="text-xs text-gray-400 mt-1">Try a different browser</p>
+                </div>
+              ) : (
+                <div 
+                  className="relative cursor-pointer group"
+                  onClick={() => handleVideoClick(video.id, index)}
+                >
+                  <video 
+                    ref={el => videoRefs.current[index] = el}
+                    data-video-id={video.id}
+                    className="mixing-video aspect-video" 
+                    muted 
+                    loop 
+                    playsInline 
+                    preload="none"
+                    aria-label={video.title}
+                    controls={false}
+                    title={video.title}
+                    onError={() => handleVideoError(video.id)}
+                  >
+                    {visibleVideos.has(video.id) && (
+                      <source src={video.src} type="video/mp4" />
+                    )}
+                    Your browser does not support the video tag.
+                  </video>
+                  {!playingVideos.has(video.id) && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                      <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <svg className="w-8 h-8 text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
               <div className="p-3 sm:p-4">
                 <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{video.title}</h3>
                 <p className="text-xs sm:text-sm text-gray-600 font-light">{video.description}</p>
