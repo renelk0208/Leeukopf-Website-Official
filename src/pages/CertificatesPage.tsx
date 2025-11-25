@@ -89,7 +89,7 @@ export default function CertificatesPage() {
                       width={cert.width}
                       height={cert.height}
                       sizes={RESPONSIVE_SIZES.threeColumn}
-                      className="w-full h-auto rounded-md"
+                      className="w-full h-auto rounded-md certificate-blurred"
                     />
                   </div>
                   <div className="border-t border-gray-200 pt-4 sm:pt-5">
