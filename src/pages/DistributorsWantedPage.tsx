@@ -1,4 +1,6 @@
 import PageTemplate from '../components/PageTemplate';
+import OptimizedImage from '../components/OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function DistributorsWantedPage() {
   return (
@@ -24,11 +26,13 @@ export default function DistributorsWantedPage() {
           </p>
         </div>
         <div>
-          <img
+          <OptimizedImage
             src="/World map.png"
             alt="Global distribution network"
+            width={1200}
+            height={800}
+            sizes={RESPONSIVE_SIZES.twoColumn}
             className="w-full h-auto rounded-lg shadow-sm object-cover"
-            loading="lazy"
           />
         </div>
       </div>
@@ -67,11 +71,13 @@ export default function DistributorsWantedPage() {
       {/* Responsive requirements section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12">
         <div className="order-2 lg:order-1">
-          <img
+          <OptimizedImage
             src="/distribution partnership.png"
             alt="Distribution partnership"
+            width={1200}
+            height={800}
+            sizes={RESPONSIVE_SIZES.twoColumn}
             className="w-full h-auto rounded-lg shadow-sm"
-            loading="lazy"
           />
         </div>
         <div className="order-1 lg:order-2">

@@ -1,5 +1,6 @@
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import OptimizedImage from './OptimizedImage';
 
 const SocialLinks = () => {
   const socialMedia = [
@@ -57,9 +58,11 @@ export default function Footer() {
           {/* Brand section */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/" className="block mb-4">
-              <img
+              <OptimizedImage
                 src="/leeukopf_black.png"
                 alt="Leeukopf Laboratories"
+                width={200}
+                height={50}
                 className="h-10 sm:h-12 w-auto object-contain hover:opacity-90 transition-opacity brightness-0 invert"
               />
             </Link>
@@ -140,9 +143,11 @@ export default function Footer() {
         {/* Copyright section */}
         <div className="pt-4 sm:pt-6 border-t border-gray-700">
           <div className="flex flex-col items-center gap-2 sm:gap-3">
-            <img 
+            <OptimizedImage
               src="/favicon_leeukopf.jpg" 
               alt="Leeukopf Laboratories" 
+              width={32}
+              height={32}
               className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
             />
             <div className="text-center text-gray-400 text-xs font-light">

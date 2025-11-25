@@ -1,6 +1,8 @@
 import PageTemplate from '../components/PageTemplate';
 import FacilityCarousel from '../components/FacilityCarousel';
 import WhyLeeukopf from '../components/WhyLeeukopf';
+import OptimizedImage from '../components/OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function AboutPage() {
   return (
@@ -25,11 +27,13 @@ export default function AboutPage() {
           </p>
         </div>
         <div className="relative overflow-hidden rounded-lg">
-          <img
+          <OptimizedImage
             src="/img/factory/Firefly_Gemini Flash_create an image of Leeukopf Laboratory facility - factory about 1500 sqaure meters, d 93539.png"
             alt="Leeukopf Laboratories — Manufacturing Facility"
+            width={1280}
+            height={720}
+            sizes={RESPONSIVE_SIZES.twoColumn}
             className="w-full h-full object-cover object-center aspect-[16/9] lg:aspect-[4/3]"
-            loading="lazy"
           />
           <p className="text-xs text-gray-500 mt-2 text-center font-light">
             Leeukopf Laboratories — Manufacturing Facility
@@ -61,11 +65,13 @@ export default function AboutPage() {
         {/* Responsive grid for manufacturing steps */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-            <img
+            <OptimizedImage
               src="/Raw Materials Intake.png"
               alt="Raw Materials & QC Intake"
+              width={800}
+              height={400}
+              sizes={RESPONSIVE_SIZES.threeColumn}
               className="w-full h-36 sm:h-48 object-cover"
-              loading="lazy"
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
@@ -81,11 +87,13 @@ export default function AboutPage() {
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-            <img
+            <OptimizedImage
               src="/img/factory/Leeukopf Factory (4).png"
               alt="Formulation & Mixing"
+              width={800}
+              height={400}
+              sizes={RESPONSIVE_SIZES.threeColumn}
               className="w-full h-36 sm:h-48 object-cover"
-              loading="lazy"
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
@@ -101,11 +109,13 @@ export default function AboutPage() {
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-            <img
+            <OptimizedImage
               src="/Labelling and Packaging.png"
               alt="Filling & Capping"
+              width={800}
+              height={400}
+              sizes={RESPONSIVE_SIZES.threeColumn}
               className="w-full h-36 sm:h-48 object-cover"
-              loading="lazy"
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
@@ -121,11 +131,13 @@ export default function AboutPage() {
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-            <img
+            <OptimizedImage
               src="/Labelling.png"
               alt="Label & Batch Coding"
+              width={800}
+              height={400}
+              sizes={RESPONSIVE_SIZES.threeColumn}
               className="w-full h-36 sm:h-48 object-cover"
-              loading="lazy"
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
@@ -141,11 +153,13 @@ export default function AboutPage() {
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-            <img
+            <OptimizedImage
               src="/Final QC.png"
               alt="Final QA & Packing"
+              width={800}
+              height={400}
+              sizes={RESPONSIVE_SIZES.threeColumn}
               className="w-full h-36 sm:h-48 object-cover"
-              loading="lazy"
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">

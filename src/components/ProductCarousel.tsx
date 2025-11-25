@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 interface ProductCarouselProps {
   images: {
     src: string;
     alt: string;
+    width?: number;
+    height?: number;
   }[];
   autoPlay?: boolean;
   autoPlayInterval?: number;
@@ -59,9 +63,13 @@ export default function ProductCarousel({
           >
             {images.map((image, index) => (
               <div key={index} className="min-w-full h-full flex-shrink-0 flex items-center justify-center bg-white p-2 sm:p-4">
-                <img
+                <OptimizedImage
                   src={image.src}
                   alt={image.alt}
+                  width={image.width}
+                  height={image.height}
+                  sizes={RESPONSIVE_SIZES.card}
+                  lazy={index !== 0}
                   className="w-full h-full object-contain"
                 />
               </div>
