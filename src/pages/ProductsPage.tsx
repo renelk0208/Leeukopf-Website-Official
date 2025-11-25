@@ -1,22 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { Film } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 
-/** Video item for the colour mixing section */
-interface VideoItem {
-  id: string;
-  title: string;
-  description: string;
-  src: string;
-}
-
 export default function ProductsPage() {
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [videoErrors, setVideoErrors] = useState<Set<string>>(new Set());
-  const [visibleVideos, setVisibleVideos] = useState<Set<string>>(new Set());
-  const [playingVideos, setPlayingVideos] = useState<Set<string>>(new Set());
-  
   const categories = [
     {
       title: 'Gel Polish',
@@ -37,113 +22,6 @@ export default function ProductsPage() {
       image: '/img/products/tops & bases_category_1.jpg'
     }
   ];
-
-  // All mixing videos available in the repository
-  // Located at: public/img/mixing/videos/ and public/videos/mixing/ (MP4 files for cross-browser compatibility)
-  const videos: VideoItem[] = [
-    {
-      id: 'mixing-2',
-      title: 'Precision Pigment Blending',
-      description: 'Highly pigmented formulas crafted in our EU-compliant Bulgarian facility.',
-      src: '/img/mixing/videos/Mixing-2.mp4'
-    },
-    {
-      id: 'mixing-3',
-      title: 'Colour Consistency Control',
-      description: 'Each batch precision-measured to ensure uniform colour and viscosity.',
-      src: '/img/mixing/videos/Mixing-3.mp4'
-    },
-    {
-      id: 'mixing-4',
-      title: 'Self-Levelling Formulation',
-      description: 'Advanced formulas for smooth, self-levelling application every time.',
-      src: '/img/mixing/videos/Mixing-4.mp4'
-    },
-    {
-      id: 'mixing-5',
-      title: 'Laboratory Quality Standards',
-      description: 'Manufactured under strict cleanroom protocols and safety regulations.',
-      src: '/videos/mixing/Mixing (5).MP4'
-    },
-    {
-      id: 'mixing-10',
-      title: 'Viscosity Testing',
-      description: 'Rigorous quality control ensures professional-grade performance.',
-      src: '/videos/mixing/Mixing (10).mp4'
-    },
-    {
-      id: 'mixing-11',
-      title: 'Colour Mixing Expertise',
-      description: 'Hand-finished with precision for true colour intensity and coverage.',
-      src: '/videos/mixing/Mixing (11).mp4'
-    },
-    {
-      id: 'mixing-12',
-      title: 'Premium Ingredient Preparation',
-      description: 'Only the finest EU-approved ingredients in our formulations.',
-      src: '/videos/mixing/Mixing (12).mp4'
-    },
-    {
-      id: 'mixing-13',
-      title: 'Factory Production Process',
-      description: 'Behind-the-scenes look at our state-of-the-art production line.',
-      src: '/videos/mixing/Mixing (13).mp4'
-    },
-    {
-      id: 'mixing-14',
-      title: 'Final Quality Inspection',
-      description: 'Every product undergoes thorough inspection before distribution.',
-      src: '/videos/mixing/Mixing (14).mp4'
-    }
-  ];
-
-  // Lazy loading with IntersectionObserver - only load videos when visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const videoId = entry.target.getAttribute('data-video-id');
-          if (videoId && entry.isIntersecting) {
-            setVisibleVideos((prev) => new Set([...prev, videoId]));
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-
-    videoRefs.current.forEach((video) => {
-      if (video) {
-        observer.observe(video);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Handle video errors
-  const handleVideoError = useCallback((videoId: string) => {
-    setVideoErrors((prev) => new Set([...prev, videoId]));
-  }, []);
-
-  // Handle click-to-play
-  const handleVideoClick = useCallback((videoId: string, index: number) => {
-    const video = videoRefs.current[index];
-    if (!video) return;
-
-    if (playingVideos.has(videoId)) {
-      video.pause();
-      setPlayingVideos((prev) => {
-        const next = new Set(prev);
-        next.delete(videoId);
-        return next;
-      });
-    } else {
-      video.play().catch(() => {
-        handleVideoError(videoId);
-      });
-      setPlayingVideos((prev) => new Set([...prev, videoId]));
-    }
-  }, [playingVideos, handleVideoError]);
 
   return (
     <PageTemplate
@@ -188,7 +66,7 @@ export default function ProductsPage() {
       </div>
 
       {/* Responsive features section */}
-      <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-10 sm:mb-12 md:mb-16">
+      <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center">Why Our Products Stand Out</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           <div className="text-center">
@@ -208,66 +86,6 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
-
-      {/* Mixing videos section - uses responsive CSS classes from index.css */}
-      <section className="mixing-videos-section">
-        <h2 className="mixing-title text-xl sm:text-2xl md:text-3xl">Colour Mixing — Behind the Scenes</h2>
-        <p className="mixing-text text-sm sm:text-base">
-          Highly pigmented professional formulas created under strict EU regulations,
-          precision-measured, and hand-finished in our laboratory.
-        </p>
-
-        <div className="mixing-grid">
-          {videos.map((video, index) => (
-            <div key={video.id} className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-              {videoErrors.has(video.id) ? (
-                <div className="aspect-video bg-gray-100 flex flex-col items-center justify-center text-gray-500">
-                  <Film className="w-12 h-12 mb-2" />
-                  <p className="text-sm">Video format not supported</p>
-                  <p className="text-xs text-gray-400 mt-1">Try a different browser</p>
-                </div>
-              ) : (
-                <div 
-                  className="relative cursor-pointer group"
-                  onClick={() => handleVideoClick(video.id, index)}
-                >
-                  <video 
-                    ref={el => videoRefs.current[index] = el}
-                    data-video-id={video.id}
-                    className="mixing-video aspect-video" 
-                    muted 
-                    loop 
-                    playsInline 
-                    preload="none"
-                    aria-label={video.title}
-                    controls={false}
-                    title={video.title}
-                    onError={() => handleVideoError(video.id)}
-                  >
-                    {visibleVideos.has(video.id) && (
-                      <source src={video.src} type="video/mp4" />
-                    )}
-                    Your browser does not support the video tag.
-                  </video>
-                  {!playingVideos.has(video.id) && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-                      <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                        <svg className="w-8 h-8 text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-              <div className="p-3 sm:p-4">
-                <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{video.title}</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-light">{video.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
     </PageTemplate>
   );
 }
