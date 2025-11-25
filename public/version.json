@@ -1,10 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-11-24T21:54:58.090Z",
-  "commit": "c4c5d22",
-  "branch": "copilot/fix-responsive-design-issues",
-  "buildDate": "2025-11-24T21:48:20.069Z",
-  "commit": "1afc365",
-  "branch": "copilot/update-our-brands-images",
+  "buildDate": "2025-11-25T07:44:44.601Z",
+  "commit": "6c58786",
+  "branch": "copilot/show-all-videos-on-products",
   "message": "Build deployed successfully"
 }
