@@ -54,12 +54,13 @@ export default function CertificatesBanner() {
                     key={index}
                     className="flex flex-col items-center justify-center p-2 sm:p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-600 hover:shadow-md transition-all duration-300"
                   >
+                    {/* Certification badges are small and above-fold on homepage, so eager load them */}
                     <OptimizedImage
                       src={cert.image}
                       alt={cert.alt}
                       width={cert.width}
                       height={cert.height}
-                      lazy={false}
+                      lazy={index > 0}
                       className={cert.label === 'GMP Certified'
                         ? 'max-h-[24px] sm:max-h-[28px] md:max-h-[36px] w-auto object-contain mb-1 sm:mb-2'
                         : 'w-full h-16 sm:h-20 md:h-24 object-contain mb-1 sm:mb-2'}
