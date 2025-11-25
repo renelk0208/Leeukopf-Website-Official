@@ -58,61 +58,43 @@ export default function ProductsPage() {
   ];
 
   // All mixing videos available in the repository
-  // Located at: public/img/mixing/videos/
+  // Located at: public/videos/mixing/
   const videos: VideoItem[] = [
     {
-      id: 'mixing-2',
+      id: 'mixing-5',
       title: 'Precision Pigment Blending',
       description: 'Highly pigmented formulas crafted in our EU-compliant Bulgarian facility.',
-      src: '/img/mixing/videos/Mixing-2.mp4'
-    },
-    {
-      id: 'mixing-3',
-      title: 'Colour Consistency Control',
-      description: 'Each batch precision-measured to ensure uniform colour and viscosity.',
-      src: '/img/mixing/videos/Mixing-3.mp4'
-    },
-    {
-      id: 'mixing-4',
-      title: 'Self-Levelling Formulation',
-      description: 'Advanced formulas for smooth, self-levelling application every time.',
-      src: '/img/mixing/videos/Mixing-4.mp4'
-    },
-    {
-      id: 'mixing-5',
-      title: 'Laboratory Quality Standards',
-      description: 'Manufactured under strict cleanroom protocols and safety regulations.',
-      src: '/img/mixing/videos/Mixing(5).MP4'
+      src: '/videos/mixing/Mixing (5).MP4'
     },
     {
       id: 'mixing-10',
-      title: 'Viscosity Testing',
-      description: 'Rigorous quality control ensures professional-grade performance.',
-      src: '/img/mixing/videos/Mixing(10).MOV'
+      title: 'Colour Consistency Control',
+      description: 'Each batch precision-measured to ensure uniform colour and viscosity.',
+      src: '/videos/mixing/Mixing (10).mp4'
     },
     {
       id: 'mixing-11',
-      title: 'Colour Mixing Expertise',
-      description: 'Hand-finished with precision for true colour intensity and coverage.',
-      src: '/img/mixing/videos/Mixing(11).MOV'
+      title: 'Self-Levelling Formulation',
+      description: 'Advanced formulas for smooth, self-levelling application every time.',
+      src: '/videos/mixing/Mixing (11).mp4'
     },
     {
       id: 'mixing-12',
-      title: 'Premium Ingredient Preparation',
-      description: 'Only the finest EU-approved ingredients in our formulations.',
-      src: '/img/mixing/videos/Mixing(12).MOV'
+      title: 'Laboratory Quality Standards',
+      description: 'Manufactured under strict cleanroom protocols and safety regulations.',
+      src: '/videos/mixing/Mixing (12).mp4'
     },
     {
       id: 'mixing-13',
-      title: 'Factory Production Process',
-      description: 'Behind-the-scenes look at our state-of-the-art production line.',
-      src: '/img/mixing/videos/Mixing(13).MOV'
+      title: 'Viscosity Testing',
+      description: 'Rigorous quality control ensures professional-grade performance.',
+      src: '/videos/mixing/Mixing (13).mp4'
     },
     {
       id: 'mixing-14',
       title: 'Final Quality Inspection',
       description: 'Every product undergoes thorough inspection before distribution.',
-      src: '/img/mixing/videos/Mixing(14).MOV'
+      src: '/videos/mixing/Mixing (14).mp4'
     }
   ];
 
