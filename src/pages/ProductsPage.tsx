@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Film } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 
 /** Video item for the colour mixing section */
@@ -33,6 +34,7 @@ function getVideoMimeType(src: string): string {
 
 export default function ProductsPage() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [videoErrors, setVideoErrors] = useState<Record<string, boolean>>({});
   
   const categories = [
     {
@@ -126,6 +128,13 @@ export default function ProductsPage() {
     });
   }, []);
 
+  /**
+   * Handles video error events (e.g., unsupported format like MOV)
+   */
+  const handleVideoError = (videoId: string) => {
+    setVideoErrors(prev => ({ ...prev, [videoId]: true }));
+  };
+
   return (
     <PageTemplate
       title="Our Products"
@@ -201,21 +210,29 @@ export default function ProductsPage() {
         <div className="mixing-grid">
           {videos.map((video, index) => (
             <div key={video.id} className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-              <video 
-                ref={el => videoRefs.current[index] = el}
-                className="mixing-video aspect-video" 
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
-                preload="metadata"
-                aria-label={video.title}
-                controls={false}
-                title={video.title}
-              >
-                <source src={video.src} type={getVideoMimeType(video.src)} />
-                Your browser does not support the video tag.
-              </video>
+              {videoErrors[video.id] ? (
+                <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex flex-col items-center justify-center text-white">
+                  <Film className="w-12 h-12 mb-3 opacity-60" />
+                  <p className="text-sm text-gray-300 text-center px-4">Video format not supported</p>
+                </div>
+              ) : (
+                <video 
+                  ref={el => videoRefs.current[index] = el}
+                  className="mixing-video aspect-video" 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline 
+                  preload="metadata"
+                  aria-label={video.title}
+                  controls={false}
+                  title={video.title}
+                  onError={() => handleVideoError(video.id)}
+                >
+                  <source src={video.src} type={getVideoMimeType(video.src)} />
+                  Your browser does not support the video tag.
+                </video>
+              )}
               <div className="p-3 sm:p-4">
                 <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{video.title}</h3>
                 <p className="text-xs sm:text-sm text-gray-600 font-light">{video.description}</p>
