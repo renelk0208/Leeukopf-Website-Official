@@ -139,11 +139,6 @@
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-
-  /* Blurred certificate images for privacy protection */
-  .certificate-blurred {
-    filter: blur(6px);
-  }
 }
 
 /* 
