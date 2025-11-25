@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
 import PageTemplate from '../components/PageTemplate';
 
 /** Video item for the colour mixing section */
@@ -32,8 +31,6 @@ function getVideoMimeType(src: string): string {
 }
 
 export default function ProductsPage() {
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  
   const categories = [
     {
       title: 'Gel Polish',
@@ -114,18 +111,6 @@ export default function ProductsPage() {
     }
   ];
 
-  // Ensure videos play on iOS devices
-  useEffect(() => {
-    videoRefs.current.forEach(video => {
-      if (video) {
-        video.play().catch(() => {
-          // Autoplay was prevented, which is expected on some devices
-          // Video will play when it becomes visible
-        });
-      }
-    });
-  }, []);
-
   return (
     <PageTemplate
       title="Our Products"
@@ -199,10 +184,9 @@ export default function ProductsPage() {
         </p>
 
         <div className="mixing-grid">
-          {videos.map((video, index) => (
+          {videos.map((video) => (
             <div key={video.id} className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm">
               <video 
-                ref={el => videoRefs.current[index] = el}
                 className="mixing-video aspect-video" 
                 autoPlay 
                 muted 
