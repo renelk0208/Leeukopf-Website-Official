@@ -35,7 +35,6 @@ function getVideoMimeType(src: string): string {
 export default function ProductsPage() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [videoErrors, setVideoErrors] = useState<Record<string, boolean>>({});
-  const [videoLoaded, setVideoLoaded] = useState<Record<string, boolean>>({});
   const [videoPlaying, setVideoPlaying] = useState<Record<string, boolean>>({});
   
   const categories = [
@@ -102,16 +101,18 @@ export default function ProductsPage() {
 
   // Lazy load videos using Intersection Observer
   useEffect(() => {
+    const loadedVideos = new Set<string>();
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const video = entry.target as HTMLVideoElement;
             const videoId = video.dataset.videoId;
-            if (videoId && !videoLoaded[videoId]) {
+            if (videoId && !loadedVideos.has(videoId)) {
               // Start loading the video when it becomes visible
+              loadedVideos.add(videoId);
               video.load();
-              setVideoLoaded(prev => ({ ...prev, [videoId]: true }));
             }
           }
         });
@@ -126,7 +127,7 @@ export default function ProductsPage() {
     });
 
     return () => observer.disconnect();
-  }, [videoLoaded]);
+  }, []);
 
   /**
    * Handles video error events (e.g., unsupported format like MOV)
@@ -136,21 +137,13 @@ export default function ProductsPage() {
   };
 
   /**
-   * Handles video loaded data event - video is ready to play
-   */
-  const handleVideoCanPlay = useCallback((videoId: string, video: HTMLVideoElement) => {
-    video.play().catch(() => {
-      // Autoplay was prevented - show play button
-    });
-    setVideoPlaying(prev => ({ ...prev, [videoId]: true }));
-  }, []);
-
-  /**
-   * Handles manual play button click
+   * Handles manual play button click - only loads and plays when user clicks
    */
   const handlePlayClick = useCallback((videoId: string, index: number) => {
     const video = videoRefs.current[index];
     if (video) {
+      // Load and play the video
+      video.load();
       video.play().catch(() => {});
       setVideoPlaying(prev => ({ ...prev, [videoId]: true }));
     }
@@ -262,7 +255,6 @@ export default function ProductsPage() {
                     controls={false}
                     title={video.title}
                     onError={() => handleVideoError(video.id)}
-                    onCanPlay={() => handleVideoCanPlay(video.id, videoRefs.current[index]!)}
                   >
                     <source src={video.src} type={getVideoMimeType(video.src)} />
                     Your browser does not support the video tag.
