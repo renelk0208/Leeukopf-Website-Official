@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-11-25T15:53:18.165Z",
-  "commit": "024338e",
-  "branch": "copilot/enhance-blur-protection-certificates",
+  "buildDate": "2025-11-25T17:37:36.389Z",
+  "commit": "f1c33e9",
+  "branch": "copilot/add-fda-sfda-certificates",
   "message": "Build deployed successfully"
 }
