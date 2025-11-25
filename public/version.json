@@ -3,5 +3,8 @@
   "buildDate": "2025-11-25T17:41:05.031Z",
   "commit": "e413817",
   "branch": "copilot/reduce-certificate-image-blur",
+  "buildDate": "2025-11-25T17:38:18.412Z",
+  "commit": "2be3751",
+  "branch": "copilot/add-fda-sfda-certificates",
   "message": "Build deployed successfully"
 }
