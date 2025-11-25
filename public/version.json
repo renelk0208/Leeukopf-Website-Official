@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-11-25T10:23:53.845Z",
-  "commit": "493c17e",
-  "branch": "copilot/fix-video-filename-issues",
+  "buildDate": "2025-11-25T07:44:44.601Z",
+  "commit": "6c58786",
+  "branch": "copilot/show-all-videos-on-products",
   "message": "Build deployed successfully"
 }
