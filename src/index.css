@@ -142,8 +142,8 @@
 
   /* Blurred certificate images for privacy protection - cannot be removed */
   .certificate-blurred {
-    filter: blur(6px) !important;
-    -webkit-filter: blur(6px) !important;
+    filter: blur(3px) !important;
+    -webkit-filter: blur(3px) !important;
     pointer-events: none; /* Prevent direct image interactions */
   }
 
@@ -151,8 +151,8 @@
   .certificate-blurred:hover,
   .certificate-blurred:focus,
   .certificate-blurred:active {
-    filter: blur(6px) !important;
-    -webkit-filter: blur(6px) !important;
+    filter: blur(3px) !important;
+    -webkit-filter: blur(3px) !important;
   }
 }
 
