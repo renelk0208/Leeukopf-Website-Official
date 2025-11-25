@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
-import { Film } from 'lucide-react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { Film, Play } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 
 /** Video item for the colour mixing section */
@@ -35,6 +35,8 @@ function getVideoMimeType(src: string): string {
 export default function ProductsPage() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [videoErrors, setVideoErrors] = useState<Record<string, boolean>>({});
+  const [videoLoaded, setVideoLoaded] = useState<Record<string, boolean>>({});
+  const [videoPlaying, setVideoPlaying] = useState<Record<string, boolean>>({});
   
   const categories = [
     {
@@ -98,17 +100,33 @@ export default function ProductsPage() {
     }
   ];
 
-  // Ensure videos play on iOS devices
+  // Lazy load videos using Intersection Observer
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const video = entry.target as HTMLVideoElement;
+            const videoId = video.dataset.videoId;
+            if (videoId && !videoLoaded[videoId]) {
+              // Start loading the video when it becomes visible
+              video.load();
+              setVideoLoaded(prev => ({ ...prev, [videoId]: true }));
+            }
+          }
+        });
+      },
+      { rootMargin: '100px', threshold: 0.1 }
+    );
+
     videoRefs.current.forEach(video => {
       if (video) {
-        video.play().catch(() => {
-          // Autoplay was prevented, which is expected on some devices
-          // Video will play when it becomes visible
-        });
+        observer.observe(video);
       }
     });
-  }, []);
+
+    return () => observer.disconnect();
+  }, [videoLoaded]);
 
   /**
    * Handles video error events (e.g., unsupported format like MOV)
@@ -116,6 +134,27 @@ export default function ProductsPage() {
   const handleVideoError = (videoId: string) => {
     setVideoErrors(prev => ({ ...prev, [videoId]: true }));
   };
+
+  /**
+   * Handles video loaded data event - video is ready to play
+   */
+  const handleVideoCanPlay = useCallback((videoId: string, video: HTMLVideoElement) => {
+    video.play().catch(() => {
+      // Autoplay was prevented - show play button
+    });
+    setVideoPlaying(prev => ({ ...prev, [videoId]: true }));
+  }, []);
+
+  /**
+   * Handles manual play button click
+   */
+  const handlePlayClick = useCallback((videoId: string, index: number) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      video.play().catch(() => {});
+      setVideoPlaying(prev => ({ ...prev, [videoId]: true }));
+    }
+  }, []);
 
   return (
     <PageTemplate
@@ -198,22 +237,37 @@ export default function ProductsPage() {
                   <p className="text-sm text-gray-300 text-center px-4">Video format not supported</p>
                 </div>
               ) : (
-                <video 
-                  ref={el => videoRefs.current[index] = el}
-                  className="mixing-video aspect-video" 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline 
-                  preload="metadata"
-                  aria-label={video.title}
-                  controls={false}
-                  title={video.title}
-                  onError={() => handleVideoError(video.id)}
-                >
-                  <source src={video.src} type={getVideoMimeType(video.src)} />
-                  Your browser does not support the video tag.
-                </video>
+                <div className="relative aspect-video bg-gray-900">
+                  {/* Loading/Play overlay */}
+                  {!videoPlaying[video.id] && (
+                    <div 
+                      className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 cursor-pointer z-10"
+                      onClick={() => handlePlayClick(video.id, index)}
+                    >
+                      <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
+                        <Play className="w-8 h-8 text-white ml-1" />
+                      </div>
+                      <p className="text-sm text-gray-300 mt-3">Click to play</p>
+                    </div>
+                  )}
+                  <video 
+                    ref={el => videoRefs.current[index] = el}
+                    data-video-id={video.id}
+                    className="mixing-video w-full h-full object-cover" 
+                    muted 
+                    loop 
+                    playsInline 
+                    preload="none"
+                    aria-label={video.title}
+                    controls={false}
+                    title={video.title}
+                    onError={() => handleVideoError(video.id)}
+                    onCanPlay={() => handleVideoCanPlay(video.id, videoRefs.current[index]!)}
+                  >
+                    <source src={video.src} type={getVideoMimeType(video.src)} />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               )}
               <div className="p-3 sm:p-4">
                 <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{video.title}</h3>
