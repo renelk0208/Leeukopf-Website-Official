@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
 
 const SocialLinks = () => {
   const socialMedia = [
@@ -76,9 +77,13 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
             <Link to="/" className="block">
-              <img
+              <OptimizedImage
                 src="/leeukopf_black.png"
                 alt="Leeukopf Laboratories Logo"
+                width={200}
+                height={50}
+                lazy={false}
+                fetchPriority="high"
                 className="h-10 md:h-[60px] w-auto object-contain hover:opacity-80 transition-opacity"
               />
             </Link>

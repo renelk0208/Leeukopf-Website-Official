@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import OptimizedImage from './OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -8,11 +10,16 @@ export default function Hero() {
       {/* Responsive padding: more compact on mobile, spacious on desktop */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-8 md:pb-12">
         <div className="space-y-6 md:space-y-8">
-          {/* Logo with responsive sizing */}
+          {/* Logo with responsive sizing - marked as high priority for LCP */}
           <div className="flex justify-center mb-6 md:mb-8">
-            <img
+            <OptimizedImage
               src="/leeukopf_black.png"
               alt="Leeukopf Laboratories Logo"
+              width={800}
+              height={200}
+              sizes={RESPONSIVE_SIZES.hero}
+              lazy={false}
+              fetchPriority="high"
               className="w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl h-auto object-contain px-4 sm:px-8"
             />
           </div>

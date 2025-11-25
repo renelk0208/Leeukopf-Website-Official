@@ -1,5 +1,7 @@
 import PageTemplate from '../components/PageTemplate';
 import ProductCarousel from '../components/ProductCarousel';
+import OptimizedImage from '../components/OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function OurBrandsPage() {
   // Gelitup product images for the carousel
@@ -59,9 +61,12 @@ export default function OurBrandsPage() {
         {/* Responsive brand section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 p-4 sm:p-6 md:p-8 bg-white rounded-lg border border-gray-200">
           <div className="order-1">
-            <img
+            <OptimizedImage
               src="/GEL.IT.UP-NEW-LOGO-2024_black_2.png"
               alt="GEL.IT.UP products"
+              width={800}
+              height={400}
+              sizes={RESPONSIVE_SIZES.twoColumn}
               className="w-full h-auto rounded-lg object-contain"
             />
           </div>

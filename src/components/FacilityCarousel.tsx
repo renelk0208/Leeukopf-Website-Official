@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function FacilityCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -9,27 +11,37 @@ export default function FacilityCarousel() {
     {
       src: '/Leeukopf Factory (2).png',
       alt: 'Leeukopf Laboratories Consultation Team',
-      caption: 'Expert Brand Consultation'
+      caption: 'Expert Brand Consultation',
+      width: 1280,
+      height: 960
     },
     {
       src: '/Leeukopf Factory (3).png',
       alt: 'Leeukopf Laboratories Quality Control Testing',
-      caption: 'Precision Quality Control'
+      caption: 'Precision Quality Control',
+      width: 1280,
+      height: 960
     },
     {
       src: '/Leeukopf Factory (4).png',
       alt: 'Leeukopf Laboratories Production Facility',
-      caption: 'State-of-the-Art Production'
+      caption: 'State-of-the-Art Production',
+      width: 1280,
+      height: 960
     },
     {
       src: '/Leeukopf Factory (5).png',
       alt: 'Leeukopf Laboratories Color Development',
-      caption: 'Color Innovation Lab'
+      caption: 'Color Innovation Lab',
+      width: 1280,
+      height: 960
     },
     {
       src: '/LEEUKOPF factory 2.png',
       alt: 'Leeukopf Laboratories Private Label Products',
-      caption: 'Private Label Excellence'
+      caption: 'Private Label Excellence',
+      width: 1280,
+      height: 960
     }
   ];
 
@@ -74,9 +86,14 @@ export default function FacilityCarousel() {
           >
             {images.map((image, index) => (
               <div key={index} className="min-w-full h-full flex-shrink-0">
-                <img
+                <OptimizedImage
                   src={image.src}
                   alt={image.alt}
+                  width={image.width}
+                  height={image.height}
+                  sizes={RESPONSIVE_SIZES.hero}
+                  lazy={index !== 0}
+                  fetchPriority={index === 0 ? 'high' : undefined}
                   className="w-full h-full object-cover"
                 />
               </div>

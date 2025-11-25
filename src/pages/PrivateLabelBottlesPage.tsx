@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
+import OptimizedImage from '../components/OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 interface BottleProduct {
   id: string;
@@ -320,10 +322,12 @@ export default function PrivateLabelBottlesPage() {
               className="group cursor-pointer bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="aspect-square bg-gray-50 relative overflow-hidden">
-                <img
+                <OptimizedImage
                   src={bottle.images[0]}
                   alt={bottle.name}
-                  loading="lazy"
+                  width={1280}
+                  height={1280}
+                  sizes={RESPONSIVE_SIZES.fourColumn}
                   className="w-full h-full object-contain p-2 sm:p-4 group-hover:scale-105 transition-transform duration-300"
                 />
               </div>

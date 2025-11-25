@@ -1,5 +1,7 @@
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import OptimizedImage from '../components/OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function CertificatesPage() {
   const certificates = [
@@ -7,37 +9,49 @@ export default function CertificatesPage() {
       name: 'Bulgarian Chamber of Commerce & Industry Membership',
       image: '/img/Certifications-And-Compliance/bcci-chamber-2025.jpg',
       alt: 'Bulgarian Chamber of Commerce and Industry membership – Thermitek Ltd, valid 2025',
-      description: 'Direct membership in the Bulgarian Chamber of Commerce and Industry, valid for 2025.'
+      description: 'Direct membership in the Bulgarian Chamber of Commerce and Industry, valid for 2025.',
+      width: 800,
+      height: 600
     },
     {
       name: 'Free Sale Certificate – Gel/Gel Polish Products',
       image: '/img/Certifications-And-Compliance/free-sale-certificate-2025-2026-1.jpg',
       alt: 'Free Sale Certificate 2025–2026 for gel/gel polish nail products',
-      description: 'Confirms our gel/gel polish nail products are compliant and freely sold in Bulgaria and the European Community (valid 2025–2026).'
+      description: 'Confirms our gel/gel polish nail products are compliant and freely sold in Bulgaria and the European Community (valid 2025–2026).',
+      width: 800,
+      height: 600
     },
     {
       name: 'GMP Certificate – Cosmetics Manufacturing',
       image: '/img/Certifications-And-Compliance/gmp-certificate-2025-2026-1.jpg',
       alt: 'GMP Certificate 2025–2026 for manufacturing according to Good Manufacturing Practice for cosmetics',
-      description: 'Certification for manufacturing according to Good Manufacturing Practice for cosmetics (GMP), valid 2025–2026.'
+      description: 'Certification for manufacturing according to Good Manufacturing Practice for cosmetics (GMP), valid 2025–2026.',
+      width: 800,
+      height: 600
     },
     {
       name: 'ISO 9001:2015 – Quality Management System',
       image: '/img/Certifications-And-Compliance/iso-9001-2025-2026.jpg',
       alt: 'ISO 9001:2015 Quality Management System certificate for Thermitek Ltd',
-      description: 'ISO 9001:2015 certification for our quality management system and in-house laboratory.'
+      description: 'ISO 9001:2015 certification for our quality management system and in-house laboratory.',
+      width: 800,
+      height: 600
     },
     {
       name: 'Leaping Bunny – Cruelty Free Certification',
       image: '/img/Certifications-And-Compliance/leaping-bunny-2025-2026.jpg',
       alt: 'Cruelty Free International Leaping Bunny Certificate of Approval, valid until 31 March 2026',
-      description: 'Cruelty Free International Leaping Bunny approval for cosmetic and personal care products.'
+      description: 'Cruelty Free International Leaping Bunny approval for cosmetic and personal care products.',
+      width: 800,
+      height: 600
     },
     {
       name: 'BNAEOPC Membership – Essential Oils, Perfumery & Cosmetics',
       image: '/img/Certifications-And-Compliance/bnaeopc-membership-2025.jpg',
       alt: 'Bulgarian National Association Essential Oils, Perfumery and Cosmetics membership certificate 2025',
-      description: 'Membership in the Bulgarian National Association Essential Oils, Perfumery and Cosmetics for 2025.'
+      description: 'Membership in the Bulgarian National Association Essential Oils, Perfumery and Cosmetics for 2025.',
+      width: 800,
+      height: 600
     }
   ];
 
@@ -69,11 +83,13 @@ export default function CertificatesPage() {
                   aria-label={`View full size ${cert.name}`}
                 >
                   <div className="mb-4 sm:mb-5">
-                    <img
+                    <OptimizedImage
                       src={cert.image}
                       alt={cert.alt}
+                      width={cert.width}
+                      height={cert.height}
+                      sizes={RESPONSIVE_SIZES.threeColumn}
                       className="w-full h-auto rounded-md"
-                      loading="lazy"
                     />
                   </div>
                   <div className="border-t border-gray-200 pt-4 sm:pt-5">

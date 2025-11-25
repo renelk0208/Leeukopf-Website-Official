@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Film } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
+import OptimizedImage from '../components/OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 /** Video item for the factory videos section */
 interface VideoItem {
@@ -142,11 +144,13 @@ export default function ProductsPage() {
           >
             <div className="aspect-square bg-gray-100 rounded-lg mb-4 sm:mb-6 border border-gray-200 group-hover:border-blue-500 transition-colors overflow-hidden flex items-center justify-center">
               {category.image ? (
-                <img
+                <OptimizedImage
                   src={category.image}
                   alt={category.title}
+                  width={600}
+                  height={600}
+                  sizes={RESPONSIVE_SIZES.threeColumn}
                   className="w-full h-full object-cover"
-                  loading="lazy"
                 />
               ) : null}
             </div>
