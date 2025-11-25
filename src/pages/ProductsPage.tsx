@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { Film, Play } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 
 /** Video item for the colour mixing section */
@@ -33,6 +34,8 @@ function getVideoMimeType(src: string): string {
 
 export default function ProductsPage() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [videoErrors, setVideoErrors] = useState<Record<string, boolean>>({});
+  const [videoPlaying, setVideoPlaying] = useState<Record<string, boolean>>({});
   
   const categories = [
     {
@@ -56,74 +59,94 @@ export default function ProductsPage() {
   ];
 
   // All mixing videos available in the repository
-  // Located at: public/img/mixing/videos/
+  // Located at: public/videos/mixing/
   const videos: VideoItem[] = [
     {
-      id: 'mixing-2',
+      id: 'mixing-5',
       title: 'Precision Pigment Blending',
       description: 'Highly pigmented formulas crafted in our EU-compliant Bulgarian facility.',
-      src: '/img/mixing/videos/Mixing-2.mp4'
-    },
-    {
-      id: 'mixing-3',
-      title: 'Colour Consistency Control',
-      description: 'Each batch precision-measured to ensure uniform colour and viscosity.',
-      src: '/img/mixing/videos/Mixing-3.mp4'
-    },
-    {
-      id: 'mixing-4',
-      title: 'Self-Levelling Formulation',
-      description: 'Advanced formulas for smooth, self-levelling application every time.',
-      src: '/img/mixing/videos/Mixing-4.mp4'
-    },
-    {
-      id: 'mixing-5',
-      title: 'Laboratory Quality Standards',
-      description: 'Manufactured under strict cleanroom protocols and safety regulations.',
-      src: '/img/mixing/videos/Mixing(5).MP4'
+      src: '/videos/mixing/Mixing (5).MP4'
     },
     {
       id: 'mixing-10',
-      title: 'Viscosity Testing',
-      description: 'Rigorous quality control ensures professional-grade performance.',
-      src: '/img/mixing/videos/Mixing(10).MOV'
+      title: 'Colour Consistency Control',
+      description: 'Each batch precision-measured to ensure uniform colour and viscosity.',
+      src: '/videos/mixing/Mixing (10).mp4'
     },
     {
       id: 'mixing-11',
-      title: 'Colour Mixing Expertise',
-      description: 'Hand-finished with precision for true colour intensity and coverage.',
-      src: '/img/mixing/videos/Mixing(11).MOV'
+      title: 'Self-Levelling Formulation',
+      description: 'Advanced formulas for smooth, self-levelling application every time.',
+      src: '/videos/mixing/Mixing (11).mp4'
     },
     {
       id: 'mixing-12',
-      title: 'Premium Ingredient Preparation',
-      description: 'Only the finest EU-approved ingredients in our formulations.',
-      src: '/img/mixing/videos/Mixing(12).MOV'
+      title: 'Laboratory Quality Standards',
+      description: 'Manufactured under strict cleanroom protocols and safety regulations.',
+      src: '/videos/mixing/Mixing (12).mp4'
     },
     {
       id: 'mixing-13',
-      title: 'Factory Production Process',
-      description: 'Behind-the-scenes look at our state-of-the-art production line.',
-      src: '/img/mixing/videos/Mixing(13).MOV'
+      title: 'Viscosity Testing',
+      description: 'Rigorous quality control ensures professional-grade performance.',
+      src: '/videos/mixing/Mixing (13).mp4'
     },
     {
       id: 'mixing-14',
       title: 'Final Quality Inspection',
       description: 'Every product undergoes thorough inspection before distribution.',
-      src: '/img/mixing/videos/Mixing(14).MOV'
+      src: '/videos/mixing/Mixing (14).mp4'
     }
   ];
 
-  // Ensure videos play on iOS devices
+  // Lazy load videos using Intersection Observer
   useEffect(() => {
+    const loadedVideos = new Set<string>();
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const video = entry.target as HTMLVideoElement;
+            const videoId = video.dataset.videoId;
+            if (videoId && !loadedVideos.has(videoId)) {
+              // Start loading the video when it becomes visible
+              loadedVideos.add(videoId);
+              video.load();
+            }
+          }
+        });
+      },
+      { rootMargin: '100px', threshold: 0.1 }
+    );
+
     videoRefs.current.forEach(video => {
       if (video) {
-        video.play().catch(() => {
-          // Autoplay was prevented, which is expected on some devices
-          // Video will play when it becomes visible
-        });
+        observer.observe(video);
       }
     });
+
+    return () => observer.disconnect();
+  }, []);
+
+  /**
+   * Handles video error events (e.g., unsupported format like MOV)
+   */
+  const handleVideoError = (videoId: string) => {
+    setVideoErrors(prev => ({ ...prev, [videoId]: true }));
+  };
+
+  /**
+   * Handles manual play button click - only loads and plays when user clicks
+   */
+  const handlePlayClick = useCallback((videoId: string, index: number) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      // Load and play the video
+      video.load();
+      video.play().catch(() => {});
+      setVideoPlaying(prev => ({ ...prev, [videoId]: true }));
+    }
   }, []);
 
   return (
@@ -201,21 +224,43 @@ export default function ProductsPage() {
         <div className="mixing-grid">
           {videos.map((video, index) => (
             <div key={video.id} className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-              <video 
-                ref={el => videoRefs.current[index] = el}
-                className="mixing-video aspect-video" 
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
-                preload="metadata"
-                aria-label={video.title}
-                controls={false}
-                title={video.title}
-              >
-                <source src={video.src} type={getVideoMimeType(video.src)} />
-                Your browser does not support the video tag.
-              </video>
+              {videoErrors[video.id] ? (
+                <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex flex-col items-center justify-center text-white">
+                  <Film className="w-12 h-12 mb-3 opacity-60" />
+                  <p className="text-sm text-gray-300 text-center px-4">Video format not supported</p>
+                </div>
+              ) : (
+                <div className="relative aspect-video bg-gray-900">
+                  {/* Loading/Play overlay */}
+                  {!videoPlaying[video.id] && (
+                    <div 
+                      className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 cursor-pointer z-10"
+                      onClick={() => handlePlayClick(video.id, index)}
+                    >
+                      <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
+                        <Play className="w-8 h-8 text-white ml-1" />
+                      </div>
+                      <p className="text-sm text-gray-300 mt-3">Click to play</p>
+                    </div>
+                  )}
+                  <video 
+                    ref={el => videoRefs.current[index] = el}
+                    data-video-id={video.id}
+                    className="mixing-video w-full h-full object-cover" 
+                    muted 
+                    loop 
+                    playsInline 
+                    preload="none"
+                    aria-label={video.title}
+                    controls={false}
+                    title={video.title}
+                    onError={() => handleVideoError(video.id)}
+                  >
+                    <source src={video.src} type={getVideoMimeType(video.src)} />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              )}
               <div className="p-3 sm:p-4">
                 <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{video.title}</h3>
                 <p className="text-xs sm:text-sm text-gray-600 font-light">{video.description}</p>
