@@ -39,7 +39,7 @@ export default function ProductsPage() {
   ];
 
   // All mixing videos available in the repository
-  // Located at: public/videos/mixing/ (converted MP4 files for cross-browser compatibility)
+  // Located at: public/img/mixing/videos/ and public/videos/mixing/ (MP4 files for cross-browser compatibility)
   const videos: VideoItem[] = [
     {
       id: 'mixing-2',
