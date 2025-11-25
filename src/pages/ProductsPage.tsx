@@ -2,6 +2,35 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import PageTemplate from '../components/PageTemplate';
 
+/** Video item for the colour mixing section */
+interface VideoItem {
+  id: string;
+  title: string;
+  description: string;
+  src: string;
+}
+
+/**
+ * Determines the MIME type for a video file based on its extension.
+ * @param src - The video source path
+ * @returns The appropriate MIME type string
+ */
+function getVideoMimeType(src: string): string {
+  const extension = src.split('.').pop()?.toLowerCase();
+  switch (extension) {
+    case 'mov':
+      return 'video/quicktime';
+    case 'webm':
+      return 'video/webm';
+    case 'ogg':
+    case 'ogv':
+      return 'video/ogg';
+    case 'mp4':
+    default:
+      return 'video/mp4';
+  }
+}
+
 export default function ProductsPage() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   
@@ -26,17 +55,63 @@ export default function ProductsPage() {
     }
   ];
 
-  // Video sources for colour mixing section
-  // Videos: Mixing 2, 3, 4, 5, 10, 11, 12, 14
-  const mixingVideoSources = [
-    "/img/mixing/videos/Mixing-2.mp4",
-    "/img/mixing/videos/Mixing-3.mp4",
-    "/img/mixing/videos/Mixing-4.mp4",
-    "/img/mixing/videos/Mixing-5.mp4",
-    "/img/mixing/videos/Mixing-10.mp4",
-    "/img/mixing/videos/Mixing-11.mp4",
-    "/img/mixing/videos/Mixing-12.mp4",
-    "/img/mixing/videos/Mixing-14.mp4"
+  // All mixing videos available in the repository
+  // Located at: public/img/mixing/videos/
+  const videos: VideoItem[] = [
+    {
+      id: 'mixing-2',
+      title: 'Precision Pigment Blending',
+      description: 'Highly pigmented formulas crafted in our EU-compliant Bulgarian facility.',
+      src: '/img/mixing/videos/Mixing-2.mp4'
+    },
+    {
+      id: 'mixing-3',
+      title: 'Colour Consistency Control',
+      description: 'Each batch precision-measured to ensure uniform colour and viscosity.',
+      src: '/img/mixing/videos/Mixing-3.mp4'
+    },
+    {
+      id: 'mixing-4',
+      title: 'Self-Levelling Formulation',
+      description: 'Advanced formulas for smooth, self-levelling application every time.',
+      src: '/img/mixing/videos/Mixing-4.mp4'
+    },
+    {
+      id: 'mixing-5',
+      title: 'Laboratory Quality Standards',
+      description: 'Manufactured under strict cleanroom protocols and safety regulations.',
+      src: '/img/mixing/videos/Mixing(5).MP4'
+    },
+    {
+      id: 'mixing-10',
+      title: 'Viscosity Testing',
+      description: 'Rigorous quality control ensures professional-grade performance.',
+      src: '/img/mixing/videos/Mixing(10).MOV'
+    },
+    {
+      id: 'mixing-11',
+      title: 'Colour Mixing Expertise',
+      description: 'Hand-finished with precision for true colour intensity and coverage.',
+      src: '/img/mixing/videos/Mixing(11).MOV'
+    },
+    {
+      id: 'mixing-12',
+      title: 'Premium Ingredient Preparation',
+      description: 'Only the finest EU-approved ingredients in our formulations.',
+      src: '/img/mixing/videos/Mixing(12).MOV'
+    },
+    {
+      id: 'mixing-13',
+      title: 'Factory Production Process',
+      description: 'Behind-the-scenes look at our state-of-the-art production line.',
+      src: '/img/mixing/videos/Mixing(13).MOV'
+    },
+    {
+      id: 'mixing-14',
+      title: 'Final Quality Inspection',
+      description: 'Every product undergoes thorough inspection before distribution.',
+      src: '/img/mixing/videos/Mixing(14).MOV'
+    }
   ];
 
   // Ensure videos play on iOS devices
@@ -124,22 +199,28 @@ export default function ProductsPage() {
         </p>
 
         <div className="mixing-grid">
-          {mixingVideoSources.map((videoSrc, index) => (
-            <video 
-              key={index}
-              ref={el => videoRefs.current[index] = el}
-              className="mixing-video aspect-video" 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
-              preload="metadata"
-              aria-label={`Colour mixing process video ${index + 1}`}
-              controls={false}
-            >
-              <source src={videoSrc} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+          {videos.map((video, index) => (
+            <div key={video.id} className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+              <video 
+                ref={el => videoRefs.current[index] = el}
+                className="mixing-video aspect-video" 
+                autoPlay 
+                muted 
+                loop 
+                playsInline 
+                preload="metadata"
+                aria-label={video.title}
+                controls={false}
+                title={video.title}
+              >
+                <source src={video.src} type={getVideoMimeType(video.src)} />
+                Your browser does not support the video tag.
+              </video>
+              <div className="p-3 sm:p-4">
+                <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{video.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-600 font-light">{video.description}</p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
