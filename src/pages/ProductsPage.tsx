@@ -229,7 +229,15 @@ export default function ProductsPage() {
               ) : (
                 <div 
                   className="relative cursor-pointer group"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => handleVideoClick(video.id, index)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleVideoClick(video.id, index);
+                    }
+                  }}
                 >
                   <video 
                     ref={el => videoRefs.current[index] = el}
