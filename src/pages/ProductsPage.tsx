@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Film } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 
-/** Video item for the colour mixing section */
+/** Video item for the factory videos section */
 interface VideoItem {
   id: string;
   title: string;
@@ -16,7 +16,7 @@ export default function ProductsPage() {
   const [videoErrors, setVideoErrors] = useState<Set<string>>(new Set());
   const [visibleVideos, setVisibleVideos] = useState<Set<string>>(new Set());
   const [playingVideos, setPlayingVideos] = useState<Set<string>>(new Set());
-  
+
   const categories = [
     {
       title: 'Gel Polish',
@@ -38,62 +38,38 @@ export default function ProductsPage() {
     }
   ];
 
-  // All mixing videos available in the repository
-  // Located at: public/img/mixing/videos/ and public/videos/mixing/ (MP4 files for cross-browser compatibility)
+  // Factory videos showcasing our production process
+  // Located at: public/videos/factory videos/
   const videos: VideoItem[] = [
     {
-      id: 'mixing-2',
+      id: 'precision-pigment-blending',
       title: 'Precision Pigment Blending',
       description: 'Highly pigmented formulas crafted in our EU-compliant Bulgarian facility.',
-      src: '/img/mixing/videos/Mixing-2.mp4'
+      src: '/videos/factory videos/Precision Pigment Blending.mp4'
     },
     {
-      id: 'mixing-3',
+      id: 'colour-consistency-control',
       title: 'Colour Consistency Control',
       description: 'Each batch precision-measured to ensure uniform colour and viscosity.',
-      src: '/img/mixing/videos/Mixing-3.mp4'
+      src: '/videos/factory videos/Colour-Consistency Control.mp4'
     },
     {
-      id: 'mixing-4',
+      id: 'self-levelling-formulation',
       title: 'Self-Levelling Formulation',
       description: 'Advanced formulas for smooth, self-levelling application every time.',
-      src: '/img/mixing/videos/Mixing-4.mp4'
+      src: '/videos/factory videos/Self-Levelling Formulation.mp4'
     },
     {
-      id: 'mixing-5',
-      title: 'Laboratory Quality Standards',
-      description: 'Manufactured under strict cleanroom protocols and safety regulations.',
-      src: '/videos/mixing/Mixing (5).MP4'
-    },
-    {
-      id: 'mixing-10',
-      title: 'Viscosity Testing',
-      description: 'Rigorous quality control ensures professional-grade performance.',
-      src: '/videos/mixing/Mixing (10).mp4'
-    },
-    {
-      id: 'mixing-11',
+      id: 'colour-mixing-expertise',
       title: 'Colour Mixing Expertise',
       description: 'Hand-finished with precision for true colour intensity and coverage.',
-      src: '/videos/mixing/Mixing (11).mp4'
+      src: '/videos/factory videos/Colour mixing expertise.mp4'
     },
     {
-      id: 'mixing-12',
-      title: 'Premium Ingredient Preparation',
-      description: 'Only the finest EU-approved ingredients in our formulations.',
-      src: '/videos/mixing/Mixing (12).mp4'
-    },
-    {
-      id: 'mixing-13',
-      title: 'Factory Production Process',
-      description: 'Behind-the-scenes look at our state-of-the-art production line.',
-      src: '/videos/mixing/Mixing (13).mp4'
-    },
-    {
-      id: 'mixing-14',
-      title: 'Final Quality Inspection',
-      description: 'Every product undergoes thorough inspection before distribution.',
-      src: '/videos/mixing/Mixing (14).mp4'
+      id: 'viscosity-testing',
+      title: 'Viscosity Testing',
+      description: 'Rigorous quality control ensures professional-grade performance.',
+      src: '/videos/factory videos/Viscosity Testing.mp4'
     }
   ];
 
@@ -209,9 +185,9 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Mixing videos section - uses responsive CSS classes from index.css */}
+      {/* Factory videos section - uses responsive CSS classes from index.css */}
       <section className="mixing-videos-section">
-        <h2 className="mixing-title text-xl sm:text-2xl md:text-3xl">Colour Mixing — Behind the Scenes</h2>
+        <h2 className="mixing-title text-xl sm:text-2xl md:text-3xl">Factory Process — Behind the Scenes</h2>
         <p className="mixing-text text-sm sm:text-base">
           Highly pigmented professional formulas created under strict EU regulations,
           precision-measured, and hand-finished in our laboratory.
@@ -231,6 +207,7 @@ export default function ProductsPage() {
                   className="relative cursor-pointer group"
                   role="button"
                   tabIndex={0}
+                  aria-label={`Play video: ${video.title}`}
                   onClick={() => handleVideoClick(video.id, index)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {

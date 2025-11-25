@@ -12,13 +12,8 @@
   to = "/index.html"
   status = 200
 
-# Cache headers for video files
+# Cache headers for factory video files
 [[headers]]
-  for = "/img/mixing/videos/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/videos/mixing/*"
+  for = "/videos/factory videos/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
