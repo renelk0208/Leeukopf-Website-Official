@@ -9,6 +9,12 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Redirect /api/instagram to the Netlify function
+[[redirects]]
+  from = "/api/instagram"
+  to = "/.netlify/functions/instagram-feed"
+  status = 200
+
 # SPA redirect - serve index.html for all routes
 [[redirects]]
   from = "/*"

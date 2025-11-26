@@ -11,15 +11,20 @@ const POST_COUNT = 4;
 // Grid classes for 2x2 layout (responsive: 1 col mobile, 2 cols tablet+)
 const GRID_CLASSES = 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6';
 
-// Instagram post interface matching API response
-interface InstagramPost {
+// Instagram post interface matching the /api/instagram response contract
+interface InstagramItem {
   id: string;
-  mediaType: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
-  mediaUrl: string;
-  thumbnailUrl: string;
+  type: 'IMAGE' | 'VIDEO' | 'REEL' | 'CAROUSEL';
+  imageUrl: string;
+  videoUrl: string | null;
   permalink: string;
-  caption?: string;
-  timestamp?: string;
+  caption: string | null;
+  timestamp: string;
+}
+
+interface InstagramApiResponse {
+  items: InstagramItem[];
+  error: string | null;
 }
 
 type LoadState = 'idle' | 'loading' | 'loaded' | 'error';
@@ -69,14 +74,14 @@ function ErrorFallback() {
 
 // Video/Media Modal component
 interface MediaModalProps {
-  post: InstagramPost;
+  post: InstagramItem;
   onClose: () => void;
 }
 
 function MediaModal({ post, onClose }: MediaModalProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const isVideo = post.mediaType === 'VIDEO';
+  const isVideo = post.type === 'VIDEO' || post.type === 'REEL';
 
   // Handle escape key and stop video on close
   useEffect(() => {
@@ -141,10 +146,10 @@ function MediaModal({ post, onClose }: MediaModalProps) {
 
         {/* Media content */}
         <div className="relative aspect-square sm:aspect-video bg-black flex items-center justify-center">
-          {isVideo ? (
+          {isVideo && post.videoUrl ? (
             <video
               ref={videoRef}
-              src={post.mediaUrl}
+              src={post.videoUrl}
               className="w-full h-full object-contain"
               controls
               autoPlay
@@ -155,7 +160,7 @@ function MediaModal({ post, onClose }: MediaModalProps) {
             </video>
           ) : (
             <img
-              src={post.mediaUrl}
+              src={post.imageUrl}
               alt={post.caption || 'Instagram post from Leeukopf Laboratories'}
               className="w-full h-full object-contain"
             />
@@ -188,13 +193,13 @@ function MediaModal({ post, onClose }: MediaModalProps) {
 
 // Instagram post tile component
 interface PostTileProps {
-  post: InstagramPost;
-  onSelect: (post: InstagramPost) => void;
+  post: InstagramItem;
+  onSelect: (post: InstagramItem) => void;
 }
 
 function PostTile({ post, onSelect }: PostTileProps) {
   const [imageError, setImageError] = useState(false);
-  const isVideo = post.mediaType === 'VIDEO';
+  const isVideo = post.type === 'VIDEO' || post.type === 'REEL';
 
   const handleClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
@@ -216,9 +221,9 @@ function PostTile({ post, onSelect }: PostTileProps) {
       className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] focus:ring-offset-2 w-full"
       aria-label={`${isVideo ? 'Play video' : 'View image'}: ${post.caption || 'Instagram post'}`}
     >
-      {post.thumbnailUrl && !imageError ? (
+      {post.imageUrl && !imageError ? (
         <img
-          src={post.thumbnailUrl}
+          src={post.imageUrl}
           alt={post.caption || 'Instagram post from Leeukopf Laboratories'}
           className="w-full h-full object-cover"
           loading="lazy"
@@ -252,8 +257,8 @@ function PostTile({ post, onSelect }: PostTileProps) {
 // Main Instagram Feed component
 export default function InstagramFeed() {
   const [loadState, setLoadState] = useState<LoadState>('idle');
-  const [posts, setPosts] = useState<InstagramPost[]>([]);
-  const [selectedPost, setSelectedPost] = useState<InstagramPost | null>(null);
+  const [posts, setPosts] = useState<InstagramItem[]>([]);
+  const [selectedPost, setSelectedPost] = useState<InstagramItem | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const hasLoaded = useRef(false);
 
@@ -265,22 +270,22 @@ export default function InstagramFeed() {
     setLoadState('loading');
     
     try {
-      // Fetch from Netlify function endpoint
-      const response = await fetch('/.netlify/functions/instagram-feed');
+      // Fetch from /api/instagram endpoint
+      const response = await fetch('/api/instagram');
       
-      if (!response.ok) {
+      if (!response.ok && response.status !== 200) {
         throw new Error(`API returned ${response.status}`);
       }
 
-      const data = await response.json();
+      const data: InstagramApiResponse = await response.json();
       
-      if (!data.posts || data.posts.length === 0) {
-        // No posts returned - show error state
+      if (!data.items || data.items.length === 0) {
+        // No items returned - show error state
         setLoadState('error');
         return;
       }
 
-      setPosts(data.posts);
+      setPosts(data.items);
       setLoadState('loaded');
     } catch (error) {
       console.error('Failed to load Instagram feed:', error);
@@ -315,7 +320,7 @@ export default function InstagramFeed() {
   }, [loadState, loadFeed]);
 
   // Handle modal open/close
-  const openModal = (post: InstagramPost) => {
+  const openModal = (post: InstagramItem) => {
     setSelectedPost(post);
   };
 
