@@ -12,6 +12,9 @@ import OurBrandsPage from './pages/OurBrandsPage';
 import DistributorsWantedPage from './pages/DistributorsWantedPage';
 import ClientRegistrationPage from './pages/ClientRegistrationPage';
 import TermsOfUsePage from './pages/TermsOfUsePage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import CookiesPolicyPage from './pages/CookiesPolicyPage';
+import PrivacyNoticeDistributorsPage from './pages/PrivacyNoticeDistributorsPage';
 import SeasonTrendsPage from './pages/SeasonTrendsPage';
 import LiveFeedPage from './pages/LiveFeedPage';
 import GelPolishPage from './pages/products/GelPolishPage';
@@ -41,6 +44,9 @@ function App() {
       <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
       <Route path="/client-registration" element={<ClientRegistrationPage />} />
       <Route path="/terms-of-use" element={<TermsOfUsePage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/cookies-policy" element={<CookiesPolicyPage />} />
+      <Route path="/privacy-notice-distributors" element={<PrivacyNoticeDistributorsPage />} />
       <Route path="/season-trends" element={<SeasonTrendsPage />} />
       <Route path="/live-feed" element={<LiveFeedPage />} />
     </Routes>
