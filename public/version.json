@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-11-26T20:30:59.338Z",
-  "commit": "fde618c",
-  "branch": "copilot/fix-factory-videos-and-images",
+  "buildDate": "2025-11-26T21:21:24.599Z",
+  "commit": "f603c1e",
+  "branch": "copilot/add-scroll-to-top-component",
   "message": "Build deployed successfully"
 }

@@ -5,6 +5,7 @@ import App from './App.tsx';
 import AdminLogin from './pages/AdminLogin.tsx';
 import AdminDashboard from './pages/AdminDashboard.tsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.tsx';
+import ScrollToTopOnRouteChange from './components/ScrollToTopOnRouteChange.tsx';
 import './index.css';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -24,6 +25,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTopOnRouteChange />
       <AuthProvider>
         <Routes>
           <Route path="/admin/login" element={<AdminLogin />} />
