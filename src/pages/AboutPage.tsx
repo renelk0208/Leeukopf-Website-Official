@@ -1,6 +1,7 @@
 import PageTemplate from '../components/PageTemplate';
 import FacilityCarousel from '../components/FacilityCarousel';
 import WhyLeeukopf from '../components/WhyLeeukopf';
+import WhyChooseLeeukopf from '../components/WhyChooseLeeukopf';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
@@ -51,6 +52,9 @@ export default function AboutPage() {
           We are proud to be cruelty-free certified and committed to ethical manufacturing practices. Our formulations are TPO-free, HEMA-free where specified, and many products carry vegan certification, reflecting our dedication to both quality and responsibility.
         </p>
       </div>
+
+      {/* Why Choose Leeukopf Laboratories Section */}
+      <WhyChooseLeeukopf />
 
       {/* Responsive Manufacturing Process */}
       <div className="mb-10 sm:mb-12 md:mb-16">
