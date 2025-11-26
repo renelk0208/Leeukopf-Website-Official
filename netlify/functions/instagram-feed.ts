@@ -41,8 +41,9 @@ async function fetchInstagramMedia(accessToken: string, limit: number = 4): Prom
   
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
+    const errorMessage = (errorData as { error?: { message?: string } })?.error?.message || 'Unknown error';
     console.error('Instagram API error:', response.status, errorData);
-    throw new Error(`Instagram API returned ${response.status}`);
+    throw new Error(`Instagram API error (${response.status}): ${errorMessage}`);
   }
 
   const data: InstagramAPIResponse = await response.json();
@@ -60,10 +61,35 @@ async function fetchInstagramMedia(accessToken: string, limit: number = 4): Prom
   }));
 }
 
+// Get allowed origins from environment or default to leeukopf.com
+function getAllowedOrigin(requestOrigin: string | undefined): string {
+  const allowedOrigins = [
+    'https://leeukopf.com',
+    'https://www.leeukopf.com',
+    // Allow localhost for development
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+  ];
+  
+  // Also allow Netlify preview deployments
+  if (requestOrigin && (
+    allowedOrigins.includes(requestOrigin) ||
+    requestOrigin.endsWith('.netlify.app')
+  )) {
+    return requestOrigin;
+  }
+  
+  // Default to the main domain
+  return 'https://leeukopf.com';
+}
+
 const handler: Handler = async (event: HandlerEvent) => {
-  // CORS headers for frontend requests
+  const requestOrigin = event.headers.origin || event.headers.Origin;
+  
+  // CORS headers for frontend requests - restricted to allowed domains
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': getAllowedOrigin(requestOrigin),
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json',
     // Cache for 5 minutes to reduce API calls

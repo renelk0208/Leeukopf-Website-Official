@@ -164,14 +164,12 @@ function MediaModal({ post, onClose }: MediaModalProps) {
 
         {/* Caption and link to Instagram */}
         <div className="p-4 bg-gray-900">
-          {post.caption && (
-            <p 
-              id="modal-title" 
-              className="text-gray-300 text-sm mb-3 line-clamp-3"
-            >
-              {post.caption}
-            </p>
-          )}
+          <h2 
+            id="modal-title" 
+            className={post.caption ? "text-gray-300 text-sm mb-3 line-clamp-3" : "sr-only"}
+          >
+            {post.caption || 'Instagram Media from Leeukopf Laboratories'}
+          </h2>
           <a
             href={post.permalink}
             target="_blank"
