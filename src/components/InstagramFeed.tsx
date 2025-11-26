@@ -340,7 +340,7 @@ export default function InstagramFeed() {
               See Leeukopf in Action
             </h2>
             <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-light px-2">
-              Live moments from our lab, products and behind the scenes.
+              See the latest colour trends and behind the scenes colour mixing.
             </p>
           </div>
 
