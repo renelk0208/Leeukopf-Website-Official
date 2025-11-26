@@ -109,8 +109,8 @@ export default function DistributorsWantedPage() {
           <OptimizedImage
             src="/distribution partnership.png"
             alt="Distribution partnership"
-            width={1200}
-            height={800}
+            width={1024}
+            height={1536}
             sizes={RESPONSIVE_SIZES.twoColumn}
             className="w-full h-auto rounded-lg shadow-sm"
           />
