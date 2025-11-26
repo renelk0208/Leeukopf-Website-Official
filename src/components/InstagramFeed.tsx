@@ -5,11 +5,13 @@ import { Instagram, ExternalLink, AlertCircle } from 'lucide-react';
 const INSTAGRAM_PROFILE = 'leeukopf_laboratories';
 const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_PROFILE}/`;
 
-// Number of skeleton items to show while loading
-const SKELETON_COUNT = 6;
+// Number of posts to display in the grid
+const POST_COUNT = 6;
+
+// Shared grid classes for consistent layout
+const GRID_CLASSES = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6';
 
 // Placeholder posts - in production, these would come from an API
-// Using placeholder data to demonstrate the UI structure
 interface InstagramPost {
   id: string;
   permalink: string;
@@ -18,23 +20,22 @@ interface InstagramPost {
   timestamp?: string;
 }
 
-// Placeholder post data - replace with actual API data when available
-const PLACEHOLDER_POSTS: InstagramPost[] = [
-  { id: '1', permalink: INSTAGRAM_PROFILE_URL, mediaUrl: '', caption: 'Instagram post' },
-  { id: '2', permalink: INSTAGRAM_PROFILE_URL, mediaUrl: '', caption: 'Instagram post' },
-  { id: '3', permalink: INSTAGRAM_PROFILE_URL, mediaUrl: '', caption: 'Instagram post' },
-  { id: '4', permalink: INSTAGRAM_PROFILE_URL, mediaUrl: '', caption: 'Instagram post' },
-  { id: '5', permalink: INSTAGRAM_PROFILE_URL, mediaUrl: '', caption: 'Instagram post' },
-  { id: '6', permalink: INSTAGRAM_PROFILE_URL, mediaUrl: '', caption: 'Instagram post' },
-];
+// Generate placeholder posts programmatically
+const generatePlaceholderPosts = (count: number): InstagramPost[] =>
+  Array.from({ length: count }, (_, index) => ({
+    id: String(index + 1),
+    permalink: INSTAGRAM_PROFILE_URL,
+    mediaUrl: '',
+    caption: 'Instagram post',
+  }));
 
 type LoadState = 'idle' | 'loading' | 'loaded' | 'error';
 
 // Skeleton loader component
 function SkeletonGrid() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-      {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+    <div className={GRID_CLASSES}>
+      {Array.from({ length: POST_COUNT }).map((_, index) => (
         <div
           key={index}
           className="aspect-square bg-gray-200 rounded-lg animate-pulse"
@@ -143,7 +144,7 @@ export default function InstagramFeed() {
       // const data = await response.json();
       // setPosts(data.posts);
       
-      setPosts(PLACEHOLDER_POSTS);
+      setPosts(generatePlaceholderPosts(POST_COUNT));
       setLoadState('loaded');
     } catch {
       setLoadState('error');
@@ -204,7 +205,7 @@ export default function InstagramFeed() {
             <ErrorFallback />
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              <div className={GRID_CLASSES}>
                 {posts.map((post) => (
                   <PostTile key={post.id} post={post} />
                 ))}
