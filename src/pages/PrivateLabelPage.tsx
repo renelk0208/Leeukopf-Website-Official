@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
+import { Beaker, Package, PencilRuler, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function PrivateLabelPage() {
   const categories = [
@@ -17,6 +18,29 @@ export default function PrivateLabelPage() {
       title: 'Bulk Orders',
       description: 'Large volume production with custom formulations. Perfect for established brands scaling operations.',
       path: '/private-label/bulk'
+    }
+  ];
+
+  const services = [
+    {
+      icon: Beaker,
+      title: 'Custom Formulations',
+      description: 'Work with our chemists to develop unique formulas tailored to your brand vision and market needs.'
+    },
+    {
+      icon: PencilRuler,
+      title: 'Packaging Design',
+      description: 'Complete packaging solutions including bottle selection, label design, and custom printing.'
+    },
+    {
+      icon: ShieldCheck,
+      title: 'Regulatory Support',
+      description: 'Full compliance documentation including SDS, PIF, and certification for EU and international markets.'
+    },
+    {
+      icon: Package,
+      title: 'Quality Assurance',
+      description: 'Every batch tested and certified to meet the highest industry standards before shipping.'
     }
   ];
 
@@ -43,35 +67,39 @@ export default function PrivateLabelPage() {
             <Link
               key={category.path}
               to={category.path}
-              className="group block p-4 sm:p-6 bg-white rounded-lg border border-gray-200 hover:border-blue-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              className="group block p-5 sm:p-6 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-600 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
             >
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-800 transition-colors">{category.title}</h3>
-              <p className="text-gray-600 font-light group-hover:text-gray-700 text-sm sm:text-base">{category.description}</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-700 transition-colors">{category.title}</h3>
+              <p className="text-gray-600 font-light group-hover:text-gray-700 text-sm sm:text-base mb-4">{category.description}</p>
+              <div className="flex items-center text-blue-600 font-medium text-sm group-hover:text-blue-700 transition-colors">
+                <span>See our collection</span>
+                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </div>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Responsive services section */}
-      <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">What We Provide</h2>
+      {/* Responsive services section - restyled as feature cards */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">What We Provide</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Custom Formulations</h3>
-            <p className="text-gray-600 font-light text-xs sm:text-sm">Work with our chemists to develop unique formulas tailored to your brand vision and market needs.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Packaging Design</h3>
-            <p className="text-gray-600 font-light text-xs sm:text-sm">Complete packaging solutions including bottle selection, label design, and custom printing.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Regulatory Support</h3>
-            <p className="text-gray-600 font-light text-xs sm:text-sm">Full compliance documentation including SDS, PIF, and certification for EU and international markets.</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Quality Assurance</h3>
-            <p className="text-gray-600 font-light text-xs sm:text-sm">Every batch tested and certified to meet the highest industry standards before shipping.</p>
-          </div>
+          {services.map((service) => (
+            <div
+              key={service.title}
+              className="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-blue-300"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                  <service.icon size={24} className="text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900 mb-2 text-base sm:text-lg">{service.title}</h3>
+                  <p className="text-gray-600 font-light text-sm sm:text-base leading-relaxed">{service.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </PageTemplate>
