@@ -78,7 +78,7 @@ export default function WhyChooseLeeukopf() {
         {/* Section heading */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight">
-            Why choose Leeukopf Laboratories as your manufacturing partner
+            Why Choose Leeukopf Laboratories as Your Manufacturing Partner
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-2 font-light">
             Discover the advantages that set us apart as a trusted private label partner in the beauty industry.
