@@ -42,30 +42,19 @@ export default function ProductsPage() {
 
   // Factory videos showcasing our production process
   // Located at: public/videos/factory videos/
+  // Only .mp4 files are supported - 3 videos explicitly referenced
   const videos: VideoItem[] = [
     {
       id: 'precision-pigment-blending',
       title: 'Precision Pigment Blending',
       description: 'Highly pigmented formulas crafted in our EU-compliant Bulgarian facility.',
-      src: '/videos/factory videos/Precision Pigment Blending.mp4'
-    },
-    {
-      id: 'colour-consistency-control',
-      title: 'Colour Consistency Control',
-      description: 'Each batch precision-measured to ensure uniform colour and viscosity.',
-      src: '/videos/factory videos/Colour-Consistency Control.mp4'
+      src: '/videos/factory videos/precision-pigment blending.mp4'
     },
     {
       id: 'self-levelling-formulation',
       title: 'Self-Levelling Formulation',
       description: 'Advanced formulas for smooth, self-levelling application every time.',
       src: '/videos/factory videos/Self-Levelling Formulation.mp4'
-    },
-    {
-      id: 'colour-mixing-expertise',
-      title: 'Colour Mixing Expertise',
-      description: 'Hand-finished with precision for true colour intensity and coverage.',
-      src: '/videos/factory videos/Colour mixing expertise.mp4'
     },
     {
       id: 'viscosity-testing',
