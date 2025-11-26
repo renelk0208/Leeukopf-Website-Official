@@ -51,16 +51,16 @@ export default function CertificatesPage() {
       height: 600
     },
     {
-      name: 'BNAEOPC Membership – Essential Oils, Perfumery & Cosmetics',
-      image: '/img/Certifications-And-Compliance/bnaeopc-membership-2025.jpg',
-      alt: 'Bulgarian National Association Essential Oils, Perfumery and Cosmetics membership certificate 2025',
-      description: 'Membership in the Bulgarian National Association Essential Oils, Perfumery and Cosmetics for 2025.',
+      name: 'Bulgarian Cosmetics Association',
+      image: '/img/Certifications-And-Compliance/bulgarian-cosmetics-membership-2025.jpg',
+      alt: 'Bulgarian Cosmetics Association membership certificate 2025',
+      description: 'Membership in the Bulgarian Cosmetics Association for 2025.',
       width: 800,
       height: 600
     },
     {
       name: 'FDA Compliance Certificate',
-      image: '/img/Certifications-And-Compliance/fda compliance certificate_page-0001.jpg',
+      image: '/img/Certifications-And-Compliance/fda-compliance-certificate_page-0001.jpg',
       alt: 'FDA Compliance Certificate for cosmetic products',
       description: 'Certificate demonstrating compliance with FDA regulations for cosmetic products.',
       width: 800,
@@ -68,7 +68,7 @@ export default function CertificatesPage() {
     },
     {
       name: 'SFDA Certificate of Conformity',
-      image: '/img/Certifications-And-Compliance/sfda certificate of conformity.jpg',
+      image: '/img/Certifications-And-Compliance/sfda-certificate-of-conformity.jpg',
       alt: 'Saudi Food and Drug Authority Certificate of Conformity',
       description: 'Certificate of Conformity issued by the Saudi Food and Drug Authority (SFDA) for product registration and compliance.',
       width: 800,

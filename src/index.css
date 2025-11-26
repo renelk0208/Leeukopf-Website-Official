@@ -140,10 +140,10 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Blurred certificate images for privacy protection - cannot be removed */
+  /* Blurred certificate images for privacy protection - light blur for visibility */
   .certificate-blurred {
-    filter: blur(3px) !important;
-    -webkit-filter: blur(3px) !important;
+    filter: blur(1.5px) !important;
+    -webkit-filter: blur(1.5px) !important;
     pointer-events: none; /* Prevent direct image interactions */
   }
 
@@ -151,8 +151,8 @@
   .certificate-blurred:hover,
   .certificate-blurred:focus,
   .certificate-blurred:active {
-    filter: blur(3px) !important;
-    -webkit-filter: blur(3px) !important;
+    filter: blur(1.5px) !important;
+    -webkit-filter: blur(1.5px) !important;
   }
 }
 
