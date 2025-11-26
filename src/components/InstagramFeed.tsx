@@ -213,7 +213,7 @@ function PostTile({ post, onSelect }: PostTileProps) {
       type="button"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden block hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] focus:ring-offset-2 w-full cursor-pointer"
+      className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] focus:ring-offset-2 w-full"
       aria-label={`${isVideo ? 'Play video' : 'View image'}: ${post.caption || 'Instagram post'}`}
     >
       {post.thumbnailUrl && !imageError ? (
