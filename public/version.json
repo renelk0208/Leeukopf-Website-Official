@@ -1,10 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-11-26T12:17:41.559Z",
-  "commit": "98caab4",
-  "branch": "copilot/add-instagram-feed-section",
-  "buildDate": "2025-11-26T12:10:39.323Z",
-  "commit": "cf7a391",
-  "branch": "copilot/add-why-choose-section",
+  "buildDate": "2025-11-26T13:28:50.382Z",
+  "commit": "19c286e",
+  "branch": "copilot/replace-instagram-section-homepage",
   "message": "Build deployed successfully"
 }
