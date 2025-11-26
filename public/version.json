@@ -1,10 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-11-25T17:41:05.031Z",
-  "commit": "e413817",
-  "branch": "copilot/reduce-certificate-image-blur",
-  "buildDate": "2025-11-25T17:38:18.412Z",
-  "commit": "2be3751",
-  "branch": "copilot/add-fda-sfda-certificates",
+  "buildDate": "2025-11-26T11:30:40.695Z",
+  "commit": "d61fa19",
+  "branch": "copilot/fix-certificates-compliance-page",
   "message": "Build deployed successfully"
 }
