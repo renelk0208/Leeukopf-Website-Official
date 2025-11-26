@@ -53,8 +53,8 @@ export default function Footer() {
   return (
     <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-t border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        {/* Responsive grid - stacks on mobile, 3 cols on desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
+        {/* Responsive grid - stacks on mobile, 4 cols on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {/* Brand section */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/" className="block mb-4">
@@ -120,9 +120,31 @@ export default function Footer() {
                   Contact Us
                 </Link>
               </li>
+            </ul>
+          </div>
+
+          {/* Legal Links */}
+          <div>
+            <h3 className="text-white font-semibold text-base mb-3">Legal</h3>
+            <ul className="space-y-2">
               <li>
                 <Link to="/terms-of-use" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Terms of Use
+                </Link>
+              </li>
+              <li>
+                <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/cookies-policy" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                  Cookies Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/privacy-notice-distributors" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                  Privacy Notice for Distributors
                 </Link>
               </li>
             </ul>
