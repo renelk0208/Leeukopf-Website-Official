@@ -273,7 +273,7 @@ export default function InstagramFeed() {
       // Fetch from /api/instagram endpoint
       const response = await fetch('/api/instagram');
       
-      if (!response.ok && response.status !== 200) {
+      if (!response.ok) {
         throw new Error(`API returned ${response.status}`);
       }
 
