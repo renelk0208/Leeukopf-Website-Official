@@ -182,7 +182,7 @@ export default function CertificatesPage() {
             className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Close lightbox"
           >
-            <X size={32} />
+            <X size={32} aria-hidden="true" />
           </button>
 
           {certificates.length > 1 && (
@@ -192,7 +192,7 @@ export default function CertificatesPage() {
                 className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Previous certificate"
               >
-                <ChevronLeft size={48} />
+                <ChevronLeft size={48} aria-hidden="true" />
               </button>
 
               <button
@@ -200,7 +200,7 @@ export default function CertificatesPage() {
                 className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Next certificate"
               >
-                <ChevronRight size={48} />
+                <ChevronRight size={48} aria-hidden="true" />
               </button>
             </>
           )}

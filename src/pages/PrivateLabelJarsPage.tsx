@@ -251,8 +251,8 @@ export default function PrivateLabelJarsPage() {
               <div className="aspect-square bg-gray-50 relative overflow-hidden">
                 {imageErrors.has(jar.id) ? (
                   <div className="w-full h-full flex flex-col items-center justify-center p-2 sm:p-4">
-                    <Package size={36} className="text-gray-300 mb-2 sm:w-12 sm:h-12" />
-                    <p className="text-xs sm:text-sm text-gray-500 text-center">Image not available</p>
+                    <Package size={36} className="text-gray-400 mb-2 sm:w-12 sm:h-12" aria-hidden="true" />
+                    <p className="text-xs sm:text-sm text-gray-600 text-center">Image not available</p>
                   </div>
                 ) : (
                   <img

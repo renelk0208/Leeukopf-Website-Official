@@ -14,7 +14,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
     <nav className="flex items-center space-x-2 text-sm mb-6">
       {items.map((item, index) => (
         <div key={index} className="flex items-center">
-          {index > 0 && <ChevronRight size={16} className="mx-2 text-gray-400" />}
+          {index > 0 && <ChevronRight size={16} className="mx-2 text-gray-400" aria-hidden="true" />}
           {item.onClick ? (
             <button
               onClick={item.onClick}

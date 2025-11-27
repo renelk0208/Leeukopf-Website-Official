@@ -72,7 +72,7 @@ export default function PageTemplate({
           <nav className="flex flex-wrap items-center gap-1 text-xs sm:text-sm mb-4 sm:mb-6" aria-label="Breadcrumb">
             {breadcrumbs.map((item, index) => (
               <div key={index} className="flex items-center">
-                {index > 0 && <ChevronRight size={14} className="mx-1 sm:mx-2 text-gray-400 flex-shrink-0" />}
+                {index > 0 && <ChevronRight size={14} className="mx-1 sm:mx-2 text-gray-400 flex-shrink-0" aria-hidden="true" />}
                 {item.path ? (
                   <Link
                     to={item.path}
@@ -125,7 +125,7 @@ export default function PageTemplate({
           className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-40 w-11 h-11 sm:w-12 sm:h-12 bg-blue-800 hover:bg-blue-900 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px]"
           aria-label="Scroll to top"
         >
-          <ArrowUp size={20} />
+          <ArrowUp size={20} aria-hidden="true" />
         </button>
       )}
     </div>
@@ -138,8 +138,8 @@ export function ImagePlaceholder({ alt = 'Product image' }: { alt?: string }) {
   return (
     <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center group hover:border-[#1E90FF] transition-colors">
       <div className="text-center">
-        <ImageIcon size={48} className="mx-auto text-gray-300 group-hover:text-[#1E90FF] transition-colors" />
-        <p className="text-sm text-gray-400 mt-2">{alt}</p>
+        <ImageIcon size={48} className="mx-auto text-gray-400 group-hover:text-[#1E90FF] transition-colors" aria-hidden="true" />
+        <p className="text-sm text-gray-600 mt-2">{alt}</p>
       </div>
     </div>
   );

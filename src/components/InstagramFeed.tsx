@@ -50,13 +50,13 @@ function ErrorFallback() {
   return (
     <div className="text-center py-8 sm:py-12 px-4">
       <div className="flex justify-center mb-4">
-        <AlertCircle size={48} className="text-gray-400" aria-hidden="true" />
+        <AlertCircle size={48} className="text-gray-500" aria-hidden="true" />
       </div>
-      <p className="text-gray-600 text-base sm:text-lg mb-6 font-light">
+      <p className="text-gray-700 text-base sm:text-lg mb-6 font-light">
         Our live Instagram feed is not available right now.
         <br className="hidden sm:block" />
         {' '}Visit us on Instagram →{' '}
-        <span className="font-medium text-gray-800">@{INSTAGRAM_PROFILE}</span>
+        <span className="font-medium text-gray-900">@{INSTAGRAM_PROFILE}</span>
       </p>
       <a
         href={INSTAGRAM_PROFILE_URL}
@@ -141,7 +141,7 @@ function MediaModal({ post, onClose }: MediaModalProps) {
           className="absolute top-3 right-3 z-10 p-2 bg-black/60 hover:bg-black/80 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Close modal"
         >
-          <X size={24} className="text-white" />
+          <X size={24} className="text-white" aria-hidden="true" />
         </button>
 
         {/* Media content */}
@@ -233,7 +233,7 @@ function PostTile({ post, onSelect }: PostTileProps) {
         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
           <Instagram 
             size={48} 
-            className="text-gray-400 group-hover:text-pink-500 transition-colors duration-300" 
+            className="text-gray-500 group-hover:text-pink-500 transition-colors duration-300" 
             aria-hidden="true" 
           />
         </div>

@@ -85,7 +85,7 @@ export default function ProductCarousel({
               className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Previous image"
             >
-              <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
+              <ChevronLeft size={20} className="sm:w-6 sm:h-6" aria-hidden="true" />
             </button>
 
             <button
@@ -93,7 +93,7 @@ export default function ProductCarousel({
               className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Next image"
             >
-              <ChevronRight size={20} className="sm:w-6 sm:h-6" />
+              <ChevronRight size={20} className="sm:w-6 sm:h-6" aria-hidden="true" />
             </button>
 
             {/* Indicator dots */}
