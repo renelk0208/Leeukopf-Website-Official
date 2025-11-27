@@ -59,6 +59,14 @@ export default function PageTemplate({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Validate heroImage URL to prevent XSS - only allow safe image path characters
+  const isValidImagePath = (url: string): boolean => {
+    // Only allow relative paths with safe characters (alphanumeric, slashes, dots, dashes, underscores, spaces)
+    return /^\/[a-zA-Z0-9/_\-. ]+\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url);
+  };
+
+  const safeHeroImage = heroImage && isValidImagePath(heroImage) ? heroImage : undefined;
+
   return (
     <>
       <ScrollToTop />
@@ -67,16 +75,16 @@ export default function PageTemplate({
       {/* Responsive header section - with optional hero background image */}
       <div 
         className={`py-8 sm:py-10 md:py-12 border-b border-gray-200 ${
-          heroImage 
+          safeHeroImage 
             ? 'relative bg-cover bg-center bg-no-repeat' 
             : 'bg-white/80 backdrop-blur-sm'
         }`}
-        style={heroImage ? { backgroundImage: `url(${heroImage})` } : undefined}
+        style={safeHeroImage ? { backgroundImage: `url(${safeHeroImage})` } : undefined}
       >
-        {heroImage && (
+        {safeHeroImage && (
           <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
         )}
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${heroImage ? 'relative z-10' : ''}`}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${safeHeroImage ? 'relative z-10' : ''}`}>
           <div className="mb-4 sm:mb-6">
             <BackButton />
           </div>
