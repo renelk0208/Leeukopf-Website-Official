@@ -9,37 +9,30 @@ export default function FacilityCarousel() {
 
   const images = [
     {
-      src: '/Leeukopf Factory (2).png',
-      alt: 'Leeukopf Laboratories Consultation Team',
-      caption: 'Expert Brand Consultation',
-      width: 1280,
-      height: 960
-    },
-    {
-      src: '/Leeukopf Factory (3).png',
-      alt: 'Leeukopf Laboratories Quality Control Testing',
-      caption: 'Precision Quality Control',
-      width: 1280,
-      height: 960
-    },
-    {
-      src: '/Leeukopf Factory (4).png',
-      alt: 'Leeukopf Laboratories Production Facility',
+      src: '/img/factory/Factory mixing.jpg',
+      alt: 'Leeukopf Laboratories production facility with industrial mixing equipment',
       caption: 'State-of-the-Art Production',
       width: 1280,
       height: 960
     },
     {
-      src: '/Leeukopf Factory (5).png',
-      alt: 'Leeukopf Laboratories Color Development',
+      src: '/img/factory/factory-mixer.jpg',
+      alt: 'Leeukopf Laboratories precision mixing equipment for gel polish formulation',
+      caption: 'Precision Mixing Equipment',
+      width: 1280,
+      height: 960
+    },
+    {
+      src: '/img/factory/pigment-blending.jpg',
+      alt: 'Leeukopf Laboratories pigment blending process for custom color development',
       caption: 'Color Innovation Lab',
       width: 1280,
       height: 960
     },
     {
-      src: '/LEEUKOPF factory 2.png',
-      alt: 'Leeukopf Laboratories Private Label Products',
-      caption: 'Private Label Excellence',
+      src: '/img/factory/quality-control.jpg',
+      alt: 'Leeukopf Laboratories quality control testing and verification',
+      caption: 'Quality Control Excellence',
       width: 1280,
       height: 960
     }
@@ -74,7 +67,7 @@ export default function FacilityCarousel() {
   return (
     <div className="w-full">
       <div
-        className="relative w-full bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-gray-200"
+        className="image-frame relative w-full"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
