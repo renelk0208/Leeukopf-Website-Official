@@ -20,6 +20,7 @@ interface PageTemplateProps {
   ctaText?: string;
   ctaLink?: string;
   ctaAction?: () => void;
+  heroImage?: string;
 }
 
 export default function PageTemplate({
@@ -30,7 +31,8 @@ export default function PageTemplate({
   showCTA = false,
   ctaText = 'Get in Touch',
   ctaLink,
-  ctaAction
+  ctaAction,
+  heroImage
 }: PageTemplateProps) {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -62,9 +64,19 @@ export default function PageTemplate({
       <ScrollToTop />
       <Navigation />
       <div className="min-h-screen pt-16">
-      {/* Responsive header section */}
-      <div className="bg-white/80 backdrop-blur-sm py-8 sm:py-10 md:py-12 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Responsive header section - with optional hero background image */}
+      <div 
+        className={`py-8 sm:py-10 md:py-12 border-b border-gray-200 ${
+          heroImage 
+            ? 'relative bg-cover bg-center bg-no-repeat' 
+            : 'bg-white/80 backdrop-blur-sm'
+        }`}
+        style={heroImage ? { backgroundImage: `url(${heroImage})` } : undefined}
+      >
+        {heroImage && (
+          <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
+        )}
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${heroImage ? 'relative z-10' : ''}`}>
           <div className="mb-4 sm:mb-6">
             <BackButton />
           </div>
