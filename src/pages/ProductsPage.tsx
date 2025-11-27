@@ -122,6 +122,7 @@ export default function ProductsPage() {
       ]}
       showCTA={true}
       ctaText="Request Product Catalogue"
+      heroImage="/img/hero/our-products-hero.jpg"
     >
       {/* Responsive product category grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-12 md:mb-16">

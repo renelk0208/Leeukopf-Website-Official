@@ -20,6 +20,7 @@ interface PageTemplateProps {
   ctaText?: string;
   ctaLink?: string;
   ctaAction?: () => void;
+  heroImage?: string;
 }
 
 export default function PageTemplate({
@@ -30,7 +31,8 @@ export default function PageTemplate({
   showCTA = false,
   ctaText = 'Get in Touch',
   ctaLink,
-  ctaAction
+  ctaAction,
+  heroImage
 }: PageTemplateProps) {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -57,14 +59,45 @@ export default function PageTemplate({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Validate heroImage URL to prevent XSS - only allow safe image path characters
+  const isValidImagePath = (url: string): boolean => {
+    // Only allow relative paths with safe characters (alphanumeric, slashes, dots, dashes, underscores, spaces, parentheses)
+    return /^\/[a-zA-Z0-9/_\-. ()]+\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url);
+  };
+
+  const safeHeroImage = heroImage && isValidImagePath(heroImage) ? heroImage : undefined;
+  // URL-encode the path to handle spaces and special characters
+  const encodedHeroImage = safeHeroImage ? encodeURI(safeHeroImage) : undefined;
+
   return (
     <>
       <ScrollToTop />
       <Navigation />
       <div className="min-h-screen pt-16">
-      {/* Responsive header section */}
-      <div className="bg-white/80 backdrop-blur-sm py-8 sm:py-10 md:py-12 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Responsive header section - with optional hero background image */}
+      <div 
+        className={`py-8 sm:py-10 md:py-12 border-b border-gray-200 ${
+          safeHeroImage 
+            ? 'relative' 
+            : 'bg-white/80 backdrop-blur-sm'
+        }`}
+      >
+        {encodedHeroImage && (
+          <>
+            {/* Hero image using img tag for better LCP optimization */}
+            <img
+              src={encodedHeroImage}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover object-center z-0"
+              fetchPriority="high"
+              loading="eager"
+              draggable={false}
+            />
+            {/* Overlay for blur and color */}
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10" />
+          </>
+        )}
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${safeHeroImage ? 'relative z-20' : ''}`}>
           <div className="mb-4 sm:mb-6">
             <BackButton />
           </div>
