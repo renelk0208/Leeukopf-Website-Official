@@ -3,6 +3,7 @@ import { FileText } from 'lucide-react';
 import PageTemplate from '../../components/PageTemplate';
 import BrochureRequestModal from '../../components/BrochureRequestModal';
 import ProductCarousel from '../../components/ProductCarousel';
+import GelPolishCategoryGallery from '../../components/GelPolishCategoryGallery';
 
 export default function GelPolishPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,6 +119,9 @@ export default function GelPolishPage() {
             </div>
           </div>
         </div>
+
+        {/* Gel Polish Categories Gallery - directly under Complete Gel Polish Catalogue */}
+        <GelPolishCategoryGallery />
 
         {/* Autumn Winter '25/26 Subcategory - responsive */}
         <div className="mb-10 sm:mb-12 md:mb-16">
