@@ -28,7 +28,7 @@ export default function CertificatesPage() {
     },
     {
       name: 'GMP Certificate – Cosmetics Manufacturing',
-      image: '/img/Certifications-And-Compliance/gmp-certificate-2025-2026-1.jpg',
+      image: '/img/Certifications-And-Compliance/GMP CERTIFICATE 2025-2026_page1.jpg',
       alt: 'GMP Certificate 2025–2026 for manufacturing according to Good Manufacturing Practice for cosmetics',
       description: 'Certification for manufacturing according to Good Manufacturing Practice for cosmetics (GMP), valid 2025–2026.',
       width: 800,

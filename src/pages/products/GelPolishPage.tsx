@@ -3,6 +3,7 @@ import { FileText } from 'lucide-react';
 import PageTemplate from '../../components/PageTemplate';
 import BrochureRequestModal from '../../components/BrochureRequestModal';
 import ProductCarousel from '../../components/ProductCarousel';
+import GelPolishCategoryGallery from '../../components/GelPolishCategoryGallery';
 
 export default function GelPolishPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -139,6 +140,9 @@ export default function GelPolishPage() {
             </p>
           </div>
         </div>
+
+        {/* Gel Polish Categories Gallery */}
+        <GelPolishCategoryGallery />
 
         {/* Product features - responsive */}
         <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200">
