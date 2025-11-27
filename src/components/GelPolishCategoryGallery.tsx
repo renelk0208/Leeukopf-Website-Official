@@ -3,64 +3,77 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /** Configuration for gel polish categories with their folder paths */
 const GEL_POLISH_CATEGORIES = [
-  { key: 'FH', label: 'FH', path: '/img/products/gel_polishes/FH' },
-  { key: 'Glitters', label: 'Glitters', path: '/img/products/gel_polishes/Glitters' },
-  { key: 'GRN', label: 'GRN', path: '/img/products/gel_polishes/GRN' },
-  { key: 'Pastel', label: 'Pastel', path: '/img/products/gel_polishes/Pastel' },
-  { key: 'RSN', label: 'RSN', path: '/img/products/gel_polishes/RSN' },
-  { key: 'SolidCream', label: 'Solid Cream', path: '/img/products/gel_polishes/solid cream' },
-  { key: 'TransparentColour', label: 'Transparent Colour Gel Polish', path: '/img/products/gel_polishes/Transparent Color Gel Polish' },
-  { key: 'WAN', label: 'WAN', path: '/img/products/gel_polishes/WAN' },
-  { key: 'YSN', label: 'YSN', path: '/img/products/gel_polishes/YSN' },
+  { key: 'GlittersCollection', label: 'Glitters Collection', folder: 'Glitters Collection' },
+  { key: 'GreenCollection', label: 'Green Collection', folder: 'Green Collection' },
+  { key: 'PastelCollection', label: 'Pastel Collection', folder: 'Pastel Collectin' },
+  { key: 'RoseNudeCollection', label: 'Rose Nude Collection', folder: 'Rose Nude Collection' },
+  { key: 'SolidColourCollection', label: 'Solid Colour Collection', folder: 'Solid Colour Collection' },
+  { key: 'SolidCreamCollection', label: 'Solid Cream Collection', folder: 'Solid Cream Collection' },
+  { key: 'TransparentColorGelPolish', label: 'Transparent Color Gel Polish', folder: 'Transparent Color Gel Polish' },
+  { key: 'WarmNudesCollection', label: 'Warm Nudes Collection', folder: 'Warm Nudes Collection' },
 ];
 
-/** Image configuration for each category - maps to actual files in folder */
-const CATEGORY_IMAGES: Record<string, { src: string; alt: string }[]> = {
-  FH: Array.from({ length: 19 }, (_, i) => ({
-    src: `/img/products/gel_polishes/FH/FH_pure_color_gel_polish_hema_free_${i + 1}.jpg`,
-    alt: `FH Pure Color Gel Polish HEMA Free ${i + 1}`,
-  })),
-  Glitters: [
-    { src: '/img/products/gel_polishes/Glitters/DSO.jpg', alt: 'DSO Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_A.jpg', alt: 'DSO A Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_C.jpg', alt: 'DSO C Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_G.jpg', alt: 'DSO G Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_GL.jpg', alt: 'DSO GL Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_GY.jpg', alt: 'DSO GY Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_M.jpg', alt: 'DSO M Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_N.jpg', alt: 'DSO N Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_SF.jpg', alt: 'DSO SF Glitter Gel Polish' },
-    { src: '/img/products/gel_polishes/Glitters/DSO_TC.jpg', alt: 'DSO TC Glitter Gel Polish' },
-  ],
-  GRN: Array.from({ length: 5 }, (_, i) => ({
-    src: `/img/products/gel_polishes/GRN/GRN_warm_nude_gel_polish_${i + 1}.jpg`,
-    alt: `GRN Warm Nude Gel Polish ${i + 1}`,
-  })),
-  Pastel: Array.from({ length: 4 }, (_, i) => ({
-    src: `/img/products/gel_polishes/Pastel/PAN_pastel_color_gel_polish_${i + 1}.jpg`,
-    alt: `PAN Pastel Color Gel Polish ${i + 1}`,
-  })),
-  RSN: Array.from({ length: 3 }, (_, i) => ({
-    src: `/img/products/gel_polishes/RSN/RSN_warm_nude_gel_polish_${i + 1}.jpg`,
-    alt: `RSN Warm Nude Gel Polish ${i + 1}`,
-  })),
-  SolidCream: Array.from({ length: 10 }, (_, i) => ({
-    src: `/img/products/gel_polishes/solid cream/solid-cream(${i + 1}).jpg`,
-    alt: `Solid Cream Gel Polish ${i + 1}`,
-  })),
-  TransparentColour: Array.from({ length: 5 }, (_, i) => ({
-    src: `/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (${i + 1}).jpg`,
-    alt: `Transparent Colour Gel Polish ${i + 1}`,
-  })),
-  WAN: Array.from({ length: 5 }, (_, i) => ({
-    src: `/img/products/gel_polishes/WAN/WAN_warm_nude_gel_polish_${i + 1}.jpg`,
-    alt: `WAN Warm Nude Gel Polish ${i + 1}`,
-  })),
-  YSN: Array.from({ length: 4 }, (_, i) => ({
-    src: `/img/products/gel_polishes/YSN/YSN_warm_nude_gel_polish_${i + 1}.jpg`,
-    alt: `YSN Warm Nude Gel Polish ${i + 1}`,
-  })),
-};
+/**
+ * Use Vite's import.meta.glob to dynamically load all images from gel polish folders.
+ * This pattern allows Vite to discover and bundle the images without hardcoding filenames.
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/gel_polishes/**/*.jpg',
+  { eager: true }
+);
+
+/** Build category images from the glob results */
+function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
+  const categoryImages: Record<string, { src: string; alt: string }[]> = {};
+
+  // Initialize empty arrays for each category
+  GEL_POLISH_CATEGORIES.forEach((category) => {
+    categoryImages[category.key] = [];
+  });
+
+  // Process all image modules
+  Object.keys(imageModules).forEach((path) => {
+    // Skip desktop.ini and other non-image files
+    if (!path.endsWith('.jpg')) return;
+
+    // Extract the folder name from the path
+    // Path format: /public/img/products/gel_polishes/FolderName/filename.jpg
+    const pathParts = path.split('/');
+    const folderIndex = pathParts.findIndex((part) => part === 'gel_polishes');
+    if (folderIndex === -1 || folderIndex + 1 >= pathParts.length) return;
+
+    const folderName = pathParts[folderIndex + 1];
+    const filename = pathParts[pathParts.length - 1];
+
+    // Find the matching category
+    const category = GEL_POLISH_CATEGORIES.find((cat) => cat.folder === folderName);
+    if (!category) return;
+
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.jpg$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    categoryImages[category.key].push({
+      src: imageSrc,
+      alt: `${category.label} - ${altText}`,
+    });
+  });
+
+  // Sort images within each category by filename for consistent ordering
+  Object.keys(categoryImages).forEach((key) => {
+    categoryImages[key].sort((a, b) => a.src.localeCompare(b.src));
+  });
+
+  return categoryImages;
+}
+
+const CATEGORY_IMAGES = buildCategoryImages();
 
 /** Lightweight gallery modal component */
 function GalleryModal({
@@ -249,38 +262,21 @@ export default function GelPolishCategoryGallery() {
         </p>
       </div>
 
-      {/* Category cards grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-        {GEL_POLISH_CATEGORIES.map((category) => {
-          const firstImage = CATEGORY_IMAGES[category.key]?.[0];
-          return (
-            <button
-              key={category.key}
-              onClick={() => handleCategoryClick(category.key)}
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg hover:border-blue-500 hover:-translate-y-1 transition-all duration-300 text-left"
-              aria-label={`Open ${category.label} gel polish collection`}
-            >
-              <div className="aspect-square bg-gray-100 overflow-hidden">
-                {firstImage && (
-                  <img
-                    src={firstImage.src}
-                    alt={`${category.label} preview`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                )}
-              </div>
-              <div className="p-3 sm:p-4">
-                <h4 className="font-semibold text-gray-900 text-sm sm:text-base group-hover:text-blue-800 transition-colors truncate">
-                  {category.label}
-                </h4>
-                <p className="text-xs text-gray-500 mt-1">
-                  {CATEGORY_IMAGES[category.key]?.length || 0} shades
-                </p>
-              </div>
-            </button>
-          );
-        })}
+      {/* Category cards grid - responsive layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {GEL_POLISH_CATEGORIES.map((category) => (
+          <button
+            key={category.key}
+            type="button"
+            onClick={() => handleCategoryClick(category.key)}
+            aria-label={`Open ${category.label} gel polish collection`}
+            className="w-full rounded-xl shadow-md bg-white p-4 text-left hover:shadow-lg transition-all cursor-pointer border border-gray-100"
+          >
+            <div className="text-lg font-semibold text-gray-800">
+              {category.label}
+            </div>
+          </button>
+        ))}
       </div>
 
       {/* Gallery modal */}
