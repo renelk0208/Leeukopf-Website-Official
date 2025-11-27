@@ -112,9 +112,11 @@ export default function Navigation() {
             <div className="lg:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-700 hover:text-[#1E90FF] transition-colors"
+                className="text-gray-700 hover:text-[#1E90FF] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={isOpen}
               >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
+                {isOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
               </button>
             </div>
           </div>

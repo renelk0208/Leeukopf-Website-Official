@@ -38,7 +38,7 @@ export default function VideoModal({ videoSrc, isYouTube = false, onClose }: Vid
         className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
         aria-label="Close video"
       >
-        <X size={32} />
+        <X size={32} aria-hidden="true" />
       </button>
 
       <div className="w-full max-w-5xl aspect-video">

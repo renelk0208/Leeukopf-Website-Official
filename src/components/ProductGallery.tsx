@@ -149,11 +149,11 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
 
             {currentProducts.length === 0 ? (
               <div className="text-center py-16 bg-gray-50 rounded-lg border border-gray-200">
-                <Package size={48} className="mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-600 text-lg mb-2">
+                <Package size={48} className="mx-auto mb-4 text-gray-500" aria-hidden="true" />
+                <p className="text-gray-700 text-lg mb-2">
                   Products coming soon for this category
                 </p>
-                <p className="text-gray-500">
+                <p className="text-gray-600">
                   Contact us to learn more about our {currentCategory.name.toLowerCase()}
                 </p>
               </div>
@@ -174,7 +174,7 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
                       </div>
                     ) : (
                       <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center">
-                        <Package size={48} className="text-gray-300" />
+                        <Package size={48} className="text-gray-400" aria-hidden="true" />
                       </div>
                     )}
                     <div className="p-5">

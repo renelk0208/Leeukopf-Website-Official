@@ -8,21 +8,6 @@ import GelPolishCategoryGallery from '../../components/GelPolishCategoryGallery'
 export default function GelPolishPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const collections = [
-    {
-      title: 'French Collection',
-      description: 'Classic French manicure shades in perfect nude, pink, and white tones'
-    },
-    {
-      title: 'Solid Colours',
-      description: 'Vibrant, highly pigmented colors across the spectrum'
-    },
-    {
-      title: 'Glitters',
-      description: 'Dazzling glitter formulations for stunning nail art'
-    }
-  ];
-
   const autumnWinterImages = [
     {
       src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
@@ -88,28 +73,18 @@ export default function GelPolishPage() {
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-4 sm:p-6 md:p-8 lg:p-12 text-center">
             <div className="max-w-3xl mx-auto">
               <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full mb-4 sm:mb-6">
-                <FileText className="text-blue-800 w-6 h-6 sm:w-8 sm:h-8" />
+                <FileText className="text-blue-800 w-6 h-6 sm:w-8 sm:h-8" aria-hidden="true" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Complete Gel Polish Catalogue</h2>
               <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 font-light leading-relaxed">
                 Explore our comprehensive range of gel polish products. Request our detailed brochure to discover our full collection of colors, finishes, and formulations.
               </p>
 
-              {/* Responsive collection grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                {collections.map((collection) => (
-                  <div key={collection.title} className="bg-white rounded-lg border border-gray-200 p-4 sm:p-5">
-                    <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">{collection.title}</h3>
-                    <p className="text-xs sm:text-sm text-gray-600 font-light">{collection.description}</p>
-                  </div>
-                ))}
-              </div>
-
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[44px] text-sm sm:text-base"
               >
-                <FileText size={18} className="mr-2" />
+                <FileText size={18} className="mr-2" aria-hidden="true" />
                 Request Complete Brochure
               </button>
 

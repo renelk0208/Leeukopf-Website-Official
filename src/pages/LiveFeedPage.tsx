@@ -201,16 +201,18 @@ export default function LiveFeedPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredPosts.map((post) => (
-              <div
+              <button
                 key={post.id}
-                className="group relative aspect-square bg-gray-100 rounded-lg border border-gray-200 overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300"
-                onClick={() => embedsEnabled ? openModal(post) : null}
+                className="group relative aspect-square bg-gray-100 rounded-lg border border-gray-200 overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 text-left w-full"
+                onClick={() => embedsEnabled ? openModal(post) : undefined}
+                aria-label={`View ${post.platform} post${embedsEnabled ? '' : ' - enable embeds first'}`}
+                disabled={!embedsEnabled}
               >
                 <div className="absolute inset-0 flex items-center justify-center">
                   {post.platform === 'instagram' ? (
-                    <Instagram size={48} className="text-gray-400 group-hover:text-pink-500 transition-colors" />
+                    <Instagram size={48} className="text-gray-400 group-hover:text-pink-500 transition-colors" aria-hidden="true" />
                   ) : (
-                    <Music2 size={48} className="text-gray-400 group-hover:text-black transition-colors" />
+                    <Music2 size={48} className="text-gray-400 group-hover:text-black transition-colors" aria-hidden="true" />
                   )}
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
@@ -231,7 +233,7 @@ export default function LiveFeedPage() {
                     </span>
                   </a>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         )}
@@ -251,10 +253,10 @@ export default function LiveFeedPage() {
           >
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 z-10 p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+              className="absolute top-4 right-4 z-10 p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Close modal"
             >
-              <X size={24} className="text-gray-700" />
+              <X size={24} className="text-gray-700" aria-hidden="true" />
             </button>
             <div className="p-8">
               {selectedPost.platform === 'instagram' ? (
