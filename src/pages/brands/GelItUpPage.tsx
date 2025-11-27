@@ -2,49 +2,40 @@ import { useState } from 'react';
 import PageTemplate from '../../components/PageTemplate';
 import { ExternalLink } from 'lucide-react';
 
+// GelitUp product images - only existing images in the repo
+const GELITUP_IMAGES = [
+  { src: '/img/brands/gelitup/Gelitup1 (1).jpg', alt: 'GEL.IT.UP gel polish collection showcase' },
+  { src: '/img/brands/gelitup/Gelitup1 (2).jpg', alt: 'GEL.IT.UP professional nail products' },
+  { src: '/img/brands/gelitup/Gelitup1 (3).jpg', alt: 'GEL.IT.UP vibrant color range' },
+  { src: '/img/brands/gelitup/Gelitup1 (5).jpg', alt: 'GEL.IT.UP premium gel polish bottles' },
+  { src: '/img/brands/gelitup/Gelitup1 (6).jpg', alt: 'GEL.IT.UP professional nail supplies' },
+  { src: '/img/brands/gelitup/Gelitup1 (7).jpg', alt: 'GEL.IT.UP color palette display' },
+  { src: '/img/brands/gelitup/Gelitup1 (8).jpg', alt: 'GEL.IT.UP salon-quality products' },
+  { src: '/img/brands/gelitup/Gelitup1 (9).jpg', alt: 'GEL.IT.UP gel polish application' },
+  { src: '/img/brands/gelitup/Gelitup1 (10).jpg', alt: 'GEL.IT.UP nail art inspiration' },
+  { src: '/img/brands/gelitup/Gelitup1 (71).jpg', alt: 'GEL.IT.UP trending nail colors' },
+  { src: '/img/brands/gelitup/Gelitup1 (76).jpg', alt: 'GEL.IT.UP professional-grade formulas' },
+  { src: '/img/brands/gelitup/Gelitup1 (79).jpg', alt: 'GEL.IT.UP luxury nail collection' },
+  { src: '/img/brands/gelitup/Gelitup1 (89).jpg', alt: 'GEL.IT.UP salon essentials' },
+  { src: '/img/brands/gelitup/Gelitup1 (91).jpg', alt: 'GEL.IT.UP gel polish finish' },
+  { src: '/img/brands/gelitup/Gelitup1 (92).jpg', alt: 'GEL.IT.UP nail care products' },
+  { src: '/img/brands/gelitup/Gelitup1 (93).jpg', alt: 'GEL.IT.UP color innovation' },
+  { src: '/img/brands/gelitup/Gelitup1 (94).jpg', alt: 'GEL.IT.UP professional results' },
+  { src: '/img/brands/gelitup/Gelitup1 (100).jpg', alt: 'GEL.IT.UP complete nail system' },
+  { src: '/img/brands/gelitup/Gelitup1 (105).jpg', alt: 'GEL.IT.UP gel polish durability' },
+  { src: '/img/brands/gelitup/Gelitup1 (107).jpg', alt: 'GEL.IT.UP nail artistry' },
+  { src: '/img/brands/gelitup/Gelitup1 (111).jpg', alt: 'GEL.IT.UP professional nail kit' },
+  { src: '/img/brands/gelitup/Gelitup1 (112).jpg', alt: 'GEL.IT.UP gel polish shine' },
+  { src: '/img/brands/gelitup/Gelitup1 (113).jpg', alt: 'GEL.IT.UP nail enhancement' },
+  { src: '/img/brands/gelitup/Gelitup1 (114).jpg', alt: 'GEL.IT.UP color selection' },
+  { src: '/img/brands/gelitup/Gelitup1 (120).jpg', alt: 'GEL.IT.UP premium nail products' },
+  { src: '/img/brands/gelitup/Gelitup1 (122).jpg', alt: 'GEL.IT.UP salon quality' },
+  { src: '/img/brands/gelitup/Gelitup1 (126).jpg', alt: 'GEL.IT.UP gel polish variety' },
+  { src: '/img/brands/gelitup/Gelitup1 (130).jpg', alt: 'GEL.IT.UP professional collection' },
+];
+
 export default function GelItUpPage() {
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
-
-  const brandImages = [
-    { src: '/img/brands/gelitup/Gelitup1 (1).jpg', alt: 'GEL.IT.UP Product Image 1' },
-    { src: '/img/brands/gelitup/Gelitup1 (2).jpg', alt: 'GEL.IT.UP Product Image 2' },
-    { src: '/img/brands/gelitup/Gelitup1 (3).jpg', alt: 'GEL.IT.UP Product Image 3' },
-    { src: '/img/brands/gelitup/Gelitup1 (4).jpg', alt: 'GEL.IT.UP Product Image 4' },
-    { src: '/img/brands/gelitup/Gelitup1 (5).jpg', alt: 'GEL.IT.UP Product Image 5' },
-    { src: '/img/brands/gelitup/Gelitup1 (6).jpg', alt: 'GEL.IT.UP Product Image 6' },
-    { src: '/img/brands/gelitup/Gelitup1 (7).jpg', alt: 'GEL.IT.UP Product Image 7' },
-    { src: '/img/brands/gelitup/Gelitup1 (8).jpg', alt: 'GEL.IT.UP Product Image 8' },
-    { src: '/img/brands/gelitup/Gelitup1 (9).jpg', alt: 'GEL.IT.UP Product Image 9' },
-    { src: '/img/brands/gelitup/Gelitup1 (10).jpg', alt: 'GEL.IT.UP Product Image 10' },
-    { src: '/img/brands/gelitup/Gelitup1 (70).jpg', alt: 'GEL.IT.UP Product Image 11' },
-    { src: '/img/brands/gelitup/Gelitup1 (71).jpg', alt: 'GEL.IT.UP Product Image 12' },
-    { src: '/img/brands/gelitup/Gelitup1 (76).jpg', alt: 'GEL.IT.UP Product Image 13' },
-    { src: '/img/brands/gelitup/Gelitup1 (78).jpg', alt: 'GEL.IT.UP Product Image 14' },
-    { src: '/img/brands/gelitup/Gelitup1 (79).jpg', alt: 'GEL.IT.UP Product Image 15' },
-    { src: '/img/brands/gelitup/Gelitup1 (89).jpg', alt: 'GEL.IT.UP Product Image 16' },
-    { src: '/img/brands/gelitup/Gelitup1 (91).jpg', alt: 'GEL.IT.UP Product Image 17' },
-    { src: '/img/brands/gelitup/Gelitup1 (92).jpg', alt: 'GEL.IT.UP Product Image 18' },
-    { src: '/img/brands/gelitup/Gelitup1 (93).jpg', alt: 'GEL.IT.UP Product Image 19' },
-    { src: '/img/brands/gelitup/Gelitup1 (94).jpg', alt: 'GEL.IT.UP Product Image 20' },
-    { src: '/img/brands/gelitup/Gelitup1 (100).jpg', alt: 'GEL.IT.UP Product Image 21' },
-    { src: '/img/brands/gelitup/Gelitup1 (102).jpg', alt: 'GEL.IT.UP Product Image 22' },
-    { src: '/img/brands/gelitup/Gelitup1 (105).jpg', alt: 'GEL.IT.UP Product Image 23' },
-    { src: '/img/brands/gelitup/Gelitup1 (106).jpg', alt: 'GEL.IT.UP Product Image 24' },
-    { src: '/img/brands/gelitup/Gelitup1 (107).jpg', alt: 'GEL.IT.UP Product Image 25' },
-    { src: '/img/brands/gelitup/Gelitup1 (108).jpg', alt: 'GEL.IT.UP Product Image 26' },
-    { src: '/img/brands/gelitup/Gelitup1 (111).jpg', alt: 'GEL.IT.UP Product Image 27' },
-    { src: '/img/brands/gelitup/Gelitup1 (112).jpg', alt: 'GEL.IT.UP Product Image 28' },
-    { src: '/img/brands/gelitup/Gelitup1 (113).jpg', alt: 'GEL.IT.UP Product Image 29' },
-    { src: '/img/brands/gelitup/Gelitup1 (114).jpg', alt: 'GEL.IT.UP Product Image 30' },
-    { src: '/img/brands/gelitup/Gelitup1 (118).jpg', alt: 'GEL.IT.UP Product Image 31' },
-    { src: '/img/brands/gelitup/Gelitup1 (119).jpg', alt: 'GEL.IT.UP Product Image 32' },
-    { src: '/img/brands/gelitup/Gelitup1 (120).jpg', alt: 'GEL.IT.UP Product Image 33' },
-    { src: '/img/brands/gelitup/Gelitup1 (121).jpg', alt: 'GEL.IT.UP Product Image 34' },
-    { src: '/img/brands/gelitup/Gelitup1 (122).jpg', alt: 'GEL.IT.UP Product Image 35' },
-    { src: '/img/brands/gelitup/Gelitup1 (125).jpg', alt: 'GEL.IT.UP Product Image 36' },
-    { src: '/img/brands/gelitup/Gelitup1 (126).jpg', alt: 'GEL.IT.UP Product Image 37' },
-    { src: '/img/brands/gelitup/Gelitup1 (130).jpg', alt: 'GEL.IT.UP Product Image 38' },
-  ];
 
   const handleImageError = (index: number) => {
     setImageErrors(prev => ({ ...prev, [index]: true }));
@@ -104,13 +95,13 @@ export default function GelItUpPage() {
       {/* Product Gallery Section */}
       <div className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Explore GEL.IT.UP</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
-          {brandImages.map((image, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+          {GELITUP_IMAGES.map((image, index) => (
             <div 
               key={index}
-              className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
             >
-              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+              <div className="aspect-square p-3 sm:p-4 flex items-center justify-center bg-gray-50">
                 {imageErrors[index] ? (
                   <div className="text-center p-4">
                     <p className="text-gray-400 text-sm">Image unavailable</p>
@@ -119,7 +110,8 @@ export default function GelItUpPage() {
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg"
                     onError={() => handleImageError(index)}
                   />
                 )}
