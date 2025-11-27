@@ -66,6 +66,8 @@ export default function PageTemplate({
   };
 
   const safeHeroImage = heroImage && isValidImagePath(heroImage) ? heroImage : undefined;
+  // URL-encode the path to handle spaces and special characters
+  const encodedHeroImage = safeHeroImage ? encodeURI(safeHeroImage) : undefined;
 
   return (
     <>
@@ -76,15 +78,26 @@ export default function PageTemplate({
       <div 
         className={`py-8 sm:py-10 md:py-12 border-b border-gray-200 ${
           safeHeroImage 
-            ? 'relative bg-cover bg-center bg-no-repeat' 
+            ? 'relative' 
             : 'bg-white/80 backdrop-blur-sm'
         }`}
-        style={safeHeroImage ? { backgroundImage: `url(${safeHeroImage})` } : undefined}
       >
-        {safeHeroImage && (
-          <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
+        {encodedHeroImage && (
+          <>
+            {/* Hero image using img tag for better LCP optimization */}
+            <img
+              src={encodedHeroImage}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover object-center z-0"
+              fetchPriority="high"
+              loading="eager"
+              draggable={false}
+            />
+            {/* Overlay for blur and color */}
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10" />
+          </>
         )}
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${safeHeroImage ? 'relative z-10' : ''}`}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${safeHeroImage ? 'relative z-20' : ''}`}>
           <div className="mb-4 sm:mb-6">
             <BackButton />
           </div>
