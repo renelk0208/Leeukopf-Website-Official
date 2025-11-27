@@ -67,7 +67,7 @@ export default function FacilityCarousel() {
   return (
     <div className="w-full">
       <div
-        className="image-frame relative w-full border border-gray-200"
+        className="image-frame relative w-full"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >

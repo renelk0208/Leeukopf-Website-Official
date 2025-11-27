@@ -51,7 +51,7 @@ export default function AboutPage() {
         </div>
         {/* Responsive grid for manufacturing steps */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-          <div className="image-frame bg-white overflow-hidden hover:shadow-lg transition-shadow">
+          <div className="image-frame hover:shadow-lg transition-shadow">
             <OptimizedImage
               src="/img/factory/quality-control.jpg"
               alt="Quality control testing of raw materials at Leeukopf Laboratories"
@@ -73,7 +73,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="image-frame bg-white overflow-hidden hover:shadow-lg transition-shadow">
+          <div className="image-frame hover:shadow-lg transition-shadow">
             <OptimizedImage
               src="/img/factory/Factory mixing.jpg"
               alt="Industrial mixing equipment for gel polish formulation at Leeukopf factory"
@@ -95,7 +95,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="image-frame bg-white overflow-hidden hover:shadow-lg transition-shadow">
+          <div className="image-frame hover:shadow-lg transition-shadow">
             <OptimizedImage
               src="/img/factory/pigment-blending.jpg"
               alt="Pigment blending process for custom gel polish colors at Leeukopf"
@@ -117,7 +117,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="image-frame bg-white overflow-hidden hover:shadow-lg transition-shadow">
+          <div className="image-frame hover:shadow-lg transition-shadow">
             <OptimizedImage
               src="/img/factory/factory-mixer.jpg"
               alt="Precision mixer equipment for final product quality at Leeukopf factory"
