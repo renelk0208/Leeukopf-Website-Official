@@ -51,7 +51,7 @@ const SocialLinks = () => {
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-t border-gray-700">
+    <footer className="bg-gradient-to-br from-secondary-800 via-secondary-800 to-secondary-900 border-t border-secondary-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         {/* Responsive grid - stacks on mobile, 4 cols on desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
@@ -81,42 +81,42 @@ export default function Footer() {
             <h3 className="text-white font-semibold text-base mb-3">Quick Links</h3>
             <ul className="space-y-2 columns-2 sm:columns-1">
               <li>
-                <Link to="/products" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/products" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Our Products
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/about" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/our-brands" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/our-brands" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Our Brands
                 </Link>
               </li>
               <li>
-                <Link to="/private-label" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/private-label" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Private Label
                 </Link>
               </li>
               <li>
-                <Link to="/distributors-wanted" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/distributors-wanted" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Become a Distributor
                 </Link>
               </li>
               <li>
-                <Link to="/client-registration" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/client-registration" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Client Registration
                 </Link>
               </li>
               <li>
-                <Link to="/certificates-and-compliance" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/certificates-and-compliance" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Certificates
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/contact" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Contact Us
                 </Link>
               </li>
@@ -128,22 +128,22 @@ export default function Footer() {
             <h3 className="text-white font-semibold text-base mb-3">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/terms-of-use" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/terms-of-use" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Terms of Use
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/privacy-policy" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/cookies-policy" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/cookies-policy" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Cookies Policy
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-notice-distributors" className="text-gray-400 hover:text-white transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/privacy-notice-distributors" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Privacy Notice for Distributors
                 </Link>
               </li>

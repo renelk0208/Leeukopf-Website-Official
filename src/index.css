@@ -3,6 +3,35 @@
 @tailwind utilities;
 
 /* 
+ * Berry-Blue Colour System Variables
+ * Primary: Berry (#A3005A) - Main brand colour for CTAs, accents
+ * Secondary: Blue (#2563EB) - Supporting colour for icons, links
+ */
+:root {
+  /* Primary (Berry) */
+  --color-primary: #A3005A;
+  --color-primary-dark: #820048;
+  --color-primary-soft: #F9E6F0;
+  
+  /* Secondary (Blue) */
+  --color-secondary: #2563EB;
+  --color-secondary-dark: #1E3A8A;
+  --color-secondary-soft: #E5EEFF;
+  
+  /* Neutral Palette */
+  --color-neutral-50: #F8FAFC;
+  --color-neutral-100: #F1F5F9;
+  --color-neutral-200: #E2E8F0;
+  --color-neutral-300: #CBD5E1;
+  --color-neutral-400: #94A3B8;
+  --color-neutral-500: #64748B;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1E293B;
+  --color-neutral-900: #0F172A;
+}
+
+/* 
  * Responsive CSS defaults for mobile-first approach
  * Ensures no horizontal scroll, proper image sizing, and accessible tap targets
  */
@@ -40,17 +69,51 @@
 
 /* Your custom component styles */
 @layer components {
+  /* Primary CTA - Berry colour */
   .btn-primary {
-    @apply px-6 py-3 bg-[#1E90FF] text-white rounded-md font-semibold transition-all duration-300 border-2 border-transparent;
+    @apply px-6 py-3 rounded-md font-semibold transition-all duration-300 border-2 border-transparent;
+    background-color: var(--color-primary);
+    color: white;
   }
   .btn-primary:hover {
-    @apply bg-white text-[#1E90FF] border-2 border-[#1E90FF];
+    @apply bg-white border-2;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
   }
+  
+  /* Secondary CTA - Blue colour */
   .btn-secondary {
-    @apply px-6 py-3 bg-white text-[#1E90FF] border-2 border-[#1E90FF] rounded-md font-semibold transition-all duration-300;
+    @apply px-6 py-3 bg-white rounded-md font-semibold transition-all duration-300 border-2;
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
   }
   .btn-secondary:hover {
-    @apply bg-[#1E90FF] text-white;
+    background-color: var(--color-secondary);
+    color: white;
+  }
+  
+  /* Unified Card Style */
+  .card {
+    @apply bg-white rounded-2xl;
+    border-top: 3px solid var(--color-primary);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+  }
+  
+  /* Section Background Utilities */
+  .section-muted {
+    background-color: var(--color-neutral-50);
+  }
+  .section-gradient-primary {
+    background: linear-gradient(135deg, var(--color-primary-soft) 0%, #ffffff 50%, var(--color-primary-soft) 100%);
+  }
+  .section-gradient-secondary {
+    background: linear-gradient(135deg, var(--color-secondary-soft) 0%, #ffffff 50%, var(--color-secondary-soft) 100%);
+  }
+  
+  /* Image Frame Utility */
+  .image-frame {
+    @apply rounded-2xl overflow-hidden bg-white;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
   }
   .section-dark {
     @apply text-white;

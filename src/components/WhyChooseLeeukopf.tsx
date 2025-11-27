@@ -61,21 +61,21 @@ export default function WhyChooseLeeukopf() {
             return (
               <article
                 key={index}
-                className="flex-shrink-0 w-[280px] sm:w-[300px] md:w-auto snap-start bg-white rounded-xl border border-gray-200 p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow duration-200"
+                className="card flex-shrink-0 w-[280px] sm:w-[300px] md:w-auto snap-start p-4 sm:p-5 hover:shadow-lg transition-shadow duration-200"
               >
-                {/* Icon */}
-                <div className="w-10 h-10 bg-blue-800 text-white rounded-lg flex items-center justify-center mb-3">
+                {/* Icon - Berry colour */}
+                <div className="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center mb-3">
                   <IconComponent className="w-5 h-5" />
                 </div>
                 {/* Title */}
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 leading-tight">
                   {block.title}
                 </h3>
-                {/* Bullet points */}
+                {/* Bullet points - Berry colour bullets */}
                 <ul className="space-y-1.5">
                   {block.bullets.map((bullet, bulletIndex) => (
                     <li key={bulletIndex} className="flex items-start gap-2 text-xs sm:text-sm text-gray-600 font-light leading-snug">
-                      <span className="text-blue-800 mt-1 flex-shrink-0">•</span>
+                      <span className="text-primary mt-1 flex-shrink-0">•</span>
                       <span>{bullet}</span>
                     </li>
                   ))}

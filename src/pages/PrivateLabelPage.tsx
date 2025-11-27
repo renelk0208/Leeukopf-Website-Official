@@ -58,7 +58,10 @@ export default function PrivateLabelPage() {
     >
       {/* Responsive intro section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Our Private Label Solutions</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
+          Our Private Label Solutions
+          <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
+        </h2>
         <p className="text-gray-600 font-light leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base">
           Launch or expand your beauty brand with confidence. We offer complete private label services including custom formulations, packaging design, regulatory compliance, and quality assurance. Our minimum order quantities are competitive, and we work with brands at every stage of growth.
         </p>
@@ -68,11 +71,11 @@ export default function PrivateLabelPage() {
             <Link
               key={category.path}
               to={category.path}
-              className="group block p-5 sm:p-6 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-600 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
+              className="card group block p-5 sm:p-6 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
             >
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-700 transition-colors">{category.title}</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 group-hover:text-primary transition-colors">{category.title}</h3>
               <p className="text-gray-600 font-light group-hover:text-gray-700 text-sm sm:text-base mb-4">{category.description}</p>
-              <div className="flex items-center text-blue-600 font-medium text-sm group-hover:text-blue-700 transition-colors">
+              <div className="flex items-center text-secondary font-medium text-sm group-hover:text-secondary-700 transition-colors">
                 <span>See our collection</span>
                 <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -88,11 +91,11 @@ export default function PrivateLabelPage() {
           {services.map((service) => (
             <div
               key={service.title}
-              className="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-blue-300"
+              className="card p-5 sm:p-6 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-                  <service.icon size={24} className="text-blue-600" />
+                <div className="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center">
+                  <service.icon size={24} className="text-primary" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900 mb-2 text-base sm:text-lg">{service.title}</h3>
