@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /** Configuration for gel polish categories with their folder paths */
@@ -105,12 +105,12 @@ function GalleryModal({
   };
 
   // Prevent body scroll when modal is open
-  useState(() => {
+  useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'unset';
     };
-  });
+  }, []);
 
   return (
     <div
@@ -230,7 +230,6 @@ export default function GelPolishCategoryGallery() {
 
   const handleCloseModal = () => {
     setSelectedCategory(null);
-    document.body.style.overflow = 'unset';
   };
 
   const selectedCategoryData = selectedCategory
