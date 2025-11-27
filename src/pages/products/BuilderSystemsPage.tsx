@@ -150,7 +150,7 @@ export default function BuilderSystemsPage() {
           <div>
             <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
               <div className="text-center p-6">
-                <p className="text-gray-400 text-sm">Builder gel application demonstration</p>
+                <p className="text-gray-600 text-sm">Builder gel application demonstration</p>
               </div>
             </div>
           </div>

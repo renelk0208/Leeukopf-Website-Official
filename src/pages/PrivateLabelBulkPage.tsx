@@ -75,8 +75,8 @@ export default function PrivateLabelBulkPage() {
               <div className="aspect-video bg-gray-50 relative overflow-hidden">
                 {imageErrors.has(product.id) ? (
                   <div className="w-full h-full flex flex-col items-center justify-center p-4">
-                    <Package size={48} className="text-gray-300 mb-2" />
-                    <p className="text-sm text-gray-500 text-center">Image not available</p>
+                    <Package size={48} className="text-gray-400 mb-2" aria-hidden="true" />
+                    <p className="text-sm text-gray-600 text-center">Image not available</p>
                   </div>
                 ) : (
                   <img

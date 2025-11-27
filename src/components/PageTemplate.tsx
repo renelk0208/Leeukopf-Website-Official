@@ -138,8 +138,8 @@ export function ImagePlaceholder({ alt = 'Product image' }: { alt?: string }) {
   return (
     <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center group hover:border-[#1E90FF] transition-colors">
       <div className="text-center">
-        <ImageIcon size={48} className="mx-auto text-gray-300 group-hover:text-[#1E90FF] transition-colors" />
-        <p className="text-sm text-gray-400 mt-2">{alt}</p>
+        <ImageIcon size={48} className="mx-auto text-gray-400 group-hover:text-[#1E90FF] transition-colors" aria-hidden="true" />
+        <p className="text-sm text-gray-600 mt-2">{alt}</p>
       </div>
     </div>
   );
