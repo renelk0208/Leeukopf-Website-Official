@@ -50,14 +50,14 @@ export default function AboutPage() {
           </p>
         </div>
         {/* Responsive grid for manufacturing steps */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+          <div className="image-frame bg-white overflow-hidden hover:shadow-lg transition-shadow">
             <OptimizedImage
-              src="/Raw Materials Intake.png"
-              alt="Raw Materials & QC Intake"
+              src="/img/factory/quality-control.jpg"
+              alt="Quality control testing of raw materials at Leeukopf Laboratories"
               width={800}
-              height={400}
-              sizes={RESPONSIVE_SIZES.threeColumn}
+              height={600}
+              sizes={RESPONSIVE_SIZES.twoColumn}
               className="w-full h-36 sm:h-48 object-cover"
             />
             <div className="p-4 sm:p-6">
@@ -73,13 +73,13 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+          <div className="image-frame bg-white overflow-hidden hover:shadow-lg transition-shadow">
             <OptimizedImage
-              src="/img/factory/Leeukopf Factory (4).png"
-              alt="Formulation & Mixing"
+              src="/img/factory/Factory mixing.jpg"
+              alt="Industrial mixing equipment for gel polish formulation at Leeukopf factory"
               width={800}
-              height={400}
-              sizes={RESPONSIVE_SIZES.threeColumn}
+              height={600}
+              sizes={RESPONSIVE_SIZES.twoColumn}
               className="w-full h-36 sm:h-48 object-cover"
             />
             <div className="p-4 sm:p-6">
@@ -95,13 +95,13 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+          <div className="image-frame bg-white overflow-hidden hover:shadow-lg transition-shadow">
             <OptimizedImage
-              src="/Labelling and Packaging.png"
-              alt="Filling & Capping"
+              src="/img/factory/pigment-blending.jpg"
+              alt="Pigment blending process for custom gel polish colors at Leeukopf"
               width={800}
-              height={400}
-              sizes={RESPONSIVE_SIZES.threeColumn}
+              height={600}
+              sizes={RESPONSIVE_SIZES.twoColumn}
               className="w-full h-36 sm:h-48 object-cover"
             />
             <div className="p-4 sm:p-6">
@@ -109,49 +109,27 @@ export default function AboutPage() {
                 <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
                   3
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Filling & Capping</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Pigment Blending</h3>
               </div>
               <p className="text-xs sm:text-sm text-gray-600 font-light leading-relaxed">
-                Automated filling systems ensure precise volumes and contamination-free bottling of every product.
+                Expert color development ensures vibrant, consistent pigments for professional-grade nail products.
               </p>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+          <div className="image-frame bg-white overflow-hidden hover:shadow-lg transition-shadow">
             <OptimizedImage
-              src="/Labelling.png"
-              alt="Label & Batch Coding"
+              src="/img/factory/factory-mixer.jpg"
+              alt="Precision mixer equipment for final product quality at Leeukopf factory"
               width={800}
-              height={400}
-              sizes={RESPONSIVE_SIZES.threeColumn}
+              height={600}
+              sizes={RESPONSIVE_SIZES.twoColumn}
               className="w-full h-36 sm:h-48 object-cover"
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
                   4
-                </div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Label & Batch Coding</h3>
-              </div>
-              <p className="text-xs sm:text-sm text-gray-600 font-light leading-relaxed">
-                Each product receives accurate labeling and batch codes for full traceability throughout the supply chain.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-            <OptimizedImage
-              src="/Final QC.png"
-              alt="Final QA & Packing"
-              width={800}
-              height={400}
-              sizes={RESPONSIVE_SIZES.threeColumn}
-              className="w-full h-36 sm:h-48 object-cover"
-            />
-            <div className="p-4 sm:p-6">
-              <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
-                  5
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Final QA & Packing</h3>
               </div>

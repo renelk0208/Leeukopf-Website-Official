@@ -154,6 +154,14 @@
     filter: blur(1.5px) !important;
     -webkit-filter: blur(1.5px) !important;
   }
+
+  /* Consistent styling for manufacturing/factory images */
+  .image-frame {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+    background: #ffffff;
+  }
 }
 
 /* 
