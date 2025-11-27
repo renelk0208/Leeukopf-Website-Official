@@ -88,7 +88,7 @@ export default function GelPolishPage() {
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-4 sm:p-6 md:p-8 lg:p-12 text-center">
             <div className="max-w-3xl mx-auto">
               <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full mb-4 sm:mb-6">
-                <FileText className="text-blue-800 w-6 h-6 sm:w-8 sm:h-8" />
+                <FileText className="text-blue-800 w-6 h-6 sm:w-8 sm:h-8" aria-hidden="true" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Complete Gel Polish Catalogue</h2>
               <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 font-light leading-relaxed">
@@ -109,7 +109,7 @@ export default function GelPolishPage() {
                 onClick={() => setIsModalOpen(true)}
                 className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[44px] text-sm sm:text-base"
               >
-                <FileText size={18} className="mr-2" />
+                <FileText size={18} className="mr-2" aria-hidden="true" />
                 Request Complete Brochure
               </button>
 

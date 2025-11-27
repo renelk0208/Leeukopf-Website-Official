@@ -316,10 +316,11 @@ export default function PrivateLabelBottlesPage() {
         {/* Responsive bottle grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {BOTTLES.map((bottle) => (
-            <div
+            <button
               key={bottle.id}
               onClick={() => openModal(bottle)}
-              className="group cursor-pointer bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="group cursor-pointer bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left"
+              aria-label={`View ${bottle.name} bottle details - ${bottle.spec}`}
             >
               <div className="aspect-square bg-gray-50 relative overflow-hidden">
                 <OptimizedImage
@@ -335,7 +336,7 @@ export default function PrivateLabelBottlesPage() {
                 <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{bottle.name}</h3>
                 <p className="text-xs sm:text-sm text-gray-600 font-light">{bottle.spec}</p>
               </div>
-            </div>
+            </button>
           ))}
         </div>
 
@@ -372,7 +373,7 @@ export default function PrivateLabelBottlesPage() {
             className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Close modal"
           >
-            <X size={20} className="text-gray-700 sm:w-6 sm:h-6" />
+            <X size={20} className="text-gray-700 sm:w-6 sm:h-6" aria-hidden="true" />
           </button>
 
           {/* Zoom button - hidden on very small screens where pinch-zoom is available */}
@@ -385,9 +386,9 @@ export default function PrivateLabelBottlesPage() {
             aria-label={isZoomed ? "Zoom out" : "Zoom in"}
           >
             {isZoomed ? (
-              <ZoomOut size={20} className="text-gray-700 sm:w-6 sm:h-6" />
+              <ZoomOut size={20} className="text-gray-700 sm:w-6 sm:h-6" aria-hidden="true" />
             ) : (
-              <ZoomIn size={20} className="text-gray-700 sm:w-6 sm:h-6" />
+              <ZoomIn size={20} className="text-gray-700 sm:w-6 sm:h-6" aria-hidden="true" />
             )}
           </button>
 
@@ -402,7 +403,7 @@ export default function PrivateLabelBottlesPage() {
                 className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Previous image"
               >
-                <ChevronLeft className="text-gray-700 w-6 h-6 sm:w-8 sm:h-8" />
+                <ChevronLeft className="text-gray-700 w-6 h-6 sm:w-8 sm:h-8" aria-hidden="true" />
               </button>
 
               <button
@@ -413,7 +414,7 @@ export default function PrivateLabelBottlesPage() {
                 className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Next image"
               >
-                <ChevronRight className="text-gray-700 w-6 h-6 sm:w-8 sm:h-8" />
+                <ChevronRight className="text-gray-700 w-6 h-6 sm:w-8 sm:h-8" aria-hidden="true" />
               </button>
             </>
           )}

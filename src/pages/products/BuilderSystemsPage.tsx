@@ -48,7 +48,7 @@ export default function BuilderSystemsPage() {
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 p-8 md:p-12 text-center">
             <div className="max-w-3xl mx-auto">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
-                <FileText size={32} className="text-blue-800" />
+                <FileText size={32} className="text-blue-800" aria-hidden="true" />
               </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Complete Builder Systems Catalogue</h2>
               <p className="text-lg text-gray-600 mb-8 font-light leading-relaxed">
@@ -68,7 +68,7 @@ export default function BuilderSystemsPage() {
                 onClick={() => setIsModalOpen(true)}
                 className="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                <FileText size={20} className="mr-2" />
+                <FileText size={20} className="mr-2" aria-hidden="true" />
                 Request Complete Brochure
               </button>
 

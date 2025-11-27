@@ -135,7 +135,7 @@ function GalleryModal({
           className="text-white hover:text-gray-300 transition-colors p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Close gallery"
         >
-          <X size={28} />
+          <X size={28} aria-hidden="true" />
         </button>
       </div>
 
@@ -147,7 +147,7 @@ function GalleryModal({
             className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10 bg-black/30 hover:bg-black/50 rounded-full p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Previous image"
           >
-            <ChevronLeft size={32} />
+            <ChevronLeft size={32} aria-hidden="true" />
           </button>
 
           <button
@@ -155,7 +155,7 @@ function GalleryModal({
             className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10 bg-black/30 hover:bg-black/50 rounded-full p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Next image"
           >
-            <ChevronRight size={32} />
+            <ChevronRight size={32} aria-hidden="true" />
           </button>
         </>
       )}
@@ -258,6 +258,7 @@ export default function GelPolishCategoryGallery() {
               key={category.key}
               onClick={() => handleCategoryClick(category.key)}
               className="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg hover:border-blue-500 hover:-translate-y-1 transition-all duration-300 text-left"
+              aria-label={`Open ${category.label} gel polish collection`}
             >
               <div className="aspect-square bg-gray-100 overflow-hidden">
                 {firstImage && (

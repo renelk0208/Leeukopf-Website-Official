@@ -78,7 +78,7 @@ export default function CertificatesBanner() {
                 className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-blue-800 text-white rounded-md font-semibold hover:bg-blue-900 transition-all duration-300 shadow-sm hover:shadow-md w-full lg:w-auto min-h-[44px]"
               >
                 <span>View Certificates</span>
-                <ArrowRight size={18} />
+                <ArrowRight size={18} aria-hidden="true" />
               </button>
             </div>
           </div>

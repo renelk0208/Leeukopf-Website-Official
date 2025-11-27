@@ -50,7 +50,7 @@ export default function ImageLightbox({ images, currentIndex, onClose }: ImageLi
         className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
         aria-label="Close lightbox"
       >
-        <X size={32} />
+        <X size={32} aria-hidden="true" />
       </button>
 
       {images.length > 1 && (
@@ -60,7 +60,7 @@ export default function ImageLightbox({ images, currentIndex, onClose }: ImageLi
             className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10"
             aria-label="Previous image"
           >
-            <ChevronLeft size={48} />
+            <ChevronLeft size={48} aria-hidden="true" />
           </button>
 
           <button
@@ -68,7 +68,7 @@ export default function ImageLightbox({ images, currentIndex, onClose }: ImageLi
             className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10"
             aria-label="Next image"
           >
-            <ChevronRight size={48} />
+            <ChevronRight size={48} aria-hidden="true" />
           </button>
         </>
       )}

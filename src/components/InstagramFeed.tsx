@@ -141,7 +141,7 @@ function MediaModal({ post, onClose }: MediaModalProps) {
           className="absolute top-3 right-3 z-10 p-2 bg-black/60 hover:bg-black/80 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Close modal"
         >
-          <X size={24} className="text-white" />
+          <X size={24} className="text-white" aria-hidden="true" />
         </button>
 
         {/* Media content */}
