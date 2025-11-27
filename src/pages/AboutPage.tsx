@@ -1,49 +1,8 @@
 import PageTemplate from '../components/PageTemplate';
-import FacilityCarousel from '../components/FacilityCarousel';
-import AboutImageCarousel from '../components/AboutImageCarousel';
 import WhyLeeukopf from '../components/WhyLeeukopf';
 import WhyChooseLeeukopf from '../components/WhyChooseLeeukopf';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
-
-// About page carousel images
-const aboutImages = [
-  {
-    src: '/img/factory/Firefly_Gemini Flash_create an image of Leeukopf Laboratory facility - factory about 1500 sqaure meters, d 93539.png',
-    alt: 'Leeukopf Laboratories — Manufacturing Facility',
-    caption: 'Our state-of-the-art manufacturing facility in Bulgaria',
-    width: 1280,
-    height: 960
-  },
-  {
-    src: '/Leeukopf Factory (2).png',
-    alt: 'Leeukopf Laboratories Consultation Team',
-    caption: 'Expert Brand Consultation',
-    width: 1280,
-    height: 960
-  },
-  {
-    src: '/Leeukopf Factory (3).png',
-    alt: 'Leeukopf Laboratories Quality Control Testing',
-    caption: 'Precision Quality Control',
-    width: 1280,
-    height: 960
-  },
-  {
-    src: '/Leeukopf Factory (4).png',
-    alt: 'Leeukopf Laboratories Production Facility',
-    caption: 'State-of-the-Art Production',
-    width: 1280,
-    height: 960
-  },
-  {
-    src: '/Leeukopf Factory (5).png',
-    alt: 'Leeukopf Laboratories Color Development',
-    caption: 'Color Innovation Lab',
-    width: 1280,
-    height: 960
-  }
-];
 
 export default function AboutPage() {
   return (
@@ -57,19 +16,14 @@ export default function AboutPage() {
       showCTA={true}
     >
       {/* Responsive intro section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-10 sm:mb-12 md:mb-16">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Our Story</h2>
-          <p className="text-gray-600 mb-4 font-light leading-relaxed text-sm sm:text-base">
-            Founded with a commitment to excellence, Leeukopf Laboratories has become a trusted name in professional beauty products. Our state-of-the-art manufacturing facility in Bulgaria combines European quality standards with innovative formulations to deliver products that meet the highest industry benchmarks.
-          </p>
-          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
-            We specialize in gel polish systems, builder gels, acrylics, and complete nail care solutions. Every product is developed with meticulous attention to detail, ensuring safety, performance, and stunning results for nail professionals and their clients worldwide.
-          </p>
-        </div>
-        <div>
-          <AboutImageCarousel images={aboutImages} />
-        </div>
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Our Story</h2>
+        <p className="text-gray-600 mb-4 font-light leading-relaxed text-sm sm:text-base">
+          Founded with a commitment to excellence, Leeukopf Laboratories has become a trusted name in professional beauty products. Our state-of-the-art manufacturing facility in Bulgaria combines European quality standards with innovative formulations to deliver products that meet the highest industry benchmarks.
+        </p>
+        <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
+          We specialize in gel polish systems, builder gels, acrylics, and complete nail care solutions. Every product is developed with meticulous attention to detail, ensuring safety, performance, and stunning results for nail professionals and their clients worldwide.
+        </p>
       </div>
 
       {/* Responsive Quality & Compliance */}
@@ -208,19 +162,6 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Responsive Facility section */}
-      <div className="mb-10 sm:mb-12 md:mb-16">
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 tracking-tight">
-            Our Facility
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto font-light px-2">
-            Take a look inside our state-of-the-art manufacturing facility and see how we bring innovation and quality to every product
-          </p>
-        </div>
-        <FacilityCarousel />
       </div>
 
       <WhyLeeukopf />
