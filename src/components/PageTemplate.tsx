@@ -61,8 +61,8 @@ export default function PageTemplate({
 
   // Validate heroImage URL to prevent XSS - only allow safe image path characters
   const isValidImagePath = (url: string): boolean => {
-    // Only allow relative paths with safe characters (alphanumeric, slashes, dots, dashes, underscores, spaces)
-    return /^\/[a-zA-Z0-9/_\-. ]+\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url);
+    // Only allow relative paths with safe characters (alphanumeric, slashes, dots, dashes, underscores, spaces, parentheses)
+    return /^\/[a-zA-Z0-9/_\-. ()]+\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url);
   };
 
   const safeHeroImage = heroImage && isValidImagePath(heroImage) ? heroImage : undefined;
