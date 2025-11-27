@@ -120,6 +120,9 @@ export default function GelPolishPage() {
           </div>
         </div>
 
+        {/* Gel Polish Categories Gallery - directly under Complete Gel Polish Catalogue */}
+        <GelPolishCategoryGallery />
+
         {/* Autumn Winter '25/26 Subcategory - responsive */}
         <div className="mb-10 sm:mb-12 md:mb-16">
           <div className="text-center mb-6 sm:mb-8">
@@ -140,9 +143,6 @@ export default function GelPolishPage() {
             </p>
           </div>
         </div>
-
-        {/* Gel Polish Categories Gallery */}
-        <GelPolishCategoryGallery />
 
         {/* Product features - responsive */}
         <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200">
