@@ -1,42 +1,72 @@
 import PageTemplate from '../components/PageTemplate';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
-import { TrendingUp, Megaphone, GraduationCap, Award, RefreshCw, HeadphonesIcon } from 'lucide-react';
+import { Handshake, Gift, UserCheck, CheckCircle } from 'lucide-react';
+import { ComponentType } from 'react';
+
+interface FeatureBlock {
+  title: string;
+  bullets: string[];
+  icon: ComponentType<{ className?: string }>;
+}
+
+const featureBlocks: FeatureBlock[] = [
+  {
+    title: 'Why Partner With Us',
+    bullets: [
+      'Premium gel polish systems and professional nail care products',
+      'GMP-certified manufacturing with EU compliance',
+      'Comprehensive support to help you succeed',
+      'Close collaboration for mutual growth in your territory'
+    ],
+    icon: Handshake
+  },
+  {
+    title: 'What You Gain',
+    bullets: [
+      'Competitive wholesale pricing with volume discounts',
+      'Professional marketing materials and product images',
+      'Comprehensive product training and troubleshooting',
+      'Full access to our complete product range'
+    ],
+    icon: Gift
+  },
+  {
+    title: 'Your Role as Distributor',
+    bullets: [
+      'Exclusive territory options available',
+      'Flexible reorder terms as your business grows',
+      'Direct access to our support team',
+      'Partnership development and promotional assets'
+    ],
+    icon: UserCheck
+  }
+];
+
+const requirements = [
+  {
+    bold: 'Established business',
+    text: 'in the beauty, cosmetics, or professional nail care sector'
+  },
+  {
+    bold: 'Existing distribution network or retail presence',
+    text: 'in your territory'
+  },
+  {
+    bold: 'Strong commitment',
+    text: 'to representing our brands professionally and ethically'
+  },
+  {
+    bold: 'Ability to meet minimum order volumes',
+    text: 'and maintain appropriate stock levels'
+  },
+  {
+    bold: 'Willingness to collaborate',
+    text: 'on growth strategies and provide regular market feedback'
+  }
+];
 
 export default function DistributorsWantedPage() {
-  const benefits = [
-    {
-      icon: TrendingUp,
-      title: 'Competitive Margins',
-      description: 'Attractive wholesale pricing with volume discounts and exclusive territory options.'
-    },
-    {
-      icon: Megaphone,
-      title: 'Marketing Support',
-      description: 'Professional marketing materials, product images, and promotional assets included.'
-    },
-    {
-      icon: GraduationCap,
-      title: 'Product Training',
-      description: 'Comprehensive training on product features, application techniques, and troubleshooting.'
-    },
-    {
-      icon: Award,
-      title: 'Quality Guarantee',
-      description: 'GMP-certified products with full compliance documentation and quality assurance.'
-    },
-    {
-      icon: RefreshCw,
-      title: 'Flexible Orders',
-      description: 'Reasonable minimum order quantities with flexible reorder terms as you grow.'
-    },
-    {
-      icon: HeadphonesIcon,
-      title: 'Dedicated Support',
-      description: 'Direct access to our team for questions, support, and partnership development.'
-    }
-  ];
-
   return (
     <PageTemplate
       title="Distributors Wanted"
@@ -71,75 +101,90 @@ export default function DistributorsWantedPage() {
         </div>
       </div>
 
-      {/* Premium Benefits of Partnership Section */}
-      <div className="relative mb-10 sm:mb-12 md:mb-16 overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-2xl"></div>
-        
-        <div className="relative rounded-2xl border border-blue-100 p-6 sm:p-8 md:p-10">
-          <div className="text-center mb-8 sm:mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Benefits of Partnership</h2>
-            <p className="text-gray-600 font-light max-w-2xl mx-auto text-sm sm:text-base">
+      {/* Premium 3-Card Benefits Section - Swipeable on mobile, 3-column on desktop */}
+      <section className="py-6 sm:py-8 md:py-10 mb-8 sm:mb-10 md:mb-12">
+        <div className="max-w-6xl mx-auto">
+          {/* Section heading */}
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+              Benefits of Partnership
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto font-light">
               Join our network and unlock exclusive advantages that help your business thrive
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {benefits.map((benefit) => (
-              <div
-                key={benefit.title}
-                className="group bg-white rounded-xl p-5 sm:p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 hover:-translate-y-1"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
-                    <benefit.icon size={24} className="text-white" />
+
+          {/* Horizontally scrollable on mobile, 3-column grid on desktop */}
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0 scrollbar-hide">
+            {featureBlocks.map((block, index) => {
+              const IconComponent = block.icon;
+              return (
+                <article
+                  key={index}
+                  className="flex-shrink-0 w-[280px] sm:w-[300px] md:w-auto snap-start bg-white rounded-xl border border-gray-200 p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow duration-200"
+                >
+                  {/* Icon */}
+                  <div className="w-10 h-10 bg-blue-800 text-white rounded-lg flex items-center justify-center mb-3">
+                    <IconComponent className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-gray-900 text-base sm:text-lg">{benefit.title}</h3>
-                </div>
-                <p className="text-gray-600 font-light text-sm sm:text-base leading-relaxed pl-0 sm:pl-16">{benefit.description}</p>
-              </div>
-            ))}
+                  {/* Title */}
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 leading-tight">
+                    {block.title}
+                  </h3>
+                  {/* Bullet points */}
+                  <ul className="space-y-1.5">
+                    {block.bullets.map((bullet, bulletIndex) => (
+                      <li key={bulletIndex} className="flex items-start gap-2 text-xs sm:text-sm text-gray-600 font-light leading-snug">
+                        <span className="text-blue-800 mt-1 flex-shrink-0">•</span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Responsive requirements section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12">
-        <div className="order-2 lg:order-1">
-          <OptimizedImage
-            src="/distribution partnership.png"
-            alt="Distribution partnership"
-            width={1024}
-            height={1536}
-            sizes={RESPONSIVE_SIZES.twoColumn}
-            className="w-full h-auto rounded-lg shadow-sm"
-          />
+      {/* Requirements Section - Bold, full-width block */}
+      <section className="mb-10 sm:mb-12 md:mb-16">
+        <div className="bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-2xl border border-blue-100 p-6 sm:p-8 md:p-10">
+          <div className="max-w-4xl mx-auto">
+            {/* Section heading */}
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+                Requirements to Become a Distributor
+              </h2>
+            </div>
+
+            {/* Requirements list */}
+            <ul className="space-y-4 sm:space-y-5">
+              {requirements.map((req, index) => (
+                <li key={index} className="flex items-start gap-3 sm:gap-4">
+                  <div className="flex-shrink-0 mt-0.5">
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                  </div>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
+                    <span className="font-semibold text-gray-900">{req.bold}</span> {req.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="order-1 lg:order-2">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Requirements</h2>
-          <ul className="space-y-3 text-gray-600 font-light text-sm sm:text-base">
-            <li className="flex items-start">
-              <span className="text-blue-600 mr-2 flex-shrink-0">•</span>
-              <span>Established business in beauty, cosmetics, or professional nail care sector</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-blue-600 mr-2 flex-shrink-0">•</span>
-              <span>Existing distribution network or retail presence in your territory</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-blue-600 mr-2 flex-shrink-0">•</span>
-              <span>Commitment to representing our brands professionally and ethically</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-blue-600 mr-2 flex-shrink-0">•</span>
-              <span>Ability to meet minimum order requirements and maintain stock levels</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-blue-600 mr-2 flex-shrink-0">•</span>
-              <span>Willingness to provide market feedback and collaborate on growth strategies</span>
-            </li>
-          </ul>
-        </div>
+      </section>
+
+      {/* Distribution Partnership Image */}
+      <div className="flex justify-center">
+        <OptimizedImage
+          src="/distribution partnership.png"
+          alt="Distribution partnership"
+          width={1024}
+          height={1536}
+          sizes={RESPONSIVE_SIZES.twoColumn}
+          className="w-full max-w-2xl h-auto rounded-lg shadow-sm"
+        />
       </div>
     </PageTemplate>
   );
