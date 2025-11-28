@@ -7,6 +7,8 @@ export default {
         sans: ['"PF Futura Neu"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       colors: {
+        // Brand fuchsia - primary brand colour #A3005A
+        brandFuchsia: '#A3005A',
         primary: {
           DEFAULT: '#A3005A',
           50: '#F9E6F0',

@@ -153,7 +153,7 @@ export default function Contact() {
               {/* Full width submit button with proper tap target */}
               <button
                 type="submit"
-                className="w-full px-6 sm:px-8 py-3 sm:py-4 bg-blue-800 text-white rounded-md font-semibold hover:bg-blue-900 transition-all duration-300 shadow-sm hover:shadow-md min-h-[44px] text-sm sm:text-base"
+                className="btn-primary w-full px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] text-sm sm:text-base"
               >
                 Send Message
               </button>

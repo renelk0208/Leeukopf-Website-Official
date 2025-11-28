@@ -54,7 +54,7 @@ export default function PrivateLabelPage() {
       ]}
       showCTA={true}
       ctaText="Request a Quote"
-      heroImage="/img/hero/private-label-hero-page.jpg"
+      heroImage="/img/hero/private-label-hero.jpg"
     >
       {/* Responsive intro section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
