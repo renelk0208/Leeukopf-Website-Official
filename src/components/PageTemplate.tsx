@@ -76,15 +76,15 @@ export default function PageTemplate({
       <div className="min-h-screen pt-16">
       {/* Responsive header section - with optional hero background image */}
       <div 
-        className={`py-8 sm:py-10 md:py-12 border-b border-gray-200 ${
+        className={`border-b border-gray-200 ${
           safeHeroImage 
-            ? 'relative' 
-            : 'bg-white/80 backdrop-blur-sm'
+            ? 'relative min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center' 
+            : 'py-8 sm:py-10 md:py-12 bg-white/80 backdrop-blur-sm'
         }`}
       >
         {encodedHeroImage && (
           <>
-            {/* Hero image using img tag for better LCP optimization */}
+            {/* Hero image using img tag for better LCP optimization - no blur or heavy overlays */}
             <img
               src={encodedHeroImage}
               alt=""
@@ -93,16 +93,16 @@ export default function PageTemplate({
               loading="eager"
               draggable={false}
             />
-            {/* Overlay for blur and color */}
-            <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10" />
           </>
         )}
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${safeHeroImage ? 'relative z-20' : ''}`}>
-          <div className="mb-4 sm:mb-6">
-            <BackButton />
-          </div>
-          {/* Responsive breadcrumbs - wrap on small screens */}
-          <nav className="flex flex-wrap items-center gap-1 text-xs sm:text-sm mb-4 sm:mb-6" aria-label="Breadcrumb">
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full ${safeHeroImage ? 'relative z-20 py-8 sm:py-10 md:py-12' : ''}`}>
+          {/* Text content card for readability when hero image is present */}
+          <div className={safeHeroImage ? 'bg-white/85 rounded-2xl p-6 sm:p-8 md:p-10 max-w-3xl shadow-lg' : ''}>
+            <div className="mb-4 sm:mb-6">
+              <BackButton />
+            </div>
+            {/* Responsive breadcrumbs - wrap on small screens */}
+            <nav className="flex flex-wrap items-center gap-1 text-xs sm:text-sm mb-4 sm:mb-6" aria-label="Breadcrumb">
             {breadcrumbs.map((item, index) => (
               <div key={index} className="flex items-center">
                 {index > 0 && <ChevronRight size={14} className="mx-1 sm:mx-2 text-gray-400 flex-shrink-0" aria-hidden="true" />}
@@ -127,6 +127,7 @@ export default function PageTemplate({
           <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl font-light">
             {subtitle}
           </p>
+          </div>
         </div>
       </div>
 
