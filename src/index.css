@@ -8,6 +8,9 @@
  * Secondary: Blue (#2563EB) - Supporting colour for icons, links
  */
 :root {
+  /* Brand Fuchsia (Primary) */
+  --brand-fuchsia: #A3005A;
+  
   /* Primary (Berry) */
   --color-primary: #A3005A;
   --color-primary-dark: #820048;

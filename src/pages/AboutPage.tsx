@@ -13,6 +13,7 @@ export default function AboutPage() {
         { label: 'About' }
       ]}
       showCTA={true}
+      heroImage="/img/hero/about-us-hero-image.jpg"
     >
       {/* Responsive intro section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
@@ -81,7 +82,7 @@ export default function AboutPage() {
 
           <div className="image-frame hover:shadow-lg transition-shadow">
             <OptimizedImage
-              src="/img/factory/Factory mixing.jpg"
+              src="/img/factory/formulation-and-mixing.jpg"
               alt="Industrial mixing equipment for gel polish formulation at Leeukopf factory"
               width={800}
               height={600}

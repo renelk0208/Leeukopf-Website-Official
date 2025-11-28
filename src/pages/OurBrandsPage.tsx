@@ -46,7 +46,7 @@ export default function OurBrandsPage() {
       ]}
       showCTA={true}
       ctaText="Become a Distributor"
-      heroImage="/img/hero/Product Images (43).jpg"
+      heroImage="/img/hero/our-brand-hero.jpg"
     >
       <div className="grid grid-cols-1 gap-8 sm:gap-10 md:gap-12">
         {/* Responsive brand section */}
