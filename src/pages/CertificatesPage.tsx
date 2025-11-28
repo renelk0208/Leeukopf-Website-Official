@@ -136,7 +136,7 @@ export default function CertificatesPage() {
                     setLightboxIndex(index);
                     setLightboxOpen(true);
                   }}
-                  className="bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.08)] p-4 sm:p-6 md:p-7 hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300 block min-h-[44px] text-left w-full cursor-pointer"
+                  className="card p-4 sm:p-6 md:p-7 hover:shadow-lg transition-shadow duration-300 block min-h-[44px] text-left w-full cursor-pointer"
                   aria-label={`View enlarged ${cert.name} (blurred for privacy)`}
                 >
                   <div className="mb-4 sm:mb-5">

@@ -16,7 +16,10 @@ export default function AboutPage() {
     >
       {/* Responsive intro section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Our Story</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
+          Our Story
+          <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
+        </h2>
         <p className="text-gray-600 mb-4 font-light leading-relaxed text-sm sm:text-base">
           Founded with a commitment to excellence, Leeukopf Laboratories has become a trusted name in professional beauty products. Our state-of-the-art manufacturing facility in Bulgaria combines European quality standards with innovative formulations to deliver products that meet the highest industry benchmarks.
         </p>
@@ -27,7 +30,10 @@ export default function AboutPage() {
 
       {/* Responsive Quality & Compliance */}
       <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Quality & Compliance</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
+          Quality & Compliance
+          <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
+        </h2>
         <p className="text-gray-600 mb-4 font-light leading-relaxed text-sm sm:text-base">
           Our products are manufactured under strict GMP guidelines and comply with EU Regulation 1223/2009. We maintain comprehensive Safety Data Sheets and Product Information Files for all formulations. Every batch undergoes rigorous testing to ensure consistency and safety.
         </p>
@@ -62,7 +68,7 @@ export default function AboutPage() {
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
                   1
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Raw Materials & QC Intake</h3>
@@ -84,7 +90,7 @@ export default function AboutPage() {
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
                   2
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Formulation & Mixing</h3>
@@ -106,7 +112,7 @@ export default function AboutPage() {
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
                   3
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Pigment Blending</h3>
@@ -128,7 +134,7 @@ export default function AboutPage() {
             />
             <div className="p-4 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-800 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
                   4
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Final QA & Packing</h3>

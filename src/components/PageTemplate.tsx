@@ -109,7 +109,7 @@ export default function PageTemplate({
                 {item.path ? (
                   <Link
                     to={item.path}
-                    className="text-gray-600 hover:text-blue-800 transition-colors min-h-[44px] inline-flex items-center"
+                    className="text-gray-600 hover:text-secondary transition-colors min-h-[44px] inline-flex items-center"
                   >
                     {item.label}
                   </Link>
@@ -151,11 +151,11 @@ export default function PageTemplate({
         )}
       </div>
 
-      {/* Scroll to top button - accessible size */}
+      {/* Scroll to top button - accessible size with secondary blue */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-40 w-11 h-11 sm:w-12 sm:h-12 bg-blue-800 hover:bg-blue-900 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px]"
+          className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-40 w-11 h-11 sm:w-12 sm:h-12 bg-secondary hover:bg-secondary-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px]"
           aria-label="Scroll to top"
         >
           <ArrowUp size={20} aria-hidden="true" />
@@ -169,9 +169,9 @@ export default function PageTemplate({
 
 export function ImagePlaceholder({ alt = 'Product image' }: { alt?: string }) {
   return (
-    <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center group hover:border-[#1E90FF] transition-colors">
+    <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center group hover:border-secondary transition-colors">
       <div className="text-center">
-        <ImageIcon size={48} className="mx-auto text-gray-400 group-hover:text-[#1E90FF] transition-colors" aria-hidden="true" />
+        <ImageIcon size={48} className="mx-auto text-gray-400 group-hover:text-secondary transition-colors" aria-hidden="true" />
         <p className="text-sm text-gray-600 mt-2">{alt}</p>
       </div>
     </div>
@@ -182,9 +182,9 @@ export function ContentCard({ title, description, to }: { title: string; descrip
   return (
     <Link
       to={to}
-      className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-[#1E90FF] hover:shadow-lg transition-all duration-300"
+      className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-secondary hover:shadow-lg transition-all duration-300"
     >
-      <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-[#1E90FF]">
+      <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-secondary">
         {title}
       </h3>
       <p className="text-gray-600 font-light">

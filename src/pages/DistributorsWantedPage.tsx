@@ -77,11 +77,15 @@ export default function DistributorsWantedPage() {
       ]}
       showCTA={true}
       ctaText="Apply to Become a Distributor"
+      heroImage="/img/hero/Product Images (14).jpg"
     >
       {/* Responsive intro section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-10 sm:mb-12 md:mb-16">
         <div>
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Partner With Us</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
+            Partner With Us
+            <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
+          </h2>
           <p className="text-gray-600 mb-4 font-light leading-relaxed text-sm sm:text-base">
             We are actively seeking distribution partners worldwide to expand our reach and bring our premium gel polish systems, builder gels, and professional nail care products to new markets. Whether you're an established distributor or looking to enter the beauty industry, we offer comprehensive support to help you succeed.
           </p>
@@ -89,14 +93,14 @@ export default function DistributorsWantedPage() {
             Our distributor program includes competitive pricing, marketing support, training materials, and access to our full product range. We work closely with partners to ensure mutual growth and success in your territory.
           </p>
         </div>
-        <div>
+        <div className="image-frame">
           <OptimizedImage
             src="/World map.png"
             alt="Global distribution network"
             width={1200}
             height={800}
             sizes={RESPONSIVE_SIZES.twoColumn}
-            className="w-full h-auto rounded-lg shadow-sm object-cover"
+            className="w-full h-auto object-cover"
           />
         </div>
       </div>
@@ -121,21 +125,21 @@ export default function DistributorsWantedPage() {
               return (
                 <article
                   key={index}
-                  className="flex-shrink-0 w-[280px] sm:w-[300px] md:w-auto snap-start bg-white rounded-xl border border-gray-200 p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow duration-200"
+                  className="card flex-shrink-0 w-[280px] sm:w-[300px] md:w-auto snap-start p-4 sm:p-5 hover:shadow-lg transition-shadow duration-200"
                 >
-                  {/* Icon */}
-                  <div className="w-10 h-10 bg-blue-800 text-white rounded-lg flex items-center justify-center mb-3">
+                  {/* Icon - Berry colour */}
+                  <div className="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center mb-3">
                     <IconComponent className="w-5 h-5" />
                   </div>
                   {/* Title */}
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 leading-tight">
                     {block.title}
                   </h3>
-                  {/* Bullet points */}
+                  {/* Bullet points - Berry colour bullets */}
                   <ul className="space-y-1.5">
                     {block.bullets.map((bullet, bulletIndex) => (
                       <li key={bulletIndex} className="flex items-start gap-2 text-xs sm:text-sm text-gray-600 font-light leading-snug">
-                        <span className="text-blue-800 mt-1 flex-shrink-0">•</span>
+                        <span className="text-primary mt-1 flex-shrink-0">•</span>
                         <span>{bullet}</span>
                       </li>
                     ))}
@@ -147,9 +151,9 @@ export default function DistributorsWantedPage() {
         </div>
       </section>
 
-      {/* Requirements Section - Bold, full-width block */}
+      {/* Requirements Section - Updated with unified card styling */}
       <section className="mb-10 sm:mb-12 md:mb-16">
-        <div className="bg-gradient-to-br from-blue-50 via-white to-blue-50 rounded-2xl border border-blue-100 p-6 sm:p-8 md:p-10">
+        <div className="card section-gradient-secondary p-6 sm:p-8 md:p-10">
           <div className="max-w-4xl mx-auto">
             {/* Section heading */}
             <div className="text-center mb-6 sm:mb-8">
@@ -158,12 +162,12 @@ export default function DistributorsWantedPage() {
               </h2>
             </div>
 
-            {/* Requirements list */}
+            {/* Requirements list - Berry icons */}
             <ul className="space-y-4 sm:space-y-5">
               {requirements.map((req, index) => (
                 <li key={index} className="flex items-start gap-3 sm:gap-4">
                   <div className="flex-shrink-0 mt-0.5">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                   </div>
                   <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
                     <span className="font-semibold text-gray-900">{req.bold}</span> {req.text}
@@ -175,16 +179,18 @@ export default function DistributorsWantedPage() {
         </div>
       </section>
 
-      {/* Distribution Partnership Image */}
+      {/* Distribution Partnership Image - with image-frame styling */}
       <div className="flex justify-center">
-        <OptimizedImage
-          src="/distribution partnership.png"
-          alt="Distribution partnership"
-          width={1024}
-          height={1536}
-          sizes={RESPONSIVE_SIZES.twoColumn}
-          className="w-full max-w-2xl h-auto rounded-lg shadow-sm"
-        />
+        <div className="image-frame w-full max-w-2xl">
+          <OptimizedImage
+            src="/distribution partnership.png"
+            alt="Distribution partnership"
+            width={1024}
+            height={1536}
+            sizes={RESPONSIVE_SIZES.twoColumn}
+            className="w-full h-auto"
+          />
+        </div>
       </div>
     </PageTemplate>
   );
