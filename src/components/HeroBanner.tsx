@@ -1,4 +1,6 @@
 import { ReactNode } from 'react';
+import OptimizedImage from './OptimizedImage';
+import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 interface HeroBannerProps {
   imageSrc: string;
@@ -14,13 +16,15 @@ export default function HeroBanner({ imageSrc, alt, children }: HeroBannerProps)
   return (
     <section className="hero-banner relative w-full">
       <div className="hero-banner__image-wrapper w-full aspect-[21/9]">
-        <img
+        <OptimizedImage
           src={imageSrc}
           alt={alt}
-          className="hero-banner__image w-full h-full object-cover"
+          width={2100}
+          height={900}
+          sizes={RESPONSIVE_SIZES.fullWidth}
+          lazy={false}
           fetchPriority="high"
-          loading="eager"
-          draggable={false}
+          className="hero-banner__image w-full h-full object-cover"
         />
       </div>
       {children && (
