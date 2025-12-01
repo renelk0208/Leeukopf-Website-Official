@@ -77,7 +77,7 @@ export default function DistributorsWantedPage() {
       ]}
       showCTA={true}
       ctaText="Apply to Become a Distributor"
-      heroImage="/img/hero/Product Images (14).jpg"
+      heroImage="/img/hero/distributors-wanted-hero-image.jpg"
     >
       {/* Responsive intro section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-10 sm:mb-12 md:mb-16">

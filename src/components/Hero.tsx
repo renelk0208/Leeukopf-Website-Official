@@ -51,18 +51,18 @@ export default function Hero() {
 
           {/* Responsive stats grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 px-2 sm:px-0">
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-[#1E90FF] transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-[#1E90FF] mb-1 sm:mb-2 tracking-tight">3000+</div>
+            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">3000+</div>
               <div className="text-gray-800 font-semibold text-sm sm:text-base">Colours</div>
               <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Premium gel polish collection</div>
             </div>
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-[#1E90FF] transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-[#1E90FF] mb-1 sm:mb-2 tracking-tight">Builder</div>
+            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">Builder</div>
               <div className="text-gray-800 font-semibold text-sm sm:text-base">Gel Systems</div>
               <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Professional strength & durability</div>
             </div>
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-blue-100 shadow-lg hover:shadow-xl hover:border-[#1E90FF] transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-[#1E90FF] mb-1 sm:mb-2 tracking-tight">Nail Art</div>
+            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">Nail Art</div>
               <div className="text-gray-800 font-semibold text-sm sm:text-base">& Consumables</div>
               <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Complete product range</div>
             </div>

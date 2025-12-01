@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import HeroBanner from '../components/HeroBanner';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -114,6 +115,14 @@ export default function CertificatesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
+      
+      {/* Hero Banner */}
+      <div className="pt-16">
+        <HeroBanner
+          imageSrc="/img/hero/certifications-compliance-hero (1).jpg"
+          alt="Leeukopf Laboratories certificates and compliance documentation"
+        />
+      </div>
       
       <main className="flex-grow">
         {/* Responsive header section */}
