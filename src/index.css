@@ -282,12 +282,9 @@
  * Global social + contact icon colour fallback
  * Ensures all social and contact icons use the brand fuchsia colour
  */
-.social-icon svg,
-.social-icon path,
-.contact-icon svg,
-.contact-icon path {
+.social-icon svg path,
+.contact-icon svg path {
   fill: var(--brand-fuchsia);
-  stroke: var(--brand-fuchsia);
 }
 
 /* Accessible hover/focus states for social and contact icons */
