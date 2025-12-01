@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Film } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
+import StartHereBanner from '../components/StartHereBanner';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
@@ -124,6 +125,9 @@ export default function ProductsPage() {
       ctaText="Request Product Catalogue"
       heroImage="/img/hero/our-products-hero (2).jpg"
     >
+      {/* Start Your Brand Banner */}
+      <StartHereBanner />
+
       {/* Responsive product category grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-10 sm:mb-12 md:mb-16">
         {categories.map((category) => (

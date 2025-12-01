@@ -1,4 +1,5 @@
 import PageTemplate from '../components/PageTemplate';
+import StartHereBanner from '../components/StartHereBanner';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 import { Handshake, Gift, UserCheck, CheckCircle } from 'lucide-react';
@@ -79,6 +80,9 @@ export default function DistributorsWantedPage() {
       ctaText="Apply to Become a Distributor"
       heroImage="/img/hero/distributors-wanted-hero-image.jpg"
     >
+      {/* Start Your Brand Banner */}
+      <StartHereBanner />
+
       {/* Responsive intro section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-10 sm:mb-12 md:mb-16">
         <div>

@@ -62,6 +62,7 @@ export default function Navigation() {
     { label: 'Our Brands', path: '/our-brands' },
     { label: 'Distributors Wanted', path: '/distributors-wanted' },
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
+    { label: 'FAQ – Start Your Brand', path: '/faq-starting-a-gel-polish-brand' },
     { label: 'Client Registration', path: '/client-registration' },
     { label: 'Contact', path: '/contact' },
   ];
@@ -73,8 +74,8 @@ export default function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0">
             <Link to="/" className="block">
               <OptimizedImage
@@ -84,32 +85,36 @@ export default function Navigation() {
                 height={50}
                 lazy={false}
                 fetchPriority="high"
-                className="h-10 md:h-[60px] w-auto object-contain hover:opacity-80 transition-opacity"
+                className="h-12 md:h-14 w-auto object-contain hover:opacity-80 transition-opacity"
               />
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center space-x-1 flex-1 justify-center">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
-                  isActive(item.path)
-                    ? 'text-[#1E90FF] border-b-2 border-[#1E90FF]'
-                    : 'text-gray-700 hover:text-[#1E90FF]'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
+          {/* Desktop Navigation */}
+          <nav className="hidden xl:block flex-1 mx-6" aria-label="Main navigation">
+            <ul className="flex items-center justify-center space-x-4 2xl:space-x-6">
+              {navItems.map((item) => (
+                <li key={item.path} className="nav-item whitespace-nowrap">
+                  <Link
+                    to={item.path}
+                    className={`px-2 py-2 text-sm font-medium transition-colors ${
+                      isActive(item.path)
+                        ? 'text-[#1E90FF] border-b-2 border-[#1E90FF]'
+                        : 'text-gray-700 hover:text-[#1E90FF]'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           <div className="flex items-center space-x-4">
-            <div className="hidden lg:block">
+            <div className="hidden xl:block">
               <SocialLinks />
             </div>
-            <div className="lg:hidden">
+            <div className="xl:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-gray-700 hover:text-[#1E90FF] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -123,8 +128,9 @@ export default function Navigation() {
         </div>
       </div>
 
+      {/* Mobile Navigation */}
       {isOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="xl:hidden bg-white border-t border-gray-200 shadow-lg max-h-[calc(100vh-5rem)] overflow-y-auto">
           <div className="px-4 py-2 space-y-1">
             {navItems.map((item) => (
               <Link
