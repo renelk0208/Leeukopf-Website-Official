@@ -72,6 +72,14 @@ export default function CertificatesPage() {
       description: 'Certificate of Conformity issued by the Saudi Food and Drug Authority (SFDA) for product registration and compliance.',
       width: 800,
       height: 600
+    },
+    {
+      name: 'TPO-Free Compliance Certificate',
+      image: '/img/Certifications-And-Compliance/s4648-01-TPOcompliance_page-0001.jpg',
+      alt: 'TPO-Free Compliance Certificate for gel polish products',
+      description: 'Certificate confirming our gel polish products are TPO-free (Trimethylbenzoyl Diphenylphosphine Oxide free), meeting safety standards for professional nail care.',
+      width: 800,
+      height: 600
     }
   ];
 

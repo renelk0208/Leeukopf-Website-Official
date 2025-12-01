@@ -43,7 +43,7 @@ export default function Hero() {
             </button>
             <button
               onClick={() => navigate('/contact')}
-              className="btn-secondary w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px]"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] bg-white rounded-md font-semibold transition-all duration-300 border-2 text-primary border-primary hover:bg-primary hover:text-white"
             >
               Contact Us
             </button>
