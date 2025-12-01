@@ -73,7 +73,7 @@ export default function PageTemplate({
     <>
       <ScrollToTop />
       <Navigation />
-      <div className="min-h-screen pt-16">
+      <div className="min-h-screen pt-20">
       {/* Responsive header section - with optional hero background image */}
       <div 
         className={`border-b border-gray-200 ${
