@@ -23,8 +23,8 @@ export default function Contact() {
               <div className="space-y-4 sm:space-y-6">
                 {/* Contact items with responsive tap targets */}
                 <div className="flex items-start space-x-3 sm:space-x-4 group">
-                  <div className="p-2 sm:p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-600 transition-colors flex-shrink-0">
-                    <MapPin className="text-blue-800" size={20} />
+                  <div className="p-2 sm:p-3 bg-white rounded-lg border border-gray-200 group-hover:border-primary transition-colors flex-shrink-0">
+                    <MapPin className="text-primary" size={20} />
                   </div>
                   <div className="min-w-0">
                     <h4 className="text-gray-900 font-semibold mb-1 text-sm sm:text-base">Head Office</h4>
@@ -37,8 +37,8 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-start space-x-3 sm:space-x-4 group">
-                  <div className="p-2 sm:p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-600 transition-colors flex-shrink-0">
-                    <MapPin className="text-blue-800" size={20} />
+                  <div className="p-2 sm:p-3 bg-white rounded-lg border border-gray-200 group-hover:border-primary transition-colors flex-shrink-0">
+                    <MapPin className="text-primary" size={20} />
                   </div>
                   <div className="min-w-0">
                     <h4 className="text-gray-900 font-semibold mb-1 text-sm sm:text-base">Factory Address</h4>
@@ -51,14 +51,14 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-start space-x-3 sm:space-x-4 group">
-                  <div className="p-2 sm:p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-600 transition-colors flex-shrink-0">
-                    <Phone className="text-blue-800" size={20} />
+                  <div className="p-2 sm:p-3 bg-white rounded-lg border border-gray-200 group-hover:border-primary transition-colors flex-shrink-0">
+                    <Phone className="text-primary" size={20} />
                   </div>
                   <div className="min-w-0">
                     <h4 className="text-gray-900 font-semibold mb-1 text-sm sm:text-base">Phone</h4>
                     <a
                       href="tel:+35973891041"
-                      className="text-gray-600 hover:text-blue-800 transition-colors text-sm sm:text-base min-h-[44px] inline-flex items-center"
+                      className="text-gray-600 hover:text-primary transition-colors text-sm sm:text-base min-h-[44px] inline-flex items-center"
                     >
                       (+359) 73 891 041
                     </a>
@@ -66,14 +66,14 @@ export default function Contact() {
                 </div>
 
                 <div className="flex items-start space-x-3 sm:space-x-4 group">
-                  <div className="p-2 sm:p-3 bg-white rounded-lg border border-gray-200 group-hover:border-blue-600 transition-colors flex-shrink-0">
-                    <Mail className="text-blue-800" size={20} />
+                  <div className="p-2 sm:p-3 bg-white rounded-lg border border-gray-200 group-hover:border-primary transition-colors flex-shrink-0">
+                    <Mail className="text-primary" size={20} />
                   </div>
                   <div className="min-w-0">
                     <h4 className="text-gray-900 font-semibold mb-1 text-sm sm:text-base">Email</h4>
                     <a
                       href="mailto:info@leeukopf.com"
-                      className="text-gray-600 hover:text-blue-800 transition-colors text-sm sm:text-base break-all min-h-[44px] inline-flex items-center"
+                      className="text-gray-600 hover:text-primary transition-colors text-sm sm:text-base break-all min-h-[44px] inline-flex items-center"
                     >
                       info@leeukopf.com
                     </a>
@@ -109,7 +109,7 @@ export default function Contact() {
                 <input
                   type="text"
                   id="name"
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
                   placeholder="John Doe"
                 />
               </div>
@@ -121,7 +121,7 @@ export default function Contact() {
                 <input
                   type="email"
                   id="email"
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
                   placeholder="john@example.com"
                 />
               </div>
@@ -133,7 +133,7 @@ export default function Contact() {
                 <input
                   type="text"
                   id="subject"
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base"
                   placeholder="Private Label Inquiry"
                 />
               </div>
@@ -145,7 +145,7 @@ export default function Contact() {
                 <textarea
                   id="message"
                   rows={4}
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all resize-none text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none text-sm sm:text-base"
                   placeholder="Tell us about your project..."
                 ></textarea>
               </div>
