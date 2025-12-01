@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import Navigation from '../components/Navigation';
-import Footer from '../components/Footer';
-import HeroBanner from '../components/HeroBanner';
+import PageTemplate from '../components/PageTemplate';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -113,65 +111,48 @@ export default function CertificatesPage() {
   }, [lightboxOpen, closeLightbox, goToNext, goToPrevious]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navigation />
-      
-      {/* Hero Banner */}
-      <div className="pt-16">
-        <HeroBanner
-          imageSrc="/img/hero/certifications-compliance-hero (1).jpg"
-          alt="Leeukopf Laboratories certificates and compliance documentation"
-        />
-      </div>
-      
-      <main className="flex-grow">
-        {/* Responsive header section */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
-              Certificates & Compliance
-            </h1>
-
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 font-light leading-relaxed max-w-4xl mx-auto text-center mb-8 sm:mb-12 md:mb-16 px-2">
-              Thermitek Ltd and Leeukopf Laboratories operate under strict European regulations and internationally recognised standards. Below you can view our key certifications – click any document to view an enlarged version (images are blurred to protect sensitive information).
-            </p>
-
-            {/* Responsive certificates grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-              {certificates.map((cert, index) => (
-                <button
-                  key={cert.name}
-                  onClick={() => {
-                    setLightboxIndex(index);
-                    setLightboxOpen(true);
-                  }}
-                  className="card p-4 sm:p-6 md:p-7 hover:shadow-lg transition-shadow duration-300 block min-h-[44px] text-left w-full cursor-pointer"
-                  aria-label={`View enlarged ${cert.name} (blurred for privacy)`}
-                >
-                  <div className="mb-4 sm:mb-5">
-                    <OptimizedImage
-                      src={cert.image}
-                      alt={cert.alt}
-                      width={cert.width}
-                      height={cert.height}
-                      sizes={RESPONSIVE_SIZES.threeColumn}
-                      className="w-full h-auto rounded-md certificate-blurred"
-                    />
-                  </div>
-                  <div className="border-t border-gray-200 pt-4 sm:pt-5">
-                    <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">
-                      {cert.name}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-gray-600 font-light leading-relaxed">
-                      {cert.description}
-                    </p>
-                  </div>
-                </button>
-              ))}
+    <PageTemplate
+      title="Certificates & Compliance"
+      subtitle="Thermitek Ltd and Leeukopf Laboratories operate under strict European regulations and internationally recognised standards. Below you can view our key certifications – click any document to view an enlarged version (images are blurred to protect sensitive information)."
+      breadcrumbs={[
+        { label: 'Home', path: '/' },
+        { label: 'Certificates & Compliance' }
+      ]}
+      heroImage="/img/hero/certifications-compliance-hero (1).jpg"
+    >
+      {/* Responsive certificates grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        {certificates.map((cert, index) => (
+          <button
+            key={cert.name}
+            onClick={() => {
+              setLightboxIndex(index);
+              setLightboxOpen(true);
+            }}
+            className="card p-4 sm:p-6 md:p-7 hover:shadow-lg transition-shadow duration-300 block min-h-[44px] text-left w-full cursor-pointer"
+            aria-label={`View enlarged ${cert.name} (blurred for privacy)`}
+          >
+            <div className="mb-4 sm:mb-5">
+              <OptimizedImage
+                src={cert.image}
+                alt={cert.alt}
+                width={cert.width}
+                height={cert.height}
+                sizes={RESPONSIVE_SIZES.threeColumn}
+                className="w-full h-auto rounded-md certificate-blurred"
+              />
             </div>
-          </div>
-        </section>
-      </main>
+            <div className="border-t border-gray-200 pt-4 sm:pt-5">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2">
+                {cert.name}
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-600 font-light leading-relaxed">
+                {cert.description}
+              </p>
+            </div>
+          </button>
+        ))}
+      </div>
 
       {/* Certificate Lightbox Modal - always blurred */}
       {lightboxOpen && (
@@ -237,8 +218,6 @@ export default function CertificatesPage() {
           )}
         </div>
       )}
-
-      <Footer />
-    </div>
+    </PageTemplate>
   );
 }
