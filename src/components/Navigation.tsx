@@ -62,6 +62,7 @@ export default function Navigation() {
     { label: 'Our Brands', path: '/our-brands' },
     { label: 'Distributors Wanted', path: '/distributors-wanted' },
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
+    { label: 'FAQ – Start Your Brand', path: '/faq-starting-a-gel-polish-brand' },
     { label: 'Client Registration', path: '/client-registration' },
     { label: 'Contact', path: '/contact' },
   ];

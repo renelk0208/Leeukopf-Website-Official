@@ -277,3 +277,23 @@
     display: none;  /* Chrome, Safari, Opera */
   }
 }
+
+/* 
+ * Global social + contact icon colour fallback
+ * Ensures all social and contact icons use the brand fuchsia colour #A3005A
+ */
+.social-icon svg,
+.social-icon path,
+.contact-icon svg,
+.contact-icon path {
+  fill: #A3005A;
+  stroke: #A3005A;
+}
+
+/* Accessible hover/focus states for social and contact icons */
+.social-icon a:hover svg,
+.social-icon a:focus-visible svg,
+.contact-icon a:hover svg,
+.contact-icon a:focus-visible svg {
+  filter: brightness(0.85);
+}

@@ -1,5 +1,6 @@
 import Navigation from '../components/Navigation';
 import Hero from '../components/Hero';
+import StartHereBanner from '../components/StartHereBanner';
 import CertificatesBanner from '../components/CertificatesBanner';
 import About from '../components/About';
 import InstagramFeed from '../components/InstagramFeed';
@@ -13,6 +14,7 @@ export default function HomePage() {
       <ScrollToTop />
       <Navigation />
       <Hero />
+      <StartHereBanner />
       <CertificatesBanner />
       <About />
       <InstagramFeed />

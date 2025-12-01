@@ -17,6 +17,7 @@ import CookiesPolicyPage from './pages/CookiesPolicyPage';
 import PrivacyNoticeDistributorsPage from './pages/PrivacyNoticeDistributorsPage';
 import SeasonTrendsPage from './pages/SeasonTrendsPage';
 import LiveFeedPage from './pages/LiveFeedPage';
+import FaqStartBrandPage from './pages/FaqStartBrandPage';
 import GelPolishPage from './pages/products/GelPolishPage';
 import TopsBasesPrimersPage from './pages/products/TopsBasesPrimersPage';
 import BuilderSystemsPage from './pages/products/BuilderSystemsPage';
@@ -49,6 +50,7 @@ function App() {
       <Route path="/privacy-notice-distributors" element={<PrivacyNoticeDistributorsPage />} />
       <Route path="/season-trends" element={<SeasonTrendsPage />} />
       <Route path="/live-feed" element={<LiveFeedPage />} />
+      <Route path="/faq-starting-a-gel-polish-brand" element={<FaqStartBrandPage />} />
     </Routes>
   );
 }
