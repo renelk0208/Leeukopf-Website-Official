@@ -10,9 +10,9 @@ import { Link } from 'react-router-dom';
  */
 export default function StartHereBanner() {
   return (
-    <section
+    <aside
       className="w-full py-3 sm:py-4 px-4 sm:px-6 text-center"
-      role="note"
+      role="complementary"
       aria-label="Start your brand banner"
     >
       <p className="text-sm sm:text-base text-gray-700 font-light">
@@ -24,6 +24,6 @@ export default function StartHereBanner() {
           FAQ – Start Your Brand
         </Link>
       </p>
-    </section>
+    </aside>
   );
 }

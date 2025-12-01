@@ -61,7 +61,7 @@ const faqItems: FAQItem[] = [
     answers: [
       'PIF = Product Information File, legally required in the EU.',
       'Includes safety report, formula, raw-material documents, stability data and labels.',
-      'Must always be available at the Responsible Person\'s address.',
+      "Must always be available at the Responsible Person's address.",
       'We arrange PIF preparation for the products you take.'
     ]
   },
@@ -70,7 +70,7 @@ const faqItems: FAQItem[] = [
     answers: [
       'CPNP = EU Cosmetic Product Notification Portal.',
       'All EU cosmetics must be notified there before sale.',
-      'It\'s a notification system, not a "certificate" or approval.',
+      "It's a notification system, not a 'certificate' or approval.",
       'We handle CPNP notification once PIF and labels are final.'
     ]
   },
@@ -143,7 +143,7 @@ const faqItems: FAQItem[] = [
     ]
   },
   {
-    question: 'How do I reorder once I\'m happy with the products?',
+    question: "How do I reorder once I'm happy with the products?",
     answers: [
       'Reorder using product codes / shade codes and required quantities.',
       'Once packaging and formulas are set, repeat orders are straightforward.',
