@@ -1,8 +1,16 @@
 import PageTemplate from '../components/PageTemplate';
 
+interface FAQAnswer {
+  text: string;
+  link?: {
+    url: string;
+    label: string;
+  };
+}
+
 interface FAQItem {
   question: string;
-  answers: string[];
+  answers: (string | FAQAnswer)[];
 }
 
 const faqItems: FAQItem[] = [
@@ -108,7 +116,13 @@ const faqItems: FAQItem[] = [
     answers: [
       'Produced under EU Cosmetic Regulation (EC) 1223/2009.',
       'Manufactured under GMP standards.',
-      'Cruelty-free, in line with EU law.',
+      {
+        text: 'Approved by Cruelty Free International — covering global cruelty-free standards.',
+        link: {
+          url: 'https://crueltyfreeinternational.org/',
+          label: 'Cruelty Free International'
+        }
+      },
       'Formulas are regularly updated for new regulatory changes.'
     ]
   },
@@ -183,14 +197,33 @@ export default function FaqStartBrandPage() {
               Q{index + 1}: {item.question}
             </h2>
             <ul className="space-y-2 sm:space-y-3" role="list">
-              {item.answers.map((answer, answerIndex) => (
-                <li key={answerIndex} className="flex items-start gap-3">
-                  <span className="text-brandFuchsia mt-1.5 flex-shrink-0" aria-hidden="true">•</span>
-                  <span className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
-                    {answer}
-                  </span>
-                </li>
-              ))}
+              {item.answers.map((answer, answerIndex) => {
+                const isSimpleString = typeof answer === 'string';
+                const answerText = isSimpleString ? answer : answer.text;
+                const answerLink = isSimpleString ? null : answer.link;
+                
+                return (
+                  <li key={answerIndex} className="flex items-start gap-3">
+                    <span className="text-brandFuchsia mt-1.5 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
+                      {answerText}
+                      {answerLink && (
+                        <>
+                          {' '}
+                          <a
+                            href={answerLink.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-brandFuchsia hover:underline focus:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-brandFuchsia focus-visible:ring-offset-2 font-medium"
+                          >
+                            Learn more →
+                          </a>
+                        </>
+                      )}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </article>
         ))}
