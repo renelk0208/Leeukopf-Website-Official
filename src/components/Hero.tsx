@@ -8,16 +8,7 @@ export default function Hero() {
   const { t } = useTranslation();
 
   return (
-    <section id="home" className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Hero background image */}
-      <img
-        src="/img/hero/home-page-hero.jpg"
-        alt="Leeukopf Laboratories Premium Gel Polish"
-        className="absolute inset-0 w-full h-full object-cover object-center z-0"
-        fetchPriority="high"
-        loading="eager"
-        draggable={false}
-      />
+    <section id="home" className="relative min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center justify-center overflow-hidden">
       {/* Responsive padding: more compact on mobile, spacious on desktop */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-8 md:pb-12">
         <div className="space-y-6 md:space-y-8">
@@ -36,11 +27,11 @@ export default function Hero() {
           </div>
 
           {/* Responsive typography with clamp-like approach */}
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto leading-relaxed font-medium px-2 bg-white/90 rounded-lg py-3 inline-block">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto leading-relaxed font-medium px-2">
             {t('hero.tagline')}
           </p>
 
-          <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto font-medium px-2 bg-white/90 rounded-lg py-2 inline-block">
+          <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto font-medium px-2">
             {t('hero.description')}
           </p>
 
