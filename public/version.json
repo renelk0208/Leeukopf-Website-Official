@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-02T09:06:12.794Z",
-  "commit": "030eca8",
-  "branch": "copilot/add-multilingual-support",
+  "buildDate": "2025-12-02T09:59:41.075Z",
+  "commit": "6d16d8a",
+  "branch": "copilot/fix-language-selector-visibility",
   "message": "Build deployed successfully"
 }
