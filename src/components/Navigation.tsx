@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import OptimizedImage from './OptimizedImage';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const SocialLinks = () => {
   const socialMedia = [
@@ -53,18 +55,19 @@ const SocialLinks = () => {
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   const navItems = [
-    { label: 'Home', path: '/' },
-    { label: 'About', path: '/about' },
-    { label: 'Our Products', path: '/products' },
-    { label: 'Private Label', path: '/private-label' },
-    { label: 'Our Brands', path: '/our-brands' },
-    { label: 'Distributors Wanted', path: '/distributors-wanted' },
-    { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
-    { label: 'FAQ – Start Your Brand', path: '/faq-starting-a-gel-polish-brand' },
-    { label: 'Client Registration', path: '/client-registration' },
-    { label: 'Contact', path: '/contact' },
+    { label: t('nav.home'), path: '/' },
+    { label: t('nav.about'), path: '/about' },
+    { label: t('nav.products'), path: '/products' },
+    { label: t('nav.privateLabel'), path: '/private-label' },
+    { label: t('nav.ourBrands'), path: '/our-brands' },
+    { label: t('nav.distributors'), path: '/distributors-wanted' },
+    { label: t('nav.certificates'), path: '/certificates-and-compliance' },
+    { label: t('nav.faq'), path: '/faq-starting-a-gel-polish-brand' },
+    { label: t('nav.clientRegistration'), path: '/client-registration' },
+    { label: t('nav.contact'), path: '/contact' },
   ];
 
   const isActive = (path: string) => {
@@ -111,7 +114,8 @@ export default function Navigation() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <div className="hidden xl:block">
+            <div className="hidden xl:flex items-center space-x-4">
+              <LanguageSwitcher variant="desktop" />
               <SocialLinks />
             </div>
             <div className="xl:hidden">
@@ -147,9 +151,14 @@ export default function Navigation() {
               </Link>
             ))}
 
+            {/* Language Switcher for Mobile */}
+            <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
+              <LanguageSwitcher variant="mobile" />
+            </div>
+
             <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
               <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Follow Us
+                {t('nav.followUs')}
               </div>
               <div className="flex justify-center">
                 <SocialLinks />

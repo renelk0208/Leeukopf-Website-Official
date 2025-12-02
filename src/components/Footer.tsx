@@ -1,5 +1,6 @@
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import OptimizedImage from './OptimizedImage';
 
 const SocialLinks = () => {
@@ -50,6 +51,8 @@ const SocialLinks = () => {
 };
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-gradient-to-br from-secondary-800 via-secondary-800 to-secondary-900 border-t border-secondary-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
@@ -67,62 +70,62 @@ export default function Footer() {
               />
             </Link>
             <p className="text-gray-400 text-sm font-light leading-relaxed mb-4">
-              Premium beauty products manufactured in Bulgaria, trusted by professionals worldwide.
+              {t('footer.tagline')}
             </p>
             <div className="flex items-center space-x-2 text-gray-400 text-sm font-light">
-              <span>Made with</span>
+              <span>{t('footer.madeWith')}</span>
               <Heart className="text-red-400 fill-red-400" size={14} />
-              <span>in Bulgaria</span>
+              <span>{t('footer.inBulgaria')}</span>
             </div>
           </div>
 
           {/* Quick Links - responsive grid within */}
           <div>
-            <h3 className="text-white font-semibold text-base mb-3">Quick Links</h3>
+            <h3 className="text-white font-semibold text-base mb-3">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2 columns-2 sm:columns-1">
               <li>
                 <Link to="/products" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Our Products
+                  {t('footer.ourProducts')}
                 </Link>
               </li>
               <li>
                 <Link to="/about" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  About Us
+                  {t('footer.aboutUs')}
                 </Link>
               </li>
               <li>
                 <Link to="/our-brands" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Our Brands
+                  {t('footer.ourBrands')}
                 </Link>
               </li>
               <li>
                 <Link to="/private-label" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Private Label
+                  {t('footer.privateLabel')}
                 </Link>
               </li>
               <li>
                 <Link to="/distributors-wanted" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Become a Distributor
+                  {t('footer.becomeDistributor')}
                 </Link>
               </li>
               <li>
                 <Link to="/client-registration" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Client Registration
+                  {t('footer.clientRegistration')}
                 </Link>
               </li>
               <li>
                 <Link to="/certificates-and-compliance" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Certificates
+                  {t('footer.certificates')}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Contact Us
+                  {t('footer.contactUs')}
                 </Link>
               </li>
               <li>
                 <Link to="/faq-starting-a-gel-polish-brand" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  FAQ – Start Your Brand
+                  {t('footer.faq')}
                 </Link>
               </li>
             </ul>
@@ -130,26 +133,26 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h3 className="text-white font-semibold text-base mb-3">Legal</h3>
+            <h3 className="text-white font-semibold text-base mb-3">{t('footer.legal')}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/terms-of-use" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Terms of Use
+                  {t('footer.termsOfUse')}
                 </Link>
               </li>
               <li>
                 <Link to="/privacy-policy" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Privacy Policy
+                  {t('footer.privacyPolicy')}
                 </Link>
               </li>
               <li>
                 <Link to="/cookies-policy" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Cookies Policy
+                  {t('footer.cookiesPolicy')}
                 </Link>
               </li>
               <li>
                 <Link to="/privacy-notice-distributors" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Privacy Notice for Distributors
+                  {t('footer.privacyNoticeDistributors')}
                 </Link>
               </li>
             </ul>
@@ -157,9 +160,9 @@ export default function Footer() {
 
           {/* Social section */}
           <div>
-            <h3 className="text-white font-semibold text-base mb-3">Follow Us</h3>
+            <h3 className="text-white font-semibold text-base mb-3">{t('footer.followUs')}</h3>
             <p className="text-gray-400 text-sm font-light mb-4">
-              Connect with us on social media for the latest updates, product launches, and beauty inspiration.
+              {t('footer.socialDescription')}
             </p>
             <div className="flex items-center">
               <SocialLinks />
@@ -178,7 +181,7 @@ export default function Footer() {
               className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
             />
             <div className="text-center text-gray-400 text-xs font-light">
-              &copy; {new Date().getFullYear()} Leeukopf Laboratories. All rights reserved.
+              &copy; {new Date().getFullYear()} Leeukopf Laboratories. {t('footer.allRightsReserved')}
             </div>
           </div>
         </div>

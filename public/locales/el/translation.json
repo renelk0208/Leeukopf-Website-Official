@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Αρχική",
+    "about": "Σχετικά",
+    "products": "Τα Προϊόντα μας",
+    "privateLabel": "Private Label",
+    "ourBrands": "Τα Brands μας",
+    "distributors": "Αναζητούμε Διανομείς",
+    "certificates": "Πιστοποιητικά & Συμμόρφωση",
+    "faq": "FAQ – Ξεκινήστε το Brand σας",
+    "clientRegistration": "Εγγραφή Πελάτη",
+    "contact": "Επικοινωνία",
+    "followUs": "Ακολουθήστε μας"
+  },
+  "hero": {
+    "tagline": "Κορυφαία Κατασκευή Gel Polish & Αριστεία Private Label",
+    "description": "Επαγγελματικά Συστήματα Gel • Builder Gel • Nail Art • Βουλγαρική Αριστεία Καλλυντικών",
+    "exploreProducts": "Ανακαλύψτε τα Προϊόντα μας",
+    "contactUs": "Επικοινωνήστε μαζί μας",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Χρώματα",
+      "coloursDesc": "Συλλογή premium gel polish",
+      "builder": "Builder",
+      "builderLabel": "Συστήματα Gel",
+      "builderDesc": "Επαγγελματική αντοχή & διάρκεια",
+      "nailArt": "Nail Art",
+      "nailArtLabel": "& Αναλώσιμα",
+      "nailArtDesc": "Πλήρης γκάμα προϊόντων"
+    }
+  },
+  "footer": {
+    "tagline": "Premium προϊόντα ομορφιάς κατασκευασμένα στη Βουλγαρία, εμπιστευμένα από επαγγελματίες παγκοσμίως.",
+    "madeWith": "Φτιαγμένο με",
+    "inBulgaria": "στη Βουλγαρία",
+    "quickLinks": "Γρήγοροι Σύνδεσμοι",
+    "ourProducts": "Τα Προϊόντα μας",
+    "aboutUs": "Σχετικά με εμάς",
+    "ourBrands": "Τα Brands μας",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Γίνετε Διανομέας",
+    "clientRegistration": "Εγγραφή Πελάτη",
+    "certificates": "Πιστοποιητικά",
+    "contactUs": "Επικοινωνία",
+    "faq": "FAQ – Ξεκινήστε το Brand σας",
+    "legal": "Νομικά",
+    "termsOfUse": "Όροι Χρήσης",
+    "privacyPolicy": "Πολιτική Απορρήτου",
+    "cookiesPolicy": "Πολιτική Cookies",
+    "privacyNoticeDistributors": "Ειδοποίηση Απορρήτου για Διανομείς",
+    "followUs": "Ακολουθήστε μας",
+    "socialDescription": "Συνδεθείτε μαζί μας στα social media για τις τελευταίες ενημερώσεις, νέα προϊόντα και έμπνευση ομορφιάς.",
+    "allRightsReserved": "Με επιφύλαξη παντός δικαιώματος."
+  },
+  "pageTemplate": {
+    "interestedInMore": "Ενδιαφέρεστε να μάθετε περισσότερα;",
+    "getInTouch": "Επικοινωνήστε μαζί μας"
+  },
+  "common": {
+    "learnMore": "Μάθετε Περισσότερα",
+    "viewAll": "Δείτε Όλα",
+    "back": "Πίσω",
+    "loading": "Φόρτωση...",
+    "error": "Παρουσιάστηκε σφάλμα",
+    "close": "Κλείσιμο"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Επιλέξτε Γλώσσα",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano"
+  }
+}

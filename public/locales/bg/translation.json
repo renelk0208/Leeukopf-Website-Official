@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Начало",
+    "about": "За нас",
+    "products": "Нашите Продукти",
+    "privateLabel": "Private Label",
+    "ourBrands": "Нашите Марки",
+    "distributors": "Търсим Дистрибутори",
+    "certificates": "Сертификати и Съответствие",
+    "faq": "ЧЗВ – Стартирайте Вашата Марка",
+    "clientRegistration": "Регистрация на Клиент",
+    "contact": "Контакт",
+    "followUs": "Последвайте ни"
+  },
+  "hero": {
+    "tagline": "Премиум Производство на Гел Лак & Превъзходство в Private Label",
+    "description": "Професионални Гел Системи • Builder Гел • Нейл Арт • Българско Козметично Съвършенство",
+    "exploreProducts": "Разгледайте Нашите Продукти",
+    "contactUs": "Свържете се с нас",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Цвята",
+      "coloursDesc": "Премиум колекция гел лак",
+      "builder": "Builder",
+      "builderLabel": "Гел Системи",
+      "builderDesc": "Професионална здравина и издръжливост",
+      "nailArt": "Нейл Арт",
+      "nailArtLabel": "& Консумативи",
+      "nailArtDesc": "Пълна гама продукти"
+    }
+  },
+  "footer": {
+    "tagline": "Премиум козметични продукти, произведени в България, доверени от професионалисти по целия свят.",
+    "madeWith": "Направено с",
+    "inBulgaria": "в България",
+    "quickLinks": "Бързи Връзки",
+    "ourProducts": "Нашите Продукти",
+    "aboutUs": "За нас",
+    "ourBrands": "Нашите Марки",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Станете Дистрибутор",
+    "clientRegistration": "Регистрация на Клиент",
+    "certificates": "Сертификати",
+    "contactUs": "Свържете се с нас",
+    "faq": "ЧЗВ – Стартирайте Вашата Марка",
+    "legal": "Правна Информация",
+    "termsOfUse": "Условия за Ползване",
+    "privacyPolicy": "Политика за Поверителност",
+    "cookiesPolicy": "Политика за Бисквитки",
+    "privacyNoticeDistributors": "Уведомление за Поверителност за Дистрибутори",
+    "followUs": "Последвайте ни",
+    "socialDescription": "Свържете се с нас в социалните мрежи за последните новини, нови продукти и вдъхновение за красота.",
+    "allRightsReserved": "Всички права запазени."
+  },
+  "pageTemplate": {
+    "interestedInMore": "Интересувате ли се да научите повече?",
+    "getInTouch": "Свържете се с нас"
+  },
+  "common": {
+    "learnMore": "Научете Повече",
+    "viewAll": "Вижте Всички",
+    "back": "Назад",
+    "loading": "Зареждане...",
+    "error": "Възникна грешка",
+    "close": "Затвори"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Изберете Език",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano"
+  }
+}

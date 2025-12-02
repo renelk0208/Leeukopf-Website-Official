@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, Image as ImageIcon, ArrowUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Navigation from './Navigation';
 import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
@@ -29,12 +30,16 @@ export default function PageTemplate({
   breadcrumbs,
   children,
   showCTA = false,
-  ctaText = 'Get in Touch',
+  ctaText,
   ctaLink,
   ctaAction,
   heroImage
 }: PageTemplateProps) {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const { t } = useTranslation();
+
+  // Use translation for default CTA text
+  const defaultCtaText = ctaText || t('pageTemplate.getInTouch');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -139,13 +144,13 @@ export default function PageTemplate({
           <div className="mt-10 sm:mt-12 md:mt-16 text-center">
             <div className="inline-block p-5 sm:p-6 md:p-8 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 shadow-sm max-w-md mx-auto">
               <p className="text-gray-700 mb-4 sm:mb-6 text-base sm:text-lg">
-                Interested in learning more?
+                {t('pageTemplate.interestedInMore')}
               </p>
               <button
                 onClick={handleCTA}
                 className="btn-primary w-full sm:w-auto px-6 sm:px-8 py-3 min-h-[44px]"
               >
-                {ctaText}
+                {defaultCtaText}
               </button>
             </div>
           </div>

@@ -14,11 +14,15 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* JSON imports */
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "public/locales/**/*.json"]
 }

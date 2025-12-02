@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "products": "Our Products",
+    "privateLabel": "Private Label",
+    "ourBrands": "Our Brands",
+    "distributors": "Distributors Wanted",
+    "certificates": "Certificates & Compliance",
+    "faq": "FAQ – Start Your Brand",
+    "clientRegistration": "Client Registration",
+    "contact": "Contact",
+    "followUs": "Follow Us"
+  },
+  "hero": {
+    "tagline": "Premium Gel Polish Manufacturing & Private Label Excellence",
+    "description": "Professional Gel Systems • Builder Gel • Nail Art • Bulgarian Cosmetics Excellence",
+    "exploreProducts": "Explore Our Products",
+    "contactUs": "Contact Us",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Colours",
+      "coloursDesc": "Premium gel polish collection",
+      "builder": "Builder",
+      "builderLabel": "Gel Systems",
+      "builderDesc": "Professional strength & durability",
+      "nailArt": "Nail Art",
+      "nailArtLabel": "& Consumables",
+      "nailArtDesc": "Complete product range"
+    }
+  },
+  "footer": {
+    "tagline": "Premium beauty products manufactured in Bulgaria, trusted by professionals worldwide.",
+    "madeWith": "Made with",
+    "inBulgaria": "in Bulgaria",
+    "quickLinks": "Quick Links",
+    "ourProducts": "Our Products",
+    "aboutUs": "About Us",
+    "ourBrands": "Our Brands",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Become a Distributor",
+    "clientRegistration": "Client Registration",
+    "certificates": "Certificates",
+    "contactUs": "Contact Us",
+    "faq": "FAQ – Start Your Brand",
+    "legal": "Legal",
+    "termsOfUse": "Terms of Use",
+    "privacyPolicy": "Privacy Policy",
+    "cookiesPolicy": "Cookies Policy",
+    "privacyNoticeDistributors": "Privacy Notice for Distributors",
+    "followUs": "Follow Us",
+    "socialDescription": "Connect with us on social media for the latest updates, product launches, and beauty inspiration.",
+    "allRightsReserved": "All rights reserved."
+  },
+  "pageTemplate": {
+    "interestedInMore": "Interested in learning more?",
+    "getInTouch": "Get in Touch"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "viewAll": "View All",
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "close": "Close"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Select Language",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano"
+  }
+}
