@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
+import StartHereBanner from '../components/StartHereBanner';
 import { Beaker, Package, PencilRuler, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function PrivateLabelPage() {
@@ -56,6 +57,9 @@ export default function PrivateLabelPage() {
       ctaText="Request a Quote"
       heroImage="/img/hero/private-label-hero.jpg"
     >
+      {/* Start Your Brand Banner */}
+      <StartHereBanner />
+
       {/* Responsive intro section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">

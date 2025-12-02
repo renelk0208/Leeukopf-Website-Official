@@ -1,4 +1,5 @@
 import PageTemplate from '../components/PageTemplate';
+import StartHereBanner from '../components/StartHereBanner';
 import WhyChooseLeeukopf from '../components/WhyChooseLeeukopf';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
@@ -15,6 +16,9 @@ export default function AboutPage() {
       showCTA={true}
       heroImage="/img/hero/about-us-hero-image.jpg"
     >
+      {/* Start Your Brand Banner */}
+      <StartHereBanner />
+
       {/* Responsive intro section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
