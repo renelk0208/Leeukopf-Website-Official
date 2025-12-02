@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Sobre Nosotros",
+    "products": "Nuestros Productos",
+    "privateLabel": "Private Label",
+    "ourBrands": "Nuestras Marcas",
+    "distributors": "Buscamos Distribuidores",
+    "certificates": "Certificados y Cumplimiento",
+    "faq": "FAQ – Inicia Tu Marca",
+    "clientRegistration": "Registro de Cliente",
+    "contact": "Contacto",
+    "followUs": "Síguenos"
+  },
+  "hero": {
+    "tagline": "Fabricación Premium de Esmalte en Gel y Excelencia en Private Label",
+    "description": "Sistemas de Gel Profesionales • Builder Gel • Nail Art • Excelencia Cosmética Búlgara",
+    "exploreProducts": "Explorar Nuestros Productos",
+    "contactUs": "Contáctanos",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Colores",
+      "coloursDesc": "Colección premium de esmalte en gel",
+      "builder": "Builder",
+      "builderLabel": "Sistemas de Gel",
+      "builderDesc": "Fuerza y durabilidad profesional",
+      "nailArt": "Nail Art",
+      "nailArtLabel": "y Consumibles",
+      "nailArtDesc": "Gama completa de productos"
+    }
+  },
+  "footer": {
+    "tagline": "Productos de belleza premium fabricados en Bulgaria, de confianza para profesionales en todo el mundo.",
+    "madeWith": "Hecho con",
+    "inBulgaria": "en Bulgaria",
+    "quickLinks": "Enlaces Rápidos",
+    "ourProducts": "Nuestros Productos",
+    "aboutUs": "Sobre Nosotros",
+    "ourBrands": "Nuestras Marcas",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Conviértete en Distribuidor",
+    "clientRegistration": "Registro de Cliente",
+    "certificates": "Certificados",
+    "contactUs": "Contáctanos",
+    "faq": "FAQ – Inicia Tu Marca",
+    "legal": "Legal",
+    "termsOfUse": "Términos de Uso",
+    "privacyPolicy": "Política de Privacidad",
+    "cookiesPolicy": "Política de Cookies",
+    "privacyNoticeDistributors": "Aviso de Privacidad para Distribuidores",
+    "followUs": "Síguenos",
+    "socialDescription": "Conéctate con nosotros en redes sociales para las últimas actualizaciones, lanzamientos de productos e inspiración de belleza.",
+    "allRightsReserved": "Todos los derechos reservados."
+  },
+  "pageTemplate": {
+    "interestedInMore": "¿Te interesa saber más?",
+    "getInTouch": "Contáctanos"
+  },
+  "common": {
+    "learnMore": "Más Información",
+    "viewAll": "Ver Todo",
+    "back": "Atrás",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "close": "Cerrar"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Seleccionar Idioma",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano",
+    "ru": "Русский",
+    "sr": "Српски",
+    "hr": "Hrvatski",
+    "sq": "Shqip",
+    "es": "Español"
+  }
+}

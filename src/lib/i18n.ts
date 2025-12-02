@@ -11,6 +11,7 @@ import ruTranslation from '../locales/ru/translation.json';
 import srTranslation from '../locales/sr/translation.json';
 import hrTranslation from '../locales/hr/translation.json';
 import sqTranslation from '../locales/sq/translation.json';
+import esTranslation from '../locales/es/translation.json';
 
 const resources = {
   en: { translation: enTranslation },
@@ -21,6 +22,7 @@ const resources = {
   sr: { translation: srTranslation },
   hr: { translation: hrTranslation },
   sq: { translation: sqTranslation },
+  es: { translation: esTranslation },
 };
 
 i18n
@@ -29,7 +31,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
-    supportedLngs: ['en', 'el', 'bg', 'it', 'ru', 'sr', 'hr', 'sq'],
+    supportedLngs: ['en', 'el', 'bg', 'it', 'ru', 'sr', 'hr', 'sq', 'es'],
     interpolation: {
       escapeValue: false, // React already does escaping
     },
@@ -55,6 +57,7 @@ export const supportedLanguages = [
   { code: 'sr', name: 'Српски', flag: '🇷🇸' },
   { code: 'hr', name: 'Hrvatski', flag: '🇭🇷' },
   { code: 'sq', name: 'Shqip', flag: '🇦🇱' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
 ] as const;
 
 export type SupportedLanguage = typeof supportedLanguages[number]['code'];
