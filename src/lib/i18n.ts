@@ -2,11 +2,11 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Import translation files directly for bundling
-import enTranslation from '../../public/locales/en/translation.json';
-import elTranslation from '../../public/locales/el/translation.json';
-import bgTranslation from '../../public/locales/bg/translation.json';
-import itTranslation from '../../public/locales/it/translation.json';
+// Import translation files from src/locales for bundling
+import enTranslation from '../locales/en/translation.json';
+import elTranslation from '../locales/el/translation.json';
+import bgTranslation from '../locales/bg/translation.json';
+import itTranslation from '../locales/it/translation.json';
 
 const resources = {
   en: { translation: enTranslation },

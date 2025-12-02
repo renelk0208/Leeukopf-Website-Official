@@ -54,7 +54,7 @@ export default function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitch
                   : 'bg-gray-100 text-gray-700 hover:bg-primary-50 hover:text-brandFuchsia'
               }`}
               aria-label={`Switch to ${lang.name}`}
-              aria-current={i18n.language === lang.code ? 'true' : undefined}
+              aria-pressed={i18n.language === lang.code}
             >
               <span className="text-lg" aria-hidden="true">{lang.flag}</span>
               <span>{lang.code.toUpperCase()}</span>
