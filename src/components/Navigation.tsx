@@ -94,13 +94,13 @@ export default function Navigation() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:block flex-1 mx-6" aria-label="Main navigation">
-            <ul className="flex items-center justify-center space-x-4 2xl:space-x-6">
+          <nav className="hidden xl:block flex-1 mx-4 2xl:mx-6 min-w-0" aria-label="Main navigation">
+            <ul className="flex items-center justify-center space-x-2 2xl:space-x-4">
               {navItems.map((item) => (
                 <li key={item.path} className="nav-item whitespace-nowrap">
                   <Link
                     to={item.path}
-                    className={`px-2 py-2 text-sm font-medium transition-colors ${
+                    className={`px-1.5 2xl:px-2 py-2 text-xs 2xl:text-sm font-medium transition-colors ${
                       isActive(item.path)
                         ? 'text-[#1E90FF] border-b-2 border-[#1E90FF]'
                         : 'text-gray-700 hover:text-[#1E90FF]'
@@ -113,7 +113,7 @@ export default function Navigation() {
             </ul>
           </nav>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 flex-shrink-0">
             <div className="hidden xl:flex items-center space-x-4">
               <LanguageSwitcher variant="desktop" />
               <SocialLinks />

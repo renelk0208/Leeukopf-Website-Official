@@ -121,39 +121,30 @@ export default function BuilderSystemsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Professional Features</h2>
-            <ul className="space-y-3 text-gray-600 font-light">
-              <li className="flex items-start">
-                <span className="text-blue-800 mr-2">•</span>
-                <span>Superior adhesion to natural nail plate for extended wear</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-blue-800 mr-2">•</span>
-                <span>Self-leveling formulas for smooth, professional finish</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-blue-800 mr-2">•</span>
-                <span>Flexible yet strong formulations that move with natural nail</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-blue-800 mr-2">•</span>
-                <span>Non-yellowing formulas maintain clarity over time</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-blue-800 mr-2">•</span>
-                <span>Compatible with all gel polish and nail art products</span>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
-              <div className="text-center p-6">
-                <p className="text-gray-600 text-sm">Builder gel application demonstration</p>
-              </div>
-            </div>
-          </div>
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Professional Features</h2>
+          <ul className="space-y-3 text-gray-600 font-light">
+            <li className="flex items-start">
+              <span className="text-blue-800 mr-2">•</span>
+              <span>Superior adhesion to natural nail plate for extended wear</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-800 mr-2">•</span>
+              <span>Self-leveling formulas for smooth, professional finish</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-800 mr-2">•</span>
+              <span>Flexible yet strong formulations that move with natural nail</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-800 mr-2">•</span>
+              <span>Non-yellowing formulas maintain clarity over time</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-800 mr-2">•</span>
+              <span>Compatible with all gel polish and nail art products</span>
+            </li>
+          </ul>
         </div>
       </PageTemplate>
 
