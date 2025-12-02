@@ -54,7 +54,7 @@ export default function PrivateLabelPage() {
       subtitle={t('privateLabelPage.subtitle')}
       breadcrumbs={[
         { label: t('nav.home'), path: '/' },
-        { label: t('nav.privateLabel') }
+        { label: t('privateLabelPage.title') }
       ]}
       showCTA={true}
       ctaText={t('privateLabelPage.ctaText')}
@@ -97,7 +97,7 @@ export default function PrivateLabelPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {services.map((service) => (
             <div
-              key={t(service.titleKey)}
+              key={service.titleKey}
               className="card p-5 sm:p-6 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start gap-4">
