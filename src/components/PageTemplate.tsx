@@ -83,13 +83,13 @@ export default function PageTemplate({
       <div 
         className={`border-b border-gray-200 ${
           safeHeroImage 
-            ? 'relative min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] lg:min-h-[80vh] flex items-center' 
+            ? 'relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center' 
             : 'py-8 sm:py-10 md:py-12 bg-white/80 backdrop-blur-sm'
         }`}
       >
         {encodedHeroImage && (
           <>
-            {/* Hero image using img tag for better LCP optimization - no blur or heavy overlays */}
+            {/* Hero image using img tag for better LCP optimization - full clarity display */}
             <img
               src={encodedHeroImage}
               alt=""
@@ -102,7 +102,7 @@ export default function PageTemplate({
         )}
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full ${safeHeroImage ? 'relative z-20 py-8 sm:py-10 md:py-12' : ''}`}>
           {/* Text content card for readability when hero image is present */}
-          <div className={safeHeroImage ? 'bg-white/85 rounded-2xl p-6 sm:p-8 md:p-10 max-w-3xl shadow-lg' : ''}>
+          <div className={safeHeroImage ? 'bg-white/90 rounded-2xl p-6 sm:p-8 md:p-10 max-w-3xl shadow-lg' : ''}>
             <div className="mb-4 sm:mb-6">
               <BackButton />
             </div>

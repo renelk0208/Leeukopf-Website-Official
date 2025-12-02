@@ -1,0 +1,78 @@
+{
+  "nav": {
+    "home": "Главная",
+    "about": "О нас",
+    "products": "Наша Продукция",
+    "privateLabel": "Private Label",
+    "ourBrands": "Наши Бренды",
+    "distributors": "Ищем Дистрибьюторов",
+    "certificates": "Сертификаты и Соответствие",
+    "faq": "FAQ – Создайте Свой Бренд",
+    "clientRegistration": "Регистрация Клиента",
+    "contact": "Контакты",
+    "followUs": "Следите за нами"
+  },
+  "hero": {
+    "tagline": "Премиум Производство Гель-Лаков и Превосходство в Private Label",
+    "description": "Профессиональные Гелевые Системы • Builder Гель • Нейл-Арт • Болгарское Косметическое Совершенство",
+    "exploreProducts": "Посмотреть Продукцию",
+    "contactUs": "Связаться с нами",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Цветов",
+      "coloursDesc": "Премиум коллекция гель-лаков",
+      "builder": "Builder",
+      "builderLabel": "Гелевые Системы",
+      "builderDesc": "Профессиональная прочность и долговечность",
+      "nailArt": "Нейл-Арт",
+      "nailArtLabel": "и Расходные Материалы",
+      "nailArtDesc": "Полная линейка продуктов"
+    }
+  },
+  "footer": {
+    "tagline": "Премиум косметическая продукция, произведенная в Болгарии, которой доверяют профессионалы по всему миру.",
+    "madeWith": "Сделано с",
+    "inBulgaria": "в Болгарии",
+    "quickLinks": "Быстрые Ссылки",
+    "ourProducts": "Наша Продукция",
+    "aboutUs": "О нас",
+    "ourBrands": "Наши Бренды",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Стать Дистрибьютором",
+    "clientRegistration": "Регистрация Клиента",
+    "certificates": "Сертификаты",
+    "contactUs": "Связаться с нами",
+    "faq": "FAQ – Создайте Свой Бренд",
+    "legal": "Юридическая Информация",
+    "termsOfUse": "Условия Использования",
+    "privacyPolicy": "Политика Конфиденциальности",
+    "cookiesPolicy": "Политика Cookies",
+    "privacyNoticeDistributors": "Уведомление о Конфиденциальности для Дистрибьюторов",
+    "followUs": "Следите за нами",
+    "socialDescription": "Следите за нами в социальных сетях, чтобы узнавать последние новости, о запуске продуктов и вдохновении красоты.",
+    "allRightsReserved": "Все права защищены."
+  },
+  "pageTemplate": {
+    "interestedInMore": "Хотите узнать больше?",
+    "getInTouch": "Связаться с нами"
+  },
+  "common": {
+    "learnMore": "Узнать Больше",
+    "viewAll": "Смотреть Все",
+    "back": "Назад",
+    "loading": "Загрузка...",
+    "error": "Произошла ошибка",
+    "close": "Закрыть"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Выберите Язык",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano",
+    "ru": "Русский",
+    "sr": "Српски",
+    "hr": "Hrvatski",
+    "sq": "Shqip"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "nav": {
+    "home": "Почетна",
+    "about": "О нама",
+    "products": "Наши Производи",
+    "privateLabel": "Private Label",
+    "ourBrands": "Наши Брендови",
+    "distributors": "Тражимо Дистрибутере",
+    "certificates": "Сертификати и Усклађеност",
+    "faq": "FAQ – Покрените Свој Бренд",
+    "clientRegistration": "Регистрација Клијента",
+    "contact": "Контакт",
+    "followUs": "Пратите нас"
+  },
+  "hero": {
+    "tagline": "Премиум Производња Гел Лакова и Изврсност у Private Label",
+    "description": "Професионални Гел Системи • Builder Гел • Нејл Арт • Бугарска Козметичка Изврсност",
+    "exploreProducts": "Истражите Наше Производе",
+    "contactUs": "Контактирајте нас",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Боја",
+      "coloursDesc": "Премиум колекција гел лакова",
+      "builder": "Builder",
+      "builderLabel": "Гел Системи",
+      "builderDesc": "Професионална чврстоћа и издржљивост",
+      "nailArt": "Нејл Арт",
+      "nailArtLabel": "и Потрошни Материјал",
+      "nailArtDesc": "Комплетна линија производа"
+    }
+  },
+  "footer": {
+    "tagline": "Премиум козметички производи произведени у Бугарској, којима верују професионалци широм света.",
+    "madeWith": "Направљено са",
+    "inBulgaria": "у Бугарској",
+    "quickLinks": "Брзе Везе",
+    "ourProducts": "Наши Производи",
+    "aboutUs": "О нама",
+    "ourBrands": "Наши Брендови",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Постаните Дистрибутер",
+    "clientRegistration": "Регистрација Клијента",
+    "certificates": "Сертификати",
+    "contactUs": "Контактирајте нас",
+    "faq": "FAQ – Покрените Свој Бренд",
+    "legal": "Правне Информације",
+    "termsOfUse": "Услови Коришћења",
+    "privacyPolicy": "Политика Приватности",
+    "cookiesPolicy": "Политика Колачића",
+    "privacyNoticeDistributors": "Обавештење о Приватности за Дистрибутере",
+    "followUs": "Пратите нас",
+    "socialDescription": "Повежите се са нама на друштвеним мрежама за најновије вести, лансирања производа и инспирацију лепоте.",
+    "allRightsReserved": "Сва права задржана."
+  },
+  "pageTemplate": {
+    "interestedInMore": "Желите да сазнате више?",
+    "getInTouch": "Контактирајте нас"
+  },
+  "common": {
+    "learnMore": "Сазнајте Више",
+    "viewAll": "Погледајте Све",
+    "back": "Назад",
+    "loading": "Учитавање...",
+    "error": "Дошло је до грешке",
+    "close": "Затвори"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Изаберите Језик",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano",
+    "ru": "Русский",
+    "sr": "Српски",
+    "hr": "Hrvatski",
+    "sq": "Shqip"
+  }
+}

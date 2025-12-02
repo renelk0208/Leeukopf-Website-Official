@@ -78,7 +78,7 @@ export default function DistributorsWantedPage() {
       ]}
       showCTA={true}
       ctaText="Apply to Become a Distributor"
-      heroImage="/img/hero/distributors-wanted-hero-image.jpg"
+      heroImage="/img/hero/distributors-wanted-hero-image-1.jpg"
     >
       {/* Start Your Brand Banner */}
       <StartHereBanner />
