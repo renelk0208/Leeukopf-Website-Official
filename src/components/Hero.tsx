@@ -13,6 +13,8 @@ export default function Hero() {
       <img
         src="/img/hero/home-page-hero.jpg"
         alt="Leeukopf Laboratories Premium Gel Polish"
+        width={2000}
+        height={848}
         className="absolute inset-0 w-full h-full object-cover object-center z-0"
         fetchPriority="high"
         loading="eager"
