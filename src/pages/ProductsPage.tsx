@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Film } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
@@ -9,12 +10,13 @@ import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 /** Video item for the factory videos section */
 interface VideoItem {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   src: string;
 }
 
 export default function ProductsPage() {
+  const { t } = useTranslation();
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [videoErrors, setVideoErrors] = useState<Set<string>>(new Set());
   const [visibleVideos, setVisibleVideos] = useState<Set<string>>(new Set());
@@ -22,20 +24,20 @@ export default function ProductsPage() {
 
   const categories = [
     {
-      title: 'Gel Polish',
-      description: 'Professional gel polish systems including French Collection, Solid Colours, Glitters, and complete Tops, Bases & Primers range.',
+      titleKey: 'productsPage.categories.gelPolish.title',
+      descriptionKey: 'productsPage.categories.gelPolish.description',
       path: '/products/gel-polish',
       image: '/img/products/gel_polish_category_1.jpg'
     },
     {
-      title: 'Builder Systems',
-      description: 'Advanced builder gels including 3-in-1 systems, fibreglass reinforcement, acrylics, and innovative polygel formulations.',
+      titleKey: 'productsPage.categories.builderSystems.title',
+      descriptionKey: 'productsPage.categories.builderSystems.description',
       path: '/products/builder-systems',
       image: '/img/products/builder_gels_category_2.jpg'
     },
     {
-      title: 'Tops, Bases & Primers',
-      description: 'Complete foundation and finishing systems including wipe-off and non-wipe tops, superior bases, and professional primers.',
+      titleKey: 'productsPage.categories.topsBasesPrimers.title',
+      descriptionKey: 'productsPage.categories.topsBasesPrimers.description',
       path: '/products/tops-bases-primers',
       image: '/img/products/tops & bases_category_1.jpg'
     }
@@ -47,20 +49,20 @@ export default function ProductsPage() {
   const videos: VideoItem[] = [
     {
       id: 'precision-pigment-blending',
-      title: 'Precision Pigment Blending',
-      description: 'Highly pigmented formulas crafted in our EU-compliant Bulgarian facility.',
+      titleKey: 'productsPage.factoryProcess.videos.precisionPigmentBlending.title',
+      descriptionKey: 'productsPage.factoryProcess.videos.precisionPigmentBlending.description',
       src: '/videos/factory videos/precision-pigment blending.mp4'
     },
     {
       id: 'self-levelling-formulation',
-      title: 'Self-Levelling Formulation',
-      description: 'Advanced formulas for smooth, self-levelling application every time.',
+      titleKey: 'productsPage.factoryProcess.videos.selfLevellingFormulation.title',
+      descriptionKey: 'productsPage.factoryProcess.videos.selfLevellingFormulation.description',
       src: '/videos/factory videos/Self-Levelling Formulation.mp4'
     },
     {
       id: 'viscosity-testing',
-      title: 'Viscosity Testing',
-      description: 'Rigorous quality control ensures professional-grade performance.',
+      titleKey: 'productsPage.factoryProcess.videos.viscosityTesting.title',
+      descriptionKey: 'productsPage.factoryProcess.videos.viscosityTesting.description',
       src: '/videos/factory videos/Viscosity Testing.mp4'
     }
   ];
@@ -115,14 +117,14 @@ export default function ProductsPage() {
 
   return (
     <PageTemplate
-      title="Our Products"
-      subtitle="Professional nail care systems designed for perfection. From gel polish to builder systems, explore our complete range."
+      title={t('productsPage.title')}
+      subtitle={t('productsPage.subtitle')}
       breadcrumbs={[
-        { label: 'Home', path: '/' },
-        { label: 'Our Products' }
+        { label: t('nav.home'), path: '/' },
+        { label: t('productsPage.title') }
       ]}
       showCTA={true}
-      ctaText="Request Product Catalogue"
+      ctaText={t('productsPage.ctaText')}
       heroImage="/img/hero/our-products-hero (2).jpg"
     >
       {/* Start Your Brand Banner */}
@@ -140,7 +142,7 @@ export default function ProductsPage() {
               {category.image ? (
                 <OptimizedImage
                   src={category.image}
-                  alt={category.title}
+                  alt={t(category.titleKey)}
                   width={600}
                   height={600}
                   sizes={RESPONSIVE_SIZES.threeColumn}
@@ -149,13 +151,13 @@ export default function ProductsPage() {
               ) : null}
             </div>
             <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-800 transition-colors">
-              {category.title}
+              {t(category.titleKey)}
             </h3>
             <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
-              {category.description}
+              {t(category.descriptionKey)}
             </p>
             <div className="mt-3 sm:mt-4 text-blue-800 font-semibold group-hover:text-blue-900 text-sm sm:text-base">
-              Explore Collection →
+              {t('productsPage.exploreCollection')} →
             </div>
           </Link>
         ))}
@@ -163,32 +165,31 @@ export default function ProductsPage() {
 
       {/* Responsive features section */}
       <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center">Why Our Products Stand Out</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center">{t('productsPage.whyStandOut.title')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           <div className="text-center">
             <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">💎</div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Premium Quality</h3>
-            <p className="text-xs sm:text-sm text-gray-600 font-light">Formulated with the finest ingredients for exceptional performance and durability.</p>
+            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">{t('productsPage.whyStandOut.premiumQuality.title')}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 font-light">{t('productsPage.whyStandOut.premiumQuality.description')}</p>
           </div>
           <div className="text-center">
             <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🎨</div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Extensive Range</h3>
-            <p className="text-xs sm:text-sm text-gray-600 font-light">From classic shades to trendy colors, we offer complete product ecosystems.</p>
+            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">{t('productsPage.whyStandOut.extensiveRange.title')}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 font-light">{t('productsPage.whyStandOut.extensiveRange.description')}</p>
           </div>
           <div className="text-center">
             <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚡</div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Professional Grade</h3>
-            <p className="text-xs sm:text-sm text-gray-600 font-light">Trusted by nail technicians worldwide for salon-quality results.</p>
+            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">{t('productsPage.whyStandOut.professionalGrade.title')}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 font-light">{t('productsPage.whyStandOut.professionalGrade.description')}</p>
           </div>
         </div>
       </div>
 
       {/* Factory videos section - uses responsive CSS classes from index.css */}
       <section className="mixing-videos-section">
-        <h2 className="mixing-title text-xl sm:text-2xl md:text-3xl">Factory Process — Behind the Scenes</h2>
+        <h2 className="mixing-title text-xl sm:text-2xl md:text-3xl">{t('productsPage.factoryProcess.title')}</h2>
         <p className="mixing-text text-sm sm:text-base">
-          Highly pigmented professional formulas created under strict EU regulations,
-          precision-measured, and hand-finished in our laboratory.
+          {t('productsPage.factoryProcess.description')}
         </p>
 
         <div className="mixing-grid">
@@ -197,15 +198,15 @@ export default function ProductsPage() {
               {videoErrors.has(video.id) ? (
                 <div className="aspect-video bg-gray-100 flex flex-col items-center justify-center text-gray-500">
                   <Film className="w-12 h-12 mb-2" />
-                  <p className="text-sm">Video format not supported</p>
-                  <p className="text-xs text-gray-400 mt-1">Try a different browser</p>
+                  <p className="text-sm">{t('productsPage.factoryProcess.videoNotSupported')}</p>
+                  <p className="text-xs text-gray-400 mt-1">{t('productsPage.factoryProcess.tryDifferentBrowser')}</p>
                 </div>
               ) : (
                 <div 
                   className="relative cursor-pointer group"
                   role="button"
                   tabIndex={0}
-                  aria-label={`Play video: ${video.title}`}
+                  aria-label={`Play video: ${t(video.titleKey)}`}
                   onClick={() => handleVideoClick(video.id, index)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -222,9 +223,9 @@ export default function ProductsPage() {
                     loop 
                     playsInline 
                     preload="none"
-                    aria-label={video.title}
+                    aria-label={t(video.titleKey)}
                     controls={false}
-                    title={video.title}
+                    title={t(video.titleKey)}
                     onError={() => handleVideoError(video.id)}
                   >
                     {visibleVideos.has(video.id) && (
@@ -244,8 +245,8 @@ export default function ProductsPage() {
                 </div>
               )}
               <div className="p-3 sm:p-4">
-                <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{video.title}</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-light">{video.description}</p>
+                <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{t(video.titleKey)}</h3>
+                <p className="text-xs sm:text-sm text-gray-600 font-light">{t(video.descriptionKey)}</p>
               </div>
             </div>
           ))}
