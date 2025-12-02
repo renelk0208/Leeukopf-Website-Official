@@ -21,6 +21,7 @@ import itCommon from '../locales/it/common.json';
 import ruCommon from '../locales/ru/common.json';
 import srCommon from '../locales/sr/common.json';
 import hrCommon from '../locales/hr/common.json';
+import sqCommon from '../locales/sq/common.json';
 import esCommon from '../locales/es/common.json';
 import frCommon from '../locales/fr/common.json';
 
@@ -56,7 +57,7 @@ const resources = {
   ru: { translation: ruTranslation, common: ruCommon, products: ruProducts, privateLabel: ruPrivateLabel },
   sr: { translation: srTranslation, common: srCommon, products: srProducts, privateLabel: srPrivateLabel },
   hr: { translation: hrTranslation, common: hrCommon, products: hrProducts, privateLabel: hrPrivateLabel },
-  sq: { translation: sqTranslation, products: sqProducts, privateLabel: sqPrivateLabel },
+  sq: { translation: sqTranslation, common: sqCommon, products: sqProducts, privateLabel: sqPrivateLabel },
   es: { translation: esTranslation, common: esCommon, products: esProducts, privateLabel: esPrivateLabel },
   fr: { common: frCommon, products: frProducts, privateLabel: frPrivateLabel },
 };
