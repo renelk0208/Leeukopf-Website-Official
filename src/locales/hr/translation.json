@@ -12,6 +12,104 @@
     "contact": "Kontakt",
     "followUs": "Pratite nas"
   },
+  "productsPage": {
+    "title": "Naši Proizvodi",
+    "subtitle": "Profesionalni sustavi za njegu noktiju dizajnirani za savršenstvo. Od gel lakova do builder sustava, istražite našu kompletnu ponudu.",
+    "ctaText": "Zatražite Katalog Proizvoda",
+    "categories": {
+      "gelPolish": {
+        "title": "Gel Lak",
+        "description": "Profesionalni sustavi gel lakova uključujući Francusku Kolekciju, Jednobojne, Šljokice i kompletnu liniju Tops, Bases i Primers."
+      },
+      "builderSystems": {
+        "title": "Builder Sustavi",
+        "description": "Napredni builder gelovi uključujući 3-u-1 sustave, ojačanje fibreglasom, akrile i inovativne polygel formulacije."
+      },
+      "topsBasesPrimers": {
+        "title": "Tops, Bases i Primers",
+        "description": "Kompletni sustavi za bazu i finiš uključujući wipe-off i non-wipe topove, superiorne baze i profesionalne primere."
+      }
+    },
+    "exploreCollection": "Istražite Kolekciju",
+    "whyStandOut": {
+      "title": "Zašto Se Naši Proizvodi Ističu",
+      "premiumQuality": {
+        "title": "Premium Kvaliteta",
+        "description": "Formulirani s najboljim sastojcima za izvanredne performanse i trajnost."
+      },
+      "extensiveRange": {
+        "title": "Široka Ponuda",
+        "description": "Od klasičnih nijansi do modernih boja, nudimo kompletne ekosustave proizvoda."
+      },
+      "professionalGrade": {
+        "title": "Profesionalna Razina",
+        "description": "Vjeruju im tehničari noktiju diljem svijeta za rezultate salonske kvalitete."
+      }
+    },
+    "factoryProcess": {
+      "title": "Proces u Tvornici — Iza Scene",
+      "description": "Visoko pigmentirane profesionalne formule kreirane prema strogim EU regulativama, precizno izmjerene i ručno završene u našem laboratoriju.",
+      "videoNotSupported": "Format videa nije podržan",
+      "tryDifferentBrowser": "Pokušajte s drugim preglednikom",
+      "videos": {
+        "precisionPigmentBlending": {
+          "title": "Precizno Miješanje Pigmenata",
+          "description": "Visoko pigmentirane formule napravljene u našim objektima usklađenim s EU u Bugarskoj."
+        },
+        "selfLevellingFormulation": {
+          "title": "Samo-nivelirajuča Formulacija",
+          "description": "Napredne formule za glatku, samo-nivelirajuču aplikaciju svaki put."
+        },
+        "viscosityTesting": {
+          "title": "Testiranje Viskoznosti",
+          "description": "Rigorozna kontrola kvalitete osigurava profesionalne performanse."
+        }
+      }
+    }
+  },
+  "privateLabelPage": {
+    "title": "Private Label Usluge",
+    "subtitle": "Kreirajte vlastiti brend s našim sveobuhvatnim private label rješenjima. Od formulacije do pakiranja, mi se brinemo o svemu.",
+    "ctaText": "Zatražite Ponudu",
+    "intro": {
+      "title": "Naša Private Label Rješenja",
+      "description": "Pokrenite ili proširite svoj brend ljepote s povjerenjem. Nudimo kompletne private label usluge uključujući prilagođene formulacije, dizajn pakiranja, regulatornu usklađenost i osiguranje kvalitete. Naše minimalne količine narudžbe su konkurentne i radimo s brendovima u svakoj fazi rasta."
+    },
+    "categories": {
+      "bottles": {
+        "title": "Boce",
+        "description": "Prilagođene brendirane boce za gel lak u različitim veličinama. Visoko kvalitetno pakiranje s vašim logotipom i dizajnom."
+      },
+      "jars": {
+        "title": "Staklenke",
+        "description": "Premium akrilne i staklene staklenke za builder gelove, akrile i specijalne proizvode s prilagođenim brendiranjem."
+      },
+      "bulkOrders": {
+        "title": "Veleprodajne Narudžbe",
+        "description": "Proizvodnja velikog volumena s prilagođenim formulacijama. Savršeno za uspostavljene brendove koji skaliraju operacije."
+      }
+    },
+    "seeCollection": "Pogledajte našu kolekciju",
+    "services": {
+      "title": "Što Pružamo",
+      "customFormulations": {
+        "title": "Prilagođene Formulacije",
+        "description": "Radite s našim kemičarima na razvoju jedinstvenih formula prilagođenih viziji vašeg brenda i potrebama tržišta."
+      },
+      "packagingDesign": {
+        "title": "Dizajn Pakiranja",
+        "description": "Kompletna rješenja za pakiranje uključujući izbor boca, dizajn etiketa i prilagođeni tisak."
+      },
+      "regulatorySupport": {
+        "title": "Regulatorna Podrška",
+        "description": "Potpuna dokumentacija usklađenosti uključujući SDS, PIF i certifikaciju za EU i međunarodna tržišta."
+      },
+      "qualityAssurance": {
+        "title": "Osiguranje Kvalitete",
+        "description": "Svaka serija se testira i certificira da ispuni najviše industrijske standarde prije isporuke."
+      }
+    }
+  },
   "hero": {
     "tagline": "Premium Proizvodnja Gel Lakova i Izvrsnost u Private Label",
     "description": "Profesionalni Gel Sustavi • Builder Gel • Nail Art • Bugarska Kozmetička Izvrsnost",

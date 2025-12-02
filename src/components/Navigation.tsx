@@ -77,9 +77,9 @@ export default function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-      <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="flex justify-between items-center h-20">
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 mr-2">
             <Link to="/" className="block">
               <OptimizedImage
                 src="/leeukopf_black.png"
@@ -88,19 +88,19 @@ export default function Navigation() {
                 height={50}
                 lazy={false}
                 fetchPriority="high"
-                className="h-12 md:h-14 w-auto object-contain hover:opacity-80 transition-opacity"
+                className="h-10 md:h-12 w-auto object-contain hover:opacity-80 transition-opacity"
               />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:block flex-1 mx-4 2xl:mx-6 min-w-0" aria-label="Main navigation">
-            <ul className="flex items-center justify-center space-x-2 2xl:space-x-4">
+          <nav className="hidden xl:flex flex-1 items-center justify-center min-w-0" aria-label="Main navigation">
+            <ul className="flex items-center justify-center flex-wrap gap-x-0.5 gap-y-1">
               {navItems.map((item) => (
-                <li key={item.path} className="nav-item whitespace-nowrap">
+                <li key={item.path} className="nav-item">
                   <Link
                     to={item.path}
-                    className={`px-1.5 2xl:px-2 py-2 text-xs 2xl:text-sm font-medium transition-colors ${
+                    className={`block px-1.5 py-1.5 text-[11px] 2xl:text-xs font-medium transition-colors whitespace-nowrap ${
                       isActive(item.path)
                         ? 'text-[#1E90FF] border-b-2 border-[#1E90FF]'
                         : 'text-gray-700 hover:text-[#1E90FF]'
@@ -113,8 +113,8 @@ export default function Navigation() {
             </ul>
           </nav>
 
-          <div className="flex items-center space-x-4 flex-shrink-0">
-            <div className="hidden xl:flex items-center space-x-4">
+          <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
+            <div className="hidden xl:flex items-center space-x-2">
               <LanguageSwitcher variant="desktop" />
               <SocialLinks />
             </div>

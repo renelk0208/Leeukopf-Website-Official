@@ -12,6 +12,104 @@
     "contact": "Contacto",
     "followUs": "Síguenos"
   },
+  "productsPage": {
+    "title": "Nuestros Productos",
+    "subtitle": "Sistemas profesionales de cuidado de uñas diseñados para la perfección. Desde esmalte en gel hasta sistemas builder, explore nuestra gama completa.",
+    "ctaText": "Solicitar Catálogo de Productos",
+    "categories": {
+      "gelPolish": {
+        "title": "Gel Polish",
+        "description": "Sistemas profesionales de esmalte en gel incluyendo Colección Francesa, Colores Sólidos, Brillos y gama completa de Tops, Bases y Primers."
+      },
+      "builderSystems": {
+        "title": "Sistemas Builder",
+        "description": "Geles builder avanzados incluyendo sistemas 3-en-1, refuerzo de fibra de vidrio, acrílicos y formulaciones innovadoras de polygel."
+      },
+      "topsBasesPrimers": {
+        "title": "Tops, Bases y Primers",
+        "description": "Sistemas completos de base y acabado incluyendo tops con y sin limpieza, bases superiores y primers profesionales."
+      }
+    },
+    "exploreCollection": "Explorar Colección",
+    "whyStandOut": {
+      "title": "Por Qué Nuestros Productos Destacan",
+      "premiumQuality": {
+        "title": "Calidad Premium",
+        "description": "Formulados con los mejores ingredientes para un rendimiento y durabilidad excepcionales."
+      },
+      "extensiveRange": {
+        "title": "Gama Extensa",
+        "description": "Desde tonos clásicos hasta colores de moda, ofrecemos ecosistemas completos de productos."
+      },
+      "professionalGrade": {
+        "title": "Grado Profesional",
+        "description": "De confianza para técnicos de uñas en todo el mundo para resultados de calidad de salón."
+      }
+    },
+    "factoryProcess": {
+      "title": "Proceso de Fábrica — Detrás de Escenas",
+      "description": "Fórmulas profesionales altamente pigmentadas creadas bajo estrictas regulaciones de la UE, medidas con precisión y terminadas a mano en nuestro laboratorio.",
+      "videoNotSupported": "Formato de video no compatible",
+      "tryDifferentBrowser": "Pruebe con otro navegador",
+      "videos": {
+        "precisionPigmentBlending": {
+          "title": "Mezcla de Pigmentos de Precisión",
+          "description": "Fórmulas altamente pigmentadas elaboradas en nuestras instalaciones búlgaras conformes con la UE."
+        },
+        "selfLevellingFormulation": {
+          "title": "Formulación Autonivelante",
+          "description": "Fórmulas avanzadas para una aplicación suave y autonivelante en todo momento."
+        },
+        "viscosityTesting": {
+          "title": "Pruebas de Viscosidad",
+          "description": "Un riguroso control de calidad garantiza un rendimiento de grado profesional."
+        }
+      }
+    }
+  },
+  "privateLabelPage": {
+    "title": "Servicios de Private Label",
+    "subtitle": "Cree su propia marca con nuestras soluciones integrales de private label. Desde la formulación hasta el empaque, lo manejamos todo.",
+    "ctaText": "Solicitar Cotización",
+    "intro": {
+      "title": "Nuestras Soluciones de Private Label",
+      "description": "Lance o expanda su marca de belleza con confianza. Ofrecemos servicios completos de private label incluyendo formulaciones personalizadas, diseño de empaque, cumplimiento regulatorio y aseguramiento de calidad. Nuestras cantidades mínimas de pedido son competitivas y trabajamos con marcas en todas las etapas de crecimiento."
+    },
+    "categories": {
+      "bottles": {
+        "title": "Botellas",
+        "description": "Botellas de esmalte en gel con marca personalizada en varios tamaños. Empaque de alta calidad con su logotipo y diseño."
+      },
+      "jars": {
+        "title": "Frascos",
+        "description": "Frascos premium de acrílico y vidrio para geles builder, acrílicos y productos especiales con marca personalizada."
+      },
+      "bulkOrders": {
+        "title": "Pedidos al Por Mayor",
+        "description": "Producción de gran volumen con formulaciones personalizadas. Perfecto para marcas establecidas que escalan operaciones."
+      }
+    },
+    "seeCollection": "Ver nuestra colección",
+    "services": {
+      "title": "Lo Que Ofrecemos",
+      "customFormulations": {
+        "title": "Formulaciones Personalizadas",
+        "description": "Trabaje con nuestros químicos para desarrollar fórmulas únicas adaptadas a la visión de su marca y las necesidades del mercado."
+      },
+      "packagingDesign": {
+        "title": "Diseño de Empaque",
+        "description": "Soluciones completas de empaque incluyendo selección de botellas, diseño de etiquetas e impresión personalizada."
+      },
+      "regulatorySupport": {
+        "title": "Soporte Regulatorio",
+        "description": "Documentación completa de cumplimiento incluyendo SDS, PIF y certificación para mercados de la UE e internacionales."
+      },
+      "qualityAssurance": {
+        "title": "Aseguramiento de Calidad",
+        "description": "Cada lote es probado y certificado para cumplir con los más altos estándares de la industria antes del envío."
+      }
+    }
+  },
   "hero": {
     "tagline": "Fabricación Premium de Esmalte en Gel y Excelencia en Private Label",
     "description": "Sistemas de Gel Profesionales • Builder Gel • Nail Art • Excelencia Cosmética Búlgara",
