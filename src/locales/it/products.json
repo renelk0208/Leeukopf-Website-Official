@@ -1,0 +1,84 @@
+{
+  "hero": {
+    "title": "Sistemi gel UV/LED professionali per marchi moderni di unghie",
+    "subtitle": "Dagli smalti gel ad alte prestazioni ai sistemi builder avanzati, produciamo linee di prodotti complete su cui puoi contare.",
+    "ctaPrimary": "Esplora le gamme di prodotti",
+    "ctaSecondary": "Opzioni private label"
+  },
+  "intro": {
+    "title": "Sistemi completi, non solo prodotti singoli",
+    "text": "Non riempiamo semplicemente bottiglie. Progettiamo sistemi completi e compatibili – smalti gel, basi, top, builder e accessori – che lavorano insieme per risultati duraturi e professionali."
+  },
+  "ranges": {
+    "title": "Le nostre gamme di prodotti",
+    "gelPolish": {
+      "title": "Sistemi di Smalto Gel",
+      "text": "Smalti gel UV/LED altamente pigmentati, autolivellanti con applicazione fluida e copertura uniforme. Disponibili in centinaia di sfumature, dai nude classici ai colori moda audaci, oltre a glitter ed effetti speciali.",
+      "bullets": [
+        "Opzioni senza HEMA e TPO disponibili",
+        "Durata testata in salone e facile rimozione",
+        "Sistemi base e top compatibili per adesione e brillantezza ottimali"
+      ]
+    },
+    "builderGels": {
+      "title": "Gel Builder e Strutturali",
+      "text": "Gel builder, camouflage e rinforzanti progettati per overlay, extension e manicure strutturate. Formulati per controllo, durata e comfort per il cliente.",
+      "bullets": [
+        "Varie viscosità per tecniche diverse",
+        "Toni camouflage, trasparenti e lattiginosi",
+        "Adatti per rinforzare le unghie naturali ed extension"
+      ]
+    },
+    "basesTops": {
+      "title": "Basi, Top e Primer",
+      "text": "Basi ottimizzate per l'adesione, basi rubber flessibili, top lucidi e opachi, e primer di supporto progettati per funzionare perfettamente con i nostri sistemi gel.",
+      "bullets": [
+        "Basi rubber, rinforzanti e specializzate",
+        "Top lucidi, opachi e ad effetti speciali",
+        "Primer senza acido per supportare l'adesione"
+      ]
+    },
+    "specialty": {
+      "title": "Gel Speciali ed Effetti",
+      "text": "Una selezione di prodotti speciali per nail art e servizi avanzati, progettati per marchi che vogliono offrire qualcosa di più di una semplice tabella colori standard.",
+      "bullets": [
+        "Gel glitter, shimmer e cat-eye",
+        "Collezioni pastello e neon",
+        "Top coat ad effetti speciali e gel artistici"
+      ]
+    },
+    "care": {
+      "title": "Prodotti di Supporto e Cura delle Unghie",
+      "text": "Liquidi e trattamenti complementari per completare il tuo sistema e aiutare i professionisti a lavorare in modo efficiente e sicuro.",
+      "bullets": [
+        "Liquidi detergenti e solventi",
+        "Oli per cuticole e prodotti per la cura delle unghie",
+        "Accessori disponibili su richiesta"
+      ]
+    }
+  },
+  "manufacturing": {
+    "title": "Produzione con la coerenza in mente",
+    "text": "Ogni lotto è prodotto in condizioni controllate nel nostro stabilimento europeo, con processi documentati e tracciabilità. Il nostro obiettivo è semplice: la sfumatura che ami oggi deve apparire e comportarsi allo stesso modo domani e l'anno prossimo.",
+    "bullets": [
+      "Controlli di coerenza da lotto a lotto",
+      "Procedure di controllo del colore",
+      "Documentazione completa disponibile per i partner private label"
+    ]
+  },
+  "compliance": {
+    "title": "Conformità, sicurezza e documentazione",
+    "text": "Tutti i prodotti sono sviluppati e fabbricati in linea con il Regolamento Cosmetici UE (CE) 1223/2009. Per i clienti private label, supportiamo la documentazione richiesta per immettere i prodotti sul mercato europeo.",
+    "bullets": [
+      "Supporto PIF e CPNP per progetti private label",
+      "Ambiente di produzione conforme alle GMP",
+      "Formule progettate con le tendenze normative a lungo termine in mente"
+    ]
+  },
+  "ctaSection": {
+    "title": "Cerchi una gamma personalizzata?",
+    "text": "Che tu abbia bisogno di una gamma base compatta o di una libreria colori estesa, possiamo adattare i nostri sistemi al tuo marchio e mercato target.",
+    "ctaPrimary": "Discuti la selezione prodotti",
+    "ctaSecondary": "Scopri il private label"
+  }
+}
