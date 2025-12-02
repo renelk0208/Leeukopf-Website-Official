@@ -225,7 +225,7 @@ function PostTile({ post, onSelect }: PostTileProps) {
         <img
           src={post.imageUrl}
           alt={post.caption || 'Instagram post from Leeukopf Laboratories'}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain bg-gray-50"
           loading="lazy"
           onError={() => setImageError(true)}
         />
