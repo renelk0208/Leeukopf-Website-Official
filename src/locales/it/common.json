@@ -1,0 +1,158 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "Chi Siamo",
+    "products": "I Nostri Prodotti",
+    "privateLabel": "Private Label",
+    "brands": "I Nostri Marchi",
+    "distributors": "Cerchiamo Distributori",
+    "certificates": "Certificati e Conformità",
+    "faq": "FAQ",
+    "contact": "Contatti"
+  },
+
+  "footer": {
+    "about": "Thermitek Ltd e Leeukopf Laboratories sono produttori europei specializzati in sistemi professionali gel UV/LED e servizi di private label.",
+    "addressLabel": "Sede Centrale",
+    "phoneLabel": "Telefono",
+    "emailLabel": "Email",
+    "followUs": "Seguici",
+    "linksTitle": "Link utili",
+    "privacy": "Informativa sulla Privacy",
+    "cookies": "Informativa sui Cookie",
+    "terms": "Termini di Utilizzo",
+    "copyright": "© {{year}} Thermitek Ltd / Leeukopf Laboratories. Tutti i diritti riservati."
+  },
+
+  "home": {
+    "hero": {
+      "title": "Innovazione con Integrità",
+      "subtitle": "Produzione europea per marchi professionali di unghie, partner private label e distributori in tutto il mondo.",
+      "primaryCta": "Esplora i Nostri Prodotti",
+      "secondaryCta": "Servizi Private Label"
+    },
+    "sections": {
+      "whyTitle": "Perché Scegliere Leeukopf Laboratories",
+      "whySubtitle": "Combiniamo formulazione scientifica, rigorosa conformità europea e supporto creativo per costruire marchi di unghie forti.",
+      "manufacturingTitle": "Produzione Europea, Standard Globali",
+      "manufacturingText": "Tutti i prodotti sono sviluppati e prodotti nell'UE secondo il Regolamento Cosmetici (CE) 1223/2009, GMP e standard Cruelty Free.",
+      "privateLabelTitle": "Private Label per Marchi Seri",
+      "privateLabelText": "Dalla selezione della formulazione al packaging e design, ti supportiamo in ogni fase per lanciare o far crescere il tuo marchio professionale di unghie.",
+      "distributorsTitle": "Cerchiamo Distributori",
+      "distributorsText": "Cerchiamo attivamente partner di distribuzione a lungo termine in territori selezionati che condividano i nostri valori e la mentalità di crescita."
+    }
+  },
+
+  "about": {
+    "heroTitle": "Chi Siamo - Thermitek Ltd e Leeukopf Laboratories",
+    "heroSubtitle": "Competenza europea nei sistemi professionali gel UV/LED e produzione private label.",
+    "missionTitle": "La Nostra Missione",
+    "missionText": "Sviluppare sistemi professionali per unghie ad alte prestazioni, sicuri e affidabili che supportino la crescita di saloni, marchi e distributori.",
+    "valuesTitle": "I Nostri Valori",
+    "valuesIntegrity": "Integrità in ogni formula, processo e partnership.",
+    "valuesInnovation": "Innovazione continua basata su scienza, test e feedback del mercato.",
+    "valuesPartnership": "Crediamo in relazioni trasparenti e a lungo termine con i nostri clienti."
+  },
+
+  "products": {
+    "heroTitle": "I Nostri Prodotti",
+    "heroSubtitle": "Sistemi professionali gel UV/LED prodotti nell'Unione Europea.",
+    "intro": "Produciamo un sistema completo di smalti gel, builder, basi, top, preparatori e prodotti complementari per uso professionale.",
+    "systemsTitle": "Sistemi Principali",
+    "gelPolishTitle": "Smalto Gel Semipermanente",
+    "builderSystemsTitle": "Sistemi Builder",
+    "basesTopsTitle": "Basi, Top e Primer",
+    "accessoriesTitle": "Prodotti di Supporto",
+    "privateLabelNote": "Tutti i sistemi sono disponibili per i nostri marchi e per clienti private label, soggetti a quantità minime d'ordine."
+  },
+
+  "privateLabel": {
+    "heroTitle": "Servizi Private Label",
+    "heroSubtitle": "Crea il tuo marchio professionale di gel con la nostra produzione e supporto completo.",
+    "overviewTitle": "Cosa Offriamo",
+    "overviewText": "Forniamo formulazioni conformi, opzioni di packaging, supporto design e documentazione così puoi concentrarti sulla costruzione del tuo marchio e vendite.",
+    "stepsTitle": "Come Funziona il Processo",
+    "step1Title": "1. Scoperta e Brief del Marchio",
+    "step1Text": "Comprendiamo il tuo mercato target, posizionamento e esigenze di prodotto.",
+    "step2Title": "2. Selezione Prodotti e Campionatura",
+    "step2Text": "Scegli dalle nostre gamme approvate; forniamo campioni per i test.",
+    "step3Title": "3. Packaging e Design",
+    "step3Text": "Seleziona bottiglie, barattoli e componenti; ci coordiniamo con il tuo designer o assistiamo con il design.",
+    "step4Title": "4. Produzione e Controllo Qualità",
+    "step4Text": "Produciamo secondo GMP con tracciabilità completa del lotto e QC documentato.",
+    "step5Title": "5. Documentazione e Supporto Continuo",
+    "step5Text": "Forniamo la documentazione richiesta e ti supportiamo mentre il tuo marchio cresce."
+  },
+
+  "brands": {
+    "heroTitle": "I Nostri Marchi",
+    "heroSubtitle": "Scopri i nostri sistemi professionali interni e le famiglie di marchi.",
+    "intro": "Sviluppiamo e produciamo linee di prodotti complete che possono essere distribuite così come sono o utilizzate come riferimento per concetti private label."
+  },
+
+  "distributors": {
+    "heroTitle": "Cerchiamo Distributori",
+    "heroSubtitle": "Collabora con noi per portare sistemi professionali gel made in EU nel tuo mercato.",
+    "intro": "Cerchiamo distributori impegnati che comprendano il mercato professionale della bellezza e vogliano costruire un marchio a lungo termine.",
+    "requirementsTitle": "Requisiti del Distributore",
+    "requirementsList": [
+      "Attività consolidata nella bellezza, cosmetici o cura professionale delle unghie.",
+      "Rete di distribuzione esistente o presenza retail nel tuo territorio.",
+      "Impegno a rappresentare i nostri marchi professionalmente ed eticamente.",
+      "Capacità di soddisfare quantità minime d'ordine e mantenere livelli di stock.",
+      "Disponibilità a fornire feedback del mercato e collaborare su strategie di crescita."
+    ],
+    "ctaTitle": "Interessato a diventare distributore?",
+    "ctaText": "Contattaci con dettagli sulla tua attività, territorio ed esperienza, e ti risponderemo."
+  },
+
+  "certificates": {
+    "heroTitle": "Certificati e Conformità",
+    "heroSubtitle": "Thermitek Ltd e Leeukopf Laboratories operano secondo rigorose normative europee e standard riconosciuti a livello internazionale.",
+    "intro": "Di seguito puoi visualizzare le nostre certificazioni chiave. Clicca su qualsiasi documento per ingrandire. Le immagini sono sfocate dove necessario per proteggere informazioni sensibili.",
+    "gmpTitle": "Buone Pratiche di Fabbricazione (GMP)",
+    "regulationTitle": "Regolamento Cosmetici UE (CE) 1223/2009",
+    "crueltyFreeTitle": "Cruelty Free e Standard Etici"
+  },
+
+  "faq": {
+    "heroTitle": "Domande Frequenti",
+    "heroSubtitle": "Risposte alle domande comuni sulla nostra produzione, servizi private label e conformità.",
+    "contactHint": "Se non trovi quello che cerchi, contattaci e saremo lieti di aiutarti."
+  },
+
+  "contact": {
+    "heroTitle": "Contattaci",
+    "heroSubtitle": "Ci piacerebbe sentirti.",
+    "intro": "Utilizza il modulo sottostante o i dettagli di contatto forniti per raggiungere il nostro team.",
+    "form": {
+      "nameLabel": "Nome",
+      "emailLabel": "Email",
+      "companyLabel": "Azienda",
+      "countryLabel": "Paese",
+      "messageLabel": "Messaggio",
+      "submit": "Invia messaggio",
+      "success": "Grazie per il tuo messaggio. Ti contatteremo il prima possibile."
+    }
+  },
+
+  "cookies": {
+    "bannerTitle": "Utilizziamo i cookie",
+    "bannerText": "Utilizziamo i cookie per migliorare la tua esperienza, analizzare il traffico del sito e supportare le funzioni essenziali del sito. Puoi scegliere di accettare o rifiutare i cookie non essenziali.",
+    "acceptAll": "Accetta tutti i cookie",
+    "rejectNonEssential": "Solo cookie essenziali",
+    "managePreferences": "Gestisci preferenze",
+    "settingsTitle": "Impostazioni cookie",
+    "essentialTitle": "Cookie essenziali",
+    "essentialText": "Questi cookie sono necessari per il corretto funzionamento del sito web e non possono essere disattivati.",
+    "analyticsTitle": "Cookie analitici",
+    "analyticsText": "Questi cookie ci aiutano a capire come i visitatori utilizzano il nostro sito web in modo da poterlo migliorare.",
+    "saveSettings": "Salva impostazioni"
+  },
+
+  "legal": {
+    "privacyTitle": "Informativa sulla Privacy",
+    "cookiesTitle": "Informativa sui Cookie",
+    "termsTitle": "Termini di Utilizzo"
+  }
+}
