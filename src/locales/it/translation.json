@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "Chi Siamo",
+    "products": "I Nostri Prodotti",
+    "privateLabel": "Private Label",
+    "ourBrands": "I Nostri Marchi",
+    "distributors": "Cercasi Distributori",
+    "certificates": "Certificati e Conformità",
+    "faq": "FAQ – Avvia il Tuo Brand",
+    "clientRegistration": "Registrazione Cliente",
+    "contact": "Contatti",
+    "followUs": "Seguici"
+  },
+  "hero": {
+    "tagline": "Produzione Premium di Gel Polish & Eccellenza Private Label",
+    "description": "Sistemi Gel Professionali • Builder Gel • Nail Art • Eccellenza Cosmetica Bulgara",
+    "exploreProducts": "Scopri i Nostri Prodotti",
+    "contactUs": "Contattaci",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Colori",
+      "coloursDesc": "Collezione premium gel polish",
+      "builder": "Builder",
+      "builderLabel": "Sistemi Gel",
+      "builderDesc": "Resistenza e durata professionale",
+      "nailArt": "Nail Art",
+      "nailArtLabel": "& Consumabili",
+      "nailArtDesc": "Gamma completa di prodotti"
+    }
+  },
+  "footer": {
+    "tagline": "Prodotti di bellezza premium fabbricati in Bulgaria, affidabili per professionisti di tutto il mondo.",
+    "madeWith": "Fatto con",
+    "inBulgaria": "in Bulgaria",
+    "quickLinks": "Link Rapidi",
+    "ourProducts": "I Nostri Prodotti",
+    "aboutUs": "Chi Siamo",
+    "ourBrands": "I Nostri Marchi",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Diventa Distributore",
+    "clientRegistration": "Registrazione Cliente",
+    "certificates": "Certificati",
+    "contactUs": "Contattaci",
+    "faq": "FAQ – Avvia il Tuo Brand",
+    "legal": "Legale",
+    "termsOfUse": "Termini di Utilizzo",
+    "privacyPolicy": "Informativa sulla Privacy",
+    "cookiesPolicy": "Politica sui Cookie",
+    "privacyNoticeDistributors": "Informativa Privacy per Distributori",
+    "followUs": "Seguici",
+    "socialDescription": "Collegati con noi sui social media per gli ultimi aggiornamenti, lanci di prodotti e ispirazione di bellezza.",
+    "allRightsReserved": "Tutti i diritti riservati."
+  },
+  "pageTemplate": {
+    "interestedInMore": "Interessato a saperne di più?",
+    "getInTouch": "Contattaci"
+  },
+  "common": {
+    "learnMore": "Scopri di Più",
+    "viewAll": "Vedi Tutto",
+    "back": "Indietro",
+    "loading": "Caricamento...",
+    "error": "Si è verificato un errore",
+    "close": "Chiudi"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Seleziona Lingua",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano",
+    "ru": "Русский",
+    "sr": "Српски",
+    "hr": "Hrvatski",
+    "sq": "Shqip",
+    "es": "Español"
+  }
+}

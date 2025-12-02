@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "home": "Početna",
+    "about": "O nama",
+    "products": "Naši Proizvodi",
+    "privateLabel": "Private Label",
+    "ourBrands": "Naši Brendovi",
+    "distributors": "Tražimo Distributere",
+    "certificates": "Certifikati i Usklađenost",
+    "faq": "FAQ – Pokrenite Svoj Brend",
+    "clientRegistration": "Registracija Klijenta",
+    "contact": "Kontakt",
+    "followUs": "Pratite nas"
+  },
+  "hero": {
+    "tagline": "Premium Proizvodnja Gel Lakova i Izvrsnost u Private Label",
+    "description": "Profesionalni Gel Sustavi • Builder Gel • Nail Art • Bugarska Kozmetička Izvrsnost",
+    "exploreProducts": "Istražite Naše Proizvode",
+    "contactUs": "Kontaktirajte nas",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Boja",
+      "coloursDesc": "Premium kolekcija gel lakova",
+      "builder": "Builder",
+      "builderLabel": "Gel Sustavi",
+      "builderDesc": "Profesionalna čvrstoća i trajnost",
+      "nailArt": "Nail Art",
+      "nailArtLabel": "i Potrošni Materijal",
+      "nailArtDesc": "Kompletna linija proizvoda"
+    }
+  },
+  "footer": {
+    "tagline": "Premium kozmetički proizvodi proizvedeni u Bugarskoj, kojima vjeruju profesionalci diljem svijeta.",
+    "madeWith": "Napravljeno s",
+    "inBulgaria": "u Bugarskoj",
+    "quickLinks": "Brze Veze",
+    "ourProducts": "Naši Proizvodi",
+    "aboutUs": "O nama",
+    "ourBrands": "Naši Brendovi",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Postanite Distributer",
+    "clientRegistration": "Registracija Klijenta",
+    "certificates": "Certifikati",
+    "contactUs": "Kontaktirajte nas",
+    "faq": "FAQ – Pokrenite Svoj Brend",
+    "legal": "Pravne Informacije",
+    "termsOfUse": "Uvjeti Korištenja",
+    "privacyPolicy": "Politika Privatnosti",
+    "cookiesPolicy": "Politika Kolačića",
+    "privacyNoticeDistributors": "Obavijest o Privatnosti za Distributere",
+    "followUs": "Pratite nas",
+    "socialDescription": "Povežite se s nama na društvenim mrežama za najnovije vijesti, lansiranja proizvoda i inspiraciju ljepote.",
+    "allRightsReserved": "Sva prava pridržana."
+  },
+  "pageTemplate": {
+    "interestedInMore": "Želite saznati više?",
+    "getInTouch": "Kontaktirajte nas"
+  },
+  "common": {
+    "learnMore": "Saznajte Više",
+    "viewAll": "Pogledajte Sve",
+    "back": "Natrag",
+    "loading": "Učitavanje...",
+    "error": "Došlo je do greške",
+    "close": "Zatvori"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Odaberite Jezik",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano",
+    "ru": "Русский",
+    "sr": "Српски",
+    "hr": "Hrvatski",
+    "sq": "Shqip",
+    "es": "Español"
+  }
+}

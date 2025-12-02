@@ -57,7 +57,7 @@ const CookieConsent: React.FC = () => {
               to="/cookies-policy"
               className="text-brandFuchsia hover:underline focus:underline focus:outline-none"
             >
-              Learn more
+              Learn more about our cookies policy
             </Link>
           </p>
         </div>

@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "home": "Kryefaqja",
+    "about": "Rreth Nesh",
+    "products": "Produktet Tona",
+    "privateLabel": "Private Label",
+    "ourBrands": "Markat Tona",
+    "distributors": "Kërkojmë Distributorë",
+    "certificates": "Certifikatat dhe Pajtueshmëria",
+    "faq": "FAQ – Filloni Markën Tuaj",
+    "clientRegistration": "Regjistrimi i Klientit",
+    "contact": "Kontakt",
+    "followUs": "Na Ndiqni"
+  },
+  "hero": {
+    "tagline": "Prodhim Premium i Llakut Xhel dhe Ekselencë në Private Label",
+    "description": "Sisteme Profesionale Xhel • Builder Xhel • Nail Art • Ekselencë Kozmetike Bullgare",
+    "exploreProducts": "Eksploroni Produktet Tona",
+    "contactUs": "Na Kontaktoni",
+    "stats": {
+      "colours": "3000+",
+      "coloursLabel": "Ngjyra",
+      "coloursDesc": "Koleksion premium llaku xhel",
+      "builder": "Builder",
+      "builderLabel": "Sisteme Xhel",
+      "builderDesc": "Forcë dhe qëndrueshmëri profesionale",
+      "nailArt": "Nail Art",
+      "nailArtLabel": "& Konsumabël",
+      "nailArtDesc": "Gamë e plotë produktesh"
+    }
+  },
+  "footer": {
+    "tagline": "Produkte bukurie premium të prodhuara në Bullgari, të besuara nga profesionistët në mbarë botën.",
+    "madeWith": "Bërë me",
+    "inBulgaria": "në Bullgari",
+    "quickLinks": "Lidhje të Shpejta",
+    "ourProducts": "Produktet Tona",
+    "aboutUs": "Rreth Nesh",
+    "ourBrands": "Markat Tona",
+    "privateLabel": "Private Label",
+    "becomeDistributor": "Bëhu Distributor",
+    "clientRegistration": "Regjistrimi i Klientit",
+    "certificates": "Certifikatat",
+    "contactUs": "Na Kontaktoni",
+    "faq": "FAQ – Filloni Markën Tuaj",
+    "legal": "Informacion Ligjor",
+    "termsOfUse": "Kushtet e Përdorimit",
+    "privacyPolicy": "Politika e Privatësisë",
+    "cookiesPolicy": "Politika e Cookies",
+    "privacyNoticeDistributors": "Njoftim Privatësie për Distributorët",
+    "followUs": "Na Ndiqni",
+    "socialDescription": "Lidhuni me ne në rrjetet sociale për lajmet më të fundit, prezantimet e produkteve dhe frymëzimin e bukurisë.",
+    "allRightsReserved": "Të gjitha të drejtat të rezervuara."
+  },
+  "pageTemplate": {
+    "interestedInMore": "Dëshironi të mësoni më shumë?",
+    "getInTouch": "Na Kontaktoni"
+  },
+  "common": {
+    "learnMore": "Mësoni Më Shumë",
+    "viewAll": "Shikoni të Gjitha",
+    "back": "Prapa",
+    "loading": "Duke u ngarkuar...",
+    "error": "Ndodhi një gabim",
+    "close": "Mbyll"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Zgjidhni Gjuhën",
+    "en": "English",
+    "el": "Ελληνικά",
+    "bg": "Български",
+    "it": "Italiano",
+    "ru": "Русский",
+    "sr": "Српски",
+    "hr": "Hrvatski",
+    "sq": "Shqip",
+    "es": "Español"
+  }
+}

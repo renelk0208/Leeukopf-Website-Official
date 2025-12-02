@@ -179,7 +179,7 @@ export default function FaqStartBrandPage() {
       ]}
       showCTA={true}
       ctaText="Get Started Today"
-      heroImage="/img/hero/faq-hero.jpg"
+      heroImage="/img/hero/frequently-asked-questions-hero.png"
     >
       {/* FAQ Introduction */}
       <div className="mb-10 sm:mb-12 md:mb-16">
