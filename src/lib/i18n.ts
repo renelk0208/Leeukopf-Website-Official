@@ -12,6 +12,7 @@ import srTranslation from '../locales/sr/translation.json';
 import hrTranslation from '../locales/hr/translation.json';
 import sqTranslation from '../locales/sq/translation.json';
 import esTranslation from '../locales/es/translation.json';
+import frTranslation from '../locales/fr/translation.json';
 
 // Import common namespace files
 import enCommon from '../locales/en/common.json';
@@ -59,7 +60,7 @@ const resources = {
   hr: { translation: hrTranslation, common: hrCommon, products: hrProducts, privateLabel: hrPrivateLabel },
   sq: { translation: sqTranslation, common: sqCommon, products: sqProducts, privateLabel: sqPrivateLabel },
   es: { translation: esTranslation, common: esCommon, products: esProducts, privateLabel: esPrivateLabel },
-  fr: { common: frCommon, products: frProducts, privateLabel: frPrivateLabel },
+  fr: { translation: frTranslation, common: frCommon, products: frProducts, privateLabel: frPrivateLabel },
 };
 
 i18n

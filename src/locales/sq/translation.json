@@ -173,5 +173,253 @@
     "hr": "Hrvatski",
     "sq": "Shqip",
     "es": "Español"
+  },
+  "faqPage": {
+    "title": "Frequently Asked Questions – Starting Your Own Gel Polish Brand",
+    "subtitle": "Everything you need to know about starting your own gel polish brand with Leeukopf Laboratories.",
+    "introduction": "This FAQ is for people who are completely new to launching their own gel polish brand. Questions are bold and answers are in short bullet points for quick reading.",
+    "stillHaveQuestions": "Still have questions?",
+    "contactTeamDescription": "Our team is here to help you navigate the journey of creating your own gel polish brand. Whether you're just starting or ready to scale, we're committed to your success.",
+    "contactTeam": "Contact Our Team",
+    "questions": {
+      "q1": {
+        "question": "Where do I start if I want my own gel polish brand?",
+        "answers": [
+          "Decide between private label (ready-made, you add branding) or custom formulation.",
+          "Private label is usually faster and more cost-effective for beginners.",
+          "Start by choosing your core product range (colours, base, top, builders)."
+        ]
+      },
+      "q2": {
+        "question": "What products do I need for a basic launch?",
+        "answers": [
+          "Gel polish colours (a focused starter range).",
+          "Base coat.",
+          "Top coat (gloss and/or matte).",
+          "Optional: a few builder gels for structure or extensions.",
+          "Many brands start with 20–40 shades, not hundreds."
+        ]
+      },
+      "q3": {
+        "question": "What is the MOQ (minimum order quantity)?",
+        "answers": [
+          "MOQ depends on packaging type and product family.",
+          "Private label MOQs are kept as low as practical so you can test the market.",
+          "Higher volumes unlock better pricing per unit."
+        ]
+      },
+      "q4": {
+        "question": "Do I need my own special formula?",
+        "answers": [
+          "No — you can use our existing EU-compliant formulations.",
+          "They are already tested, stable and safety-assessed.",
+          "Custom formulas are possible but take more time and budget."
+        ]
+      },
+      "q5": {
+        "question": "Can I have my logo and design on the bottles?",
+        "answers": [
+          "Yes, we offer silk screen, hot stamp and label options.",
+          "You choose bottle style, cap, colour and printing method.",
+          "We guide you based on your budget and quantities."
+        ]
+      },
+      "q6": {
+        "question": "What is a PIF and why do I need it?",
+        "answers": [
+          "PIF = Product Information File, legally required in the EU.",
+          "Includes safety report, formula, raw-material documents, stability data and labels.",
+          "Must always be available at the Responsible Person's address.",
+          "We arrange PIF preparation for the products you take."
+        ]
+      },
+      "q7": {
+        "question": "What is the CPNP and who handles it?",
+        "answers": [
+          "CPNP = EU Cosmetic Product Notification Portal.",
+          "All EU cosmetics must be notified there before sale.",
+          "It's a notification system, not a 'certificate' or approval.",
+          "We handle CPNP notification once PIF and labels are final."
+        ]
+      },
+      "q8": {
+        "question": "What is a Responsible Person (RP) and do I need one?",
+        "answers": [
+          "Every cosmetic in the EU needs an EU-based Responsible Person.",
+          "The RP holds the PIF and manages compliance and safety.",
+          "If you are not EU-based (or prefer not to act as RP), we can provide this service."
+        ]
+      },
+      "q9": {
+        "question": "How long does it take to launch a new brand?",
+        "answers": [
+          "Private label with existing formulas is the fastest route.",
+          "Packaging choice and artwork: 2–4 weeks.",
+          "PIF and safety work: 2–6 weeks, depending on scope.",
+          "CPNP notification: a few days once everything is ready.",
+          "Timing depends on how quickly artwork and key decisions are finalised."
+        ]
+      },
+      "q10": {
+        "question": "Can I test the products before placing a big order?",
+        "answers": [
+          "Yes, you can order samples of colours, bases, tops and builders.",
+          "Test application, curing and wear with your own nail techs.",
+          "We recommend testing with a 48W multi-wave LED lamp."
+        ]
+      },
+      "q11": {
+        "question": "What documentation do I receive with my order?",
+        "answers": [
+          "Commercial invoice with HS codes.",
+          "Packing list and carton details.",
+          "Certificate of Origin (if required for your country).",
+          "SDS/MSDS for all relevant products.",
+          "Compliance certificates (EU Regulation 1223/2009, GMP).",
+          "CPNP confirmation (for EU-placed products, where applicable)."
+        ]
+      },
+      "q12": {
+        "question": "Are your products cruelty-free and compliant?",
+        "answers": [
+          "Produced under EU Cosmetic Regulation (EC) 1223/2009.",
+          "Manufactured under GMP standards.",
+          "Approved by Cruelty Free International — covering global cruelty-free standards.",
+          "Formulas are regularly updated for new regulatory changes."
+        ]
+      },
+      "q13": {
+        "question": "Do you offer HEMA-free and TPO-free products?",
+        "answers": [
+          "Yes — all formulations are 100 percent HEMA-free and TPO-free.",
+          "This aligns with current and upcoming EU regulations.",
+          "Applies to every product family: colours, bases, tops and builders."
+        ]
+      },
+      "q14": {
+        "question": "Can I have exclusive colours or collections?",
+        "answers": [
+          "Yes, we can create exclusive shades and seasonal collections.",
+          "We can colour-match using spectrophotometer data or physical samples.",
+          "Collections can be based on themes, trends or specific palettes."
+        ]
+      },
+      "q15": {
+        "question": "How do I reorder once I'm happy with the products?",
+        "answers": [
+          "Reorder using product codes / shade codes and required quantities.",
+          "Once packaging and formulas are set, repeat orders are straightforward.",
+          "We can discuss volume-based pricing as your brand grows."
+        ]
+      },
+      "q16": {
+        "question": "What curing lamps do you recommend for your gels?",
+        "answers": [
+          "We recommend 48W multi-wave LED lamps (approx. 365–405 nm).",
+          "Our formulas are optimised for modern LED technology.",
+          "This ensures proper curing, gloss and durability."
+        ]
+      },
+      "q17": {
+        "question": "What support do you offer after launch?",
+        "answers": [
+          "Ongoing regulatory and compliance support.",
+          "New shade and collection development.",
+          "Guidance on scaling orders and entering distribution."
+        ]
+      }
+    },
+    "crueltyFreeLink": "Learn more"
+  },
+  "clientRegistration": {
+    "title": "Client Registration Form",
+    "subtitle": "Join our network of professional partners. Complete the form below to register your business with Leeukopf Laboratories.",
+    "successTitle": "Registration Received!",
+    "successMessage": "Thank you for registering with us. We've received your details and will respond within 2 business days.",
+    "sections": {
+      "companyInfo": "Company Information",
+      "businessDetails": "Business Details",
+      "additionalInfo": "Additional Information"
+    },
+    "fields": {
+      "companyName": "Company / Brand Name",
+      "contactName": "Contact Name",
+      "role": "Role / Title",
+      "email": "Email",
+      "phone": "Phone Number",
+      "country": "Country",
+      "website": "Website",
+      "instagram": "Instagram Handle",
+      "businessType": "Business Type",
+      "productInterests": "Product Interests",
+      "monthlyVolume": "Estimated Monthly Volume",
+      "vatEori": "VAT / EORI Number",
+      "billingAddress": "Billing Address",
+      "shippingAddress": "Shipping Address",
+      "language": "Preferred Language",
+      "notes": "Notes / Requirements"
+    },
+    "placeholders": {
+      "phone": "+1 234 567 8900",
+      "website": "https://www.example.com",
+      "instagram": "@yourhandle",
+      "selectCountry": "Select a country",
+      "selectBusinessType": "Select business type",
+      "monthlyVolume": "e.g., 5000 units",
+      "notes": "Tell us about your specific requirements, questions, or any additional information..."
+    },
+    "businessTypes": {
+      "distributor": "Distributor",
+      "salonSupply": "Salon Supply",
+      "brandOwner": "Brand Owner",
+      "privateLabelStarter": "Private Label Starter",
+      "other": "Other"
+    },
+    "productInterestsList": {
+      "gelPolish": "Gel Polish",
+      "tops": "Tops",
+      "bases": "Bases",
+      "primers": "Primers",
+      "builderSystems": "Builder Systems",
+      "acrylics": "Acrylics",
+      "polygel": "Polygel",
+      "packaging": "Packaging"
+    },
+    "languages": {
+      "EN": "English",
+      "EL": "Greek",
+      "BG": "Bulgarian",
+      "Other": "Other"
+    },
+    "upload": {
+      "title": "Upload Document (Optional)",
+      "description": "Business document or logo (PDF, PNG, JPG; max 10MB)",
+      "chooseFile": "Choose File"
+    },
+    "gdpr": {
+      "consentLabel": "I agree to the processing of my data",
+      "consentText": "for the purpose of responding to this enquiry.",
+      "privacyNote": "Your information is used only to respond to your enquiry. We respect your privacy and will never share your data with third parties."
+    },
+    "buttons": {
+      "submit": "Submit Registration",
+      "submitting": "Submitting..."
+    },
+    "validation": {
+      "required": {
+        "company": "Company name is required",
+        "contact": "Contact name is required",
+        "email": "Email is required",
+        "country": "Country is required",
+        "businessType": "Business type is required",
+        "gdprConsent": "You must agree to the data processing terms"
+      },
+      "invalidEmail": "Please enter a valid email address",
+      "fileTypeError": "Only PDF, PNG, and JPG files are allowed",
+      "fileSizeError": "File size must be less than 10MB"
+    },
+    "errors": {
+      "submitError": "An error occurred while submitting your registration. Please try again."
+    }
   }
 }
