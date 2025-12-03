@@ -1,16 +1,21 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-/** Configuration for gel polish categories with their folder paths */
+/** 
+ * Configuration for gel polish categories with their folder paths.
+ * IMPORTANT: 'id' and 'folder' are stable identifiers and MUST NOT be translated.
+ * Only the 'titleKey' is used for translation lookups.
+ */
 const GEL_POLISH_CATEGORIES = [
-  { key: 'GlittersCollection', label: 'Glitters Collection', folder: 'Glitters Collection' },
-  { key: 'GreenCollection', label: 'Green Collection', folder: 'Green Collection' },
-  { key: 'PastelCollection', label: 'Pastel Collection', folder: 'Pastel Collectin' },
-  { key: 'RoseNudeCollection', label: 'Rose Nude Collection', folder: 'Rose Nude Collection' },
-  { key: 'SolidColourCollection', label: 'Solid Colour Collection', folder: 'Solid Colour Collection' },
-  { key: 'SolidCreamCollection', label: 'Solid Cream Collection', folder: 'Solid Cream Collection' },
-  { key: 'TransparentColorGelPolish', label: 'Transparent Color Gel Polish', folder: 'Transparent Color Gel Polish' },
-  { key: 'WarmNudesCollection', label: 'Warm Nudes Collection', folder: 'Warm Nudes Collection' },
+  { id: 'glittersCollection', folder: 'Glitters Collection', titleKey: 'gelPolishCategories.categories.glittersCollection.title', descriptionKey: 'gelPolishCategories.categories.glittersCollection.description' },
+  { id: 'greenCollection', folder: 'Green Collection', titleKey: 'gelPolishCategories.categories.greenCollection.title', descriptionKey: 'gelPolishCategories.categories.greenCollection.description' },
+  { id: 'pastelCollection', folder: 'Pastel Collectin', titleKey: 'gelPolishCategories.categories.pastelCollection.title', descriptionKey: 'gelPolishCategories.categories.pastelCollection.description' },
+  { id: 'roseNudeCollection', folder: 'Rose Nude Collection', titleKey: 'gelPolishCategories.categories.roseNudeCollection.title', descriptionKey: 'gelPolishCategories.categories.roseNudeCollection.description' },
+  { id: 'solidColourCollection', folder: 'Solid Colour Collection', titleKey: 'gelPolishCategories.categories.solidColourCollection.title', descriptionKey: 'gelPolishCategories.categories.solidColourCollection.description' },
+  { id: 'solidCreamCollection', folder: 'Solid Cream Collection', titleKey: 'gelPolishCategories.categories.solidCreamCollection.title', descriptionKey: 'gelPolishCategories.categories.solidCreamCollection.description' },
+  { id: 'transparentColorGelPolish', folder: 'Transparent Color Gel Polish', titleKey: 'gelPolishCategories.categories.transparentColorGelPolish.title', descriptionKey: 'gelPolishCategories.categories.transparentColorGelPolish.description' },
+  { id: 'warmNudesCollection', folder: 'Warm Nudes Collection', titleKey: 'gelPolishCategories.categories.warmNudesCollection.title', descriptionKey: 'gelPolishCategories.categories.warmNudesCollection.description' },
 ];
 
 /**
@@ -28,7 +33,7 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
 
   // Initialize empty arrays for each category
   GEL_POLISH_CATEGORIES.forEach((category) => {
-    categoryImages[category.key] = [];
+    categoryImages[category.id] = [];
   });
 
   // Process all image modules
@@ -59,9 +64,9 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
       .replace(/\s+/g, ' ')
       .trim();
 
-    categoryImages[category.key].push({
+    categoryImages[category.id].push({
       src: imageSrc,
-      alt: `${category.label} - ${altText}`,
+      alt: `${category.folder} - ${altText}`,
     });
   });
 
@@ -235,10 +240,11 @@ function GalleryModal({
 
 /** Main component: displays category cards that open a gallery modal */
 export default function GelPolishCategoryGallery() {
+  const { t } = useTranslation('products');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const handleCategoryClick = (categoryKey: string) => {
-    setSelectedCategory(categoryKey);
+  const handleCategoryClick = (categoryId: string) => {
+    setSelectedCategory(categoryId);
   };
 
   const handleCloseModal = () => {
@@ -246,7 +252,7 @@ export default function GelPolishCategoryGallery() {
   };
 
   const selectedCategoryData = selectedCategory
-    ? GEL_POLISH_CATEGORIES.find((c) => c.key === selectedCategory)
+    ? GEL_POLISH_CATEGORIES.find((c) => c.id === selectedCategory)
     : null;
 
   const selectedImages = selectedCategory ? CATEGORY_IMAGES[selectedCategory] || [] : [];
@@ -255,10 +261,10 @@ export default function GelPolishCategoryGallery() {
     <div className="mb-10 sm:mb-12 md:mb-16">
       <div className="text-center mb-6 sm:mb-8">
         <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
-          Explore Our Gel Polish Categories
+          {t('gelPolishCategories.title')}
         </h3>
         <p className="text-base sm:text-lg text-gray-600 font-light max-w-2xl mx-auto px-2">
-          Click on any category below to browse our complete range of gel polish products.
+          {t('gelPolishCategories.subtitle')}
         </p>
       </div>
 
@@ -266,14 +272,14 @@ export default function GelPolishCategoryGallery() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {GEL_POLISH_CATEGORIES.map((category) => (
           <button
-            key={category.key}
+            key={category.id}
             type="button"
-            onClick={() => handleCategoryClick(category.key)}
-            aria-label={`Open ${category.label} gel polish collection`}
+            onClick={() => handleCategoryClick(category.id)}
+            aria-label={`Open ${t(category.titleKey)} gel polish collection`}
             className="w-full rounded-xl shadow-md bg-white p-4 text-left hover:shadow-lg transition-all cursor-pointer border border-gray-100"
           >
             <div className="text-lg font-semibold text-gray-800">
-              {category.label}
+              {t(category.titleKey)}
             </div>
           </button>
         ))}
@@ -283,7 +289,7 @@ export default function GelPolishCategoryGallery() {
       {selectedCategory && selectedCategoryData && (
         <GalleryModal
           categoryKey={selectedCategory}
-          categoryLabel={selectedCategoryData.label}
+          categoryLabel={t(selectedCategoryData.titleKey)}
           images={selectedImages}
           onClose={handleCloseModal}
         />

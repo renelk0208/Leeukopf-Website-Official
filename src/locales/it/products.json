@@ -80,5 +80,43 @@
     "text": "Che tu abbia bisogno di una gamma base compatta o di una libreria colori estesa, possiamo adattare i nostri sistemi al tuo marchio e mercato target.",
     "ctaPrimary": "Discuti la selezione prodotti",
     "ctaSecondary": "Scopri il private label"
+  },
+  "gelPolishCategories": {
+    "title": "Explore Our Gel Polish Categories",
+    "subtitle": "Click on any category below to browse our complete range of gel polish products.",
+    "categories": {
+      "glittersCollection": {
+        "title": "Glitters Collection",
+        "description": "Sparkling glitter gel polishes with stunning effects"
+      },
+      "greenCollection": {
+        "title": "Green Collection",
+        "description": "Fresh green shades for nature-inspired looks"
+      },
+      "pastelCollection": {
+        "title": "Pastel Collection",
+        "description": "Soft and delicate pastel shades"
+      },
+      "roseNudeCollection": {
+        "title": "Rose Nude Collection",
+        "description": "Elegant rose and nude tones"
+      },
+      "solidColourCollection": {
+        "title": "Solid Colour Collection",
+        "description": "Bold and vibrant pure color gel polishes"
+      },
+      "solidCreamCollection": {
+        "title": "Solid Cream Collection",
+        "description": "Creamy, opaque gel polishes with smooth coverage"
+      },
+      "transparentColorGelPolish": {
+        "title": "Transparent Color Gel Polish",
+        "description": "Translucent color gels for subtle effects"
+      },
+      "warmNudesCollection": {
+        "title": "Warm Nudes Collection",
+        "description": "Warm nude tones perfect for any occasion"
+      }
+    }
   }
 }
