@@ -1,5 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { Upload, CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import PageTemplate from '../components/PageTemplate';
 import { supabase } from '../lib/supabase';
 
@@ -52,32 +53,28 @@ const countries = [
 ];
 
 const businessTypes = [
-  'Distributor',
-  'Salon Supply',
-  'Brand Owner',
-  'Private Label Starter',
-  'Other'
+  { value: 'Distributor', key: 'distributor' },
+  { value: 'Salon Supply', key: 'salonSupply' },
+  { value: 'Brand Owner', key: 'brandOwner' },
+  { value: 'Private Label Starter', key: 'privateLabelStarter' },
+  { value: 'Other', key: 'other' }
 ];
 
 const productInterests = [
-  'Gel Polish',
-  'Tops',
-  'Bases',
-  'Primers',
-  'Builder Systems',
-  'Acrylics',
-  'Polygel',
-  'Packaging'
+  { value: 'Gel Polish', key: 'gelPolish' },
+  { value: 'Tops', key: 'tops' },
+  { value: 'Bases', key: 'bases' },
+  { value: 'Primers', key: 'primers' },
+  { value: 'Builder Systems', key: 'builderSystems' },
+  { value: 'Acrylics', key: 'acrylics' },
+  { value: 'Polygel', key: 'polygel' },
+  { value: 'Packaging', key: 'packaging' }
 ];
 
-const languages = [
-  { code: 'EN', name: 'English' },
-  { code: 'EL', name: 'Greek' },
-  { code: 'BG', name: 'Bulgarian' },
-  { code: 'Other', name: 'Other' }
-];
+const languageCodes = ['EN', 'EL', 'BG', 'Other'];
 
 export default function ClientRegistrationPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<FormData>({
     company: '',
     contact: '',
@@ -110,21 +107,29 @@ export default function ClientRegistrationPage() {
     return emailRegex.test(email);
   };
 
-  const validateField = (name: string, value: any): string => {
+  const validateField = (name: string, value: string | boolean): string => {
+    // Helper function for type guard
+    const isEmptyString = (val: string | boolean): boolean => {
+      return typeof val === 'string' && val.trim() === '';
+    };
+
     switch (name) {
       case 'company':
-        return value.trim() === '' ? 'Company name is required' : '';
+        return isEmptyString(value) ? t('clientRegistration.validation.required.company') : '';
       case 'contact':
-        return value.trim() === '' ? 'Contact name is required' : '';
+        return isEmptyString(value) ? t('clientRegistration.validation.required.contact') : '';
       case 'email':
-        if (value.trim() === '') return 'Email is required';
-        return !validateEmail(value) ? 'Please enter a valid email address' : '';
+        if (isEmptyString(value)) return t('clientRegistration.validation.required.email');
+        if (typeof value === 'string' && !validateEmail(value)) {
+          return t('clientRegistration.validation.invalidEmail');
+        }
+        return '';
       case 'country':
-        return value === '' ? 'Country is required' : '';
+        return value === '' ? t('clientRegistration.validation.required.country') : '';
       case 'businessType':
-        return value === '' ? 'Business type is required' : '';
+        return value === '' ? t('clientRegistration.validation.required.businessType') : '';
       case 'gdprConsent':
-        return !value ? 'You must agree to the data processing terms' : '';
+        return !value ? t('clientRegistration.validation.required.gdprConsent') : '';
       default:
         return '';
     }
@@ -162,12 +167,12 @@ export default function ClientRegistrationPage() {
       const maxSize = 10 * 1024 * 1024;
 
       if (!validTypes.includes(file.type)) {
-        setErrors(prev => ({ ...prev, file: 'Only PDF, PNG, and JPG files are allowed' }));
+        setErrors(prev => ({ ...prev, file: t('clientRegistration.validation.fileTypeError') }));
         return;
       }
 
       if (file.size > maxSize) {
-        setErrors(prev => ({ ...prev, file: 'File size must be less than 10MB' }));
+        setErrors(prev => ({ ...prev, file: t('clientRegistration.validation.fileSizeError') }));
         return;
       }
 
@@ -187,7 +192,7 @@ export default function ClientRegistrationPage() {
     newErrors.gdprConsent = validateField('gdprConsent', formData.gdprConsent);
 
     const filteredErrors = Object.fromEntries(
-      Object.entries(newErrors).filter(([_, v]) => v !== '')
+      Object.entries(newErrors).filter(([, v]) => v !== '')
     );
 
     setErrors(filteredErrors);
@@ -301,7 +306,7 @@ export default function ClientRegistrationPage() {
       setTimeout(() => setSubmitSuccess(false), 10000);
     } catch (error) {
       console.error('Error submitting registration:', error);
-      setSubmitError('An error occurred while submitting your registration. Please try again.');
+      setSubmitError(t('clientRegistration.errors.submitError'));
     } finally {
       setUploading(false);
     }
@@ -313,11 +318,11 @@ export default function ClientRegistrationPage() {
 
   return (
     <PageTemplate
-      title="Client Registration Form"
-      subtitle="Join our network of professional partners. Complete the form below to register your business with Leeukopf Laboratories."
+      title={t('clientRegistration.title')}
+      subtitle={t('clientRegistration.subtitle')}
       breadcrumbs={[
-        { label: 'Home', path: '/' },
-        { label: 'Client Registration' }
+        { label: t('nav.home'), path: '/' },
+        { label: t('nav.clientRegistration') }
       ]}
     >
       {submitSuccess && (
@@ -325,9 +330,9 @@ export default function ClientRegistrationPage() {
           <div className="flex items-start space-x-3">
             <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={24} />
             <div>
-              <h3 className="text-lg font-semibold text-green-900 mb-2">Registration Received!</h3>
+              <h3 className="text-lg font-semibold text-green-900 mb-2">{t('clientRegistration.successTitle')}</h3>
               <p className="text-green-800 font-light">
-                Thank you for registering with us. We've received your details and will respond within 2 business days.
+                {t('clientRegistration.successMessage')}
               </p>
             </div>
           </div>
@@ -353,11 +358,11 @@ export default function ClientRegistrationPage() {
         />
 
         <div className="bg-white rounded-lg border border-gray-200 p-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Company Information</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">{t('clientRegistration.sections.companyInfo')}</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <label htmlFor="company" className="block text-sm font-medium text-gray-900 mb-2">
-                Company / Brand Name <span className="text-red-500">*</span>
+                {t('clientRegistration.fields.companyName')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -381,7 +386,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label htmlFor="contact" className="block text-sm font-medium text-gray-900 mb-2">
-                Contact Name <span className="text-red-500">*</span>
+                {t('clientRegistration.fields.contactName')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -405,7 +410,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label htmlFor="role" className="block text-sm font-medium text-gray-900 mb-2">
-                Role / Title
+                {t('clientRegistration.fields.role')}
               </label>
               <input
                 type="text"
@@ -419,7 +424,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
-                Email <span className="text-red-500">*</span>
+                {t('clientRegistration.fields.email')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -443,7 +448,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-2">
-                Phone Number
+                {t('clientRegistration.fields.phone')}
               </label>
               <input
                 type="tel"
@@ -452,13 +457,13 @@ export default function ClientRegistrationPage() {
                 value={formData.phone}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="+1 234 567 8900"
+                placeholder={t('clientRegistration.placeholders.phone')}
               />
             </div>
 
             <div>
               <label htmlFor="country" className="block text-sm font-medium text-gray-900 mb-2">
-                Country <span className="text-red-500">*</span>
+                {t('clientRegistration.fields.country')} <span className="text-red-500">*</span>
               </label>
               <select
                 id="country"
@@ -472,7 +477,7 @@ export default function ClientRegistrationPage() {
                 aria-invalid={!!errors.country}
                 aria-describedby={errors.country ? 'country-error' : undefined}
               >
-                <option value="">Select a country</option>
+                <option value="">{t('clientRegistration.placeholders.selectCountry')}</option>
                 {countries.map(country => (
                   <option key={country} value={country}>{country}</option>
                 ))}
@@ -486,7 +491,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label htmlFor="website" className="block text-sm font-medium text-gray-900 mb-2">
-                Website
+                {t('clientRegistration.fields.website')}
               </label>
               <input
                 type="url"
@@ -495,13 +500,13 @@ export default function ClientRegistrationPage() {
                 value={formData.website}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://www.example.com"
+                placeholder={t('clientRegistration.placeholders.website')}
               />
             </div>
 
             <div>
               <label htmlFor="instagram" className="block text-sm font-medium text-gray-900 mb-2">
-                Instagram Handle
+                {t('clientRegistration.fields.instagram')}
               </label>
               <input
                 type="text"
@@ -510,18 +515,18 @@ export default function ClientRegistrationPage() {
                 value={formData.instagram}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="@yourhandle"
+                placeholder={t('clientRegistration.placeholders.instagram')}
               />
             </div>
           </div>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Business Details</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">{t('clientRegistration.sections.businessDetails')}</h2>
           <div className="space-y-6">
             <div>
               <label htmlFor="businessType" className="block text-sm font-medium text-gray-900 mb-2">
-                Business Type <span className="text-red-500">*</span>
+                {t('clientRegistration.fields.businessType')} <span className="text-red-500">*</span>
               </label>
               <select
                 id="businessType"
@@ -535,9 +540,9 @@ export default function ClientRegistrationPage() {
                 aria-invalid={!!errors.businessType}
                 aria-describedby={errors.businessType ? 'businessType-error' : undefined}
               >
-                <option value="">Select business type</option>
+                <option value="">{t('clientRegistration.placeholders.selectBusinessType')}</option>
                 {businessTypes.map(type => (
-                  <option key={type} value={type}>{type}</option>
+                  <option key={type.value} value={type.value}>{t(`clientRegistration.businessTypes.${type.key}`)}</option>
                 ))}
               </select>
               {errors.businessType && (
@@ -549,21 +554,21 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-3">
-                Product Interests
+                {t('clientRegistration.fields.productInterests')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {productInterests.map(interest => (
                   <label
-                    key={interest}
+                    key={interest.value}
                     className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
                   >
                     <input
                       type="checkbox"
-                      checked={formData.interests.includes(interest)}
-                      onChange={() => handleInterestChange(interest)}
+                      checked={formData.interests.includes(interest.value)}
+                      onChange={() => handleInterestChange(interest.value)}
                       className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-900">{interest}</span>
+                    <span className="text-sm text-gray-900">{t(`clientRegistration.productInterestsList.${interest.key}`)}</span>
                   </label>
                 ))}
               </div>
@@ -572,7 +577,7 @@ export default function ClientRegistrationPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="monthlyVolume" className="block text-sm font-medium text-gray-900 mb-2">
-                  Estimated Monthly Volume
+                  {t('clientRegistration.fields.monthlyVolume')}
                 </label>
                 <input
                   type="text"
@@ -581,13 +586,13 @@ export default function ClientRegistrationPage() {
                   value={formData.monthlyVolume}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., 5000 units"
+                  placeholder={t('clientRegistration.placeholders.monthlyVolume')}
                 />
               </div>
 
               <div>
                 <label htmlFor="vatEori" className="block text-sm font-medium text-gray-900 mb-2">
-                  VAT / EORI Number
+                  {t('clientRegistration.fields.vatEori')}
                 </label>
                 <input
                   type="text"
@@ -603,7 +608,7 @@ export default function ClientRegistrationPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="billingAddress" className="block text-sm font-medium text-gray-900 mb-2">
-                  Billing Address
+                  {t('clientRegistration.fields.billingAddress')}
                 </label>
                 <textarea
                   id="billingAddress"
@@ -617,7 +622,7 @@ export default function ClientRegistrationPage() {
 
               <div>
                 <label htmlFor="shippingAddress" className="block text-sm font-medium text-gray-900 mb-2">
-                  Shipping Address
+                  {t('clientRegistration.fields.shippingAddress')}
                 </label>
                 <textarea
                   id="shippingAddress"
@@ -632,7 +637,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label htmlFor="language" className="block text-sm font-medium text-gray-900 mb-2">
-                Preferred Language
+                {t('clientRegistration.fields.language')}
               </label>
               <select
                 id="language"
@@ -641,8 +646,8 @@ export default function ClientRegistrationPage() {
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                {languages.map(lang => (
-                  <option key={lang.code} value={lang.code}>{lang.name}</option>
+                {languageCodes.map(code => (
+                  <option key={code} value={code}>{t(`clientRegistration.languages.${code}`)}</option>
                 ))}
               </select>
             </div>
@@ -650,11 +655,11 @@ export default function ClientRegistrationPage() {
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Additional Information</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">{t('clientRegistration.sections.additionalInfo')}</h2>
           <div className="space-y-6">
             <div>
               <label htmlFor="notes" className="block text-sm font-medium text-gray-900 mb-2">
-                Notes / Requirements
+                {t('clientRegistration.fields.notes')}
               </label>
               <textarea
                 id="notes"
@@ -663,16 +668,16 @@ export default function ClientRegistrationPage() {
                 onChange={handleInputChange}
                 rows={5}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                placeholder="Tell us about your specific requirements, questions, or any additional information..."
+                placeholder={t('clientRegistration.placeholders.notes')}
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-2">
-                Upload Document (Optional)
+                {t('clientRegistration.upload.title')}
               </label>
               <p className="text-sm text-gray-600 mb-3 font-light">
-                Business document or logo (PDF, PNG, JPG; max 10MB)
+                {t('clientRegistration.upload.description')}
               </p>
               <div className="flex items-center space-x-4">
                 <input
@@ -687,7 +692,7 @@ export default function ClientRegistrationPage() {
                   className="flex items-center space-x-2 px-6 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 cursor-pointer transition-colors"
                 >
                   <Upload size={20} className="text-gray-700" />
-                  <span className="text-gray-700">{selectedFile ? selectedFile.name : 'Choose File'}</span>
+                  <span className="text-gray-700">{selectedFile ? selectedFile.name : t('clientRegistration.upload.chooseFile')}</span>
                 </label>
               </div>
               {errors.file && (
@@ -716,7 +721,7 @@ export default function ClientRegistrationPage() {
                 aria-describedby={errors.gdprConsent ? 'gdpr-error' : undefined}
               />
               <label htmlFor="gdprConsent" className="text-sm text-gray-900">
-                <span className="font-medium">I agree to the processing of my data</span> for the purpose of responding to this enquiry. <span className="text-red-500">*</span>
+                <span className="font-medium">{t('clientRegistration.gdpr.consentLabel')}</span> {t('clientRegistration.gdpr.consentText')} <span className="text-red-500">*</span>
               </label>
             </div>
             {errors.gdprConsent && (
@@ -726,7 +731,7 @@ export default function ClientRegistrationPage() {
             )}
 
             <p className="text-sm text-gray-600 font-light ml-8">
-              Your information is used only to respond to your enquiry. We respect your privacy and will never share your data with third parties.
+              {t('clientRegistration.gdpr.privacyNote')}
             </p>
           </div>
 
@@ -736,7 +741,7 @@ export default function ClientRegistrationPage() {
               disabled={!isFormValid || uploading}
               className="px-12 py-4 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {uploading ? 'Submitting...' : 'Submit Registration'}
+              {uploading ? t('clientRegistration.buttons.submitting') : t('clientRegistration.buttons.submit')}
             </button>
           </div>
         </div>
