@@ -1,11 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import OptimizedImage from './OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function Hero() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   return (
     <section id="home" className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
@@ -39,11 +37,11 @@ export default function Hero() {
 
           {/* Responsive typography with clamp-like approach */}
           <p className="text-lg sm:text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto leading-relaxed font-medium px-2 bg-white/90 rounded-lg py-3 inline-block">
-            {t('hero.tagline')}
+            Premium Gel Polish Manufacturing & Private Label Excellence
           </p>
 
           <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto font-medium px-2 bg-white/90 rounded-lg py-2 inline-block">
-            {t('hero.description')}
+            Professional Gel Systems • Builder Gel • Nail Art • Bulgarian Cosmetics Excellence
           </p>
 
           {/* Responsive button group with full-width on mobile */}
@@ -52,32 +50,32 @@ export default function Hero() {
               onClick={() => navigate('/products')}
               className="btn-primary w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px]"
             >
-              {t('hero.exploreProducts')}
+              Explore Our Products
             </button>
             <button
               onClick={() => navigate('/contact')}
               className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] bg-white rounded-md font-semibold transition-all duration-300 border-2 text-primary border-primary hover:bg-primary hover:text-white"
             >
-              {t('hero.contactUs')}
+              Contact Us
             </button>
           </div>
 
           {/* Responsive stats grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 px-2 sm:px-0">
             <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">{t('hero.stats.colours')}</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">{t('hero.stats.coloursLabel')}</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">{t('hero.stats.coloursDesc')}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">3000+</div>
+              <div className="text-gray-800 font-semibold text-sm sm:text-base">Colours</div>
+              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Premium gel polish collection</div>
             </div>
             <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">{t('hero.stats.builder')}</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">{t('hero.stats.builderLabel')}</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">{t('hero.stats.builderDesc')}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">Builder</div>
+              <div className="text-gray-800 font-semibold text-sm sm:text-base">Gel Systems</div>
+              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Professional strength & durability</div>
             </div>
             <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">{t('hero.stats.nailArt')}</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">{t('hero.stats.nailArtLabel')}</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">{t('hero.stats.nailArtDesc')}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">Nail Art</div>
+              <div className="text-gray-800 font-semibold text-sm sm:text-base">& Consumables</div>
+              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Complete product range</div>
             </div>
           </div>
         </div>
