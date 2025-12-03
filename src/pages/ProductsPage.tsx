@@ -104,6 +104,137 @@ export default function ProductsPage() {
       {/* Gel Polish Categories Gallery */}
       <GelPolishCategoryGallery />
 
+      {/* Product Categories Section */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
+          Explore our product categories
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Gel Polish */}
+          <Link
+            to="/products/gel-polish"
+            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/gel_polish_category_1.jpg"
+                alt="Gel Polish Systems"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Gel Polish Systems
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                High-pigment, self-levelling UV/LED gel polishes in hundreds of shades
+              </p>
+            </div>
+          </Link>
+
+          {/* Builder Gels */}
+          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/builder_gels_category_2.jpg"
+                alt="Builder & Structure Gels"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Builder & Structure Gels
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Builder, cover and strengthening gels for overlays, extensions and structured manicures
+              </p>
+            </div>
+          </div>
+
+          {/* Tops, Bases & Primers */}
+          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/tops-bases_category_1.jpg"
+                alt="Bases, Tops & Primers"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Bases, Tops & Primers
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Adhesion-optimised bases, rubber bases, gloss and matte top coats, and supportive primers
+              </p>
+            </div>
+          </div>
+
+          {/* Acrygel */}
+          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/acrygel_category_1.jpg"
+                alt="Acrygel Systems"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Acrygel Systems
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Hybrid systems combining the best of acrylic and gel for versatile applications
+              </p>
+            </div>
+          </div>
+
+          {/* Nail Art & Accessories */}
+          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/nail-art-category.jpg"
+                alt="Nail Art & Accessories"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Nail Art & Accessories
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Speciality products for nail art and advanced services, including glitter, shimmer and effects
+              </p>
+            </div>
+          </div>
+
+          {/* Liquids & Prep Products */}
+          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                <div className="text-center p-4">
+                  <p className="text-lg font-semibold text-gray-700">Liquids & Prep</p>
+                  <p className="text-sm text-gray-500 mt-2">Cleanser and remover liquids</p>
+                </div>
+              </div>
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Liquids & Prep Products
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Complementary liquids and treatments to complete your system and work efficiently
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Product Ranges Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
