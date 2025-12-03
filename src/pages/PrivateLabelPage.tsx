@@ -130,6 +130,83 @@ export default function PrivateLabelPage() {
         </p>
       </div>
 
+      {/* Private Label Categories Section */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
+          Private label packaging options
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          {/* Bottles */}
+          <Link
+            to="/private-label/bottles"
+            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/bottles/bottles-image-private label-solutions.jpg"
+                alt="Bottles - Premium gel polish bottles for custom branding"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Bottles
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Premium gel polish bottles available for custom branding. Multiple sizes and finishes to match your brand aesthetic.
+              </p>
+            </div>
+          </Link>
+
+          {/* Bulk */}
+          <Link
+            to="/private-label/bulk"
+            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/private-label/bulk/bulk-5kg-bucket.jpg"
+                alt="Bulk Packaging - High-volume gel and builder systems"
+                className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Bulk Packaging
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                For high-volume partners, we supply gel and builder systems in bulk formats ready for your own filling and logistics.
+              </p>
+            </div>
+          </Link>
+
+          {/* Jars */}
+          <Link
+            to="/private-label/jars"
+            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/jars/website_leeukopf_acrylic_jar_1.jpg"
+                alt="Jars - Premium acrylic and glass jars for custom branding"
+                className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Jars
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Premium acrylic and glass jars for gel polish, builder gel, and other nail products. Perfect for custom branding.
+              </p>
+            </div>
+          </Link>
+        </div>
+      </div>
+
       {/* Benefits Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
