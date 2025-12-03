@@ -1,21 +1,18 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /** 
- * Configuration for gel polish categories with their folder paths.
- * IMPORTANT: 'id' and 'folder' are stable identifiers and MUST NOT be translated.
- * Only the 'titleKey' is used for translation lookups.
+ * Configuration for gel polish categories with their folder paths and English titles.
  */
 const GEL_POLISH_CATEGORIES = [
-  { id: 'glittersCollection', folder: 'Glitters Collection', titleKey: 'gelPolishCategories.categories.glittersCollection.title', descriptionKey: 'gelPolishCategories.categories.glittersCollection.description' },
-  { id: 'greenCollection', folder: 'Green Collection', titleKey: 'gelPolishCategories.categories.greenCollection.title', descriptionKey: 'gelPolishCategories.categories.greenCollection.description' },
-  { id: 'pastelCollection', folder: 'Pastel Collectin', titleKey: 'gelPolishCategories.categories.pastelCollection.title', descriptionKey: 'gelPolishCategories.categories.pastelCollection.description' },
-  { id: 'roseNudeCollection', folder: 'Rose Nude Collection', titleKey: 'gelPolishCategories.categories.roseNudeCollection.title', descriptionKey: 'gelPolishCategories.categories.roseNudeCollection.description' },
-  { id: 'solidColourCollection', folder: 'Solid Colour Collection', titleKey: 'gelPolishCategories.categories.solidColourCollection.title', descriptionKey: 'gelPolishCategories.categories.solidColourCollection.description' },
-  { id: 'solidCreamCollection', folder: 'Solid Cream Collection', titleKey: 'gelPolishCategories.categories.solidCreamCollection.title', descriptionKey: 'gelPolishCategories.categories.solidCreamCollection.description' },
-  { id: 'transparentColorGelPolish', folder: 'Transparent Color Gel Polish', titleKey: 'gelPolishCategories.categories.transparentColorGelPolish.title', descriptionKey: 'gelPolishCategories.categories.transparentColorGelPolish.description' },
-  { id: 'warmNudesCollection', folder: 'Warm Nudes Collection', titleKey: 'gelPolishCategories.categories.warmNudesCollection.title', descriptionKey: 'gelPolishCategories.categories.warmNudesCollection.description' },
+  { id: 'glittersCollection', folder: 'Glitters Collection', title: 'Glitters Collection', description: 'Sparkling glitter gel polishes with stunning effects' },
+  { id: 'greenCollection', folder: 'Green Collection', title: 'Green Collection', description: 'Fresh green shades for nature-inspired looks' },
+  { id: 'pastelCollection', folder: 'Pastel Collectin', title: 'Pastel Collection', description: 'Soft and delicate pastel shades' },
+  { id: 'roseNudeCollection', folder: 'Rose Nude Collection', title: 'Rose Nude Collection', description: 'Elegant rose and nude tones' },
+  { id: 'solidColourCollection', folder: 'Solid Colour Collection', title: 'Solid Colour Collection', description: 'Bold and vibrant pure color gel polishes' },
+  { id: 'solidCreamCollection', folder: 'Solid Cream Collection', title: 'Solid Cream Collection', description: 'Creamy, opaque gel polishes with smooth coverage' },
+  { id: 'transparentColorGelPolish', folder: 'Transparent Color Gel Polish', title: 'Transparent Color Gel Polish', description: 'Translucent color gels for subtle effects' },
+  { id: 'warmNudesCollection', folder: 'Warm Nudes Collection', title: 'Warm Nudes Collection', description: 'Warm nude tones perfect for any occasion' },
 ];
 
 /**
@@ -240,7 +237,6 @@ function GalleryModal({
 
 /** Main component: displays category cards that open a gallery modal */
 export default function GelPolishCategoryGallery() {
-  const { t } = useTranslation('products');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleCategoryClick = (categoryId: string) => {
@@ -261,10 +257,10 @@ export default function GelPolishCategoryGallery() {
     <div className="mb-10 sm:mb-12 md:mb-16">
       <div className="text-center mb-6 sm:mb-8">
         <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
-          {t('gelPolishCategories.title')}
+          Explore Our Gel Polish Categories
         </h3>
         <p className="text-base sm:text-lg text-gray-600 font-light max-w-2xl mx-auto px-2">
-          {t('gelPolishCategories.subtitle')}
+          Click on any category below to browse our complete range of gel polish products.
         </p>
       </div>
 
@@ -275,11 +271,11 @@ export default function GelPolishCategoryGallery() {
             key={category.id}
             type="button"
             onClick={() => handleCategoryClick(category.id)}
-            aria-label={`Open ${t(category.titleKey)} gel polish collection`}
+            aria-label={`Open ${category.title} gel polish collection`}
             className="w-full rounded-xl shadow-md bg-white p-4 text-left hover:shadow-lg transition-all cursor-pointer border border-gray-100"
           >
             <div className="text-lg font-semibold text-gray-800">
-              {t(category.titleKey)}
+              {category.title}
             </div>
           </button>
         ))}
@@ -289,7 +285,7 @@ export default function GelPolishCategoryGallery() {
       {selectedCategory && selectedCategoryData && (
         <GalleryModal
           categoryKey={selectedCategory}
-          categoryLabel={t(selectedCategoryData.titleKey)}
+          categoryLabel={selectedCategoryData.title}
           images={selectedImages}
           onClose={handleCloseModal}
         />
