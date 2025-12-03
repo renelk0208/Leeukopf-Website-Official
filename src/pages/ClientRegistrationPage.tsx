@@ -108,15 +108,20 @@ export default function ClientRegistrationPage() {
   };
 
   const validateField = (name: string, value: string | boolean): string => {
+    // Helper function for type guard
+    const isEmptyString = (val: string | boolean): boolean => {
+      return typeof val === 'string' && val.trim() === '';
+    };
+
     switch (name) {
       case 'company':
-        return typeof value === 'string' && value.trim() === '' ? t('clientRegistration.validation.required.company') : '';
+        return isEmptyString(value) ? t('clientRegistration.validation.required.company') : '';
       case 'contact':
-        return typeof value === 'string' && value.trim() === '' ? t('clientRegistration.validation.required.contact') : '';
+        return isEmptyString(value) ? t('clientRegistration.validation.required.contact') : '';
       case 'email':
-        if (typeof value === 'string') {
-          if (value.trim() === '') return t('clientRegistration.validation.required.email');
-          return !validateEmail(value) ? t('clientRegistration.validation.invalidEmail') : '';
+        if (isEmptyString(value)) return t('clientRegistration.validation.required.email');
+        if (typeof value === 'string' && !validateEmail(value)) {
+          return t('clientRegistration.validation.invalidEmail');
         }
         return '';
       case 'country':

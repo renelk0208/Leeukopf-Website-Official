@@ -22,7 +22,7 @@ export default function FaqStartBrandPage() {
         { label: t('nav.faq') }
       ]}
       showCTA={true}
-      ctaText="Get Started Today"
+      ctaText={t('pageTemplate.getInTouch')}
       heroImage="/img/hero/faq-starting-a-gel-polish-brand.jpg"
     >
       {/* FAQ Introduction */}
