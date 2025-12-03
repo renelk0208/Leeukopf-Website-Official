@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
+import GelPolishCategoryGallery from '../components/GelPolishCategoryGallery';
 
 export default function ProductsPage() {
   const { t } = useTranslation(['products', 'common']);
@@ -57,6 +58,9 @@ export default function ProductsPage() {
           {t('intro.text')}
         </p>
       </div>
+
+      {/* Gel Polish Categories Gallery */}
+      <GelPolishCategoryGallery />
 
       {/* Product Ranges Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
