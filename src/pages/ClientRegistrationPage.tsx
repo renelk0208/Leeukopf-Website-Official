@@ -53,22 +53,22 @@ const countries = [
 ];
 
 const businessTypes = [
-  'Distributor',
-  'Salon Supply',
-  'Brand Owner',
-  'Private Label Starter',
-  'Other'
+  { value: 'Distributor', key: 'distributor' },
+  { value: 'Salon Supply', key: 'salonSupply' },
+  { value: 'Brand Owner', key: 'brandOwner' },
+  { value: 'Private Label Starter', key: 'privateLabelStarter' },
+  { value: 'Other', key: 'other' }
 ];
 
 const productInterests = [
-  'Gel Polish',
-  'Tops',
-  'Bases',
-  'Primers',
-  'Builder Systems',
-  'Acrylics',
-  'Polygel',
-  'Packaging'
+  { value: 'Gel Polish', key: 'gelPolish' },
+  { value: 'Tops', key: 'tops' },
+  { value: 'Bases', key: 'bases' },
+  { value: 'Primers', key: 'primers' },
+  { value: 'Builder Systems', key: 'builderSystems' },
+  { value: 'Acrylics', key: 'acrylics' },
+  { value: 'Polygel', key: 'polygel' },
+  { value: 'Packaging', key: 'packaging' }
 ];
 
 const languageCodes = ['EN', 'EL', 'BG', 'Other'];
@@ -110,12 +110,15 @@ export default function ClientRegistrationPage() {
   const validateField = (name: string, value: string | boolean): string => {
     switch (name) {
       case 'company':
-        return value.trim() === '' ? t('clientRegistration.validation.required.company') : '';
+        return typeof value === 'string' && value.trim() === '' ? t('clientRegistration.validation.required.company') : '';
       case 'contact':
-        return value.trim() === '' ? t('clientRegistration.validation.required.contact') : '';
+        return typeof value === 'string' && value.trim() === '' ? t('clientRegistration.validation.required.contact') : '';
       case 'email':
-        if (value.trim() === '') return t('clientRegistration.validation.required.email');
-        return !validateEmail(value) ? t('clientRegistration.validation.invalidEmail') : '';
+        if (typeof value === 'string') {
+          if (value.trim() === '') return t('clientRegistration.validation.required.email');
+          return !validateEmail(value) ? t('clientRegistration.validation.invalidEmail') : '';
+        }
+        return '';
       case 'country':
         return value === '' ? t('clientRegistration.validation.required.country') : '';
       case 'businessType':
@@ -534,7 +537,7 @@ export default function ClientRegistrationPage() {
               >
                 <option value="">{t('clientRegistration.placeholders.selectBusinessType')}</option>
                 {businessTypes.map(type => (
-                  <option key={type} value={type}>{t(`clientRegistration.businessTypes.${type.toLowerCase().replace(/ /g, '')}`)}</option>
+                  <option key={type.value} value={type.value}>{t(`clientRegistration.businessTypes.${type.key}`)}</option>
                 ))}
               </select>
               {errors.businessType && (
@@ -551,16 +554,16 @@ export default function ClientRegistrationPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {productInterests.map(interest => (
                   <label
-                    key={interest}
+                    key={interest.value}
                     className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
                   >
                     <input
                       type="checkbox"
-                      checked={formData.interests.includes(interest)}
-                      onChange={() => handleInterestChange(interest)}
+                      checked={formData.interests.includes(interest.value)}
+                      onChange={() => handleInterestChange(interest.value)}
                       className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-900">{t(`clientRegistration.productInterestsList.${interest.toLowerCase().replace(/ /g, '')}`)}</span>
+                    <span className="text-sm text-gray-900">{t(`clientRegistration.productInterestsList.${interest.key}`)}</span>
                   </label>
                 ))}
               </div>
