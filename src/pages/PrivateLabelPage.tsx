@@ -145,7 +145,7 @@ export default function PrivateLabelPage() {
               <img
                 src="/img/products/bottles/bottles-image-private label-solutions.jpg"
                 alt="Bottles - Premium gel polish bottles for custom branding"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
             </div>
