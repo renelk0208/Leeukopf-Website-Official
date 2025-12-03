@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "Private label gel systems for serious brands",
+    "subtitle": "We develop, manufacture and fill professional gel systems under your own brand name, with full technical and regulatory support.",
+    "ctaPrimary": "Start a private label project",
+    "ctaSecondary": "Request more information"
+  },
+  "intro": {
+    "title": "More than a logo on a bottle",
+    "text": "Launching or expanding a professional nail brand requires more than nice packaging. You need reliable formulas, clear documentation and a manufacturing partner who understands your market. That is where we come in."
+  },
+  "benefits": {
+    "title": "What you gain with our private label services",
+    "items": {
+      "expertise": {
+        "title": "Laboratory and manufacturing expertise",
+        "text": "Formulas created and produced in our own lab and factory, with experience across different markets and service types."
+      },
+      "flexibility": {
+        "title": "Flexible range building",
+        "text": "Start with a focused core selection or build a full catalogue. We help you choose systems and shades that fit your positioning."
+      },
+      "compliance": {
+        "title": "Regulatory support",
+        "text": "Guidance on EU cosmetic compliance, documentation and registration so you can bring products to market with confidence."
+      },
+      "partnership": {
+        "title": "Long-term partnership",
+        "text": "We see private label as an ongoing collaboration – from first launch to future updates, seasonal collections and reformulations."
+      }
+    }
+  },
+  "process": {
+    "title": "How the private label process works",
+    "steps": {
+      "consultation": {
+        "title": "1. Initial consultation",
+        "text": "We discuss your brand, target markets, service types and price positioning. Together we define what you really need from your product line."
+      },
+      "selection": {
+        "title": "2. Product and shade selection",
+        "text": "Based on your goals, we suggest suitable systems (gel polish, bases, builders, etc.) and prepare a proposed shade range or collections for sampling."
+      },
+      "sampling": {
+        "title": "3. Sampling and testing",
+        "text": "You test the products in real salon conditions. We refine the selection if needed, based on your feedback and the results from your technicians."
+      },
+      "packaging": {
+        "title": "4. Packaging and design",
+        "text": "You can use our existing packaging options or work with us on custom solutions. We provide technical specifications to your designer so artwork fits correctly."
+      },
+      "compliance": {
+        "title": "5. Documentation & compliance",
+        "text": "For EU projects, we support PIF preparation and CPNP notifications in cooperation with your appointed safety assessor and responsible person."
+      },
+      "production": {
+        "title": "6. Production and delivery",
+        "text": "Once everything is approved, we schedule production, filling and packing according to agreed MOQs and lead times, and arrange shipment."
+      }
+    }
+  },
+  "moqs": {
+    "title": "Minimum order quantities and lead times",
+    "text": "MOQs and timelines depend on the product type, packaging choice and whether we are using existing shades or creating something new. During the first consultation we will give you realistic numbers and timeframes.",
+    "bullets": [
+      "Different MOQs for bottles, jars and bulk",
+      "Standard lead times for repeat orders after first setup",
+      "Clear communication if anything affects production schedules"
+    ]
+  },
+  "whoIsFor": {
+    "title": "Who our private label services are ideal for",
+    "items": {
+      "distributors": {
+        "title": "Distributors and wholesalers",
+        "text": "Businesses that already supply salons or retailers and want a professional in-house brand."
+      },
+      "brands": {
+        "title": "Existing brands",
+        "text": "Brands that need to upgrade formulas, expand their range or add professional-only product lines."
+      },
+      "educators": {
+        "title": "Training academies",
+        "text": "Educators who want product lines that support their teaching and are consistent for students and salons."
+      }
+    }
+  },
+  "ctaSection": {
+    "title": "Ready to talk about your own brand?",
+    "text": "Tell us a little about your business, your market and what you want to achieve. We will come back with a realistic, honest proposal – not just a generic price list.",
+    "ctaPrimary": "Send us your project details",
+    "ctaSecondary": "Book an online meeting"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "Sisteme xheli me markë private për marka serioze",
+    "subtitle": "Ne zhvillojmë, prodhojmë dhe mbushim sisteme xheli profesionale nën emrin tuaj të markës, me mbështetje të plotë teknike dhe rregullatore.",
+    "ctaPrimary": "Filloni një projekt me markë private",
+    "ctaSecondary": "Kërkoni më shumë informacion"
+  },
+  "intro": {
+    "title": "Më shumë se një logo në një shishe",
+    "text": "Nisja ose zgjerimi i një marke profesionale të thonjve kërkon më shumë se paketim të bukur. Keni nevojë për formula të besueshme, dokumentacion të qartë dhe një partner prodhues që e kupton tregun tuaj. Aty hyjmë ne."
+  },
+  "benefits": {
+    "title": "Çfarë fitoni me shërbimet tona të markës private",
+    "items": {
+      "expertise": {
+        "title": "Ekspertizë laboratori dhe prodhimi",
+        "text": "Formula të krijuara dhe prodhuara në laboratorin dhe fabrikën tonë, me përvojë në tregje dhe lloje shërbimesh të ndryshme."
+      },
+      "flexibility": {
+        "title": "Ndërtim fleksibël i gamës",
+        "text": "Filloni me një përzgjedhje bazë të fokusuar ose ndërtoni një katalog të plotë. Ne ju ndihmojmë të zgjidhni sisteme dhe nuanca që përshtaten me pozicionimin tuaj."
+      },
+      "compliance": {
+        "title": "Mbështetje rregullatore",
+        "text": "Udhëzime për pajtueshmërinë kozmetike të BE, dokumentacionin dhe regjistrimin që të mund të sillni produkte në treg me besim."
+      },
+      "partnership": {
+        "title": "Partneritet afatgjatë",
+        "text": "Ne e shohim markën private si një bashkëpunim të vazhdueshëm – nga lansimi i parë deri te përditësimet e ardhshme, koleksionet sezonale dhe riformulimet."
+      }
+    }
+  },
+  "process": {
+    "title": "Si funksionon procesi i markës private",
+    "steps": {
+      "consultation": {
+        "title": "1. Konsultim fillestar",
+        "text": "Ne diskutojmë markën tuaj, tregjet e synuara, llojet e shërbimeve dhe pozicionimin e çmimeve. Së bashku përcaktojmë çfarë keni vërtet nevojë nga linja juaj e produkteve."
+      },
+      "selection": {
+        "title": "2. Përzgjedhja e produkteve dhe nuancave",
+        "text": "Bazuar në qëllimet tuaja, ne sugjerojmë sisteme të përshtatshme (xhel llak, baza, ndërtues, etj.) dhe përgatisim një gamë nuancash të propozuara ose koleksione për mostrim."
+      },
+      "sampling": {
+        "title": "3. Mostrim dhe testim",
+        "text": "Ju testoni produktet në kushte reale saloni. Ne rafinojmë përzgjedhjen nëse nevojitet, bazuar në reagimin tuaj dhe rezultatet nga teknikët tuaj."
+      },
+      "packaging": {
+        "title": "4. Paketim dhe dizajn",
+        "text": "Ju mund të përdorni opsionet tona ekzistuese të paketimit ose të punoni me ne në zgjidhje të personalizuara. Ne ofrojmë specifikime teknike për dizajnerin tuaj që artwork të përshtatet saktë."
+      },
+      "compliance": {
+        "title": "5. Dokumentacion dhe pajtueshmëri",
+        "text": "Për projektet e BE, ne mbështesim përgatitjen e PIF dhe njoftimet CPNP në bashkëpunim me vlerësuesin tuaj të caktuar të sigurisë dhe personin përgjegjës."
+      },
+      "production": {
+        "title": "6. Prodhim dhe dorëzim",
+        "text": "Pasi gjithçka të miratohet, ne planifikojmë prodhimin, mbushjen dhe paketimin sipas MOQ-ve dhe afateve të dorëzimit të rëna dakord, dhe organizojmë dërgesën."
+      }
+    }
+  },
+  "moqs": {
+    "title": "Sasitë minimale të porosisë dhe afatet e dorëzimit",
+    "text": "MOQ-të dhe afatet kohore varen nga lloji i produktit, zgjedhja e paketimit dhe nëse po përdorim nuanca ekzistuese ose po krijojmë diçka të re. Gjatë konsultimit të parë do t'ju japim numra dhe afate kohore realiste.",
+    "bullets": [
+      "MOQ të ndryshme për shishe, kavanoza dhe sasi të mëdha",
+      "Afate standarde dorëzimi për porosi të përsëritura pas konfigurimit të parë",
+      "Komunikim i qartë nëse diçka ndikon në oraret e prodhimit"
+    ]
+  },
+  "whoIsFor": {
+    "title": "Për kë janë ideale shërbimet tona të markës private",
+    "items": {
+      "distributors": {
+        "title": "Distributorë dhe shumicë",
+        "text": "Biznese që tashmë furnizojnë sallone ose shitës me pakicë dhe duan një markë profesionale të brendshme."
+      },
+      "brands": {
+        "title": "Marka ekzistuese",
+        "text": "Marka që kanë nevojë të përmirësojnë formulat, të zgjerojnë gamën e tyre ose të shtojnë linja produktesh vetëm për profesionistë."
+      },
+      "educators": {
+        "title": "Akademi trajnimi",
+        "text": "Edukatorë që duan linja produktesh që mbështesin mësimdhënien e tyre dhe janë konsistente për studentët dhe salonet."
+      }
+    }
+  },
+  "ctaSection": {
+    "title": "Gati të flisni për markën tuaj?",
+    "text": "Na tregoni pak për biznesin tuaj, tregun tuaj dhe çfarë doni të arrini. Ne do të kthehemi me një propozim realist dhe të sinqertë – jo thjesht një listë çmimesh të përgjithshme.",
+    "ctaPrimary": "Na dërgoni detajet e projektit tuaj",
+    "ctaSecondary": "Rezervoni një takim online"
+  }
+}

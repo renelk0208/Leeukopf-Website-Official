@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "Systèmes gel marque privée pour les marques sérieuses",
+    "subtitle": "Nous développons, fabriquons et remplissons des systèmes gel professionnels sous votre propre nom de marque, avec un support technique et réglementaire complet.",
+    "ctaPrimary": "Démarrer un projet marque privée",
+    "ctaSecondary": "Demander plus d'informations"
+  },
+  "intro": {
+    "title": "Plus qu'un logo sur un flacon",
+    "text": "Lancer ou développer une marque professionnelle d'ongles nécessite plus qu'un bel emballage. Vous avez besoin de formules fiables, d'une documentation claire et d'un partenaire de fabrication qui comprend votre marché. C'est là que nous intervenons."
+  },
+  "benefits": {
+    "title": "Ce que vous gagnez avec nos services marque privée",
+    "items": {
+      "expertise": {
+        "title": "Expertise en laboratoire et fabrication",
+        "text": "Formules créées et produites dans notre propre laboratoire et usine, avec une expérience sur différents marchés et types de services."
+      },
+      "flexibility": {
+        "title": "Construction flexible de gamme",
+        "text": "Commencez par une sélection de base ciblée ou construisez un catalogue complet. Nous vous aidons à choisir des systèmes et des teintes adaptés à votre positionnement."
+      },
+      "compliance": {
+        "title": "Support réglementaire",
+        "text": "Conseils sur la conformité cosmétique UE, la documentation et l'enregistrement pour mettre vos produits sur le marché en toute confiance."
+      },
+      "partnership": {
+        "title": "Partenariat à long terme",
+        "text": "Nous voyons la marque privée comme une collaboration continue – du premier lancement aux mises à jour futures, collections saisonnières et reformulations."
+      }
+    }
+  },
+  "process": {
+    "title": "Comment fonctionne le processus marque privée",
+    "steps": {
+      "consultation": {
+        "title": "1. Consultation initiale",
+        "text": "Nous discutons de votre marque, de vos marchés cibles, de vos types de services et de votre positionnement prix. Ensemble, nous définissons ce dont vous avez vraiment besoin de votre ligne de produits."
+      },
+      "selection": {
+        "title": "2. Sélection de produits et teintes",
+        "text": "En fonction de vos objectifs, nous suggérons des systèmes adaptés (vernis gel, bases, builders, etc.) et préparons une gamme de teintes proposée ou des collections pour l'échantillonnage."
+      },
+      "sampling": {
+        "title": "3. Échantillonnage et tests",
+        "text": "Vous testez les produits dans des conditions réelles de salon. Nous affinons la sélection si nécessaire, en fonction de vos retours et des résultats de vos techniciens."
+      },
+      "packaging": {
+        "title": "4. Emballage et design",
+        "text": "Vous pouvez utiliser nos options d'emballage existantes ou travailler avec nous sur des solutions personnalisées. Nous fournissons des spécifications techniques à votre designer pour que le visuel s'adapte correctement."
+      },
+      "compliance": {
+        "title": "5. Documentation et conformité",
+        "text": "Pour les projets UE, nous supportons la préparation du DIP et les notifications CPNP en coopération avec votre évaluateur de sécurité désigné et la personne responsable."
+      },
+      "production": {
+        "title": "6. Production et livraison",
+        "text": "Une fois tout approuvé, nous planifions la production, le remplissage et le conditionnement selon les MOQ et délais convenus, et organisons l'expédition."
+      }
+    }
+  },
+  "moqs": {
+    "title": "Quantités minimales de commande et délais",
+    "text": "Les MOQ et les délais dépendent du type de produit, du choix d'emballage et si nous utilisons des teintes existantes ou créons quelque chose de nouveau. Lors de la première consultation, nous vous donnerons des chiffres et des délais réalistes.",
+    "bullets": [
+      "MOQ différents pour flacons, pots et vrac",
+      "Délais standard pour les commandes récurrentes après la première configuration",
+      "Communication claire si quelque chose affecte les plannings de production"
+    ]
+  },
+  "whoIsFor": {
+    "title": "Pour qui nos services marque privée sont-ils idéaux",
+    "items": {
+      "distributors": {
+        "title": "Distributeurs et grossistes",
+        "text": "Entreprises qui fournissent déjà des salons ou des détaillants et veulent une marque professionnelle propre."
+      },
+      "brands": {
+        "title": "Marques existantes",
+        "text": "Marques qui ont besoin d'améliorer leurs formules, d'étendre leur gamme ou d'ajouter des lignes de produits réservées aux professionnels."
+      },
+      "educators": {
+        "title": "Académies de formation",
+        "text": "Éducateurs qui veulent des lignes de produits qui soutiennent leur enseignement et sont cohérentes pour les étudiants et les salons."
+      }
+    }
+  },
+  "ctaSection": {
+    "title": "Prêt à parler de votre propre marque ?",
+    "text": "Parlez-nous un peu de votre entreprise, de votre marché et de ce que vous voulez réaliser. Nous reviendrons avec une proposition réaliste et honnête – pas seulement une liste de prix générique.",
+    "ctaPrimary": "Envoyez-nous les détails de votre projet",
+    "ctaSecondary": "Réserver une réunion en ligne"
+  }
+}

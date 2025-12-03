@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "Sistemi gel private label per marchi seri",
+    "subtitle": "Sviluppiamo, produciamo e riempiamo sistemi gel professionali con il tuo nome del marchio, con supporto tecnico e normativo completo.",
+    "ctaPrimary": "Avvia un progetto private label",
+    "ctaSecondary": "Richiedi maggiori informazioni"
+  },
+  "intro": {
+    "title": "Più di un logo su una bottiglia",
+    "text": "Lanciare o espandere un marchio professionale di unghie richiede più di un bel packaging. Hai bisogno di formule affidabili, documentazione chiara e un partner produttivo che comprenda il tuo mercato. Ecco dove entriamo noi."
+  },
+  "benefits": {
+    "title": "Cosa guadagni con i nostri servizi private label",
+    "items": {
+      "expertise": {
+        "title": "Competenza di laboratorio e produzione",
+        "text": "Formule create e prodotte nel nostro laboratorio e stabilimento, con esperienza su diversi mercati e tipi di servizi."
+      },
+      "flexibility": {
+        "title": "Costruzione flessibile della gamma",
+        "text": "Inizia con una selezione base focalizzata o costruisci un catalogo completo. Ti aiutiamo a scegliere sistemi e sfumature adatti al tuo posizionamento."
+      },
+      "compliance": {
+        "title": "Supporto normativo",
+        "text": "Guida sulla conformità cosmetica UE, documentazione e registrazione per portare i prodotti sul mercato con fiducia."
+      },
+      "partnership": {
+        "title": "Partnership a lungo termine",
+        "text": "Vediamo il private label come una collaborazione continua – dal primo lancio a futuri aggiornamenti, collezioni stagionali e riformulazioni."
+      }
+    }
+  },
+  "process": {
+    "title": "Come funziona il processo private label",
+    "steps": {
+      "consultation": {
+        "title": "1. Consultazione iniziale",
+        "text": "Discutiamo del tuo marchio, mercati target, tipi di servizi e posizionamento prezzo. Insieme definiamo cosa ti serve davvero dalla tua linea di prodotti."
+      },
+      "selection": {
+        "title": "2. Selezione prodotti e sfumature",
+        "text": "In base ai tuoi obiettivi, suggeriamo sistemi adatti (smalto gel, basi, builder, ecc.) e prepariamo una gamma di sfumature proposta o collezioni per la campionatura."
+      },
+      "sampling": {
+        "title": "3. Campionatura e test",
+        "text": "Testi i prodotti in condizioni reali di salone. Affiniamo la selezione se necessario, in base al tuo feedback e ai risultati dei tuoi tecnici."
+      },
+      "packaging": {
+        "title": "4. Packaging e design",
+        "text": "Puoi usare le nostre opzioni di packaging esistenti o lavorare con noi su soluzioni personalizzate. Forniamo specifiche tecniche al tuo designer per adattare correttamente l'artwork."
+      },
+      "compliance": {
+        "title": "5. Documentazione e conformità",
+        "text": "Per i progetti UE, supportiamo la preparazione del PIF e le notifiche CPNP in collaborazione con il tuo valutatore della sicurezza designato e la persona responsabile."
+      },
+      "production": {
+        "title": "6. Produzione e consegna",
+        "text": "Una volta approvato tutto, pianifichiamo produzione, riempimento e confezionamento secondo i MOQ e i tempi di consegna concordati, e organizziamo la spedizione."
+      }
+    }
+  },
+  "moqs": {
+    "title": "Quantità minime d'ordine e tempi di consegna",
+    "text": "MOQ e tempistiche dipendono dal tipo di prodotto, scelta del packaging e se usiamo sfumature esistenti o creiamo qualcosa di nuovo. Durante la prima consultazione ti daremo numeri e tempistiche realistiche.",
+    "bullets": [
+      "MOQ diversi per bottiglie, vasetti e sfuso",
+      "Tempi di consegna standard per ordini ripetuti dopo la prima configurazione",
+      "Comunicazione chiara se qualcosa influisce sui programmi di produzione"
+    ]
+  },
+  "whoIsFor": {
+    "title": "Per chi sono ideali i nostri servizi private label",
+    "items": {
+      "distributors": {
+        "title": "Distributori e grossisti",
+        "text": "Aziende che già forniscono saloni o rivenditori e vogliono un marchio professionale proprio."
+      },
+      "brands": {
+        "title": "Marchi esistenti",
+        "text": "Marchi che devono aggiornare formule, espandere la gamma o aggiungere linee di prodotti solo per professionisti."
+      },
+      "educators": {
+        "title": "Accademie di formazione",
+        "text": "Educatori che vogliono linee di prodotti che supportino il loro insegnamento e siano coerenti per studenti e saloni."
+      }
+    }
+  },
+  "ctaSection": {
+    "title": "Pronto a parlare del tuo marchio?",
+    "text": "Raccontaci un po' del tuo business, del tuo mercato e cosa vuoi raggiungere. Torneremo con una proposta realistica e onesta – non solo un listino prezzi generico.",
+    "ctaPrimary": "Inviaci i dettagli del tuo progetto",
+    "ctaSecondary": "Prenota un meeting online"
+  }
+}
