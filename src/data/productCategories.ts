@@ -121,9 +121,16 @@ export const productCategories: ProductCategory[] = [
     group: 'Tops & Bases',
   },
   {
+    id: 'classic-top-coats',
+    key: 'classic-top-coats',
+    displayName: 'Classic Top Coats',
+    imagePath: '/img/products/tops-and-bases/tops-bases_category_1.jpg',
+    group: 'Tops & Bases',
+  },
+  {
     id: 'effect-tops',
     key: 'effect-tops',
-    displayName: 'Effect Tops',
+    displayName: 'Effect Top Coats',
     imagePath: '/img/products/tops-and-bases/tops/Effect Tops/effect-tops-category.jpg',
     group: 'Tops & Bases',
   },
