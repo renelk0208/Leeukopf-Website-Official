@@ -11,34 +11,34 @@
 export const enabledCategories = {
   // Main product categories
   gelPolish: true,
-  builderAndStructureGels: false, // Enable when ready
-  topAndBases: false, // Enable when ready
-  polygelAcrygel: false, // Enable when ready
+  builderAndStructureGels: true, // Enabled - images available
+  topAndBases: true, // Enabled - images available
+  polygelAcrygel: true, // Enabled - images available
   acrylicSystems: false, // Enable when ready
   liquidsAndSolutions: false, // Enable when ready
-  nailArt: false, // Enable when ready
+  nailArt: true, // Enabled - images available
   accessories: false, // Enable when ready
 };
 
 export const enabledSubcategories = {
   // Builder & Structure Gels subcategories
   builderGels: {
-    threePhase: false,
-    threeInOne: false,
-    premiumFiberGlass: false,
+    threePhase: true, // Enabled - images available
+    threeInOne: true, // Enabled - images available
+    premiumFiberGlass: true, // Enabled - images available
   },
   
   // Top & Bases subcategories
   topCoats: {
-    enabled: false, // Main Top Coats page
-    standard: false,
-    effects: false,
+    enabled: true, // Main Top Coats page - enabled
+    standard: true, // Enabled - images available
+    effects: true, // Enabled - images available
   },
   baseCoats: {
-    enabled: false, // Main Base Coats page
-    classic: false,
-    rubberBase: false,
-    superiorBase: false,
+    enabled: true, // Main Base Coats page - enabled
+    classic: true, // Enabled - images available
+    rubberBase: true, // Enabled - images available
+    superiorBase: true, // Enabled - images available
   },
 };
 
