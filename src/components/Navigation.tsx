@@ -35,13 +35,13 @@ const SocialLinks = () => {
           href={social.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative flex items-center justify-center w-9 h-9 bg-gray-100 hover:bg-blue-50 rounded-lg transition-all duration-200 hover:scale-105"
+          className="group relative flex items-center justify-center w-9 h-9 bg-gray-100 hover:bg-primary-50 rounded-lg transition-all duration-200 hover:scale-105"
           aria-label={social.name}
         >
-          <span className="text-gray-600 group-hover:text-blue-700 transition-colors">
+          <span className="text-[#444444] group-hover:text-[#A3005A] transition-colors">
             {social.icon}
           </span>
-          <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+          <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-[#444444] text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
             {social.name}
           </span>
         </a>
@@ -97,10 +97,10 @@ export default function Navigation() {
                 <li key={item.path} className="nav-item">
                   <Link
                     to={item.path}
-                    className={`block px-1.5 py-1.5 text-[11px] 2xl:text-xs font-medium transition-colors whitespace-nowrap ${
+                    className={`block px-3 py-2 md:text-base lg:text-lg font-medium transition-colors whitespace-nowrap ${
                       isActive(item.path)
-                        ? 'text-[#1E90FF] border-b-2 border-[#1E90FF]'
-                        : 'text-gray-700 hover:text-[#1E90FF]'
+                        ? 'text-[#A3005A] border-b-2 border-[#A3005A]'
+                        : 'text-[#444444] hover:text-[#A3005A]'
                     }`}
                   >
                     {item.label}
@@ -117,7 +117,7 @@ export default function Navigation() {
             <div className="xl:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-700 hover:text-[#1E90FF] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="text-[#444444] hover:text-[#A3005A] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
                 aria-expanded={isOpen}
               >
@@ -139,8 +139,8 @@ export default function Navigation() {
                 onClick={() => setIsOpen(false)}
                 className={`block w-full text-left px-3 py-3 rounded-md transition-colors font-medium text-sm ${
                   isActive(item.path)
-                    ? 'text-[#1E90FF] bg-blue-50'
-                    : 'text-gray-700 hover:text-[#1E90FF] hover:bg-gray-50'
+                    ? 'text-[#A3005A] bg-primary-50'
+                    : 'text-[#444444] hover:text-[#A3005A] hover:bg-gray-50'
                 }`}
               >
                 {item.label}

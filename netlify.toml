@@ -15,6 +15,12 @@
   to = "/.netlify/functions/instagram-feed"
   status = 200
 
+# Redirect for client registration email function
+[[redirects]]
+  from = "/api/client-registration-email"
+  to = "/.netlify/functions/send-client-registration-email"
+  status = 200
+
 # SPA redirect - serve index.html for all routes
 [[redirects]]
   from = "/*"
