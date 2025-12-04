@@ -171,24 +171,28 @@ const handler: Handler = async (event: HandlerEvent) => {
 
   try {
     // Send internal notification email
+    console.log('Sending internal notification email to info@leeukopf.com');
     const internalEmailBody = generateInternalEmailBody(formData);
     
-    await resend.emails.send({
+    const internalEmailResult = await resend.emails.send({
       from: 'Leeukopf Website <noreply@leeukopf.com>',
       to: 'info@leeukopf.com',
       subject: 'New Client Registration Form Submission',
       html: internalEmailBody,
     });
+    console.log('Internal email sent successfully:', internalEmailResult.id);
 
     // Send auto-reply to client
+    console.log('Sending auto-reply email to:', formData.email);
     const autoReplyBody = generateAutoReplyBody();
     
-    await resend.emails.send({
+    const autoReplyResult = await resend.emails.send({
       from: 'Leeukopf Laboratories <info@leeukopf.com>',
       to: formData.email,
       subject: 'Thank you for completing the client registration form',
       html: autoReplyBody,
     });
+    console.log('Auto-reply email sent successfully:', autoReplyResult.id);
 
     return {
       statusCode: 200,
@@ -197,6 +201,11 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   } catch (err) {
     console.error('Error sending emails:', err);
+    console.error('Error details:', {
+      message: err instanceof Error ? err.message : 'Unknown error',
+      name: err instanceof Error ? err.name : 'Unknown',
+      stack: err instanceof Error ? err.stack : undefined
+    });
     
     return {
       statusCode: 500,
