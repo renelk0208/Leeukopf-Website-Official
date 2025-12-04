@@ -28,6 +28,7 @@ import AcrylicSystemsPage from './pages/products/AcrylicSystemsPage';
 import LiquidsAndSolutionsPage from './pages/products/LiquidsAndSolutionsPage';
 import NailArtPage from './pages/products/NailArtPage';
 import AccessoriesPage from './pages/products/AccessoriesPage';
+import CategoryGridTestPage from './pages/products/CategoryGridTestPage';
 
 // Builder Gels Subcategories
 import ThreePhasePage from './pages/products/builder-gels/ThreePhasePage';
@@ -71,6 +72,7 @@ function App() {
         {/* Products */}
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/gel-polish" element={<GelPolishPage />} />
+        <Route path="/products/category-grid-test" element={<CategoryGridTestPage />} />
         
         {/* Builder & Structure Gels */}
         <Route path="/products/builder-and-structure-gels" element={<BuilderAndStructureGelsPage />} />
