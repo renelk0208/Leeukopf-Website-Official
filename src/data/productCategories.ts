@@ -117,7 +117,7 @@ export const productCategories: ProductCategory[] = [
     id: 'rubber-bases',
     key: 'rubber-bases',
     displayName: 'Rubber Bases',
-    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber%20bases%20category%20image.jpg',
+    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber bases category image.jpg',
     group: 'Tops & Bases',
   },
   {

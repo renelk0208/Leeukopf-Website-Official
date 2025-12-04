@@ -1,70 +1,68 @@
-## Description
+# Pull Request Summary
 
 <!-- Provide a brief description of your changes -->
 
-## Type of Change
+# Files & Areas Affected
 
-<!-- Please check the one that applies to this PR using "x" -->
-
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
-- [ ] Code refactoring
-- [ ] Performance improvement
-- [ ] Style/UI update
-
-## Related Issue
-
-<!-- Link to the issue this PR addresses, if applicable -->
-<!-- Example: Closes #123 or Fixes #456 -->
-
-Closes #
-
-## Changes Made
-
-<!-- List the specific changes you made -->
+<!-- List the key files or functional areas modified -->
 
 - 
 - 
 - 
 
-## Screenshots
+# What Was Done
 
-<!-- If your changes include UI updates, please add screenshots -->
-<!-- Delete this section if not applicable -->
+### ✔ Functional Changes
 
-### Before
-<!-- Screenshot before your changes -->
+<!-- List functional or behavioral changes -->
 
-### After
-<!-- Screenshot after your changes -->
+- 
+- 
 
-## Testing Checklist
+### ✔ Data / Mapping Updates
 
-<!-- Check all that apply -->
+<!-- List any data model, category, or mapping changes -->
 
-- [ ] I have tested my changes locally
-- [ ] The code builds without errors (`npm run build`)
-- [ ] The code passes linting (`npm run lint`)
-- [ ] The code passes type checking (`npm run typecheck`)
-- [ ] I have tested on multiple browsers (Chrome, Firefox, Safari)
-- [ ] I have tested on mobile/tablet devices
-- [ ] No console errors appear
-- [ ] Existing functionality still works correctly
+- 
+- 
 
-## Additional Notes
+### ✔ UI / Layout Adjustments
+
+<!-- List any visual or layout changes -->
+
+- 
+- 
+
+# Verification Checklist
+
+### 🔍 Image & Category Validation
+
+- [ ] All updated image paths exist in `public/img/...`
+- [ ] Category groups filter correctly
+- [ ] No missing images in dev or production
+
+### 🧪 Build & Lint
+
+- [ ] Build passes
+- [ ] Lint passes for modified files
+
+**Note:** Pre-existing lint errors in unrelated files (e.g., AdminDashboard.tsx, ClientRegistrationPage.tsx) are outside the scope of this PR.
+
+### 🌐 Visual Verification
+
+- [ ] Category grids display correctly
+- [ ] Category page images load correctly
+
+# Merge Readiness
+
+<!-- You MUST choose one of the following: -->
+
+- [ ] This PR is ready to be merged once checks pass.
+- [ ] This PR is not ready to merge yet. Pending:
+  - 
+  - 
+
+# Additional Notes
 
 <!-- Any additional information reviewers should know -->
 <!-- E.g., known issues, future improvements, dependencies -->
-
-## Checklist
-
-<!-- Check all that apply before submitting -->
-
-- [ ] I have read the [CONTRIBUTING](../CONTRIBUTING.md) guidelines
-- [ ] My code follows the project's coding standards
-- [ ] I have updated the documentation (if applicable)
-- [ ] My changes generate no new warnings or errors
-- [ ] I have added comments to complex code sections
-- [ ] My commit messages are clear and descriptive
