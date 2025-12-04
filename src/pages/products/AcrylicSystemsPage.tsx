@@ -112,7 +112,7 @@ export default function AcrylicSystemsPage() {
           <span>Important: Acrylic Curing</span>
         </h3>
         <p className="text-sm text-amber-800 font-light">
-          Acrylic systems cure by air polymerization, NOT by UV or LED lamp. Do not place acrylic enhancements 
+          Acrylic systems cure by air polymerisation, NOT by UV or LED lamp. Do not place acrylic enhancements 
           under gel lamps. Allow proper air-dry time according to the system type (standard or fast-set) for 
           optimal strength and durability.
         </p>

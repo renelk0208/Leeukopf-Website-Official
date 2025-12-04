@@ -59,6 +59,6 @@ export function isSubcategoryEnabled(
   const parentConfig = enabledSubcategories[parent];
   if (!parentConfig) return false;
   
-  // @ts-expect-error - Dynamic subcategory access
-  return parentConfig[subcategory] === true;
+  // Type-safe dynamic subcategory access
+  return (parentConfig as Record<string, boolean>)[subcategory] === true;
 }

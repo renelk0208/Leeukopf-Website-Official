@@ -104,7 +104,7 @@ export default function EffectsTopCoatsPage() {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Specialty Finishes</h3>
             <p className="text-sm text-gray-600 font-light leading-relaxed mb-3">
-              Additional effect options including color-shifting, holographic and iridescent finishes for 
+              Additional effect options including colour-shifting, holographic and iridescent finishes for 
               maximum creative flexibility.
             </p>
             <ul className="space-y-2 text-sm text-gray-600 font-light">
