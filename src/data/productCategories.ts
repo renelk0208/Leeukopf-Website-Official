@@ -57,7 +57,7 @@ export const productCategories: ProductCategory[] = [
     id: 'solid-cream-collection',
     key: 'solid-cream-collection',
     displayName: 'Solid Cream Collection',
-    imagePath: '/img/products/gel_polishes/Solid Cream Collection/solid-cream-category image.jpg',
+    imagePath: '/img/products/gel_polishes/Solid%20Cream%20Collection/solid-cream-category%20image.jpg',
     group: 'Gel Polish',
   },
   {
@@ -117,7 +117,7 @@ export const productCategories: ProductCategory[] = [
     id: 'rubber-bases',
     key: 'rubber-bases',
     displayName: 'Rubber Bases',
-    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber bases category image.jpg',
+    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber%20bases%20category%20image.jpg',
     group: 'Primers & Liquids',
   },
   {
