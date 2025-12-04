@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
-import GelPolishCategoryGallery from '../components/GelPolishCategoryGallery';
 
 export default function ProductsPage() {
   // Product range sections with their English content
@@ -100,9 +99,6 @@ export default function ProductsPage() {
           We don't simply fill bottles. We design full, compatible systems – gel polishes, bases, tops, builders and accessories – that work together for long-lasting, salon-proof results.
         </p>
       </div>
-
-      {/* Gel Polish Categories Gallery */}
-      <GelPolishCategoryGallery />
 
       {/* Product Categories Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
