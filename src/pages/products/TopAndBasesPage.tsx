@@ -30,7 +30,7 @@ export default function TopAndBasesPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/tops-bases_category_1.jpg"
+            src="/img/products/tops-and-bases/tops-bases_category_1.jpg"
             alt="Top & Bases"
             className="w-full h-auto object-cover"
             loading="lazy"

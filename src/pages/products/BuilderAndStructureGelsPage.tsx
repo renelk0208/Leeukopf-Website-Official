@@ -40,7 +40,7 @@ export default function BuilderAndStructureGelsPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/builder_gels_category_2.jpg"
+            src="/img/products/builder-systems/builder_gels_category_2.jpg"
             alt="Builder & Structure Gels"
             className="w-full h-auto object-cover"
             loading="lazy"

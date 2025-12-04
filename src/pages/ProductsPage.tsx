@@ -115,7 +115,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/gel_polish_category_1.jpg"
+                  src="/img/products/gel_polishes/gel_polish_category_1.jpg"
                   alt="Gel Polish"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
@@ -140,7 +140,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/builder_gels_category_2.jpg"
+                  src="/img/products/builder-systems/builder_gels_category_2.jpg"
                   alt="Builder & Structure Gels"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
@@ -165,7 +165,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/tops-bases_category_1.jpg"
+                  src="/img/products/tops-and-bases/tops-bases_category_1.jpg"
                   alt="Top & Bases"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
@@ -190,7 +190,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/acrygel_category_1.jpg"
+                  src="/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg"
                   alt="Polygel / AcryGel"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
