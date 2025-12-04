@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
+import { isCategoryEnabled } from '../config/productCategories';
 
 export default function ProductsPage() {
   // Product range sections with their English content
@@ -107,127 +108,204 @@ export default function ProductsPage() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Gel Polish */}
-          <Link
-            to="/products/gel-polish"
-            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-              <img
-                src="/img/products/gel_polish_category_1.jpg"
-                alt="Gel Polish Systems"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Gel Polish Systems
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                High-pigment, self-levelling UV/LED gel polishes in hundreds of shades
-              </p>
-            </div>
-          </Link>
+          {isCategoryEnabled('gelPolish') && (
+            <Link
+              to="/products/gel-polish"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src="/img/products/gel_polish_category_1.jpg"
+                  alt="Gel Polish"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Gel Polish
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  High-pigment, self-levelling UV/LED gel polishes with HEMA-free and TPO-free options
+                </p>
+              </div>
+            </Link>
+          )}
 
-          {/* Builder Gels */}
-          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-              <img
-                src="/img/products/builder_gels_category_2.jpg"
-                alt="Builder & Structure Gels"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Builder & Structure Gels
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                Builder, cover and strengthening gels for overlays, extensions and structured manicures
-              </p>
-            </div>
-          </div>
+          {/* Builder & Structure Gels */}
+          {isCategoryEnabled('builderAndStructureGels') && (
+            <Link
+              to="/products/builder-and-structure-gels"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src="/img/products/builder_gels_category_2.jpg"
+                  alt="Builder & Structure Gels"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Builder & Structure Gels
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  Strengthening systems for shaping, extending and reinforcing — HEMA-free and TPO-free
+                </p>
+              </div>
+            </Link>
+          )}
 
-          {/* Tops, Bases & Primers */}
-          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-              <img
-                src="/img/products/tops-bases_category_1.jpg"
-                alt="Bases, Tops & Primers"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Bases, Tops & Primers
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                Adhesion-optimised bases, rubber bases, gloss and matte top coats, and supportive primers
-              </p>
-            </div>
-          </div>
+          {/* Top & Bases */}
+          {isCategoryEnabled('topAndBases') && (
+            <Link
+              to="/products/top-and-bases"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src="/img/products/tops-bases_category_1.jpg"
+                  alt="Top & Bases"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Top & Bases
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  Essential prep and finishing formulas — all safely HEMA-free and TPO-free
+                </p>
+              </div>
+            </Link>
+          )}
 
-          {/* Acrygel */}
-          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-              <img
-                src="/img/products/acrygel_category_1.jpg"
-                alt="Acrygel Systems"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Acrygel Systems
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                Hybrid systems combining the best of acrylic and gel for versatile applications
-              </p>
-            </div>
-          </div>
+          {/* Polygel / AcryGel */}
+          {isCategoryEnabled('polygelAcrygel') && (
+            <Link
+              to="/products/polygel-acrygel"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src="/img/products/acrygel_category_1.jpg"
+                  alt="Polygel / AcryGel"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Polygel / AcryGel
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free
+                </p>
+              </div>
+            </Link>
+          )}
 
-          {/* Nail Art & Accessories */}
-          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-              <img
-                src="/img/products/nail-art-category.jpg"
-                alt="Nail Art & Accessories"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Nail Art & Accessories
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                Speciality products for nail art and advanced services, including glitter, shimmer and effects
-              </p>
-            </div>
-          </div>
-
-          {/* Liquids & Prep Products */}
-          <div className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                <div className="text-center p-4">
-                  <p className="text-lg font-semibold text-gray-700">Liquids & Prep</p>
-                  <p className="text-sm text-gray-500 mt-2">Cleanser and remover liquids</p>
+          {/* Acrylic Systems */}
+          {isCategoryEnabled('acrylicSystems') && (
+            <Link
+              to="/products/acrylic-systems"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-50 to-purple-100">
+                  <div className="text-center p-4">
+                    <p className="text-lg font-semibold text-gray-700">Acrylic Systems</p>
+                    <p className="text-sm text-gray-500 mt-2">High-performance powders & liquids</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Liquids & Prep Products
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                Complementary liquids and treatments to complete your system and work efficiently
-              </p>
-            </div>
-          </div>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Acrylic Systems
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  High-performance powders and liquids — always free from HEMA and TPO
+                </p>
+              </div>
+            </Link>
+          )}
+
+          {/* Liquids & Solutions */}
+          {isCategoryEnabled('liquidsAndSolutions') && (
+            <Link
+              to="/products/liquids-and-solutions"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+                  <div className="text-center p-4">
+                    <p className="text-lg font-semibold text-gray-700">Liquids & Solutions</p>
+                    <p className="text-sm text-gray-500 mt-2">Cleanser and prep solutions</p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Liquids & Solutions
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  Professional prep, cleanse and removal solutions
+                </p>
+              </div>
+            </Link>
+          )}
+
+          {/* Nail Art */}
+          {isCategoryEnabled('nailArt') && (
+            <Link
+              to="/products/nail-art"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src="/img/products/nail-art-category.jpg"
+                  alt="Nail Art"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Nail Art
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  Speciality products for nail art and advanced creative services
+                </p>
+              </div>
+            </Link>
+          )}
+
+          {/* Accessories */}
+          {isCategoryEnabled('accessories') && (
+            <Link
+              to="/products/accessories"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-50 to-pink-100">
+                  <div className="text-center p-4">
+                    <p className="text-lg font-semibold text-gray-700">Accessories</p>
+                    <p className="text-sm text-gray-500 mt-2">Professional tools & supplies</p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Accessories
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  Essential accessories to complete your professional setup
+                </p>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
 
