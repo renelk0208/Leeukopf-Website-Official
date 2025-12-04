@@ -22,63 +22,63 @@ export const productCategories: ProductCategory[] = [
     id: 'glitters-collection',
     key: 'glitters-collection',
     displayName: 'Glitters Collection',
-    imagePath: '/img/products/gel_polishes/gel_polish_category_1.jpg',
+    imagePath: '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
     group: 'Gel Polish',
   },
   {
     id: 'green-collection',
     key: 'green-collection',
     displayName: 'Green Collection',
-    imagePath: '/img/products/gel_polishes/gel_polish_category_1.jpg',
+    imagePath: '/img/products/gel_polishes/Green Collection/GRN_warm_nude_gel_polish_1.jpg',
     group: 'Gel Polish',
   },
   {
     id: 'pastel-collection',
     key: 'pastel-collection',
     displayName: 'Pastel Collection',
-    imagePath: '/img/products/gel_polishes/gel_polish_category_1.jpg',
+    imagePath: '/img/products/gel_polishes/Pastel Collectin/PAN_pastel_color_gel_polish_1.jpg',
     group: 'Gel Polish',
   },
   {
     id: 'rose-nude-collection',
     key: 'rose-nude-collection',
     displayName: 'Rose Nude Collection',
-    imagePath: '/img/products/gel_polishes/gel_polish_category_1.jpg',
+    imagePath: '/img/products/gel_polishes/Rose Nude Collection/RSN_warm_nude_gel_polish_1.jpg',
     group: 'Gel Polish',
   },
   {
     id: 'solid-colour-collection',
     key: 'solid-colour-collection',
     displayName: 'Solid Colour Collection',
-    imagePath: '/img/products/gel_polishes/gel_polish_category_1.jpg',
+    imagePath: '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg',
     group: 'Gel Polish',
   },
   {
     id: 'solid-cream-collection',
     key: 'solid-cream-collection',
     displayName: 'Solid Cream Collection',
-    imagePath: '/img/products/gel_polishes/Solid%20Cream%20Collection/solid-cream-category%20image.jpg',
+    imagePath: '/img/products/gel_polishes/Solid Cream Collection/solid-cream-category image.jpg',
     group: 'Gel Polish',
   },
   {
     id: 'transparent-color-gel-polish',
     key: 'transparent-color-gel-polish',
     displayName: 'Transparent Color Gel Polish',
-    imagePath: '/img/products/gel_polishes/gel_polish_category_1.jpg',
+    imagePath: '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',
     group: 'Gel Polish',
   },
   {
     id: 'warm-nudes-collection',
     key: 'warm-nudes-collection',
     displayName: 'Warm Nudes Collection',
-    imagePath: '/img/products/gel_polishes/gel_polish_category_1.jpg',
+    imagePath: '/img/products/gel_polishes/Warm Nudes Collection/warm-nude-colection (1).jpg',
     group: 'Gel Polish',
   },
   {
     id: 'cat-eye-collection',
     key: 'cat-eye-collection',
     displayName: 'Cat Eye Collection',
-    imagePath: '/img/products/gel_polishes/gel_polish_category_1.jpg',
+    imagePath: '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg',
     group: 'Gel Polish',
   },
 
@@ -117,7 +117,7 @@ export const productCategories: ProductCategory[] = [
     id: 'rubber-bases',
     key: 'rubber-bases',
     displayName: 'Rubber Bases',
-    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber%20bases%20category%20image.jpg',
+    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber bases category image.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -138,21 +138,32 @@ export const productCategories: ProductCategory[] = [
     id: 'five-in-one',
     key: 'five-in-one',
     displayName: '5-in-1 System',
-    imagePath: '/img/products/tops-and-bases/tops-bases_category_1.jpg',
+    imagePath: '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
     group: 'Tops & Bases',
   },
   {
     id: 'brush-on-builder',
     key: 'brush-on-builder',
     displayName: 'Brush-On Builder',
-    imagePath: '/img/products/tops-and-bases/tops-bases_category_1.jpg',
+    imagePath: '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
     group: 'Tops & Bases',
   },
 
   // Primers & Liquids Categories
-  // Note: No dedicated images available yet for primers and liquids.
-  // These will be added when product images become available.
-  // Until then, this group will show an empty state.
+  {
+    id: 'primers-with-acid',
+    key: 'primers-with-acid',
+    displayName: 'Primers with Acid',
+    imagePath: '/img/products/primers-and-liquids/With Acid/primer-with-acid-image.jpeg',
+    group: 'Primers & Liquids',
+  },
+  {
+    id: 'primers-liquids',
+    key: 'primers-liquids',
+    displayName: 'Primers & Liquids',
+    imagePath: '/img/products/primers-and-liquids/primer-liquds-category-image.jpeg',
+    group: 'Primers & Liquids',
+  },
 
   // Specialty/Nail Art
   {
@@ -160,7 +171,7 @@ export const productCategories: ProductCategory[] = [
     key: 'nail-art',
     displayName: 'Nail Art',
     imagePath: '/img/products/nail-art/nail-art-category.jpg',
-    group: 'Accessories',
+    group: 'Nail Art',
   },
 
   // Polygel/AcryGel
