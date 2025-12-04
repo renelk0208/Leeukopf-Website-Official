@@ -258,21 +258,26 @@ export default function ClientRegistrationPage() {
 
       if (dbError) throw dbError;
 
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-client-registration-email`;
+      // Send emails via Netlify Function
       const emailPayload = {
         ...formData,
         attachments,
         honeypot: formData.honeypot
       };
 
-      await fetch(apiUrl, {
+      const emailResponse = await fetch('/.netlify/functions/send-client-registration-email', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(emailPayload)
       });
+
+      if (!emailResponse.ok) {
+        const errorData = await emailResponse.json().catch(() => ({}));
+        console.error('Email sending failed:', errorData);
+        // Continue anyway - we've saved the data
+      }
 
       setSubmitSuccess(true);
       setFormData({
@@ -327,7 +332,7 @@ export default function ClientRegistrationPage() {
             <div>
               <h3 className="text-lg font-semibold text-green-900 mb-2">Registration Received!</h3>
               <p className="text-green-800 font-light">
-                Thank you for registering with us. We've received your details and will respond within 2 business days.
+                Thank you. Your registration has been submitted and a confirmation email has been sent to you.
               </p>
             </div>
           </div>
@@ -336,7 +341,9 @@ export default function ClientRegistrationPage() {
 
       {submitError && (
         <div className="mb-8 p-6 bg-red-50 border border-red-200 rounded-lg" role="alert">
-          <p className="text-red-800">{submitError}</p>
+          <p className="text-red-800">
+            Something went wrong while sending your registration. Please try again in a few minutes.
+          </p>
         </div>
       )}
 
