@@ -1,47 +1,103 @@
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
 import { Beaker, Settings, ShieldCheck, Handshake, Users, Building2, GraduationCap, CheckCircle } from 'lucide-react';
 
 export default function PrivateLabelPage() {
-  const { t } = useTranslation(['privateLabel', 'common']);
-
-  // Benefits items with icons
+  // Benefits items with icons and English content
   const benefitItems = [
-    { key: 'expertise', icon: Beaker },
-    { key: 'flexibility', icon: Settings },
-    { key: 'compliance', icon: ShieldCheck },
-    { key: 'partnership', icon: Handshake },
+    { 
+      key: 'expertise',
+      icon: Beaker,
+      title: 'Laboratory and manufacturing expertise',
+      text: 'Formulas created and produced in our own lab and factory, with experience across different markets and service types.'
+    },
+    { 
+      key: 'flexibility',
+      icon: Settings,
+      title: 'Flexible range building',
+      text: 'Start with a focused core selection or build a full catalogue. We help you choose systems and shades that fit your positioning.'
+    },
+    { 
+      key: 'compliance',
+      icon: ShieldCheck,
+      title: 'Regulatory support',
+      text: 'Guidance on EU cosmetic compliance, documentation and registration so you can bring products to market with confidence.'
+    },
+    { 
+      key: 'partnership',
+      icon: Handshake,
+      title: 'Long-term partnership',
+      text: 'We see private label as an ongoing collaboration – from first launch to future updates, seasonal collections and reformulations.'
+    },
   ];
 
-  // Process steps
+  // Process steps with English content
   const processSteps = [
-    'consultation',
-    'selection',
-    'sampling',
-    'packaging',
-    'compliance',
-    'production',
+    {
+      key: 'consultation',
+      title: '1. Initial consultation',
+      text: 'We discuss your brand, target markets, service types and price positioning. Together we define what you really need from your product line.'
+    },
+    {
+      key: 'selection',
+      title: '2. Product and shade selection',
+      text: 'Based on your goals, we suggest suitable systems (gel polish, bases, builders, etc.) and prepare a proposed shade range or collections for sampling.'
+    },
+    {
+      key: 'sampling',
+      title: '3. Sampling and testing',
+      text: 'You test the products in real salon conditions. We refine the selection if needed, based on your feedback and the results from your technicians.'
+    },
+    {
+      key: 'packaging',
+      title: '4. Packaging and design',
+      text: 'You can use our existing packaging options or work with us on custom solutions. We provide technical specifications to your designer so artwork fits correctly.'
+    },
+    {
+      key: 'compliance',
+      title: '5. Documentation & compliance',
+      text: 'For EU projects, we support PIF preparation and CPNP notifications in cooperation with your appointed safety assessor and responsible person.'
+    },
+    {
+      key: 'production',
+      title: '6. Production and delivery',
+      text: 'Once everything is approved, we schedule production, filling and packing according to agreed MOQs and lead times, and arrange shipment.'
+    },
   ];
 
-  // Who is for items with icons
+  // Who is for items with icons and English content
   const whoIsForItems = [
-    { key: 'distributors', icon: Building2 },
-    { key: 'brands', icon: Users },
-    { key: 'educators', icon: GraduationCap },
+    { 
+      key: 'distributors',
+      icon: Building2,
+      title: 'Distributors and wholesalers',
+      text: 'Businesses that already supply salons or retailers and want a professional in-house brand.'
+    },
+    { 
+      key: 'brands',
+      icon: Users,
+      title: 'Existing brands',
+      text: 'Brands that need to upgrade formulas, expand their range or add professional-only product lines.'
+    },
+    { 
+      key: 'educators',
+      icon: GraduationCap,
+      title: 'Training academies',
+      text: 'Educators who want product lines that support their teaching and are consistent for students and salons.'
+    },
   ];
 
   return (
     <PageTemplate
-      title={t('hero.title')}
-      subtitle={t('hero.subtitle')}
+      title="Private label gel systems for serious brands"
+      subtitle="We develop, manufacture and fill professional gel systems under your own brand name, with full technical and regulatory support."
       breadcrumbs={[
-        { label: t('nav.home', { ns: 'common' }), path: '/' },
-        { label: t('nav.privateLabel', { ns: 'common' }) }
+        { label: 'Home', path: '/' },
+        { label: 'Private Label' }
       ]}
       showCTA={true}
-      ctaText={t('hero.ctaPrimary')}
+      ctaText="Start a private label project"
       heroImage="/img/hero/private-label-hero.jpg"
     >
       {/* Start Your Brand Banner */}
@@ -53,31 +109,108 @@ export default function PrivateLabelPage() {
           to="/contact"
           className="btn-primary px-6 py-3 rounded-lg font-semibold text-center"
         >
-          {t('hero.ctaPrimary')}
+          Start a private label project
         </Link>
         <Link
           to="/contact"
           className="btn-secondary px-6 py-3 rounded-lg font-semibold text-center"
         >
-          {t('hero.ctaSecondary')}
+          Request more information
         </Link>
       </div>
 
       {/* Intro Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
-          {t('intro.title')}
+          More than a logo on a bottle
           <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
         </h2>
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base max-w-3xl">
-          {t('intro.text')}
+          Launching or expanding a professional nail brand requires more than nice packaging. You need reliable formulas, clear documentation and a manufacturing partner who understands your market. That is where we come in.
         </p>
+      </div>
+
+      {/* Private Label Categories Section */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
+          Private label packaging options
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          {/* Bottles */}
+          <Link
+            to="/private-label/bottles"
+            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/bottles/bottles-image-private label-solutions.jpg"
+                alt="Bottles - Premium gel polish bottles for custom branding"
+                className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Bottles
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Premium gel polish bottles available for custom branding. Multiple sizes and finishes to match your brand aesthetic.
+              </p>
+            </div>
+          </Link>
+
+          {/* Bulk */}
+          <Link
+            to="/private-label/bulk"
+            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/private-label/bulk/bulk-5kg-bucket.jpg"
+                alt="Bulk Packaging - High-volume gel and builder systems"
+                className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Bulk Packaging
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                For high-volume partners, we supply gel and builder systems in bulk formats ready for your own filling and logistics.
+              </p>
+            </div>
+          </Link>
+
+          {/* Jars */}
+          <Link
+            to="/private-label/jars"
+            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/products/jars/website_leeukopf_acrylic_jar_1.jpg"
+                alt="Jars - Premium acrylic and glass jars for custom branding"
+                className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Jars
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Premium acrylic and glass jars for gel polish, builder gel, and other nail products. Perfect for custom branding.
+              </p>
+            </div>
+          </Link>
+        </div>
       </div>
 
       {/* Benefits Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-          {t('benefits.title')}
+          What you gain with our private label services
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {benefitItems.map((item) => (
@@ -91,10 +224,10 @@ export default function PrivateLabelPage() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900 mb-2 text-base sm:text-lg">
-                    {t(`benefits.items.${item.key}.title`)}
+                    {item.title}
                   </h3>
                   <p className="text-gray-600 font-light text-sm sm:text-base leading-relaxed">
-                    {t(`benefits.items.${item.key}.text`)}
+                    {item.text}
                   </p>
                 </div>
               </div>
@@ -106,19 +239,19 @@ export default function PrivateLabelPage() {
       {/* Process Section */}
       <div className="bg-gray-50 rounded-lg p-5 sm:p-6 md:p-8 border border-gray-200 mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-          {t('process.title')}
+          How the private label process works
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {processSteps.map((step) => (
             <div
-              key={step}
+              key={step.key}
               className="bg-white rounded-lg p-4 sm:p-5 border border-gray-200"
             >
               <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">
-                {t(`process.steps.${step}.title`)}
+                {step.title}
               </h3>
               <p className="text-gray-600 font-light text-xs sm:text-sm leading-relaxed">
-                {t(`process.steps.${step}.text`)}
+                {step.text}
               </p>
             </div>
           ))}
@@ -128,13 +261,13 @@ export default function PrivateLabelPage() {
       {/* MOQs Section */}
       <div className="bg-white rounded-lg p-5 sm:p-6 md:p-8 border border-gray-200 mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">
-          {t('moqs.title')}
+          Minimum order quantities and lead times
         </h2>
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
-          {t('moqs.text')}
+          MOQs and timelines depend on the product type, packaging choice and whether we are using existing shades or creating something new. During the first consultation we will give you realistic numbers and timeframes.
         </p>
         <ul className="space-y-2">
-          {(t('moqs.bullets', { returnObjects: true }) as string[]).map((bullet, index) => (
+          {['Different MOQs for bottles, jars and bulk', 'Standard lead times for repeat orders after first setup', 'Clear communication if anything affects production schedules'].map((bullet, index) => (
             <li key={index} className="flex items-start gap-2 text-sm text-gray-600">
               <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" aria-hidden="true" />
               <span>{bullet}</span>
@@ -146,7 +279,7 @@ export default function PrivateLabelPage() {
       {/* Who Is For Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-          {t('whoIsFor.title')}
+          Who our private label services are ideal for
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           {whoIsForItems.map((item) => (
@@ -158,10 +291,10 @@ export default function PrivateLabelPage() {
                 <item.icon size={32} className="text-primary" aria-hidden="true" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2 text-base sm:text-lg">
-                {t(`whoIsFor.items.${item.key}.title`)}
+                {item.title}
               </h3>
               <p className="text-gray-600 font-light text-sm sm:text-base leading-relaxed">
-                {t(`whoIsFor.items.${item.key}.text`)}
+                {item.text}
               </p>
             </div>
           ))}
@@ -171,23 +304,23 @@ export default function PrivateLabelPage() {
       {/* CTA Section */}
       <div className="bg-primary-50 rounded-lg p-5 sm:p-6 md:p-8 text-center">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
-          {t('ctaSection.title')}
+          Ready to talk about your own brand?
         </h2>
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-6 max-w-2xl mx-auto">
-          {t('ctaSection.text')}
+          Tell us a little about your business, your market and what you want to achieve. We will come back with a realistic, honest proposal – not just a generic price list.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to="/contact"
             className="btn-primary px-6 py-3 rounded-lg font-semibold"
           >
-            {t('ctaSection.ctaPrimary')}
+            Send us your project details
           </Link>
           <Link
             to="/contact"
             className="btn-secondary px-6 py-3 rounded-lg font-semibold"
           >
-            {t('ctaSection.ctaSecondary')}
+            Book an online meeting
           </Link>
         </div>
       </div>

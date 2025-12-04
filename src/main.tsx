@@ -6,7 +6,6 @@ import AdminLogin from './pages/AdminLogin.tsx';
 import AdminDashboard from './pages/AdminDashboard.tsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.tsx';
 import ScrollToTopOnRouteChange from './components/ScrollToTopOnRouteChange.tsx';
-import './lib/i18n'; // Initialize i18n
 import './index.css';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
