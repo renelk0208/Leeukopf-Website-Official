@@ -3,23 +3,27 @@
 @tailwind utilities;
 
 /* 
- * Berry-Blue Colour System Variables
- * Primary: Berry (#A3005A) - Main brand colour for CTAs, accents
- * Secondary: Blue (#2563EB) - Supporting colour for icons, links
+ * Fuchsia-Grey Colour System Variables
+ * Primary: Fuchsia (#A3005A) - Main brand colour for CTAs, accents, links
+ * Grey Palette: For text, backgrounds, and UI elements
  */
 :root {
   /* Brand Fuchsia (Primary) */
   --brand-fuchsia: #A3005A;
   
-  /* Primary (Berry) */
+  /* Primary (Fuchsia) */
   --color-primary: #A3005A;
   --color-primary-dark: #820048;
   --color-primary-soft: #F9E6F0;
   
-  /* Secondary (Blue) */
-  --color-secondary: #2563EB;
-  --color-secondary-dark: #1E3A8A;
-  --color-secondary-soft: #E5EEFF;
+  /* Grey Palette for UI */
+  --color-footer-grey: #E8E8E8;
+  --color-card-grey: #D4D4D4;
+  --color-text-primary: #444444;
+  --color-text-secondary: #6B6B6B;
+  --color-off-white: #FAFAFA;
+  --color-charcoal: #262626;
+  --color-fuchsia-tint: #F5D4E4;
   
   /* Neutral Palette */
   --color-neutral-50: #F8FAFC;
@@ -84,15 +88,16 @@
     border-color: var(--color-primary);
   }
   
-  /* Secondary CTA - Blue colour */
+  /* Secondary CTA - Grey with fuchsia hover */
   .btn-secondary {
     @apply px-6 py-3 bg-white rounded-md font-semibold transition-all duration-300 border-2;
-    color: var(--color-secondary);
-    border-color: var(--color-secondary);
+    color: var(--color-text-primary);
+    border-color: var(--color-card-grey);
   }
   .btn-secondary:hover {
-    background-color: var(--color-secondary);
+    background-color: var(--color-primary);
     color: white;
+    border-color: var(--color-primary);
   }
   
   /* Unified Card Style */
@@ -110,7 +115,7 @@
     background: linear-gradient(135deg, var(--color-primary-soft) 0%, #ffffff 50%, var(--color-primary-soft) 100%);
   }
   .section-gradient-secondary {
-    background: linear-gradient(135deg, var(--color-secondary-soft) 0%, #ffffff 50%, var(--color-secondary-soft) 100%);
+    background: linear-gradient(135deg, var(--color-fuchsia-tint) 0%, #ffffff 50%, var(--color-fuchsia-tint) 100%);
   }
   
   /* Image Frame Utility */
