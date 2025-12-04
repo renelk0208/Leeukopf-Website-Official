@@ -32,6 +32,14 @@ export default function CategoryGridTestPage() {
         basePath="/products/builder-gels"
       />
 
+      {/* Tops & Bases Group */}
+      <ProductCategoryGrid
+        group="Tops & Bases"
+        title="Tops & Bases"
+        subtitle="Essential bases, top coats, and finishing systems for professional results."
+        basePath="/products/tops-and-bases"
+      />
+
       {/* Primers & Liquids Group */}
       <ProductCategoryGrid
         group="Primers & Liquids"

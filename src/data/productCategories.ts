@@ -112,35 +112,40 @@ export const productCategories: ProductCategory[] = [
     group: 'Builder Gels',
   },
 
-  // Primers & Liquids Categories (Top & Bases group)
+  // Tops & Bases Categories
   {
     id: 'rubber-bases',
     key: 'rubber-bases',
     displayName: 'Rubber Bases',
     imagePath: '/img/products/tops-and-bases/rubber-bases/rubber%20bases%20category%20image.jpg',
-    group: 'Primers & Liquids',
+    group: 'Tops & Bases',
   },
   {
     id: 'effect-tops',
     key: 'effect-tops',
     displayName: 'Effect Tops',
     imagePath: '/img/products/tops-and-bases/tops/Effect Tops/effect-tops-category.jpg',
-    group: 'Primers & Liquids',
+    group: 'Tops & Bases',
   },
   {
     id: 'five-in-one',
     key: 'five-in-one',
     displayName: '5-in-1 System',
     imagePath: '/img/products/tops-and-bases/tops-bases_category_1.jpg',
-    group: 'Primers & Liquids',
+    group: 'Tops & Bases',
   },
   {
     id: 'brush-on-builder',
     key: 'brush-on-builder',
     displayName: 'Brush-On Builder',
     imagePath: '/img/products/tops-and-bases/tops-bases_category_1.jpg',
-    group: 'Primers & Liquids',
+    group: 'Tops & Bases',
   },
+
+  // Primers & Liquids Categories
+  // Note: No dedicated images available yet for primers and liquids.
+  // These will be added when product images become available.
+  // Until then, this group will show an empty state.
 
   // Specialty/Nail Art
   {
