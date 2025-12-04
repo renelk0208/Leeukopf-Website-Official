@@ -275,8 +275,12 @@ export default function ClientRegistrationPage() {
 
       if (!emailResponse.ok) {
         const errorData = await emailResponse.json().catch(() => ({}));
-        console.error('Email sending failed:', errorData);
-        // Continue anyway - we've saved the data
+        console.error('Email sending failed:', {
+          status: emailResponse.status,
+          statusText: emailResponse.statusText,
+          errorData
+        });
+        throw new Error(`Email sending failed: ${errorData.error || emailResponse.statusText}`);
       }
 
       setSubmitSuccess(true);
@@ -306,7 +310,15 @@ export default function ClientRegistrationPage() {
       setTimeout(() => setSubmitSuccess(false), 10000);
     } catch (error) {
       console.error('Error submitting registration:', error);
-      setSubmitError('An error occurred while submitting your registration. Please try again.');
+      // Log additional details for debugging
+      if (error instanceof Error) {
+        console.error('Error details:', {
+          message: error.message,
+          name: error.name,
+          stack: error.stack
+        });
+      }
+      setSubmitError('Something went wrong while sending your registration. Please try again in a few minutes.');
     } finally {
       setUploading(false);
     }
