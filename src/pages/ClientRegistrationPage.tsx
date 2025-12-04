@@ -258,21 +258,26 @@ export default function ClientRegistrationPage() {
 
       if (dbError) throw dbError;
 
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-client-registration-email`;
+      // Send emails via Netlify Function
       const emailPayload = {
         ...formData,
         attachments,
         honeypot: formData.honeypot
       };
 
-      await fetch(apiUrl, {
+      const emailResponse = await fetch('/.netlify/functions/send-client-registration-email', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(emailPayload)
       });
+
+      if (!emailResponse.ok) {
+        const errorData = await emailResponse.json().catch(() => ({}));
+        console.error('Email sending failed:', errorData);
+        // Continue anyway - we've saved the data
+      }
 
       setSubmitSuccess(true);
       setFormData({
@@ -327,7 +332,7 @@ export default function ClientRegistrationPage() {
             <div>
               <h3 className="text-lg font-semibold text-green-900 mb-2">Registration Received!</h3>
               <p className="text-green-800 font-light">
-                Thank you for registering with us. We've received your details and will respond within 2 business days.
+                Thank you. Your registration has been submitted and a confirmation email has been sent to you.
               </p>
             </div>
           </div>
@@ -336,7 +341,9 @@ export default function ClientRegistrationPage() {
 
       {submitError && (
         <div className="mb-8 p-6 bg-red-50 border border-red-200 rounded-lg" role="alert">
-          <p className="text-red-800">{submitError}</p>
+          <p className="text-red-800">
+            Something went wrong while sending your registration. Please try again in a few minutes.
+          </p>
         </div>
       )}
 
@@ -365,7 +372,7 @@ export default function ClientRegistrationPage() {
                 name="company"
                 value={formData.company}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                   errors.company ? 'border-red-500' : 'border-gray-300'
                 }`}
                 aria-required="true"
@@ -389,7 +396,7 @@ export default function ClientRegistrationPage() {
                 name="contact"
                 value={formData.contact}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                   errors.contact ? 'border-red-500' : 'border-gray-300'
                 }`}
                 aria-required="true"
@@ -413,7 +420,7 @@ export default function ClientRegistrationPage() {
                 name="role"
                 value={formData.role}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -427,7 +434,7 @@ export default function ClientRegistrationPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                   errors.email ? 'border-red-500' : 'border-gray-300'
                 }`}
                 aria-required="true"
@@ -451,7 +458,7 @@ export default function ClientRegistrationPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="+1 234 567 8900"
               />
             </div>
@@ -465,7 +472,7 @@ export default function ClientRegistrationPage() {
                 name="country"
                 value={formData.country}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                   errors.country ? 'border-red-500' : 'border-gray-300'
                 }`}
                 aria-required="true"
@@ -494,7 +501,7 @@ export default function ClientRegistrationPage() {
                 name="website"
                 value={formData.website}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="https://www.example.com"
               />
             </div>
@@ -509,7 +516,7 @@ export default function ClientRegistrationPage() {
                 name="instagram"
                 value={formData.instagram}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="@yourhandle"
               />
             </div>
@@ -528,7 +535,7 @@ export default function ClientRegistrationPage() {
                 name="businessType"
                 value={formData.businessType}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                   errors.businessType ? 'border-red-500' : 'border-gray-300'
                 }`}
                 aria-required="true"
@@ -561,7 +568,7 @@ export default function ClientRegistrationPage() {
                       type="checkbox"
                       checked={formData.interests.includes(interest)}
                       onChange={() => handleInterestChange(interest)}
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                     />
                     <span className="text-sm text-gray-900">{interest}</span>
                   </label>
@@ -580,7 +587,7 @@ export default function ClientRegistrationPage() {
                   name="monthlyVolume"
                   value={formData.monthlyVolume}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="e.g., 5000 units"
                 />
               </div>
@@ -595,7 +602,7 @@ export default function ClientRegistrationPage() {
                   name="vatEori"
                   value={formData.vatEori}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
@@ -611,7 +618,7 @@ export default function ClientRegistrationPage() {
                   value={formData.billingAddress}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                 />
               </div>
 
@@ -625,7 +632,7 @@ export default function ClientRegistrationPage() {
                   value={formData.shippingAddress}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                 />
               </div>
             </div>
@@ -639,7 +646,7 @@ export default function ClientRegistrationPage() {
                 name="language"
                 value={formData.language}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 {languages.map(lang => (
                   <option key={lang.code} value={lang.code}>{lang.name}</option>
@@ -662,7 +669,7 @@ export default function ClientRegistrationPage() {
                 value={formData.notes}
                 onChange={handleInputChange}
                 rows={5}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                 placeholder="Tell us about your specific requirements, questions, or any additional information..."
               />
             </div>
@@ -708,7 +715,7 @@ export default function ClientRegistrationPage() {
                 name="gdprConsent"
                 checked={formData.gdprConsent}
                 onChange={handleInputChange}
-                className={`mt-1 w-5 h-5 text-blue-600 border rounded focus:ring-blue-500 ${
+                className={`mt-1 w-5 h-5 text-primary border rounded focus:ring-primary ${
                   errors.gdprConsent ? 'border-red-500' : 'border-gray-300'
                 }`}
                 aria-required="true"

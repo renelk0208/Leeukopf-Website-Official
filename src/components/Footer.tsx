@@ -37,10 +37,10 @@ const SocialLinks = () => {
           className="social-icon group relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white hover:bg-primary-50 rounded-lg transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px]"
           aria-label={social.name}
         >
-          <span className="transition-all">
+          <span className="text-[#444444] group-hover:text-[#A3005A] transition-colors">
             {social.icon}
           </span>
-          <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-700 text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap hidden sm:block">
+          <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-[#444444] text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap hidden sm:block">
             {social.name}
           </span>
         </a>
@@ -51,7 +51,7 @@ const SocialLinks = () => {
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-secondary-800 via-secondary-800 to-secondary-900 border-t border-secondary-700">
+    <footer className="bg-[#E8E8E8] border-t border-[#D4D4D4]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         {/* Responsive grid - stacks on mobile, 4 cols on desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
@@ -63,13 +63,13 @@ export default function Footer() {
                 alt="Leeukopf Laboratories"
                 width={200}
                 height={50}
-                className="h-10 sm:h-12 w-auto object-contain hover:opacity-90 transition-opacity brightness-0 invert"
+                className="h-10 sm:h-12 w-auto object-contain hover:opacity-90 transition-opacity"
               />
             </Link>
-            <p className="text-gray-400 text-sm font-light leading-relaxed mb-4">
+            <p className="text-[#6B6B6B] text-sm font-light leading-relaxed mb-4">
               Premium beauty products manufactured in Bulgaria, trusted by professionals worldwide.
             </p>
-            <div className="flex items-center space-x-2 text-gray-400 text-sm font-light">
+            <div className="flex items-center space-x-2 text-[#6B6B6B] text-sm font-light">
               <span>Made with</span>
               <Heart className="text-red-400 fill-red-400" size={14} />
               <span>in Bulgaria</span>
@@ -78,50 +78,50 @@ export default function Footer() {
 
           {/* Quick Links - responsive grid within */}
           <div>
-            <h3 className="text-white font-semibold text-base mb-3">Quick Links</h3>
+            <h3 className="text-[#444444] font-semibold text-base mb-3">Quick Links</h3>
             <ul className="space-y-2 columns-2 sm:columns-1">
               <li>
-                <Link to="/products" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/products" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Our Products
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/about" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/our-brands" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/our-brands" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Our Brands
                 </Link>
               </li>
               <li>
-                <Link to="/private-label" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/private-label" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Private Label
                 </Link>
               </li>
               <li>
-                <Link to="/distributors-wanted" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/distributors-wanted" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Become a Distributor
                 </Link>
               </li>
               <li>
-                <Link to="/client-registration" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/client-registration" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Client Registration
                 </Link>
               </li>
               <li>
-                <Link to="/certificates-and-compliance" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/certificates-and-compliance" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Certificates
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/contact" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link to="/faq-starting-a-gel-polish-brand" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/faq-starting-a-gel-polish-brand" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   FAQ – Start Your Brand
                 </Link>
               </li>
@@ -130,25 +130,25 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h3 className="text-white font-semibold text-base mb-3">Legal</h3>
+            <h3 className="text-[#444444] font-semibold text-base mb-3">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/terms-of-use" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/terms-of-use" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Terms of Use
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/privacy-policy" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/cookies-policy" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/cookies-policy" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Cookies Policy
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-notice-distributors" className="text-gray-400 hover:text-white hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/privacy-notice-distributors" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Privacy Notice for Distributors
                 </Link>
               </li>
@@ -157,8 +157,8 @@ export default function Footer() {
 
           {/* Social section */}
           <div>
-            <h3 className="text-white font-semibold text-base mb-3">Follow Us</h3>
-            <p className="text-gray-400 text-sm font-light mb-4">
+            <h3 className="text-[#444444] font-semibold text-base mb-3">Follow Us</h3>
+            <p className="text-[#6B6B6B] text-sm font-light mb-4">
               Connect with us on social media for the latest updates, product launches, and beauty inspiration.
             </p>
             <div className="flex items-center">
@@ -168,7 +168,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright section */}
-        <div className="pt-4 sm:pt-6 border-t border-gray-700">
+        <div className="pt-4 sm:pt-6 border-t border-[#D4D4D4]">
           <div className="flex flex-col items-center gap-2 sm:gap-3">
             <OptimizedImage
               src="/favicon_leeukopf.jpg" 
@@ -177,7 +177,7 @@ export default function Footer() {
               height={32}
               className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
             />
-            <div className="text-center text-gray-400 text-xs font-light">
+            <div className="text-center text-[#6B6B6B] text-xs font-light">
               &copy; {new Date().getFullYear()} Leeukopf Laboratories. All rights reserved.
             </div>
           </div>
