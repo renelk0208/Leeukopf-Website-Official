@@ -1,6 +1,10 @@
-# Netlify Deployment Troubleshooting Guide
+# Netlify Deployment Guide
 
-This guide helps diagnose and resolve deployment issues with Netlify.
+**This project is configured for and optimized for Netlify deployment.** Netlify is the primary and recommended deployment platform for this React/Vite application.
+
+> **Note**: This is a React Single Page Application (SPA) that requires a build process. If you need to deploy to GitHub Pages, see [GITHUB_PAGES_SETUP.md](./GITHUB_PAGES_SETUP.md) for the proper workflow setup.
+
+This guide helps you understand and troubleshoot Netlify deployments.
 
 ## How Netlify Deployment Works
 
