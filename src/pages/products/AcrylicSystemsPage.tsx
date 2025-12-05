@@ -1,6 +1,7 @@
 import PageTemplate from '../../components/PageTemplate';
 import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
+import AcrylicSystemsGallery from '../../components/AcrylicSystemsGallery';
 
 export default function AcrylicSystemsPage() {
   return (
@@ -22,6 +23,9 @@ export default function AcrylicSystemsPage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      <AcrylicSystemsGallery />
 
       {/* System Types */}
       <div className="mb-10 sm:mb-12 md:mb-16">

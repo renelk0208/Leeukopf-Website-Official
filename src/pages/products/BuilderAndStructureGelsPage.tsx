@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate';
 import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
+import BuilderSystemsGallery from '../../components/BuilderSystemsGallery';
 import { isSubcategoryEnabled } from '../../config/productCategories';
 
 export default function BuilderAndStructureGelsPage() {
@@ -78,6 +79,9 @@ export default function BuilderAndStructureGelsPage() {
           ))}
         </div>
       </div>
+
+      {/* Product Gallery */}
+      <BuilderSystemsGallery />
 
       {/* Application & Curing */}
       <ApplicationCuring type="builder-gels" />

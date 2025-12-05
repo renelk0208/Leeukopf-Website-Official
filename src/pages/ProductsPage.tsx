@@ -214,12 +214,12 @@ export default function ProductsPage() {
               className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-50 to-purple-100">
-                  <div className="text-center p-4">
-                    <p className="text-lg font-semibold text-gray-700">Acrylic Systems</p>
-                    <p className="text-sm text-gray-500 mt-2">High-performance powders & liquids</p>
-                  </div>
-                </div>
+                <img
+                  src="/img/products/builder-systems/Acrylic/acrylic-catergory-image.JPG"
+                  alt="Acrylic Systems"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
               </div>
               <div className="p-5">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -239,12 +239,12 @@ export default function ProductsPage() {
               className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-                  <div className="text-center p-4">
-                    <p className="text-lg font-semibold text-gray-700">Liquids & Solutions</p>
-                    <p className="text-sm text-gray-500 mt-2">Cleanser and prep solutions</p>
-                  </div>
-                </div>
+                <img
+                  src="/img/products/primers-and-liquids/primer-liquds-category-image.jpeg"
+                  alt="Liquids & Solutions"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
               </div>
               <div className="p-5">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -265,7 +265,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/nail-art-category.jpg"
+                  src="/img/products/nail-art/nail-art-category.jpg"
                   alt="Nail Art"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"

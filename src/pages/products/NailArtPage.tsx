@@ -1,5 +1,6 @@
 import PageTemplate from '../../components/PageTemplate';
 import ProductSEO from '../../components/ProductSEO';
+import NailArtGallery from '../../components/NailArtGallery';
 
 export default function NailArtPage() {
   return (
@@ -16,7 +17,7 @@ export default function NailArtPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/nail-art-category.jpg"
+            src="/img/products/nail-art/nail-art-category.jpg"
             alt="Nail Art Products"
             className="w-full h-auto object-cover"
             loading="lazy"
@@ -31,6 +32,9 @@ export default function NailArtPage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      <NailArtGallery />
 
       {/* Product Categories */}
       <div className="mb-10 sm:mb-12 md:mb-16">

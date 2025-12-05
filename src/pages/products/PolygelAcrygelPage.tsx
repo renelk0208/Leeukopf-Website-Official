@@ -1,6 +1,7 @@
 import PageTemplate from '../../components/PageTemplate';
 import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
+import PolygelGallery from '../../components/PolygelGallery';
 
 export default function PolygelAcrygelPage() {
   return (
@@ -72,6 +73,9 @@ export default function PolygelAcrygelPage() {
           </div>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      <PolygelGallery />
 
       {/* Available Shades */}
       <div className="mb-10 sm:mb-12 md:mb-16">

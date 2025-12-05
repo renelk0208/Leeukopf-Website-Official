@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate';
 import ProductSEO from '../../components/ProductSEO';
+import TopsAndBasesGallery from '../../components/TopsAndBasesGallery';
 
 export default function TopAndBasesPage() {
   const subcategories = [
@@ -69,6 +70,9 @@ export default function TopAndBasesPage() {
           ))}
         </div>
       </div>
+
+      {/* Product Gallery */}
+      <TopsAndBasesGallery />
 
       {/* SEO Content */}
       <ProductSEO category="top-bases" />
