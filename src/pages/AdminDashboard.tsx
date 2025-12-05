@@ -67,11 +67,13 @@ export default function AdminDashboard() {
   const loadColors = async () => {
     const { data } = await supabase.from('site_settings').select('*');
     if (data) {
-      const settings: Record<string, string> = {};
+      const settings: Partial<SiteSettings> = {};
       data.forEach((setting) => {
-        settings[setting.key] = setting.value;
+        if (setting.key in colors) {
+          settings[setting.key as keyof SiteSettings] = setting.value;
+        }
       });
-      setColors(settings as unknown as SiteSettings);
+      setColors({ ...colors, ...settings } as SiteSettings);
     }
   };
 
