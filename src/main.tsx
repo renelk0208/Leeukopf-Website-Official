@@ -6,6 +6,7 @@ import AdminLogin from './pages/AdminLogin.tsx';
 import AdminDashboard from './pages/AdminDashboard.tsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.tsx';
 import ScrollToTopOnRouteChange from './components/ScrollToTopOnRouteChange.tsx';
+import ErrorBoundary from './components/ErrorBoundary.tsx';
 import './index.css';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -24,22 +25,24 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <ScrollToTopOnRouteChange />
-      <AuthProvider>
-        <Routes>
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/*" element={<App />} />
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <ScrollToTopOnRouteChange />
+        <AuthProvider>
+          <Routes>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   </StrictMode>
 );
