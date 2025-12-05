@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-04T23:07:40.014Z",
-  "commit": "1250b34",
-  "branch": "copilot/fix-category-images-and-rules",
+  "buildDate": "2025-12-05T11:31:31.241Z",
+  "commit": "0f76f22",
+  "branch": "copilot/restore-original-index-html",
   "message": "Build deployed successfully"
 }
