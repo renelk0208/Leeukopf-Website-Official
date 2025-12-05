@@ -110,21 +110,21 @@ export default function ClientRegistrationPage() {
     return emailRegex.test(email);
   };
 
-  const validateField = (name: string, value: any): string => {
+  const validateField = (name: string, value: string | boolean): string => {
     switch (name) {
       case 'company':
-        return value.trim() === '' ? 'Company name is required' : '';
+        return typeof value === 'string' && value.trim() === '' ? 'Company name is required' : '';
       case 'contact':
-        return value.trim() === '' ? 'Contact name is required' : '';
+        return typeof value === 'string' && value.trim() === '' ? 'Contact name is required' : '';
       case 'email':
-        if (value.trim() === '') return 'Email is required';
-        return !validateEmail(value) ? 'Please enter a valid email address' : '';
+        if (typeof value === 'string' && value.trim() === '') return 'Email is required';
+        return typeof value === 'string' && !validateEmail(value) ? 'Please enter a valid email address' : '';
       case 'country':
-        return value === '' ? 'Country is required' : '';
+        return typeof value === 'string' && value === '' ? 'Country is required' : '';
       case 'businessType':
-        return value === '' ? 'Business type is required' : '';
+        return typeof value === 'string' && value === '' ? 'Business type is required' : '';
       case 'gdprConsent':
-        return !value ? 'You must agree to the data processing terms' : '';
+        return typeof value === 'boolean' && !value ? 'You must agree to the data processing terms' : '';
       default:
         return '';
     }
@@ -187,7 +187,7 @@ export default function ClientRegistrationPage() {
     newErrors.gdprConsent = validateField('gdprConsent', formData.gdprConsent);
 
     const filteredErrors = Object.fromEntries(
-      Object.entries(newErrors).filter(([_, v]) => v !== '')
+      Object.entries(newErrors).filter(([, v]) => v !== '')
     );
 
     setErrors(filteredErrors);

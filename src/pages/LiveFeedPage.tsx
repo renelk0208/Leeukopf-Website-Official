@@ -16,6 +16,14 @@ interface SocialPost {
   embedUrl: string;
 }
 
+interface WindowWithInstagram extends Window {
+  instgrm: {
+    Embeds: {
+      process: () => void;
+    };
+  };
+}
+
 export default function LiveFeedPage() {
   const [filter, setFilter] = useState<FilterType>('all');
   const [embedsEnabled, setEmbedsEnabled] = useState(false);
@@ -64,8 +72,8 @@ export default function LiveFeedPage() {
       script.src = 'https://www.instagram.com/embed.js';
       script.onload = () => {
         setScriptsLoaded(prev => ({ ...prev, instagram: true }));
-        if ((window as any).instgrm) {
-          (window as any).instgrm.Embeds.process();
+        if (typeof window !== 'undefined' && 'instgrm' in window) {
+          (window as WindowWithInstagram).instgrm.Embeds.process();
         }
       };
     } else {

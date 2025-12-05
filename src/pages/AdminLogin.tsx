@@ -47,9 +47,9 @@ export default function AdminLogin() {
       } else {
         await signIn(email, password);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (isSignUp) {
-        setError(err.message || 'Error creating account');
+        setError(err instanceof Error ? err.message : 'Error creating account');
       } else {
         setError('Invalid email or password');
       }
