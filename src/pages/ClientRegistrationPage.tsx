@@ -120,11 +120,11 @@ export default function ClientRegistrationPage() {
         if (typeof value === 'string' && value.trim() === '') return 'Email is required';
         return typeof value === 'string' && !validateEmail(value) ? 'Please enter a valid email address' : '';
       case 'country':
-        return value === '' ? 'Country is required' : '';
+        return typeof value === 'string' && value === '' ? 'Country is required' : '';
       case 'businessType':
-        return value === '' ? 'Business type is required' : '';
+        return typeof value === 'string' && value === '' ? 'Business type is required' : '';
       case 'gdprConsent':
-        return !value ? 'You must agree to the data processing terms' : '';
+        return typeof value === 'boolean' && !value ? 'You must agree to the data processing terms' : '';
       default:
         return '';
     }
