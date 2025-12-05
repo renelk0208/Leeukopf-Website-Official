@@ -2,11 +2,15 @@
 
 Premium gel polish manufacturing website built with React, TypeScript, Vite, and Supabase.
 
-## Netlify Deployment Setup
+## Deployment
 
-This project is configured for Netlify deployment. Follow these steps:
+**This project is configured for and optimized for Netlify deployment.** This is the recommended production deployment method.
 
-### 1. Environment Variables
+### Netlify Deployment (Recommended)
+
+This project is a React Single Page Application (SPA) built with Vite and configured for Netlify deployment.
+
+#### 1. Environment Variables
 
 In your Netlify dashboard, go to **Site settings > Environment variables** and add:
 
@@ -15,14 +19,14 @@ VITE_SUPABASE_URL=https://yhwlbhzguzoyjtozcrtu.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlod2xiaHpndXpveWp0b3pjcnR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4OTA0MzAsImV4cCI6MjA3ODQ2NjQzMH0._KshezOAM7d1rOysmM_L8CIoTjGddtNwhL_MQW89qw0
 ```
 
-### 2. Build Settings
+#### 2. Build Settings
 
 The `netlify.toml` file is already configured with:
 - Build command: `npm run build` (automatically updates version.json before building)
 - Publish directory: `dist`
 - Node version: 18
 
-### 3. Deploy Workflow
+#### 3. Deploy Workflow
 
 **Important:** Netlify deploys from the `main` branch by default.
 
@@ -33,7 +37,7 @@ To deploy changes:
 4. Merge the PR
 5. Netlify will automatically build and deploy
 
-### 4. Verify Deployment
+#### 4. Verify Deployment
 
 After pushing to `main`:
 1. Check Netlify Dashboard → **Deploys** tab
@@ -45,6 +49,12 @@ After pushing to `main`:
 - Clear browser cache (Ctrl+Shift+R)
 - View in incognito mode
 - Check [NETLIFY_DEPLOYMENT_GUIDE.md](./NETLIFY_DEPLOYMENT_GUIDE.md) for troubleshooting
+
+### Alternative: GitHub Pages Deployment
+
+If you need to deploy to GitHub Pages instead of Netlify, see [GITHUB_PAGES_SETUP.md](./GITHUB_PAGES_SETUP.md) for detailed instructions on setting up a proper build-and-deploy workflow.
+
+**Important**: Do not replace `index.html` with static HTML content. This project is a React SPA that requires the build process to work correctly.
 
 ## Local Development
 
