@@ -41,19 +41,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initAuth();
 
     try {
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const authStateChange = supabase.auth.onAuthStateChange((_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
       });
 
-      return () => {
-        try {
-          subscription.unsubscribe();
-        } catch (error) {
-          console.error('Error unsubscribing from auth changes:', error);
-        }
-      };
+      // Safely access subscription from the response
+      if (authStateChange?.data?.subscription) {
+        const { data: { subscription } } = authStateChange;
+        return () => {
+          try {
+            subscription.unsubscribe();
+          } catch (error) {
+            console.error('Error unsubscribing from auth changes:', error);
+          }
+        };
+      } else {
+        console.warn('Auth state change subscription not available');
+        return () => {}; // Return empty cleanup function
+      }
     } catch (error) {
       console.error('Failed to set up auth state listener:', error);
       return () => {}; // Return empty cleanup function
