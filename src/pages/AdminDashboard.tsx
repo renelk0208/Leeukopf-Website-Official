@@ -67,11 +67,11 @@ export default function AdminDashboard() {
   const loadColors = async () => {
     const { data } = await supabase.from('site_settings').select('*');
     if (data) {
-      const settings: any = {};
+      const settings: Record<string, string> = {};
       data.forEach((setting) => {
         settings[setting.key] = setting.value;
       });
-      setColors(settings);
+      setColors(settings as unknown as SiteSettings);
     }
   };
 
@@ -132,7 +132,7 @@ export default function AdminDashboard() {
       setNewProduct({ name: '', description: '' });
       setSelectedFile(null);
       loadProducts(selectedCategory);
-    } catch (error) {
+    } catch {
       setMessage('Error adding product');
     } finally {
       setUploading(false);
@@ -159,7 +159,7 @@ export default function AdminDashboard() {
 
       setMessage('Product deleted successfully!');
       loadProducts(selectedCategory);
-    } catch (error) {
+    } catch {
       setMessage('Error deleting product');
     }
   };
@@ -172,7 +172,7 @@ export default function AdminDashboard() {
           .upsert({ key, value, updated_at: new Date().toISOString() });
       }
       setMessage('Colors updated successfully! Refresh the main site to see changes.');
-    } catch (error) {
+    } catch {
       setMessage('Error updating colors');
     }
   };
@@ -220,7 +220,7 @@ export default function AdminDashboard() {
       );
       setBulkFiles(null);
       loadProducts(selectedCategory);
-    } catch (error) {
+    } catch {
       setMessage('Error during bulk upload');
     } finally {
       setBulkUploading(false);

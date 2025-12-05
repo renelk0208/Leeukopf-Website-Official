@@ -140,7 +140,7 @@ const handler: Handler = async (event: HandlerEvent) => {
   let formData: FormData;
   try {
     formData = JSON.parse(event.body || '{}');
-  } catch (error) {
+  } catch {
     return {
       statusCode: 400,
       headers,

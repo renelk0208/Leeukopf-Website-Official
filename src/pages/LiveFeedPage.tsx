@@ -64,8 +64,8 @@ export default function LiveFeedPage() {
       script.src = 'https://www.instagram.com/embed.js';
       script.onload = () => {
         setScriptsLoaded(prev => ({ ...prev, instagram: true }));
-        if ((window as any).instgrm) {
-          (window as any).instgrm.Embeds.process();
+        if (typeof window !== 'undefined' && 'instgrm' in window) {
+          (window as typeof window & { instgrm: { Embeds: { process: () => void } } }).instgrm.Embeds.process();
         }
       };
     } else {
