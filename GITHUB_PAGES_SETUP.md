@@ -59,7 +59,7 @@ jobs:
       
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
           
       - name: Install dependencies
         run: npm ci
@@ -94,16 +94,19 @@ Then configure GitHub Pages:
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
 
+**Security Note**: For production deployments, consider pinning GitHub Actions to specific commit hashes (e.g., `actions/checkout@v4.1.1` instead of `@v4`) for better security and reproducibility.
+
 ### Option 2: Manual Deploy to gh-pages Branch
 
 ```bash
 # Build the project
 npm run build
 
-# Deploy dist folder to gh-pages branch
+# Deploy dist folder to gh-pages branch using npx
 npx gh-pages -d dist -t true
 
 # The -t flag ensures dotfiles (like .nojekyll) are included
+# Note: gh-pages package will be installed automatically by npx
 ```
 
 Then configure GitHub Pages:
