@@ -1,5 +1,6 @@
 import PageTemplate from '../../components/PageTemplate';
 import ProductSEO from '../../components/ProductSEO';
+import NailArtGallery from '../../components/NailArtGallery';
 
 export default function NailArtPage() {
   return (
@@ -31,6 +32,9 @@ export default function NailArtPage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      <NailArtGallery />
 
       {/* Product Categories */}
       <div className="mb-10 sm:mb-12 md:mb-16">

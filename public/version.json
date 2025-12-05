@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-05T13:15:42.010Z",
-  "commit": "796fb14",
-  "branch": "copilot/fix-website-loading-issue",
+  "buildDate": "2025-12-05T14:08:08.774Z",
+  "commit": "299d4c2",
+  "branch": "copilot/allocate-product-images-categories",
   "message": "Build deployed successfully"
 }
