@@ -2,6 +2,7 @@ import PageTemplate from '../../components/PageTemplate';
 import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
 import PolygelGallery from '../../components/PolygelGallery';
+import { categoryHero } from '../../config/imageMap';
 
 export default function PolygelAcrygelPage() {
   return (
@@ -18,7 +19,7 @@ export default function PolygelAcrygelPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg"
+            src={categoryHero['polygel-acrygel']}
             alt="Polygel / AcryGel"
             className="w-full h-auto object-cover"
             loading="lazy"

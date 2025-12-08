@@ -4,48 +4,15 @@ import PageTemplate from '../../components/PageTemplate';
 import BrochureRequestModal from '../../components/BrochureRequestModal';
 import ProductCarousel from '../../components/ProductCarousel';
 import GelPolishCategoryGallery from '../../components/GelPolishCategoryGallery';
+import { getSubcategoryImages, categoryHero } from '../../config/imageMap';
 
 export default function GelPolishPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const autumnWinterImages = [
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
-      alt: 'Autumn Winter 25/26 gel polish collection cover'
-    },
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_warm_colors.jpg',
-      alt: 'Autumn Winter 25/26 gel polish warm colors collection'
-    },
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_rose_jewels_glitters.jpg',
-      alt: 'Autumn Winter 25/26 gel polish rose jewels and glitters'
-    },
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_red_cat_eye.jpg',
-      alt: 'Autumn Winter 25/26 gel polish red cat eye collection'
-    },
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cofee_cat_eye.jpg',
-      alt: 'Autumn Winter 25/26 gel polish coffee cat eye collection'
-    },
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_galaxy_cat_eye.jpg',
-      alt: 'Autumn Winter 25/26 gel polish galaxy cat eye collection'
-    },
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_gold_leaf.jpg',
-      alt: 'Autumn Winter 25/26 gel polish gold leaf collection'
-    },
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_laser_glitters.jpg',
-      alt: 'Autumn Winter 25/26 gel polish laser glitters collection'
-    },
-    {
-      src: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_xmas_glitters.jpg',
-      alt: 'Autumn Winter 25/26 gel polish Christmas glitters collection'
-    }
-  ];
+  const autumnWinterImages = getSubcategoryImages('gel-polish', 'autumn-winter-25-26').map((src, index) => ({
+    src,
+    alt: `Autumn Winter 25/26 gel polish collection ${index + 1}`
+  }));
 
   return (
     <>
@@ -62,7 +29,7 @@ export default function GelPolishPage() {
           {/* Hero image */}
           <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
             <img
-              src="/img/products/gel_polishes/gel_polish_category_1.jpg"
+              src={categoryHero['gel-polish']}
               alt="Professional Gel Polish Collection"
               className="w-full h-auto object-cover"
               loading="lazy"
