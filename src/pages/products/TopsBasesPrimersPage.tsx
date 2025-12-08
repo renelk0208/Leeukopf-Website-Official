@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FileText } from 'lucide-react';
 import PageTemplate from '../../components/PageTemplate';
 import BrochureRequestModal from '../../components/BrochureRequestModal';
+import { categoryHero } from '../../config/imageMap';
 
 export default function TopsBasesPrimersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,9 +36,10 @@ export default function TopsBasesPrimersPage() {
         <div className="mb-16">
           <div className="mb-12 rounded-xl overflow-hidden">
             <img
-              src="/img/products/tops & bases_category_1.jpg"
+              src={categoryHero['tops-and-bases']}
               alt="Tops, Bases & Primers Collection"
               className="w-full h-auto object-cover"
+              loading="lazy"
             />
           </div>
 

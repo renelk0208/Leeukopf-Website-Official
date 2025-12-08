@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FileText } from 'lucide-react';
 import PageTemplate from '../../components/PageTemplate';
 import BrochureRequestModal from '../../components/BrochureRequestModal';
+import { categoryHero } from '../../config/imageMap';
 
 export default function BuilderSystemsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,9 +40,10 @@ export default function BuilderSystemsPage() {
         <div className="mb-16">
           <div className="mb-12 rounded-xl overflow-hidden">
             <img
-              src="/img/products/builder_gels_category_2.jpg"
+              src={categoryHero['builder-systems']}
               alt="Professional Builder Systems Collection"
               className="w-full h-auto object-cover"
+              loading="lazy"
             />
           </div>
 
