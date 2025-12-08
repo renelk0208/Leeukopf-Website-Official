@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-08T15:18:08.236Z",
-  "commit": "fa1f2ea",
-  "branch": "copilot/fix-relative-paths-in-forms",
+  "buildDate": "2025-12-08T15:58:47.734Z",
+  "commit": "1879bb0",
+  "branch": "copilot/fix-netlify-redirects-issue",
   "message": "Build deployed successfully"
 }
