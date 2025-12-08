@@ -1,36 +1,40 @@
+---
 # Repository settings for Leeukopf Website
-# This file can be used with the GitHub Settings App (Probot) to manage repository settings
+# This file can be used with the GitHub Settings App (Probot)
+# to manage repository settings
 # See: https://github.com/probot/settings
 
 # Repository settings
 repository:
   # Repository name
   name: Leeukopf-Website-Official
-  
+
   # A short description of the repository
-  description: Official Leeukopf Laboratories website - Premium gel polish manufacturing
-  
+  description: >-
+    Official Leeukopf Laboratories website -
+    Premium gel polish manufacturing
+
   # A URL with more information about the repository
   homepage: https://www.leeukopf.com
-  
+
   # Keep the repository private or public
   private: false
-  
+
   # Enable or disable the wiki for this repository
   has_wiki: true
-  
+
   # Enable or disable GitHub Issues for this repository
   has_issues: true
-  
+
   # Enable or disable projects for this repository
   has_projects: true
-  
+
   # Allow merge commits
   allow_merge_commit: true
-  
+
   # Allow squash merges
   allow_squash_merge: true
-  
+
   # Allow rebase merges
   allow_rebase_merge: true
 
@@ -41,21 +45,21 @@ branches:
     protection:
       # Require pull request reviews before merging - DISABLED
       required_pull_request_reviews: null
-      
+
       # Require status checks to pass before merging - DISABLED
       required_status_checks: null
-      
+
       # Enforce all configured restrictions for administrators - DISABLED
       enforce_admins: false
-      
+
       # Restrict who can push to matching branches - DISABLED
       restrictions: null
-      
+
       # Require linear history - DISABLED
       required_linear_history: false
-      
+
       # Allow force pushes - ENABLED to allow direct commits
       allow_force_pushes: true
-      
+
       # Allow deletions - DISABLED for safety
       allow_deletions: false
