@@ -9,19 +9,8 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Redirect /api/instagram to the Netlify function
-[[redirects]]
-  from = "/api/instagram"
-  to = "/.netlify/functions/instagram-feed"
-  status = 200
-
-# Redirect for client registration email function
-[[redirects]]
-  from = "/api/client-registration-email"
-  to = "/.netlify/functions/send-client-registration-email"
-  status = 200
-
 # SPA redirect - serve index.html for all routes
+# Note: API routes are handled by Netlify Functions with path configuration
 [[redirects]]
   from = "/*"
   to = "/index.html"
