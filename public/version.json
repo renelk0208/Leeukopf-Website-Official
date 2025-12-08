@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-05T14:11:10.685Z",
-  "commit": "a4e25b8",
-  "branch": "copilot/allocate-product-images-categories",
+  "buildDate": "2025-12-08T15:18:08.236Z",
+  "commit": "fa1f2ea",
+  "branch": "copilot/fix-relative-paths-in-forms",
   "message": "Build deployed successfully"
 }
