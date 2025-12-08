@@ -43,9 +43,22 @@ export default function Contact() {
         body: JSON.stringify(formData),
       });
 
+      // Check response status before parsing JSON
+      if (!response.ok) {
+        const responseText = await response.text();
+        console.error('Contact form submission failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: responseText
+        });
+        setStatus('error');
+        setErrorMessage('Failed to send message. Please try again.');
+        return;
+      }
+
       const data = await response.json();
 
-      if (response.ok && data.success) {
+      if (data.success) {
         setStatus('success');
         setFormData({
           name: '',
