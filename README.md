@@ -70,15 +70,20 @@ npm run build
 npm run preview
 ```
 
-## Branch Protection
+## Branch Protection / Push Blocking Issues
 
-If you're unable to push directly to the `main` branch, see [BRANCH_PROTECTION_REMOVAL.md](./BRANCH_PROTECTION_REMOVAL.md) for instructions on:
+If you see **"One or more rules apply to the branch main that will prevent pushing"**:
 
-- Removing branch protection rules via GitHub UI
-- Using the automated script to check and remove protection
-- Configuring repository settings with `.github/settings.yml`
+### Quick Fix - Remove "Copilot review for default branch" Ruleset
+There's a **Repository Ruleset** called "Copilot review for default branch" blocking pushes:
+- 🔧 **Fix**: Go to https://github.com/renelk0208/Leeukopf-Website-Official/settings/rules
+- Click on the ruleset → Delete, Disable, or add yourself to Bypass list
+- 📖 **Detailed Guide**: See [REPOSITORY_RULESETS_FIX.md](./REPOSITORY_RULESETS_FIX.md)
 
-Quick check: `./scripts/check-branch-protection.sh` (requires GitHub CLI)
+### Other Resources
+- [BRANCH_PROTECTION_REMOVAL.md](./BRANCH_PROTECTION_REMOVAL.md) - For traditional branch protection rules
+- `./scripts/check-branch-protection.sh` - Automated script (requires GitHub CLI)
+- `.github/settings.yml` - Configuration for automated management
 
 ## Contributing
 

@@ -6,7 +6,24 @@ You are currently blocked from committing directly to the `main` branch. GitHub 
 
 This document provides instructions for removing branch protection rules so you can commit and push directly to `main` from your local machine and from the GitHub web editor.
 
-## Solution Options
+## ⚠️ FIRST: Check Repository Rulesets (YOUR ISSUE!)
+
+**You have a Repository Ruleset called "Copilot review for default branch"** that is blocking pushes to `main`.
+
+### Quick Fix for This Ruleset:
+1. Go to: **https://github.com/renelk0208/Leeukopf-Website-Official/settings/rules**
+2. Click on **"Copilot review for default branch"**
+3. **Choose one option:**
+   - **Delete it**: Scroll to bottom → Click **"Delete ruleset"** → Confirm (permanently removes it)
+   - **Disable it**: Change "Enforcement status" from "Active" to "Disabled" (keeps it for future)
+   - **Bypass it**: Add yourself to the "Bypass list" (you can push, rule stays for others)
+4. Test: `git push origin main`
+
+**📖 For detailed Rulesets troubleshooting**: See [REPOSITORY_RULESETS_FIX.md](./REPOSITORY_RULESETS_FIX.md)
+
+---
+
+## Solution Options (Traditional Branch Protection)
 
 ### Option 1: Manual Removal via GitHub UI (Immediate)
 
