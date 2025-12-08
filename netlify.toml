@@ -9,8 +9,30 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# SPA redirect - serve index.html for all routes
-# Note: API routes are handled by Netlify Functions with path configuration
+# Explicit redirects for API endpoints to Netlify Functions
+# These MUST come before the SPA wildcard redirect
+[[redirects]]
+  from = "/api/contact-email"
+  to = "/.netlify/functions/send-contact-email"
+  status = 200
+
+[[redirects]]
+  from = "/api/client-registration-email"
+  to = "/.netlify/functions/send-client-registration-email"
+  status = 200
+
+[[redirects]]
+  from = "/api/instagram"
+  to = "/.netlify/functions/instagram-feed"
+  status = 200
+
+[[redirects]]
+  from = "/api/test-email"
+  to = "/.netlify/functions/test-email"
+  status = 200
+
+# SPA redirect - serve index.html for all other routes
+# This must be LAST so explicit redirects and functions take precedence
 [[redirects]]
   from = "/*"
   to = "/index.html"
