@@ -70,6 +70,16 @@ npm run build
 npm run preview
 ```
 
+## Branch Protection
+
+If you're unable to push directly to the `main` branch, see [BRANCH_PROTECTION_REMOVAL.md](./BRANCH_PROTECTION_REMOVAL.md) for instructions on:
+
+- Removing branch protection rules via GitHub UI
+- Using the automated script to check and remove protection
+- Configuring repository settings with `.github/settings.yml`
+
+Quick check: `./scripts/check-branch-protection.sh` (requires GitHub CLI)
+
 ## Contributing
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to:
