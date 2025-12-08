@@ -34,17 +34,29 @@ function getAllowedOrigin(requestOrigin: string | undefined): string {
   return 'https://leeukopf.com';
 }
 
+// Escape HTML to prevent XSS
+function escapeHtml(text: string): string {
+  const htmlEscapeMap: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+  return text.replace(/[&<>"']/g, (char) => htmlEscapeMap[char] || char);
+}
+
 // Generate email body
 function generateEmailBody(formData: ContactFormData): string {
   return `
 <h2>New Contact Form Submission</h2>
 
-<p><strong>From:</strong> ${formData.name}</p>
-<p><strong>Email:</strong> ${formData.email}</p>
-<p><strong>Subject:</strong> ${formData.subject}</p>
+<p><strong>From:</strong> ${escapeHtml(formData.name)}</p>
+<p><strong>Email:</strong> ${escapeHtml(formData.email)}</p>
+<p><strong>Subject:</strong> ${escapeHtml(formData.subject)}</p>
 
 <h3>Message:</h3>
-<p>${formData.message.replace(/\n/g, '<br>')}</p>
+<p>${escapeHtml(formData.message).replace(/\n/g, '<br>')}</p>
 
 <hr>
 <p style="font-size: 12px; color: #666;">
@@ -56,7 +68,7 @@ function generateEmailBody(formData: ContactFormData): string {
 // Generate auto-reply email body
 function generateAutoReplyBody(name: string): string {
   return `
-<p>Dear ${name},</p>
+<p>Dear ${escapeHtml(name)},</p>
 
 <p>Thank you for contacting Leeukopf Laboratories.</p>
 

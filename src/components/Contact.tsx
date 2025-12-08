@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
 export default function Contact() {
@@ -11,6 +11,16 @@ export default function Contact() {
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -45,8 +55,11 @@ export default function Contact() {
           honeypot: '',
         });
         
-        // Reset success message after 5 seconds
-        setTimeout(() => setStatus('idle'), 5000);
+        // Reset success message after 5 seconds with cleanup
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+        timeoutRef.current = setTimeout(() => setStatus('idle'), 5000);
       } else {
         setStatus('error');
         setErrorMessage(data.error || 'Failed to send message. Please try again.');
