@@ -5,6 +5,7 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
  * Configuration for gel polish categories with their folder paths and English titles.
  */
 const GEL_POLISH_CATEGORIES = [
+  { id: 'catEyeCollection', folder: 'Cat Eye Collection', title: 'Cat Eye Collection', description: 'Magnetic cat eye gel polishes with mesmerizing effects' },
   { id: 'glittersCollection', folder: 'Glitters Collection', title: 'Glitters Collection', description: 'Sparkling glitter gel polishes with stunning effects' },
   { id: 'greenCollection', folder: 'Green Collection', title: 'Green Collection', description: 'Fresh green shades for nature-inspired looks' },
   { id: 'pastelCollection', folder: 'Pastel Collectin', title: 'Pastel Collection', description: 'Soft and delicate pastel shades' },

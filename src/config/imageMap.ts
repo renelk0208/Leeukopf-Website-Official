@@ -136,9 +136,10 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (3).jpg',
     ],
     '3-in-1-builder': [
-      '/img/products/builder-systems/3-in-1 Builder gel/Colour Gels/3-in-1_builder_color_gels_1.jpg',
-      '/img/products/builder-systems/3-in-1 Builder gel/Colour Gels/3-in-1_builder_color_gels_2.jpg',
-      '/img/products/builder-systems/3-in-1 Builder gel/Effects Gels/3-in-1_builder_effect_gels_1.jpg',
+      '/img/products/builder-systems/3-in-1 Builder gel/Colour Gels/colour-gels.jpg',
+      '/img/products/builder-systems/3-in-1 Builder gel/Colour Gels/Leeukopf_UGI-V.jpg',
+      '/img/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-GY.jpg',
+      '/img/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-VR.jpg',
     ],
   },
   'tops-and-bases': {
