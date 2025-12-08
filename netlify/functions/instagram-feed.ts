@@ -1,5 +1,10 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 
+// Configure the function path
+export const config = {
+  path: '/api/instagram'
+};
+
 // Instagram API response types
 interface InstagramMediaItem {
   id: string;
