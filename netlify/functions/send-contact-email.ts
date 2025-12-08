@@ -3,7 +3,7 @@ import { Resend } from 'resend';
 
 // Configure the function path
 export const config = {
-  path: '/api/send-contact-email'
+  path: '/api/contact-email'
 };
 
 interface ContactFormData {

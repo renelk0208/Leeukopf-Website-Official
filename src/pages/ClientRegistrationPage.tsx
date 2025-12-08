@@ -1,7 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
-import { Upload, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
-import { supabase } from '../lib/supabase';
 
 interface FormData {
   company: string;
@@ -100,7 +99,6 @@ export default function ClientRegistrationPage() {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -155,26 +153,7 @@ export default function ClientRegistrationPage() {
     }));
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const validTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
-      const maxSize = 10 * 1024 * 1024;
 
-      if (!validTypes.includes(file.type)) {
-        setErrors(prev => ({ ...prev, file: 'Only PDF, PNG, and JPG files are allowed' }));
-        return;
-      }
-
-      if (file.size > maxSize) {
-        setErrors(prev => ({ ...prev, file: 'File size must be less than 10MB' }));
-        return;
-      }
-
-      setSelectedFile(file);
-      setErrors(prev => ({ ...prev, file: '' }));
-    }
-  };
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -209,78 +188,24 @@ export default function ClientRegistrationPage() {
     setSubmitError('');
 
     try {
-      let attachments: Array<{ filename: string; url: string }> = [];
-
-      if (selectedFile) {
-        const fileExt = selectedFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `clients/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('product-images')
-          .upload(filePath, selectedFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data } = supabase.storage
-          .from('product-images')
-          .getPublicUrl(filePath);
-
-        attachments = [{
-          filename: selectedFile.name,
-          url: data.publicUrl
-        }];
-      }
-
-      const registrationData = {
-        company: formData.company,
-        contact: formData.contact,
-        role: formData.role || null,
-        email: formData.email,
-        phone: formData.phone || null,
-        country: formData.country,
-        website: formData.website || null,
-        instagram: formData.instagram || null,
-        business_type: formData.businessType,
-        interests: formData.interests,
-        monthly_volume: formData.monthlyVolume || null,
-        vat_eori: formData.vatEori || null,
-        billing_address: formData.billingAddress || null,
-        shipping_address: formData.shippingAddress || null,
-        language: formData.language || 'EN',
-        notes: formData.notes || null,
-        attachments: attachments
-      };
-
-      const { error: dbError } = await supabase
-        .from('client_registrations')
-        .insert(registrationData);
-
-      if (dbError) throw dbError;
-
-      // Send emails via Netlify Function
-      const emailPayload = {
-        ...formData,
-        attachments,
-        honeypot: formData.honeypot
-      };
-
-      const emailResponse = await fetch('/.netlify/functions/send-client-registration-email', {
+      // Send registration data directly to Netlify Function
+      const response = await fetch('/api/client-registration-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(emailPayload)
+        body: JSON.stringify(formData)
       });
 
-      if (!emailResponse.ok) {
-        const errorData = await emailResponse.json().catch(() => ({}));
-        console.error('Email sending failed:', {
-          status: emailResponse.status,
-          statusText: emailResponse.statusText,
-          errorData
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        console.error('Registration failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          data
         });
-        throw new Error(`Email sending failed: ${errorData.error || emailResponse.statusText}`);
+        throw new Error(data.error || 'Failed to submit registration');
       }
 
       setSubmitSuccess(true);
@@ -304,13 +229,11 @@ export default function ClientRegistrationPage() {
         gdprConsent: false,
         honeypot: ''
       });
-      setSelectedFile(null);
       setErrors({});
 
       setTimeout(() => setSubmitSuccess(false), 10000);
     } catch (error) {
       console.error('Error submitting registration:', error);
-      // Log additional details for debugging
       if (error instanceof Error) {
         console.error('Error details:', {
           message: error.message,
@@ -686,35 +609,7 @@ export default function ClientRegistrationPage() {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
-                Upload Document (Optional)
-              </label>
-              <p className="text-sm text-gray-600 mb-3 font-light">
-                Business document or logo (PDF, PNG, JPG; max 10MB)
-              </p>
-              <div className="flex items-center space-x-4">
-                <input
-                  type="file"
-                  id="file-upload"
-                  accept=".pdf,.png,.jpg,.jpeg"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-                <label
-                  htmlFor="file-upload"
-                  className="flex items-center space-x-2 px-6 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 cursor-pointer transition-colors"
-                >
-                  <Upload size={20} className="text-gray-700" />
-                  <span className="text-gray-700">{selectedFile ? selectedFile.name : 'Choose File'}</span>
-                </label>
-              </div>
-              {errors.file && (
-                <p className="mt-2 text-sm text-red-600" role="alert">
-                  {errors.file}
-                </p>
-              )}
-            </div>
+
           </div>
         </div>
 
