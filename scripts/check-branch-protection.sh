@@ -82,7 +82,8 @@ if [ $API_STATUS -eq 0 ]; then
     fi
 else
     # API call failed - check if it's a 404 (no protection) or real error
-    if echo "$PROTECTION_OUTPUT" | grep -q "404"; then
+    # GitHub CLI typically returns "Not Found" or "HTTP 404" for missing protection
+    if echo "$PROTECTION_OUTPUT" | grep -qE "(Not Found|HTTP 404|404 Not Found)"; then
         echo "✅ No branch protection rules found on $BRANCH"
         echo ""
         echo "You should be able to push directly to $BRANCH:"

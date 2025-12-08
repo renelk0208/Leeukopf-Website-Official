@@ -6,7 +6,8 @@
 
 # Repository settings
 repository:
-  # Repository name
+  # Repository name (optional - only needed if you want to rename the repo)
+  # Remove this line if copying to other repositories
   name: Leeukopf-Website-Official
 
   # A short description of the repository
