@@ -9,10 +9,19 @@ import { getSubcategoryImages, categoryHero } from '../../config/imageMap';
 export default function GelPolishPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const autumnWinterImages = getSubcategoryImages('gel-polish', 'autumn-winter-25-26').map((src, index) => ({
-    src,
-    alt: `Autumn Winter 25/26 gel polish collection ${index + 1}`
-  }));
+  const autumnWinterImages = getSubcategoryImages('gel-polish', 'autumn-winter-25-26').map((src) => {
+    // Extract descriptive name from filename for alt text
+    const filename = src.split('/').pop() || '';
+    const altText = filename
+      .replace(/2026_new_collection_/gi, '')
+      .replace(/_/g, ' ')
+      .replace(/\.jpg$/i, '')
+      .trim();
+    return {
+      src,
+      alt: `Autumn Winter 25/26 gel polish ${altText} collection`
+    };
+  });
 
   return (
     <>
