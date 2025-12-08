@@ -19,31 +19,24 @@ export type ProductCategory = {
 export const productCategories: ProductCategory[] = [
   // Gel Polish Categories
   {
+    id: 'cat-eye-collection',
+    key: 'cat-eye-collection',
+    displayName: 'Cat Eye Collection',
+    imagePath: '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg',
+    group: 'Gel Polish',
+  },
+  {
+    id: 'cream-collection',
+    key: 'cream-collection',
+    displayName: 'Cream Collection',
+    imagePath: '/img/products/gel_polishes/Cream Collection/solid-cream-gel (1).jpg',
+    group: 'Gel Polish',
+  },
+  {
     id: 'glitters-collection',
     key: 'glitters-collection',
     displayName: 'Glitters Collection',
     imagePath: '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
-    group: 'Gel Polish',
-  },
-  {
-    id: 'green-collection',
-    key: 'green-collection',
-    displayName: 'Green Collection',
-    imagePath: '/img/products/gel_polishes/Green Collection/GRN_warm_nude_gel_polish_1.jpg',
-    group: 'Gel Polish',
-  },
-  {
-    id: 'pastel-collection',
-    key: 'pastel-collection',
-    displayName: 'Pastel Collection',
-    imagePath: '/img/products/gel_polishes/Pastel Collectin/PAN_pastel_color_gel_polish_1.jpg',
-    group: 'Gel Polish',
-  },
-  {
-    id: 'rose-nude-collection',
-    key: 'rose-nude-collection',
-    displayName: 'Rose Nude Collection',
-    imagePath: '/img/products/gel_polishes/Rose Nude Collection/RSN_warm_nude_gel_polish_1.jpg',
     group: 'Gel Polish',
   },
   {
@@ -54,13 +47,6 @@ export const productCategories: ProductCategory[] = [
     group: 'Gel Polish',
   },
   {
-    id: 'solid-cream-collection',
-    key: 'solid-cream-collection',
-    displayName: 'Solid Cream Collection',
-    imagePath: '/img/products/gel_polishes/Solid Cream Collection/solid-cream-gel (1).jpg',
-    group: 'Gel Polish',
-  },
-  {
     id: 'transparent-color-gel-polish',
     key: 'transparent-color-gel-polish',
     displayName: 'Transparent Color Gel Polish',
@@ -68,17 +54,10 @@ export const productCategories: ProductCategory[] = [
     group: 'Gel Polish',
   },
   {
-    id: 'warm-nudes-collection',
-    key: 'warm-nudes-collection',
-    displayName: 'Warm Nudes Collection',
-    imagePath: '/img/products/gel_polishes/Warm Nudes Collection/warm-nude-colection (1).jpg',
-    group: 'Gel Polish',
-  },
-  {
-    id: 'cat-eye-collection',
-    key: 'cat-eye-collection',
-    displayName: 'Cat Eye Collection',
-    imagePath: '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg',
+    id: 'autumn-winter-25-26',
+    key: 'autumn-winter-25-26',
+    displayName: 'Autumn Winter 25/26',
+    imagePath: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
     group: 'Gel Polish',
   },
 

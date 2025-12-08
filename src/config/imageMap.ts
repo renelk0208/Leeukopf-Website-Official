@@ -26,15 +26,12 @@ export interface ImageMap {
 export const categoryHero: Record<string, string> = {
   // Gel Polish
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_1.jpg',
-  'glitters-collection': '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
-  'green-collection': '/img/products/gel_polishes/Green Collection/GRN_warm_nude_gel_polish_1.jpg',
-  'pastel-collection': '/img/products/gel_polishes/Pastel Collectin/PAN_pastel_color_gel_polish_1.jpg',
-  'rose-nude-collection': '/img/products/gel_polishes/Rose Nude Collection/RSN_warm_nude_gel_polish_1.jpg',
-  'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg',
-  'solid-cream-collection': '/img/products/gel_polishes/Solid Cream Collection/solid-cream-gel (1).jpg',
-  'transparent-color-gel-polish': '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',
-  'warm-nudes-collection': '/img/products/gel_polishes/Warm Nudes Collection/warm-nude-colection (1).jpg',
   'cat-eye-collection': '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg',
+  'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-gel (1).jpg',
+  'glitters-collection': '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
+  'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg',
+  'transparent-color-gel-polish': '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',
+  'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
   
   // Builder Systems
   'builder-systems': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
@@ -97,6 +94,13 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (4).jpg',
       '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (5).jpg',
     ],
+    'cream-collection': [
+      '/img/products/gel_polishes/Cream Collection/solid-cream-gel (1).jpg',
+      '/img/products/gel_polishes/Cream Collection/solid-cream-gel (2).jpg',
+      '/img/products/gel_polishes/Cream Collection/solid-cream-gel (3).jpg',
+      '/img/products/gel_polishes/Cream Collection/solid-cream-gel (4).jpg',
+      '/img/products/gel_polishes/Cream Collection/solid-cream-gel (5).jpg',
+    ],
     'glitters-collection': [
       '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
       '/img/products/gel_polishes/Glitters Collection/DSO_A.jpg',
@@ -113,19 +117,12 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_4.jpg',
       '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_5.jpg',
     ],
-    'solid-cream-collection': [
-      '/img/products/gel_polishes/Solid Cream Collection/solid-cream-gel (1).jpg',
-      '/img/products/gel_polishes/Solid Cream Collection/solid-cream-gel (2).jpg',
-      '/img/products/gel_polishes/Solid Cream Collection/solid-cream-gel (3).jpg',
-      '/img/products/gel_polishes/Solid Cream Collection/solid-cream-gel (4).jpg',
-      '/img/products/gel_polishes/Solid Cream Collection/solid-cream-gel (5).jpg',
-    ],
-    'warm-nudes-collection': [
-      '/img/products/gel_polishes/Warm Nudes Collection/warm-nude-colection (1).jpg',
-      '/img/products/gel_polishes/Warm Nudes Collection/warm-nude-colection (2).jpg',
-      '/img/products/gel_polishes/Warm Nudes Collection/warm-nude-colection (3).jpg',
-      '/img/products/gel_polishes/Warm Nudes Collection/warm-nude-colection (4).jpg',
-      '/img/products/gel_polishes/Warm Nudes Collection/warm-nude-colection (5).jpg',
+    'transparent-color-gel-polish': [
+      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',
+      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (2).jpg',
+      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (3).jpg',
+      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (4).jpg',
+      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (5).jpg',
     ],
   },
   'builder-systems': {

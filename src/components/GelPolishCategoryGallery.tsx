@@ -5,15 +5,12 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
  * Configuration for gel polish categories with their folder paths and English titles.
  */
 const GEL_POLISH_CATEGORIES = [
+  { id: 'autumnWinter2526', folder: 'autumn_winter_25_26', title: 'Autumn Winter 25/26', description: 'Seasonal collection with warm colors and festive effects' },
   { id: 'catEyeCollection', folder: 'Cat Eye Collection', title: 'Cat Eye Collection', description: 'Magnetic cat eye gel polishes with mesmerizing effects' },
+  { id: 'creamCollection', folder: 'Cream Collection', title: 'Cream Collection', description: 'Creamy, opaque gel polishes with smooth coverage' },
   { id: 'glittersCollection', folder: 'Glitters Collection', title: 'Glitters Collection', description: 'Sparkling glitter gel polishes with stunning effects' },
-  { id: 'greenCollection', folder: 'Green Collection', title: 'Green Collection', description: 'Fresh green shades for nature-inspired looks' },
-  { id: 'pastelCollection', folder: 'Pastel Collectin', title: 'Pastel Collection', description: 'Soft and delicate pastel shades' },
-  { id: 'roseNudeCollection', folder: 'Rose Nude Collection', title: 'Rose Nude Collection', description: 'Elegant rose and nude tones' },
   { id: 'solidColourCollection', folder: 'Solid Colour Collection', title: 'Solid Colour Collection', description: 'Bold and vibrant pure color gel polishes' },
-  { id: 'solidCreamCollection', folder: 'Solid Cream Collection', title: 'Solid Cream Collection', description: 'Creamy, opaque gel polishes with smooth coverage' },
   { id: 'transparentColorGelPolish', folder: 'Transparent Color Gel Polish', title: 'Transparent Color Gel Polish', description: 'Translucent color gels for subtle effects' },
-  { id: 'warmNudesCollection', folder: 'Warm Nudes Collection', title: 'Warm Nudes Collection', description: 'Warm nude tones perfect for any occasion' },
 ];
 
 /**
