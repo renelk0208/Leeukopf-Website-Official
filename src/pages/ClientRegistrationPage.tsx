@@ -99,7 +99,7 @@ export default function ClientRegistrationPage() {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [uploading, setUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
@@ -184,7 +184,7 @@ export default function ClientRegistrationPage() {
       return;
     }
 
-    setUploading(true);
+    setIsSubmitting(true);
     setSubmitError('');
 
     try {
@@ -243,7 +243,7 @@ export default function ClientRegistrationPage() {
       }
       setSubmitError('Something went wrong while sending your registration. Please try again in a few minutes.');
     } finally {
-      setUploading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -647,10 +647,10 @@ export default function ClientRegistrationPage() {
           <div className="mt-8 flex justify-center">
             <button
               type="submit"
-              disabled={!isFormValid || uploading}
+              disabled={!isFormValid || isSubmitting}
               className="px-12 py-4 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {uploading ? 'Submitting...' : 'Submit Registration'}
+              {isSubmitting ? 'Submitting...' : 'Submit Registration'}
             </button>
           </div>
         </div>
