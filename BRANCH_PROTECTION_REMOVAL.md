@@ -83,12 +83,12 @@ Using curl or any HTTP client with a personal access token:
 
 ```bash
 # Get current protection (requires 'repo' scope token)
-curl -H "Authorization: token YOUR_TOKEN" \
+curl -H "Authorization: Bearer YOUR_TOKEN" \
   https://api.github.com/repos/renelk0208/Leeukopf-Website-Official/branches/main/protection
 
 # Delete protection
 curl -X DELETE \
-  -H "Authorization: token YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
   https://api.github.com/repos/renelk0208/Leeukopf-Website-Official/branches/main/protection
 ```
 

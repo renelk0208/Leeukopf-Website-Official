@@ -42,17 +42,23 @@ echo ""
 echo "Checking current branch protection rules..."
 echo ""
 
-if gh api "repos/$REPO/branches/$BRANCH/protection" 2>/dev/null; then
+# Try to get branch protection and capture the output and status
+PROTECTION_OUTPUT=$(gh api "repos/$REPO/branches/$BRANCH/protection" 2>&1)
+API_STATUS=$?
+
+if [ $API_STATUS -eq 0 ]; then
+    # Successfully retrieved protection rules - they exist
+    echo "$PROTECTION_OUTPUT"
     echo ""
     echo "⚠️  Branch protection IS ENABLED on $BRANCH"
     echo ""
     echo "Current protection rules are shown above."
     echo ""
-    
+
     # Ask if user wants to remove protection
     read -p "Do you want to REMOVE branch protection from $BRANCH? (yes/no): " -r
     echo
-    
+
     if [[ $REPLY =~ ^[Yy][Ee][Ss]$ ]]; then
         echo "Removing branch protection..."
         if gh api -X DELETE "repos/$REPO/branches/$BRANCH/protection"; then
@@ -75,30 +81,20 @@ if gh api "repos/$REPO/branches/$BRANCH/protection" 2>/dev/null; then
         echo "3. Disable all protection settings or delete the rule"
     fi
 else
-    ERROR_CODE=$?
-    if [ $ERROR_CODE -eq 0 ]; then
+    # API call failed - check if it's a 404 (no protection) or real error
+    if echo "$PROTECTION_OUTPUT" | grep -q "404"; then
         echo "✅ No branch protection rules found on $BRANCH"
         echo ""
         echo "You should be able to push directly to $BRANCH:"
         echo "  git push origin $BRANCH"
     else
-        # Check if it's a 404 (no protection) or permission error
-        ERROR_MSG=$(gh api "repos/$REPO/branches/$BRANCH/protection" 2>&1 || true)
-        
-        if echo "$ERROR_MSG" | grep -q "404"; then
-            echo "✅ No branch protection rules found on $BRANCH"
-            echo ""
-            echo "You should be able to push directly to $BRANCH:"
-            echo "  git push origin $BRANCH"
-        else
-            echo "❌ Error checking branch protection:"
-            echo "$ERROR_MSG"
-            echo ""
-            echo "Possible reasons:"
-            echo "- You don't have permission to view branch protection"
-            echo "- The repository or branch doesn't exist"
-            echo "- GitHub API is having issues"
-        fi
+        echo "❌ Error checking branch protection:"
+        echo "$PROTECTION_OUTPUT"
+        echo ""
+        echo "Possible reasons:"
+        echo "- You don't have permission to view branch protection"
+        echo "- The repository or branch doesn't exist"
+        echo "- GitHub API is having issues"
     fi
 fi
 

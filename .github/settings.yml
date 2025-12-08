@@ -44,15 +44,18 @@ branches:
     # Branch protection settings - ALL DISABLED to allow direct pushes
     protection:
       # Require pull request reviews before merging - DISABLED
+      # Setting to null explicitly disables this feature
       required_pull_request_reviews: null
 
       # Require status checks to pass before merging - DISABLED
+      # Setting to null explicitly disables this feature
       required_status_checks: null
 
       # Enforce all configured restrictions for administrators - DISABLED
       enforce_admins: false
 
       # Restrict who can push to matching branches - DISABLED
+      # Setting to null explicitly disables this feature
       restrictions: null
 
       # Require linear history - DISABLED
