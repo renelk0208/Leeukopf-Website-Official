@@ -57,7 +57,7 @@ export const productCategories: ProductCategory[] = [
     id: 'solid-cream-collection',
     key: 'solid-cream-collection',
     displayName: 'Solid Cream Collection',
-    imagePath: '/img/products/gel_polishes/Solid Cream Collection/solid-cream-category image.jpg',
+    imagePath: '/img/products/gel_polishes/Solid Cream Collection/solid-cream-gel (1).jpg',
     group: 'Gel Polish',
   },
   {
@@ -117,7 +117,7 @@ export const productCategories: ProductCategory[] = [
     id: 'rubber-bases',
     key: 'rubber-bases',
     displayName: 'Rubber Bases',
-    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber bases category image.jpg',
+    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg',
     group: 'Tops & Bases',
   },
   {
@@ -131,7 +131,7 @@ export const productCategories: ProductCategory[] = [
     id: 'effect-tops',
     key: 'effect-tops',
     displayName: 'Effect Top Coats',
-    imagePath: '/img/products/tops-and-bases/tops/Effect Tops/effect-tops-category.jpg',
+    imagePath: '/img/products/tops-and-bases/tops & bases_category_effects.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -170,7 +170,7 @@ export const productCategories: ProductCategory[] = [
     id: 'nail-art',
     key: 'nail-art',
     displayName: 'Nail Art',
-    imagePath: '/img/products/nail-art/nail-art-category.jpg',
+    imagePath: '/img/products/nail-art/nail-art-category-image.jpg',
     group: 'Nail Art',
   },
 

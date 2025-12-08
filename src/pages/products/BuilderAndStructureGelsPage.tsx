@@ -4,6 +4,7 @@ import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
 import BuilderSystemsGallery from '../../components/BuilderSystemsGallery';
 import { isSubcategoryEnabled } from '../../config/productCategories';
+import { categoryHero } from '../../config/imageMap';
 
 export default function BuilderAndStructureGelsPage() {
   const subcategories = [
@@ -41,7 +42,7 @@ export default function BuilderAndStructureGelsPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/builder-systems/builder_gels_category_2.jpg"
+            src={categoryHero['builder-gels']}
             alt="Builder & Structure Gels"
             className="w-full h-auto object-cover"
             loading="lazy"

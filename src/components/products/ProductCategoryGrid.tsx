@@ -1,5 +1,6 @@
 import React from "react";
 import { productCategories } from "../../data/productCategories";
+import { getImage, productPlaceholder } from "../../config/imageMap";
 
 type ProductCategoryGridProps = {
   group: string;
@@ -70,13 +71,13 @@ const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
                 <article className="h-full flex flex-col rounded-2xl bg-white/90 shadow-sm border border-neutral-100 overflow-hidden transition-transform transition-shadow duration-200 ease-out group-hover:-translate-y-1 group-hover:shadow-lg">
                   <div className="relative w-full aspect-square overflow-hidden bg-neutral-100">
                     <img
-                      src={category.imagePath}
+                      src={category.imagePath || getImage(category.key)}
                       alt={category.displayName}
                       loading="lazy"
                       className="w-full h-full object-cover fade-in-image group-hover:scale-[1.03] transition-transform duration-300 ease-out"
                       onError={(e) => {
                         const target = e.currentTarget;
-                        target.src = "/img/placeholders/category-placeholder.jpg";
+                        target.src = productPlaceholder['default'];
                         target.alt = `${category.displayName} (image coming soon)`;
                       }}
                     />
