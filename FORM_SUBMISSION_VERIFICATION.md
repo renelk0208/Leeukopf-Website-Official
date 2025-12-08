@@ -58,11 +58,11 @@ npm run build: ✅ SUCCESS
 ### ✅ Prohibited References Verification
 
 Searched entire codebase and build output:
-- ✅ No `yhwlbhzguzoyjtozcrtu.supabase.co` references
-- ✅ No `client_registrations` references
-- ✅ No `api/send-contact-email` references
-- ✅ No `"api/contact-email"` (without leading slash)
-- ✅ No `"api/client-registration-email"` (without leading slash)
+- ✅ No legacy Supabase URLs found
+- ✅ No `client_registrations` table references
+- ✅ No `api/send-contact-email` legacy endpoint references
+- ✅ No `"api/contact-email"` relative paths (without leading slash)
+- ✅ No `"api/client-registration-email"` relative paths (without leading slash)
 
 ## Issue Analysis
 
@@ -117,22 +117,48 @@ If you still see HTML responses (404 errors), check:
 
 ## Code Structure
 
-Both forms follow the correct pattern:
+Both forms follow the correct pattern with proper error handling:
 
 ```typescript
-// Contact Form
-await fetch("/api/contact-email", {
+// Contact Form (src/components/Contact.tsx:38)
+const response = await fetch("/api/contact-email", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(formData),
 });
 
-// Client Registration Form
-await fetch("/api/client-registration-email", {
+// Check response before parsing JSON
+if (!response.ok) {
+  const responseText = await response.text();
+  console.error('Contact form submission failed:', {
+    status: response.status,
+    statusText: response.statusText,
+    body: responseText
+  });
+  // Handle error...
+}
+
+const data = await response.json();
+
+// Client Registration Form (src/pages/ClientRegistrationPage.tsx:192)
+const response = await fetch("/api/client-registration-email", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(formData),
+  body: JSON.stringify(formData)
 });
+
+// Check response before parsing JSON
+if (!response.ok) {
+  const responseText = await response.text();
+  console.error('Registration failed:', {
+    status: response.status,
+    statusText: response.statusText,
+    body: responseText
+  });
+  throw new Error('Failed to submit registration');
+}
+
+const data = await response.json();
 ```
 
 ## Netlify Configuration
