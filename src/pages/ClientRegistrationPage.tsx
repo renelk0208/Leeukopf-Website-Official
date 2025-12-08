@@ -197,9 +197,20 @@ export default function ClientRegistrationPage() {
         body: JSON.stringify(formData)
       });
 
+      // Check response status before parsing JSON
+      if (!response.ok) {
+        const responseText = await response.text();
+        console.error('Registration failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: responseText
+        });
+        throw new Error('Failed to submit registration');
+      }
+
       const data = await response.json();
 
-      if (!response.ok || !data.success) {
+      if (!data.success) {
         console.error('Registration failed:', {
           status: response.status,
           statusText: response.statusText,
