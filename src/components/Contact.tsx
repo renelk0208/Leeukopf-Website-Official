@@ -35,7 +35,7 @@ export default function Contact() {
     setErrorMessage('');
 
     try {
-      const response = await fetch('/api/send-contact-email', {
+      const response = await fetch('/api/contact-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

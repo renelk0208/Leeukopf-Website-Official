@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-08T12:44:07.784Z",
-  "commit": "4e24842",
-  "branch": "copilot/troubleshoot-netlify-functions",
+  "buildDate": "2025-12-08T13:16:18.467Z",
+  "commit": "204a555",
+  "branch": "copilot/update-client-registration-endpoint",
   "message": "Build deployed successfully"
 }
