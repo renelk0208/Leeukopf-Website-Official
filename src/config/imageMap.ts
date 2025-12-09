@@ -47,7 +47,7 @@ export const categoryHero: Record<string, string> = {
   'tops-and-bases': '/img/products/tops-and-bases/tops-bases_category_1.jpg',
   'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops-bases_category_1.jpg',
-  'effect-tops': '/img/products/tops-and-bases/tops & bases_category_effects.jpg',
+  'effect-tops': '/img/products/tops-and-bases/rubber_bases_effects-category.jpg',
   'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
   

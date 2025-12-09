@@ -110,7 +110,7 @@ export const productCategories: ProductCategory[] = [
     id: 'effect-tops',
     key: 'effect-tops',
     displayName: 'Effect Top Coats',
-    imagePath: '/img/products/tops-and-bases/tops & bases_category_effects.jpg',
+    imagePath: '/img/products/tops-and-bases/rubber_bases_effects-category.jpg',
     group: 'Tops & Bases',
   },
   {
