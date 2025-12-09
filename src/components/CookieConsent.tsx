@@ -143,7 +143,7 @@ export const CookieConsent: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleConsent("all")}
-                  className="w-full rounded-full px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-primary-600 transition md:w-auto"
+                  className="w-full rounded-full px-4 py-2 text-xs font-semibold text-white bg-brightPink hover:bg-brightPink-hover transition md:w-auto"
                 >
                   Accept all
                 </button>
@@ -217,7 +217,7 @@ export const CookieConsent: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleConsent("all")}
-                    className="w-full rounded-full px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-primary-600 transition"
+                    className="w-full rounded-full px-4 py-2 text-xs font-semibold text-white bg-brightPink hover:bg-brightPink-hover transition"
                   >
                     Allow all cookies
                   </button>
