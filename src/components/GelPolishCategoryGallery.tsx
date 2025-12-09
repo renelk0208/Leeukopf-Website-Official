@@ -264,19 +264,42 @@ export default function GelPolishCategoryGallery() {
 
       {/* Category cards grid - responsive layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {GEL_POLISH_CATEGORIES.map((category) => (
-          <button
-            key={category.id}
-            type="button"
-            onClick={() => handleCategoryClick(category.id)}
-            aria-label={`Open ${category.title} gel polish collection`}
-            className="w-full rounded-xl shadow-md bg-white p-4 text-left hover:shadow-lg transition-all cursor-pointer border border-gray-100"
-          >
-            <div className="text-lg font-semibold text-gray-800">
-              {category.title}
-            </div>
-          </button>
-        ))}
+        {GEL_POLISH_CATEGORIES.map((category) => {
+          // Get the first image from this category as thumbnail
+          const thumbnail = CATEGORY_IMAGES[category.id]?.[0]?.src;
+          
+          return (
+            <button
+              key={category.id}
+              type="button"
+              onClick={() => handleCategoryClick(category.id)}
+              aria-label={`Open ${category.title} gel polish collection`}
+              className="w-full rounded-xl shadow-md bg-white overflow-hidden hover:shadow-lg transition-all cursor-pointer border border-gray-100"
+            >
+              {/* Thumbnail image */}
+              {thumbnail && (
+                <div className="relative w-full aspect-square overflow-hidden bg-gray-100">
+                  <img
+                    src={thumbnail}
+                    alt={category.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              
+              {/* Category info */}
+              <div className="p-4">
+                <div className="text-lg font-semibold text-gray-800">
+                  {category.title}
+                </div>
+                <div className="text-sm text-gray-600 mt-1">
+                  {CATEGORY_IMAGES[category.id]?.length || 0} images
+                </div>
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       {/* Gallery modal */}
