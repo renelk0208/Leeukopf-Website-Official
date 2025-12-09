@@ -18,7 +18,7 @@ export const enabledCategories = {
   liquidsAndSolutions: true, // Enabled - images available
   nailArt: true, // Enabled - images available
   accessories: false, // Enable when ready
-  jarsAndTubes: true, // Enabled - 30 jar images available
+  jarsAndTubes: false, // Moved to Private Label section - now at /private-label/jars-and-tubes
 };
 
 export const enabledSubcategories = {

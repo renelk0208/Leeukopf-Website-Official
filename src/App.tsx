@@ -96,7 +96,6 @@ function App() {
         <Route path="/products/acrylic-systems" element={<AcrylicSystemsPage />} />
         <Route path="/products/liquids-and-solutions" element={<LiquidsAndSolutionsPage />} />
         <Route path="/products/nail-art" element={<NailArtPage />} />
-        <Route path="/products/jars-and-tubes" element={<JarsAndTubesPage />} />
         <Route path="/products/accessories" element={<AccessoriesPage />} />
 
         {/* Legacy Product Routes (for backwards compatibility) */}
@@ -108,6 +107,7 @@ function App() {
         <Route path="/private-label" element={<PrivateLabelPage />} />
         <Route path="/private-label/bottles" element={<PrivateLabelBottlesPage />} />
         <Route path="/private-label/jars" element={<PrivateLabelJarsPage />} />
+        <Route path="/private-label/jars-and-tubes" element={<JarsAndTubesPage />} />
         <Route path="/private-label/bulk" element={<PrivateLabelBulkPage />} />
 
         {/* Brands */}

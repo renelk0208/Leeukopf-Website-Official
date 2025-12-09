@@ -231,7 +231,7 @@ export default function JarsAndTubesPage() {
       subtitle="Premium acrylic jars and tubes in various sizes and styles for professional nail product packaging."
       breadcrumbs={[
         { label: 'Home', path: '/' },
-        { label: 'Our Products', path: '/products' },
+        { label: 'Private Label', path: '/private-label' },
         { label: 'Jars & Tubes' }
       ]}
     >
