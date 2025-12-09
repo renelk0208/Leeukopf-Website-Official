@@ -44,8 +44,9 @@ export default function BuilderAndStructureGelsPage() {
           <img
             src={categoryHero['builder-gels']}
             alt="Builder & Structure Gels"
-            className="w-full h-auto object-cover"
-            loading="lazy"
+            width="1600"
+            height="400"
+            className="category-hero"
           />
         </div>
 

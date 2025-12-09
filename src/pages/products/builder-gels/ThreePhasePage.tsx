@@ -19,8 +19,9 @@ export default function ThreePhasePage() {
           <img
             src="/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg"
             alt="3-Phase Builder Gels"
-            className="w-full h-auto object-cover"
-            loading="lazy"
+            width="1600"
+            height="400"
+            className="category-hero"
           />
         </div>
 
