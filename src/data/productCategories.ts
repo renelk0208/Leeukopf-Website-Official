@@ -161,4 +161,13 @@ export const productCategories: ProductCategory[] = [
     imagePath: '/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg',
     group: 'Builder Gels',
   },
+
+  // Jars & Tubes - Packaging
+  {
+    id: 'jars-and-tubes',
+    key: 'jars-and-tubes',
+    displayName: 'Jars & Tubes',
+    imagePath: '/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg',
+    group: 'Packaging',
+  },
 ];

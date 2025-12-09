@@ -18,6 +18,7 @@ export const enabledCategories = {
   liquidsAndSolutions: true, // Enabled - images available
   nailArt: true, // Enabled - images available
   accessories: false, // Enable when ready
+  jarsAndTubes: true, // Enabled - 30 jar images available
 };
 
 export const enabledSubcategories = {
