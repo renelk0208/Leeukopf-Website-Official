@@ -237,11 +237,10 @@
   /* Category and subcategory hero images - consistent sizing, no lazy loading */
   .category-hero {
     width: 100%;
+    height: auto;
     object-fit: cover;
     /* Responsive max-height to prevent oversized images */
     max-height: 320px;
-    /* Explicit aspect ratio to prevent CLS (Cumulative Layout Shift) */
-    aspect-ratio: 16 / 9;
   }
 
   @media (min-width: 768px) {
