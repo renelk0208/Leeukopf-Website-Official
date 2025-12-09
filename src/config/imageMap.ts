@@ -44,10 +44,10 @@ export const categoryHero: Record<string, string> = {
   'acrylic-systems': '/img/products/builder-systems/Acrylic/fd_angel_pink_LLA4091.jpg',
   
   // Tops & Bases
-  'tops-and-bases': '/img/products/tops-and-bases/tops-bases_category_1.jpg',
+  'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg',
-  'classic-top-coats': '/img/products/tops-and-bases/tops-bases_category_1.jpg',
-  'effect-tops': '/img/products/tops-and-bases/rubber_bases_effects-category.jpg',
+  'classic-top-coats': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
+  'effect-tops': '/img/products/tops-and-bases/rubber-bases/rubber_bases_effects-category.jpg',
   'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
   
@@ -194,7 +194,7 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
 export const productPlaceholder: Record<string, string> = {
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_1.jpg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
-  'tops-and-bases': '/img/products/tops-and-bases/tops-bases_category_1.jpg',
+  'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'primers-liquids': '/img/products/primers-and-liquids/primer-liquds-category-image.jpeg',
   'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
   'lamps': '/img/products/Lamps/comfort-plusL1-category-image.jpg',
