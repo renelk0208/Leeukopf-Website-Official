@@ -9,25 +9,29 @@ const TOPS_BASES_CATEGORIES = [
     id: 'rubberBases', 
     folder: 'rubber-bases', 
     title: 'Rubber Base Coats',
-    description: 'Flexible rubber bases for strength and adhesion'
+    description: 'Flexible rubber bases for strength and adhesion',
+    categoryImage: '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg'
   },
   { 
     id: 'brushOnBuilder', 
     folder: 'brush-on-builder', 
     title: 'Brush-On Builder',
-    description: 'Builder base for strengthening and extending'
+    description: 'Builder base for strengthening and extending',
+    categoryImage: '/img/products/tops-and-bases/tops-bases_category_1.jpg'
   },
   { 
     id: 'effectTops', 
     folder: 'tops/Effect Tops', 
     title: 'Effect Top Coats',
-    description: 'Special effect top coats for unique finishes'
+    description: 'Special effect top coats for unique finishes',
+    categoryImage: '/img/products/tops-and-bases/tops/Effect Tops/effect-tops-category.jpg'
   },
   { 
     id: 'fiveInOne', 
     folder: '5-in-1', 
     title: '5-in-1 System',
-    description: 'All-in-one base, builder, and top coat'
+    description: 'All-in-one base, builder, and top coat',
+    categoryImage: '/img/products/tops-and-bases/5-in-1-catergory-image.jpg'
   },
 ];
 
@@ -35,7 +39,7 @@ const TOPS_BASES_CATEGORIES = [
  * Use Vite's import.meta.glob to dynamically load all images from tops and bases folders.
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/tops-and-bases/**/*.jpg',
+  '/public/img/products/tops-and-bases/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
 
@@ -303,8 +307,8 @@ export default function TopsAndBasesGallery() {
       {/* Category cards grid - responsive layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {categoriesWithImages.map((category) => {
-          // Get the first image from this category as thumbnail
-          const thumbnail = CATEGORY_IMAGES[category.id]?.[0]?.src;
+          // Use dedicated category image if available, otherwise fall back to first product image
+          const thumbnail = category.categoryImage || CATEGORY_IMAGES[category.id]?.[0]?.src;
           
           return (
             <button

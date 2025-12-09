@@ -5,7 +5,7 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
  * Use Vite's import.meta.glob to dynamically load all images from acrylic systems folder.
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/builder-systems/Acrylic/**/*.jpg',
+  '/public/img/products/builder-systems/Acrylic/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
 
@@ -15,8 +15,8 @@ function buildGalleryImages(): { src: string; alt: string }[] {
 
   // Process all image modules
   Object.keys(imageModules).forEach((path) => {
-    // Skip if not jpg
-    if (!path.endsWith('.jpg')) return;
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
 
     const filename = path.split('/').pop() || '';
     
@@ -28,7 +28,7 @@ function buildGalleryImages(): { src: string; alt: string }[] {
 
     // Generate a readable alt text from the filename
     const altText = filename
-      .replace(/\.jpg$/i, '')
+      .replace(/\.(jpg|jpeg|png)$/i, '')
       .replace(/[-_]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
