@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-08T21:33:49.691Z",
-  "commit": "609a441",
-  "branch": "copilot/image-discovery-and-config-generation",
+  "buildDate": "2025-12-09T08:14:07.288Z",
+  "commit": "ac94d8d",
+  "branch": "copilot/recheck-fix-category-image-structure",
   "message": "Build deployed successfully"
 }
