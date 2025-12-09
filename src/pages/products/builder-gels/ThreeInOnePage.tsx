@@ -1,5 +1,20 @@
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
+import ProductGrid from '../../../components/ProductGrid';
+import { loadBuilderGelImages } from '../../../lib/imageLoaders';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load all 3-in-1 builder gel images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/builder-systems/3-in-1 Builder gel/**/*.jpg',
+  { eager: true }
+);
+
+const PRODUCT_IMAGES = loadBuilderGelImages(imageModules, {
+  globPattern: '/public/img/products/builder-systems/3-in-1 Builder gel/**/*.jpg',
+  altPrefix: '3-in-1 Builder Gel',
+});
 
 export default function ThreeInOnePage() {
   return (
@@ -39,6 +54,13 @@ export default function ThreeInOnePage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      <ProductGrid
+        title="Available Shades & Products"
+        description="Browse our complete range of 3-in-1 builder gel shades and formulations"
+        images={PRODUCT_IMAGES}
+      />
 
       {/* Application & Curing */}
       <ApplicationCuring type="builder-gels" />

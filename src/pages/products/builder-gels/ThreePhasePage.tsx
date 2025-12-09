@@ -1,5 +1,22 @@
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
+import ProductGrid from '../../../components/ProductGrid';
+import { loadBuilderGelImages } from '../../../lib/imageLoaders';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load 3-phase builder gel images
+ * These are in the "Builder Gels" folder and have "3-phase" in the filename
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/builder-systems/Builder Gels/**/*.jpg',
+  { eager: true }
+);
+
+const PRODUCT_IMAGES = loadBuilderGelImages(imageModules, {
+  globPattern: '/public/img/products/builder-systems/Builder Gels/**/*.jpg',
+  filterPattern: '3-phase',
+  altPrefix: '3-Phase Builder Gel',
+});
 
 export default function ThreePhasePage() {
   return (
@@ -39,6 +56,15 @@ export default function ThreePhasePage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      {PRODUCT_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Available Shades & Products"
+          description="Browse our complete range of 3-phase builder gel shades"
+          images={PRODUCT_IMAGES}
+        />
+      )}
 
       {/* Application & Curing */}
       <ApplicationCuring type="builder-gels" />

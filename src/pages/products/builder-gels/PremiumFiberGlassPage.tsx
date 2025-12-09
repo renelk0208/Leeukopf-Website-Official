@@ -1,5 +1,20 @@
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
+import ProductGrid from '../../../components/ProductGrid';
+import { loadBuilderGelImages } from '../../../lib/imageLoaders';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load premium fiber glass builder gel images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/builder-systems/Premium Builder Gels/**/*.jpg',
+  { eager: true }
+);
+
+const PRODUCT_IMAGES = loadBuilderGelImages(imageModules, {
+  globPattern: '/public/img/products/builder-systems/Premium Builder Gels/**/*.jpg',
+  altPrefix: 'Premium Fiber Glass Builder Gel',
+});
 
 export default function PremiumFiberGlassPage() {
   return (
@@ -39,6 +54,15 @@ export default function PremiumFiberGlassPage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      {PRODUCT_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Available Products"
+          description="Browse our premium fiber glass builder gel range"
+          images={PRODUCT_IMAGES}
+        />
+      )}
 
       {/* Application & Curing */}
       <ApplicationCuring type="builder-gels" />
