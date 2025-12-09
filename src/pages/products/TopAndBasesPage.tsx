@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate';
 import ProductSEO from '../../components/ProductSEO';
 import { categoryHero } from '../../config/imageMap';
-import { isSubcategoryEnabled } from '../../config/productCategories';
 
 export default function TopAndBasesPage() {
   const subcategories = [
