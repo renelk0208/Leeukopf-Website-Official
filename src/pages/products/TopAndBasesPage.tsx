@@ -1,9 +1,25 @@
+import { Link } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate';
 import ProductSEO from '../../components/ProductSEO';
-import TopsAndBasesGallery from '../../components/TopsAndBasesGallery';
 import { categoryHero } from '../../config/imageMap';
 
 export default function TopAndBasesPage() {
+  const subcategories = [
+    {
+      key: 'topCoats',
+      title: 'Top Coats',
+      path: '/products/top-and-bases/top-coats',
+      description: 'Smooth, durable finishes that protect colour — all HEMA-free and TPO-free.',
+      image: '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg'
+    },
+    {
+      key: 'baseCoats',
+      title: 'Base Coats',
+      path: '/products/top-and-bases/base-coats',
+      description: 'Essential foundation systems for optimal adhesion and wear.',
+      image: '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg'
+    },
+  ];
 
   return (
     <PageTemplate
@@ -37,8 +53,39 @@ export default function TopAndBasesPage() {
         </div>
       </div>
 
-      {/* Product Gallery */}
-      <TopsAndBasesGallery />
+      {/* Subcategories Grid */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
+          Choose Your Category
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {subcategories.map((subcategory) => (
+            <Link
+              key={subcategory.path}
+              to={subcategory.path}
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src={subcategory.image}
+                  alt={subcategory.title}
+                  width="1600"
+                  height="1200"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+                  {subcategory.title}
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  {subcategory.description}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
 
       {/* SEO Content */}
       <ProductSEO category="top-bases" />
