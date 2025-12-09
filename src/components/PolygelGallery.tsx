@@ -45,14 +45,16 @@ function buildVariantImages(): Record<string, { src: string; alt: string }[]> {
     if (path.includes('acrygel_polygel-category_image')) return;
 
     // Extract the folder name from the path
+    // Path format: /public/img/products/builder-systems/Acrygel/FolderName/filename.jpg
     const pathParts = path.split('/');
     const acrygelIndex = pathParts.findIndex((part) => part === 'Acrygel');
     if (acrygelIndex === -1 || acrygelIndex + 1 >= pathParts.length) return;
 
+    // Get the immediate subfolder after Acrygel
     const folderName = pathParts[acrygelIndex + 1];
     const filename = pathParts[pathParts.length - 1];
 
-    // Find the matching variant
+    // Find the matching variant by checking if the folder name matches
     const variant = POLYGEL_VARIANTS.find((v) => v.folder === folderName);
     if (!variant) return;
 

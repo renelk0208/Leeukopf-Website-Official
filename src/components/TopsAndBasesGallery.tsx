@@ -18,12 +18,6 @@ const TOPS_BASES_CATEGORIES = [
     description: 'Builder base for strengthening and extending'
   },
   { 
-    id: 'effectTops', 
-    folder: 'tops/Effect Tops', 
-    title: 'Effect Top Coats',
-    description: 'Special effect top coats for unique finishes'
-  },
-  { 
     id: 'fiveInOne', 
     folder: '5-in-1', 
     title: '5-in-1 System',
