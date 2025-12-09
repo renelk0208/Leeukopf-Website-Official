@@ -1,10 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-09T14:14:21.238Z",
-  "commit": "7263c4e",
-  "branch": "copilot/fix-builder-gels-navigation",
-  "buildDate": "2025-12-09T13:56:41.632Z",
-  "commit": "3e8d1cb",
-  "branch": "copilot/update-category-header-images",
+  "buildDate": "2025-12-09T15:19:29.023Z",
+  "commit": "e22ea62",
+  "branch": "copilot/fix-image-display-issue",
   "message": "Build deployed successfully"
 }
