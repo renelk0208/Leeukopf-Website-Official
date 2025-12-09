@@ -140,7 +140,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/builder-systems/builder_gels_category_2.jpg"
+                  src="/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg"
                   alt="Builder & Structure Gels"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
@@ -215,7 +215,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/builder-systems/Acrylic/acrylic-catergory-image.JPG"
+                  src="/img/products/builder-systems/Acrylic/acrylic-powders (1).jpg"
                   alt="Acrylic Systems"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
@@ -265,7 +265,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/nail-art/nail-art-category.jpg"
+                  src="/img/products/nail-art/nail-art-category-image.jpg"
                   alt="Nail Art"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
