@@ -28,6 +28,7 @@ import AcrylicSystemsPage from './pages/products/AcrylicSystemsPage';
 import LiquidsAndSolutionsPage from './pages/products/LiquidsAndSolutionsPage';
 import NailArtPage from './pages/products/NailArtPage';
 import AccessoriesPage from './pages/products/AccessoriesPage';
+import JarsAndTubesPage from './pages/products/JarsAndTubesPage';
 import CategoryGridTestPage from './pages/products/CategoryGridTestPage';
 
 // Builder Gels Subcategories
@@ -95,6 +96,7 @@ function App() {
         <Route path="/products/acrylic-systems" element={<AcrylicSystemsPage />} />
         <Route path="/products/liquids-and-solutions" element={<LiquidsAndSolutionsPage />} />
         <Route path="/products/nail-art" element={<NailArtPage />} />
+        <Route path="/products/jars-and-tubes" element={<JarsAndTubesPage />} />
         <Route path="/products/accessories" element={<AccessoriesPage />} />
 
         {/* Legacy Product Routes (for backwards compatibility) */}
