@@ -289,32 +289,6 @@ export default function ProductsPage() {
             </Link>
           )}
 
-          {/* Jars & Tubes */}
-          {isCategoryEnabled('jarsAndTubes') && (
-            <Link
-              to="/products/jars-and-tubes"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg"
-                  alt="Jars & Tubes"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Jars & Tubes
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  Premium acrylic jars and tubes in various sizes for professional packaging
-                </p>
-              </div>
-            </Link>
-          )}
-
           {/* Accessories */}
           {isCategoryEnabled('accessories') && (
             <Link
