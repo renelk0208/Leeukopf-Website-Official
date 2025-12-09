@@ -233,6 +233,28 @@
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
     background: #ffffff;
   }
+
+  /* Category and subcategory hero images - consistent sizing, no lazy loading */
+  .category-hero {
+    width: 100%;
+    object-fit: cover;
+    /* Responsive max-height to prevent oversized images */
+    max-height: 320px;
+    /* Explicit aspect ratio to prevent CLS (Cumulative Layout Shift) */
+    aspect-ratio: 16 / 9;
+  }
+
+  @media (min-width: 768px) {
+    .category-hero {
+      max-height: 380px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .category-hero {
+      max-height: 420px;
+    }
+  }
 }
 
 /* 

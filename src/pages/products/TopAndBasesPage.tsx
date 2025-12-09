@@ -34,8 +34,9 @@ export default function TopAndBasesPage() {
           <img
             src={categoryHero['tops-and-bases']}
             alt="Top & Bases"
-            className="w-full h-auto object-cover"
-            loading="lazy"
+            width="1600"
+            height="400"
+            className="category-hero"
           />
         </div>
 

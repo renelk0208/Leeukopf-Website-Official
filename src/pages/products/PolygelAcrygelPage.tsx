@@ -21,8 +21,9 @@ export default function PolygelAcrygelPage() {
           <img
             src={categoryHero['polygel-acrygel']}
             alt="Polygel / AcryGel"
-            className="w-full h-auto object-cover"
-            loading="lazy"
+            width="1600"
+            height="400"
+            className="category-hero"
           />
         </div>
 

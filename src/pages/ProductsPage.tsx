@@ -117,8 +117,9 @@ export default function ProductsPage() {
                 <img
                   src="/img/products/gel_polishes/gel_polish_category_1.jpg"
                   alt="Gel Polish"
+                  width="1600"
+                  height="1200"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
                 />
               </div>
               <div className="p-5">
@@ -142,8 +143,9 @@ export default function ProductsPage() {
                 <img
                   src="/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg"
                   alt="Builder & Structure Gels"
+                  width="1600"
+                  height="1200"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
                 />
               </div>
               <div className="p-5">
@@ -167,8 +169,9 @@ export default function ProductsPage() {
                 <img
                   src="/img/products/tops-and-bases/tops-bases_category_1.jpg"
                   alt="Top & Bases"
+                  width="1600"
+                  height="1200"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
                 />
               </div>
               <div className="p-5">
@@ -192,8 +195,9 @@ export default function ProductsPage() {
                 <img
                   src="/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg"
                   alt="Polygel / AcryGel"
+                  width="1600"
+                  height="1200"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
                 />
               </div>
               <div className="p-5">
@@ -217,8 +221,9 @@ export default function ProductsPage() {
                 <img
                   src="/img/products/builder-systems/Acrylic/acrylic-powders (1).jpg"
                   alt="Acrylic Systems"
+                  width="1600"
+                  height="1200"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
                 />
               </div>
               <div className="p-5">
@@ -242,8 +247,9 @@ export default function ProductsPage() {
                 <img
                   src="/img/products/primers-and-liquids/primer-liquds-category-image.jpeg"
                   alt="Liquids & Solutions"
+                  width="1600"
+                  height="1200"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
                 />
               </div>
               <div className="p-5">
@@ -267,8 +273,9 @@ export default function ProductsPage() {
                 <img
                   src="/img/products/nail-art/nail-art-category-image.jpg"
                   alt="Nail Art"
+                  width="1600"
+                  height="1200"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
                 />
               </div>
               <div className="p-5">

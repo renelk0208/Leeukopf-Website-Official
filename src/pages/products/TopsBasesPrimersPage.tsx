@@ -38,8 +38,9 @@ export default function TopsBasesPrimersPage() {
             <img
               src={categoryHero['tops-and-bases']}
               alt="Tops, Bases & Primers Collection"
-              className="w-full h-auto object-cover"
-              loading="lazy"
+              width="1600"
+              height="400"
+              className="category-hero"
             />
           </div>
 
