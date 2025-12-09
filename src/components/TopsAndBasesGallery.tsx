@@ -333,7 +333,7 @@ export default function TopsAndBasesGallery() {
                   {category.title}
                 </div>
                 <div className="text-sm text-gray-600 mt-1">
-                  {CATEGORY_IMAGES[category.id]?.length || 0} images
+                  {CATEGORY_IMAGES[category.id]?.length || 0} {CATEGORY_IMAGES[category.id]?.length === 1 ? 'image' : 'images'}
                 </div>
               </div>
             </button>
