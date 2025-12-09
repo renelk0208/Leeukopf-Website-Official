@@ -54,8 +54,8 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
 
   // Process all image modules
   Object.keys(imageModules).forEach((path) => {
-    // Skip if not jpg
-    if (!path.endsWith('.jpg')) return;
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
 
     // Skip the category image in the root tops-and-bases folder
     if (path.includes('tops-bases_category')) return;
@@ -85,7 +85,7 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
 
     // Generate a readable alt text from the filename
     const altText = filename
-      .replace(/\.jpg$/i, '')
+      .replace(/\.(jpg|jpeg|png)$/i, '')
       .replace(/[-_]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
