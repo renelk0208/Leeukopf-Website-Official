@@ -1,5 +1,56 @@
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
+import ProductGrid from '../../../components/ProductGrid';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load 3-phase builder gel images
+ * These are in the "Builder Gels" folder and have "3-phase" in the filename
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/builder-systems/Builder Gels/**/*.jpg',
+  { eager: true }
+);
+
+/** Build product images from the glob results, filtering for 3-phase */
+function buildProductImages(): { src: string; alt: string }[] {
+  const productImages: { src: string; alt: string }[] = [];
+
+  Object.keys(imageModules).forEach((path) => {
+    // Skip if not jpg
+    if (!path.match(/\.jpe?g$/i)) return;
+
+    const filename = path.split('/').pop() || '';
+    const lowerFilename = filename.toLowerCase();
+
+    // Only include files with "3-phase" in the name
+    if (!lowerFilename.includes('3-phase')) return;
+
+    // Skip category images
+    if (lowerFilename.includes('category')) return;
+
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.(jpg|jpeg)$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    productImages.push({
+      src: imageSrc,
+      alt: `3-Phase Builder Gel - ${altText}`,
+    });
+  });
+
+  // Sort images by path for consistent ordering
+  productImages.sort((a, b) => a.src.localeCompare(b.src));
+
+  return productImages;
+}
+
+const PRODUCT_IMAGES = buildProductImages();
 
 export default function ThreePhasePage() {
   return (
@@ -38,6 +89,15 @@ export default function ThreePhasePage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      {PRODUCT_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Available Shades & Products"
+          description="Browse our complete range of 3-phase builder gel shades"
+          images={PRODUCT_IMAGES}
+        />
+      )}
 
       {/* Application & Curing */}
       <ApplicationCuring type="builder-gels" />

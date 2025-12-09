@@ -1,5 +1,50 @@
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
+import ProductGrid from '../../../components/ProductGrid';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load premium fiber glass builder gel images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/builder-systems/Premium Builder Gels/**/*.jpg',
+  { eager: true }
+);
+
+/** Build product images from the glob results */
+function buildProductImages(): { src: string; alt: string }[] {
+  const productImages: { src: string; alt: string }[] = [];
+
+  Object.keys(imageModules).forEach((path) => {
+    // Skip if not jpg
+    if (!path.match(/\.jpe?g$/i)) return;
+
+    // Skip category images
+    const filename = path.split('/').pop() || '';
+    if (filename.toLowerCase().includes('category')) return;
+
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.(jpg|jpeg)$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    productImages.push({
+      src: imageSrc,
+      alt: `Premium Fiber Glass Builder Gel - ${altText}`,
+    });
+  });
+
+  // Sort images by path for consistent ordering
+  productImages.sort((a, b) => a.src.localeCompare(b.src));
+
+  return productImages;
+}
+
+const PRODUCT_IMAGES = buildProductImages();
 
 export default function PremiumFiberGlassPage() {
   return (
@@ -38,6 +83,15 @@ export default function PremiumFiberGlassPage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      {PRODUCT_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Available Products"
+          description="Browse our premium fiber glass builder gel range"
+          images={PRODUCT_IMAGES}
+        />
+      )}
 
       {/* Application & Curing */}
       <ApplicationCuring type="builder-gels" />

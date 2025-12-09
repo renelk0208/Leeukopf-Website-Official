@@ -1,22 +1,9 @@
-import { Link } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate';
 import ProductSEO from '../../components/ProductSEO';
 import TopsAndBasesGallery from '../../components/TopsAndBasesGallery';
 import { categoryHero } from '../../config/imageMap';
 
 export default function TopAndBasesPage() {
-  const subcategories = [
-    {
-      title: 'Top Coats',
-      path: '/products/top-and-bases/top-coats',
-      description: 'Smooth, durable finishes that protect colour — all HEMA-free and TPO-free.',
-    },
-    {
-      title: 'Base Coats',
-      path: '/products/top-and-bases/base-coats',
-      description: 'Reliable adhesion and a smooth foundation, all HEMA-free and TPO-free.',
-    },
-  ];
 
   return (
     <PageTemplate
@@ -46,29 +33,6 @@ export default function TopAndBasesPage() {
             of any gel service. From reliable base coats to protective top coats, each formula is designed to work 
             seamlessly with our gel polish and builder systems.
           </p>
-        </div>
-      </div>
-
-      {/* Subcategories Grid */}
-      <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-          Explore Our Range
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {subcategories.map((subcategory) => (
-            <Link
-              key={subcategory.path}
-              to={subcategory.path}
-              className="group bg-white rounded-lg border border-gray-200 p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                {subcategory.title}
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                {subcategory.description}
-              </p>
-            </Link>
-          ))}
         </div>
       </div>
 
