@@ -143,10 +143,11 @@ export default function PrivateLabelPage() {
           >
             <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
               <img
-                src="/img/products/bottles/bottles-image-private label-solutions.jpg"
+                src="/img/private-label/bottles/bottles-image-private label-solutions.jpg"
                 alt="Bottles - Premium gel polish bottles for custom branding"
+                width="1600"
+                height="1200"
                 className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
               />
             </div>
             <div className="p-5">
@@ -168,8 +169,9 @@ export default function PrivateLabelPage() {
               <img
                 src="/img/private-label/bulk/bulk-5kg-bucket.jpg"
                 alt="Bulk Packaging - High-volume gel and builder systems"
+                width="1600"
+                height="1200"
                 className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
               />
             </div>
             <div className="p-5">
@@ -189,10 +191,11 @@ export default function PrivateLabelPage() {
           >
             <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
               <img
-                src="/img/products/jars/website_leeukopf_acrylic_jar_1.jpg"
+                src="/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg"
                 alt="Jars - Premium acrylic and glass jars for custom branding"
+                width="1600"
+                height="1200"
                 className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
               />
             </div>
             <div className="p-5">

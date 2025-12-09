@@ -258,7 +258,8 @@ export default function PrivateLabelJarsPage() {
                   <img
                     src={jar.src}
                     alt={jar.alt}
-                    loading="lazy"
+                    width="800"
+                    height="800"
                     onError={() => handleImageError(jar.id)}
                     className="w-full h-full object-contain p-2 sm:p-4 group-hover:scale-105 transition-transform duration-300"
                   />

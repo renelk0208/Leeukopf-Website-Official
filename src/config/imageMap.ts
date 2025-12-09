@@ -36,7 +36,7 @@ export const categoryHero: Record<string, string> = {
   // Builder Systems
   'builder-systems': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
-  'three-phase-builder': '/img/products/builder-systems/3-phase-builder_gels_category_2.jpg',
+  'three-phase-builder': '/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg',
   'three-in-one-builder': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg',
   'colour-builder-gels': '/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg',

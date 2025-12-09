@@ -20,8 +20,9 @@ export default function NailArtPage() {
           <img
             src={categoryHero['nail-art']}
             alt="Nail Art Products"
-            className="w-full h-auto object-cover"
-            loading="lazy"
+            width="1600"
+            height="400"
+            className="category-hero"
           />
         </div>
 

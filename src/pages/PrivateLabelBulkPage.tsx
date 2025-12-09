@@ -82,7 +82,8 @@ export default function PrivateLabelBulkPage() {
                   <img
                     src={product.src}
                     alt={product.alt}
-                    loading="lazy"
+                    width="800"
+                    height="600"
                     onError={() => handleImageError(product.id)}
                     className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
                   />

@@ -282,8 +282,9 @@ export default function GelPolishCategoryGallery() {
                   <img
                     src={thumbnail}
                     alt={category.title}
+                    width="800"
+                    height="800"
                     className="w-full h-full object-cover"
-                    loading="lazy"
                   />
                 </div>
               )}
