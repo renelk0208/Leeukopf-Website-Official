@@ -34,8 +34,9 @@ export default function ThreeInOnePage() {
           <img
             src="/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gel-category-image.JPG"
             alt="3-in-1 Builder Gels"
-            className="w-full h-auto object-cover"
-            loading="lazy"
+            width="1600"
+            height="400"
+            className="category-hero"
           />
         </div>
 

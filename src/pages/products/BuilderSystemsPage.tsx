@@ -42,8 +42,9 @@ export default function BuilderSystemsPage() {
             <img
               src={categoryHero['builder-systems']}
               alt="Professional Builder Systems Collection"
-              className="w-full h-auto object-cover"
-              loading="lazy"
+              width="1600"
+              height="400"
+              className="category-hero"
             />
           </div>
 

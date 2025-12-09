@@ -34,8 +34,9 @@ export default function PremiumFiberGlassPage() {
           <img
             src="/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg"
             alt="Premium Fiber Glass Builder Gels"
-            className="w-full h-auto object-cover"
-            loading="lazy"
+            width="1600"
+            height="400"
+            className="category-hero"
           />
         </div>
 

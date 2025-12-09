@@ -73,7 +73,8 @@ const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
                     <img
                       src={category.imagePath || getImage(category.key)}
                       alt={category.displayName}
-                      loading="lazy"
+                      width="800"
+                      height="800"
                       className="w-full h-full object-cover fade-in-image group-hover:scale-[1.03] transition-transform duration-300 ease-out"
                       onError={(e) => {
                         const target = e.currentTarget;
