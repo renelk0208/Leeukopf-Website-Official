@@ -7,6 +7,7 @@ This guide explains how category images work in the Leeukopf website and how to 
 Category images are used in two main places:
 1. **Category cards** on the main Products page (`/products`)
 2. **Category thumbnails** in the Gel Polish Category Gallery
+3. **Lamp category cards** on the Products page for UV & LED Lamps
 
 ## Where to Store Category Images
 
