@@ -7,7 +7,8 @@ interface ProductSEOProps {
     | 'acrylic-systems' 
     | 'liquids-solutions' 
     | 'nail-art' 
-    | 'accessories';
+    | 'accessories'
+    | 'jars-and-tubes';
 }
 
 export default function ProductSEO({ category }: ProductSEOProps) {
@@ -175,6 +176,28 @@ export default function ProductSEO({ category }: ProductSEOProps) {
           <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
             Available for private label with custom branding options and flexible packaging configurations. 
             Essential for completing your professional nail product range.
+          </p>
+        </>
+      ),
+    },
+    'jars-and-tubes': {
+      title: 'Premium Jars & Tubes for Product Packaging',
+      content: (
+        <>
+          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
+            Our range of acrylic jars and tubes provides professional packaging solutions for gel polish, builder 
+            gels, acrygel and other nail products. Available in multiple sizes, styles and colors to complement 
+            your brand identity while ensuring product integrity and ease of use.
+          </p>
+          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
+            All packaging is manufactured from high-quality, chemical-resistant materials with secure closures 
+            to prevent leakage and maintain product freshness. From crystal clear jars that showcase your products 
+            to sleek black or white options for a premium aesthetic, we offer versatile packaging for every brand style.
+          </p>
+          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
+            Available for private label with custom branding, label design, and color customization. We provide 
+            comprehensive packaging solutions including design support, assembly, and quality control to ensure 
+            your products arrive ready for market.
           </p>
         </>
       ),

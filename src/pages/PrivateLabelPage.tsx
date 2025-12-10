@@ -135,7 +135,7 @@ export default function PrivateLabelPage() {
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
           Private label packaging options
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Bottles */}
           <Link
             to="/private-label/bottles"
@@ -184,15 +184,15 @@ export default function PrivateLabelPage() {
             </div>
           </Link>
 
-          {/* Jars */}
+          {/* Jars & Tubes (Full Gallery) */}
           <Link
-            to="/private-label/jars"
+            to="/private-label/jars-and-tubes"
             className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
           >
             <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
               <img
-                src="/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg"
-                alt="Jars - Premium acrylic and glass jars for custom branding"
+                src="/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg"
+                alt="Jars & Tubes - Complete collection of packaging options"
                 width="1600"
                 height="1200"
                 className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
@@ -200,10 +200,10 @@ export default function PrivateLabelPage() {
             </div>
             <div className="p-5">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Jars
+                Jars & Tubes
               </h3>
               <p className="text-sm text-gray-600 font-light leading-relaxed">
-                Premium acrylic and glass jars for gel polish, builder gel, and other nail products. Perfect for custom branding.
+                Browse our complete collection of acrylic jars, tubes, and specialty packaging in various sizes and colors.
               </p>
             </div>
           </Link>

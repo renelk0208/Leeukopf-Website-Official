@@ -152,6 +152,19 @@ export default function Footer() {
                   Privacy Notice for Distributors
                 </Link>
               </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(new CustomEvent("openCookieSettings"));
+                    }
+                  }}
+                  className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center"
+                >
+                  Cookie Settings
+                </button>
+              </li>
             </ul>
           </div>
 

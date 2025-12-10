@@ -6,13 +6,6 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
  */
 const BUILDER_SUBCATEGORIES = [
   { 
-    id: 'threePhase', 
-    folder: 'Builder Gels', 
-    title: '3-Phase Builder Gels',
-    description: 'Classic three-step system for controlled strength',
-    filterPattern: '3-phase'
-  },
-  { 
     id: 'threeInOne', 
     folder: '3-in-1 Builder gel', 
     title: '3-in-1 Builder Gels',
@@ -23,13 +16,6 @@ const BUILDER_SUBCATEGORIES = [
     folder: 'Premium Builder Gels', 
     title: 'Premium Fiber Glass Builder Gels',
     description: 'Reinforced flexibility and superior strength'
-  },
-  { 
-    id: 'colorBuilder', 
-    folder: 'Builder Gels', 
-    title: 'Color Builder Gels',
-    description: 'Pigmented builder gels for creative applications',
-    filterPattern: 'colour'
   },
 ];
 
@@ -67,13 +53,8 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
     const category = BUILDER_SUBCATEGORIES.find((cat) => cat.folder === folderName);
     if (!category) return;
 
-    // If category has a filter pattern, check if filename matches
-    if (category.filterPattern) {
-      const lowerFilename = filename.toLowerCase();
-      if (!lowerFilename.includes(category.filterPattern)) {
-        return; // Skip if doesn't match the filter
-      }
-    }
+    // Skip category images within the folders
+    if (filename.toLowerCase().includes('category')) return;
 
     // Convert the public path to a URL path (remove /public prefix)
     const imageSrc = path.replace('/public', '');

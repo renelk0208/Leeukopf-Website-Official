@@ -22,6 +22,11 @@ export default {
           800: '#410024',
           900: '#200012',
         },
+        // Bright pink for CTAs - #C2188B
+        brightPink: {
+          DEFAULT: '#C2188B',
+          hover: '#A01571',
+        },
         // Grey palette for UI elements
         grey: {
           footer: '#E8E8E8',

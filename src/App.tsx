@@ -6,7 +6,6 @@ import ContactPage from './pages/ContactPage';
 import CertificatesPage from './pages/CertificatesPage';
 import PrivateLabelPage from './pages/PrivateLabelPage';
 import PrivateLabelBottlesPage from './pages/PrivateLabelBottlesPage';
-import PrivateLabelJarsPage from './pages/PrivateLabelJarsPage';
 import PrivateLabelBulkPage from './pages/PrivateLabelBulkPage';
 import OurBrandsPage from './pages/OurBrandsPage';
 import DistributorsWantedPage from './pages/DistributorsWantedPage';
@@ -28,6 +27,7 @@ import AcrylicSystemsPage from './pages/products/AcrylicSystemsPage';
 import LiquidsAndSolutionsPage from './pages/products/LiquidsAndSolutionsPage';
 import NailArtPage from './pages/products/NailArtPage';
 import AccessoriesPage from './pages/products/AccessoriesPage';
+import JarsAndTubesPage from './pages/products/JarsAndTubesPage';
 import CategoryGridTestPage from './pages/products/CategoryGridTestPage';
 
 // Builder Gels Subcategories
@@ -105,7 +105,7 @@ function App() {
         {/* Private Label */}
         <Route path="/private-label" element={<PrivateLabelPage />} />
         <Route path="/private-label/bottles" element={<PrivateLabelBottlesPage />} />
-        <Route path="/private-label/jars" element={<PrivateLabelJarsPage />} />
+        <Route path="/private-label/jars-and-tubes" element={<JarsAndTubesPage />} />
         <Route path="/private-label/bulk" element={<PrivateLabelBulkPage />} />
 
         {/* Brands */}

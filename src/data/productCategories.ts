@@ -103,14 +103,14 @@ export const productCategories: ProductCategory[] = [
     id: 'classic-top-coats',
     key: 'classic-top-coats',
     displayName: 'Classic Top Coats',
-    imagePath: '/img/products/tops-and-bases/tops-bases_category_1.jpg',
+    imagePath: '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
     group: 'Tops & Bases',
   },
   {
     id: 'effect-tops',
     key: 'effect-tops',
     displayName: 'Effect Top Coats',
-    imagePath: '/img/products/tops-and-bases/rubber_bases_effects-category.jpg',
+    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber_bases_effects-category.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -160,5 +160,14 @@ export const productCategories: ProductCategory[] = [
     displayName: 'Polygel / AcryGel',
     imagePath: '/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg',
     group: 'Builder Gels',
+  },
+
+  // Jars & Tubes - Packaging
+  {
+    id: 'jars-and-tubes',
+    key: 'jars-and-tubes',
+    displayName: 'Jars & Tubes',
+    imagePath: '/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg',
+    group: 'Packaging',
   },
 ];
