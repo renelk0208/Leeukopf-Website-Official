@@ -17,27 +17,36 @@ export default function SeasonTrendsPage() {
     { color: '#708090', name: 'Slate', caption: 'Sophisticated neutral' },
   ];
 
-  const lookbookImages = Array.from({ length: 12 }, (_, i) => ({
-    src: `/img/season/aw/lookbook-${i + 1}.jpg`,
-    alt: `Autumn/Winter Collection Look ${i + 1}`,
+  // TODO: Add seasonal lookbook images (lookbook-1.jpg through lookbook-12.jpg) to public/img/season/aw/ directory
+  // Using existing season images as placeholders
+  const lookbookImages = Array.from({ length: 9 }, (_, i) => ({
+    src: `/img/season/aw/2026_new_collection_${
+      ['cover', 'warm_colors', 'rose_jewels_glitters', 'red_cat_eye', 'cofee_cat_eye', 
+       'galaxy_cat_eye', 'gold_leaf', 'laser_glitters', 'xmas_glitters'][i]
+    }.jpg`,
+    alt: `Autumn/Winter 2025/26 Collection - ${
+      ['Cover', 'Warm Colors', 'Rose Jewels & Glitters', 'Red Cat Eye', 'Coffee Cat Eye',
+       'Galaxy Cat Eye', 'Gold Leaf', 'Laser Glitters', 'Xmas Glitters'][i]
+    }`,
     caption: `Collection Look ${i + 1}`,
   }));
 
+  // TODO: Add texture images (texture-matte.jpg, texture-metallic.jpg, texture-chrome.jpg) to public/img/season/aw/
   const textures = [
     {
       title: 'Matte Velvet',
       description: 'Soft-touch finish with zero shine for an elegant, understated look.',
-      image: '/img/season/aw/texture-matte.jpg',
+      image: '/img/season/aw/2026_new_collection_cover.jpg', // Placeholder
     },
     {
       title: 'Metallic Shimmer',
       description: 'Subtle pearl finish that catches the light beautifully.',
-      image: '/img/season/aw/texture-metallic.jpg',
+      image: '/img/season/aw/2026_new_collection_gold_leaf.jpg', // Placeholder
     },
     {
       title: 'Glass Chrome',
       description: 'Mirror-like reflective finish for maximum impact.',
-      image: '/img/season/aw/texture-chrome.jpg',
+      image: '/img/season/aw/2026_new_collection_laser_glitters.jpg', // Placeholder
     },
   ];
 

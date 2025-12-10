@@ -8,15 +8,17 @@ export default function FacilityCarousel() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const images = [
+    // TODO: Add Factory mixing.jpg and factory-mixer.jpg images to public/img/factory/ directory
+    // Using existing factory images as placeholders
     {
-      src: '/img/factory/Factory mixing.jpg',
+      src: '/img/factory/formulation-and-mixing.jpg',
       alt: 'Leeukopf Laboratories production facility with industrial mixing equipment',
       caption: 'State-of-the-Art Production',
       width: 1280,
       height: 960
     },
     {
-      src: '/img/factory/factory-mixer.jpg',
+      src: '/img/factory/formulation-and-mixing.jpg',
       alt: 'Leeukopf Laboratories precision mixing equipment for gel polish formulation',
       caption: 'Precision Mixing Equipment',
       width: 1280,
