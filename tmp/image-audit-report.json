@@ -1,9 +1,9 @@
 {
-  "timestamp": "2025-12-10T12:17:12.705Z",
+  "timestamp": "2025-12-10T12:19:46.659Z",
   "summary": {
-    "totalReferences": 317,
-    "validReferences": 280,
-    "missingReferences": 20,
+    "totalReferences": 309,
+    "validReferences": 285,
+    "missingReferences": 7,
     "fixedReferences": 0,
     "categoryMismatches": 0,
     "availableImages": 361
@@ -29,25 +29,25 @@
     },
     {
       "file": "src/components/FacilityCarousel.tsx",
-      "line": 12,
-      "path": "/img/factory/Factory mixing.jpg",
+      "line": 14,
+      "path": "/img/factory/formulation-and-mixing.jpg",
       "type": "direct"
     },
     {
       "file": "src/components/FacilityCarousel.tsx",
-      "line": 19,
-      "path": "/img/factory/factory-mixer.jpg",
+      "line": 21,
+      "path": "/img/factory/formulation-and-mixing.jpg",
       "type": "direct"
     },
     {
       "file": "src/components/FacilityCarousel.tsx",
-      "line": 26,
+      "line": 28,
       "path": "/img/factory/pigment-blending.jpg",
       "type": "direct"
     },
     {
       "file": "src/components/FacilityCarousel.tsx",
-      "line": 33,
+      "line": 35,
       "path": "/img/factory/quality-control.jpg",
       "type": "direct"
     },
@@ -1511,26 +1511,20 @@
     },
     {
       "file": "src/pages/SeasonTrendsPage.tsx",
-      "line": 21,
-      "path": "/img/season/aw/lookbook-${i + 1}.jpg",
+      "line": 39,
+      "path": "/img/season/aw/2026_new_collection_cover.jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/SeasonTrendsPage.tsx",
-      "line": 30,
-      "path": "/img/season/aw/texture-matte.jpg",
+      "line": 44,
+      "path": "/img/season/aw/2026_new_collection_gold_leaf.jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/SeasonTrendsPage.tsx",
-      "line": 35,
-      "path": "/img/season/aw/texture-metallic.jpg",
-      "type": "direct"
-    },
-    {
-      "file": "src/pages/SeasonTrendsPage.tsx",
-      "line": 40,
-      "path": "/img/season/aw/texture-chrome.jpg",
+      "line": 49,
+      "path": "/img/season/aw/2026_new_collection_laser_glitters.jpg",
       "type": "direct"
     },
     {
@@ -1542,168 +1536,126 @@
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
       "line": 8,
-      "path": "/img/brands/gelitup/Gelitup1 (2).jpg",
-      "type": "direct"
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 9,
       "path": "/img/brands/gelitup/Gelitup1 (3).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 10,
-      "path": "/img/brands/gelitup/Gelitup1 (5).jpg",
-      "type": "direct"
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 11,
+      "line": 9,
       "path": "/img/brands/gelitup/Gelitup1 (6).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 12,
+      "line": 10,
       "path": "/img/brands/gelitup/Gelitup1 (7).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 13,
+      "line": 11,
       "path": "/img/brands/gelitup/Gelitup1 (8).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 14,
+      "line": 12,
       "path": "/img/brands/gelitup/Gelitup1 (9).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 15,
+      "line": 13,
       "path": "/img/brands/gelitup/Gelitup1 (10).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 16,
-      "path": "/img/brands/gelitup/Gelitup1 (71).jpg",
-      "type": "direct"
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 17,
-      "path": "/img/brands/gelitup/Gelitup1 (76).jpg",
-      "type": "direct"
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 18,
+      "line": 14,
       "path": "/img/brands/gelitup/Gelitup1 (79).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 19,
+      "line": 15,
       "path": "/img/brands/gelitup/Gelitup1 (89).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 20,
+      "line": 16,
       "path": "/img/brands/gelitup/Gelitup1 (91).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 21,
+      "line": 17,
       "path": "/img/brands/gelitup/Gelitup1 (92).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 22,
+      "line": 18,
       "path": "/img/brands/gelitup/Gelitup1 (93).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 23,
-      "path": "/img/brands/gelitup/Gelitup1 (94).jpg",
-      "type": "direct"
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 24,
+      "line": 19,
       "path": "/img/brands/gelitup/Gelitup1 (100).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 25,
+      "line": 20,
       "path": "/img/brands/gelitup/Gelitup1 (105).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 26,
+      "line": 21,
       "path": "/img/brands/gelitup/Gelitup1 (107).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 27,
-      "path": "/img/brands/gelitup/Gelitup1 (111).jpg",
-      "type": "direct"
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 28,
+      "line": 22,
       "path": "/img/brands/gelitup/Gelitup1 (112).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 29,
-      "path": "/img/brands/gelitup/Gelitup1 (113).jpg",
-      "type": "direct"
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 30,
+      "line": 23,
       "path": "/img/brands/gelitup/Gelitup1 (114).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 31,
+      "line": 24,
       "path": "/img/brands/gelitup/Gelitup1 (120).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 32,
+      "line": 25,
       "path": "/img/brands/gelitup/Gelitup1 (122).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 33,
+      "line": 26,
       "path": "/img/brands/gelitup/Gelitup1 (126).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 34,
+      "line": 27,
       "path": "/img/brands/gelitup/Gelitup1 (130).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 58,
+      "line": 51,
       "path": "/GEL.IT.UP-NEW-LOGO-2024_black_2.png",
       "type": "jsx-src"
     },
@@ -1921,13 +1873,25 @@
     },
     {
       "file": "src/components/FacilityCarousel.tsx",
-      "line": 26,
+      "line": 14,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 21,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 28,
       "path": "/img/factory/pigment-blending.jpg",
       "type": "direct"
     },
     {
       "file": "src/components/FacilityCarousel.tsx",
-      "line": 33,
+      "line": 35,
       "path": "/img/factory/quality-control.jpg",
       "type": "direct"
     },
@@ -3366,6 +3330,24 @@
       "type": "jsx-src"
     },
     {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 39,
+      "path": "/img/season/aw/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 44,
+      "path": "/img/season/aw/2026_new_collection_gold_leaf.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 49,
+      "path": "/img/season/aw/2026_new_collection_laser_glitters.jpg",
+      "type": "direct"
+    },
+    {
       "file": "src/pages/brands/GelItUpPage.tsx",
       "line": 7,
       "path": "/img/brands/gelitup/Gelitup1 (1).jpg",
@@ -3373,127 +3355,127 @@
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 9,
+      "line": 8,
       "path": "/img/brands/gelitup/Gelitup1 (3).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 11,
+      "line": 9,
       "path": "/img/brands/gelitup/Gelitup1 (6).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 12,
+      "line": 10,
       "path": "/img/brands/gelitup/Gelitup1 (7).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 13,
+      "line": 11,
       "path": "/img/brands/gelitup/Gelitup1 (8).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 14,
+      "line": 12,
       "path": "/img/brands/gelitup/Gelitup1 (9).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 15,
+      "line": 13,
       "path": "/img/brands/gelitup/Gelitup1 (10).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 18,
+      "line": 14,
       "path": "/img/brands/gelitup/Gelitup1 (79).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 19,
+      "line": 15,
       "path": "/img/brands/gelitup/Gelitup1 (89).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 20,
+      "line": 16,
       "path": "/img/brands/gelitup/Gelitup1 (91).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 21,
+      "line": 17,
       "path": "/img/brands/gelitup/Gelitup1 (92).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 22,
+      "line": 18,
       "path": "/img/brands/gelitup/Gelitup1 (93).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 24,
+      "line": 19,
       "path": "/img/brands/gelitup/Gelitup1 (100).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 25,
+      "line": 20,
       "path": "/img/brands/gelitup/Gelitup1 (105).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 26,
+      "line": 21,
       "path": "/img/brands/gelitup/Gelitup1 (107).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 28,
+      "line": 22,
       "path": "/img/brands/gelitup/Gelitup1 (112).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 30,
+      "line": 23,
       "path": "/img/brands/gelitup/Gelitup1 (114).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 31,
+      "line": 24,
       "path": "/img/brands/gelitup/Gelitup1 (120).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 32,
+      "line": 25,
       "path": "/img/brands/gelitup/Gelitup1 (122).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 33,
+      "line": 26,
       "path": "/img/brands/gelitup/Gelitup1 (126).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 34,
+      "line": 27,
       "path": "/img/brands/gelitup/Gelitup1 (130).jpg",
       "type": "direct"
     },
     {
       "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 58,
+      "line": 51,
       "path": "/GEL.IT.UP-NEW-LOGO-2024_black_2.png",
       "type": "jsx-src"
     },
@@ -3616,20 +3598,6 @@
       ]
     },
     {
-      "file": "src/components/FacilityCarousel.tsx",
-      "line": 12,
-      "path": "/img/factory/Factory mixing.jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/components/FacilityCarousel.tsx",
-      "line": 19,
-      "path": "/img/factory/factory-mixer.jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
       "file": "src/components/GelPolishCategoryGallery.tsx",
       "line": 21,
       "path": "/img/products/gel_polishes/**/*.jpg",
@@ -3648,109 +3616,6 @@
           "score": 30
         }
       ]
-    },
-    {
-      "file": "src/pages/SeasonTrendsPage.tsx",
-      "line": 21,
-      "path": "/img/season/aw/lookbook-${i + 1}.jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/pages/SeasonTrendsPage.tsx",
-      "line": 30,
-      "path": "/img/season/aw/texture-matte.jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/pages/SeasonTrendsPage.tsx",
-      "line": 35,
-      "path": "/img/season/aw/texture-metallic.jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/pages/SeasonTrendsPage.tsx",
-      "line": 40,
-      "path": "/img/season/aw/texture-chrome.jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 8,
-      "path": "/img/brands/gelitup/Gelitup1 (2).jpg",
-      "type": "direct",
-      "candidateMatches": [
-        {
-          "path": "/products/builder-systems/Acrylic/acrylic-powders (2).jpg",
-          "score": 15
-        },
-        {
-          "path": "/products/builder-systems/Premium Builder Gels/premium-builder-gel (2).jpg",
-          "score": 15
-        },
-        {
-          "path": "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (2).jpg",
-          "score": 15
-        }
-      ]
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 10,
-      "path": "/img/brands/gelitup/Gelitup1 (5).jpg",
-      "type": "direct",
-      "candidateMatches": [
-        {
-          "path": "/products/builder-systems/Acrylic/acrylic-powders (5).jpg",
-          "score": 15
-        },
-        {
-          "path": "/products/builder-systems/Premium Builder Gels/premium-builder-gel (5).jpg",
-          "score": 15
-        },
-        {
-          "path": "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (5).jpg",
-          "score": 15
-        }
-      ]
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 16,
-      "path": "/img/brands/gelitup/Gelitup1 (71).jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 17,
-      "path": "/img/brands/gelitup/Gelitup1 (76).jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 23,
-      "path": "/img/brands/gelitup/Gelitup1 (94).jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 27,
-      "path": "/img/brands/gelitup/Gelitup1 (111).jpg",
-      "type": "direct",
-      "candidateMatches": []
-    },
-    {
-      "file": "src/pages/brands/GelItUpPage.tsx",
-      "line": 29,
-      "path": "/img/brands/gelitup/Gelitup1 (113).jpg",
-      "type": "direct",
-      "candidateMatches": []
     },
     {
       "file": "src/pages/products/NailArtPage.tsx",
@@ -4380,24 +4245,13 @@
     {
       "type": "missing-with-matches",
       "priority": "high",
-      "message": "9 missing images have potential matches. Review and update references.",
+      "message": "7 missing images have potential matches. Review and update references.",
       "files": [
         "src/components/BuilderSystemsGallery.tsx",
         "src/components/GelPolishCategoryGallery.tsx",
-        "src/pages/brands/GelItUpPage.tsx",
         "src/pages/products/NailArtPage.tsx",
         "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
         "src/pages/products/builder-gels/ThreePhasePage.tsx"
-      ]
-    },
-    {
-      "type": "missing-no-matches",
-      "priority": "critical",
-      "message": "11 missing images have no close matches. Manual review required.",
-      "files": [
-        "src/components/FacilityCarousel.tsx",
-        "src/pages/SeasonTrendsPage.tsx",
-        "src/pages/brands/GelItUpPage.tsx"
       ]
     }
   ]
