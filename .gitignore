@@ -31,3 +31,5 @@ tmp/
 
 # Backup files created by image fix scripts
 *.bak
+# Temporary files and reports
+tmp/

@@ -15,7 +15,7 @@ function buildComfortPlusImages(): { src: string; alt: string }[] {
 
   Object.keys(imageModules).forEach((path) => {
     // Skip if not an image file
-    if (!path.match(/\.(jpg|jpeg)$/i)) return;
+    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
 
     const filename = path.split('/').pop() || '';
     
@@ -27,7 +27,7 @@ function buildComfortPlusImages(): { src: string; alt: string }[] {
 
     // Generate a readable alt text from the filename
     const altText = filename
-      .replace(/\.(jpg|jpeg)$/i, '')
+      .replace(/\.(jpg|jpeg|png)$/i, '')
       .replace(/[-_]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
