@@ -23,11 +23,11 @@ dist-ssr
 .env
 public/version.json
 
+# Temporary files and audit reports
+tmp/
+
 # Local Netlify folder
 .netlify
-
-# Temporary files
-tmp/
 
 # Backup files created by image fix scripts
 *.bak
