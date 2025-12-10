@@ -110,7 +110,7 @@ export const productCategories: ProductCategory[] = [
     id: 'effect-tops',
     key: 'effect-tops',
     displayName: 'Effect Top Coats',
-    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber_bases_effects-category.jpg',
+    imagePath: '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -133,14 +133,14 @@ export const productCategories: ProductCategory[] = [
     id: 'primers-with-acid',
     key: 'primers-with-acid',
     displayName: 'Primers with Acid',
-    imagePath: '/img/products/primers-and-liquids/With Acid/primer-with-acid-image.jpeg',
+    imagePath: '/img/products/primers-and-liquids/bonder-with-acid.jpg',
     group: 'Primers & Liquids',
   },
   {
     id: 'primers-liquids',
     key: 'primers-liquids',
     displayName: 'Primers & Liquids',
-    imagePath: '/img/products/primers-and-liquids/primers-liquids-category-image.jpg',
+    imagePath: '/img/products/primers-and-liquids/bonder-with-acid.jpg',
     group: 'Primers & Liquids',
   },
 
