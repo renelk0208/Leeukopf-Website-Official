@@ -29,5 +29,7 @@ tmp/
 # Local Netlify folder
 .netlify
 
+# Backup files created by image fix scripts
+*.bak
 # Temporary files and reports
 tmp/

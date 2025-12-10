@@ -63,6 +63,9 @@ export const categoryHero: Record<string, string> = {
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg',
   
   // Accessories
+  'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
+  'comfort-plus-l3': '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
+  'quick-cure-g1': '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
   'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
   'comfort-plus-l3': '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
   'quick-cure-g1': '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
@@ -180,6 +183,11 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   },
   'lamps': {
     'comfort-plus-l3': [
+      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
+      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
+      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png',
+    ],
+    'quick-cure-g1': [
       '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
       '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
       '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
