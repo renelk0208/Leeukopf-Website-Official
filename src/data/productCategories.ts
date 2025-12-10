@@ -36,7 +36,7 @@ export const productCategories: ProductCategory[] = [
     id: 'glitters-collection',
     key: 'glitters-collection',
     displayName: 'Glitters Collection',
-    imagePath: '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
+    imagePath: '/img/products/gel_polishes/Glitters Collection/glitters_category_image.jpg',
     group: 'Gel Polish',
   },
   {
@@ -141,7 +141,6 @@ export const productCategories: ProductCategory[] = [
     key: 'primers-liquids',
     displayName: 'Primers & Liquids',
     imagePath: '/img/products/primers-and-liquids/bonder-without-acid.jpg',
-    imagePath: '/img/products/primers-and-liquids/bonder-with-acid.jpg',
     group: 'Primers & Liquids',
   },
 

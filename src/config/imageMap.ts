@@ -53,7 +53,6 @@ export const categoryHero: Record<string, string> = {
   
   // Primers & Liquids
   'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
-  'primers-liquids': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   'primers-with-acid': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   
   // Nail Art
@@ -65,8 +64,6 @@ export const categoryHero: Record<string, string> = {
   'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
   'comfort-plus-l3': '/img/products/Consumables/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
   'quick-cure-g1': '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg',
-  'comfort-plus-l3': '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
-  'quick-cure-g1': '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
   
   // Packaging
   'jars-and-tubes': '/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg',
@@ -207,7 +204,6 @@ export const productPlaceholder: Record<string, string> = {
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
-  'primers-liquids': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
   'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
   'default': '/img/placeholders/category-placeholder.jpg',
