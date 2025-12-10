@@ -63,10 +63,10 @@ export const categoryHero: Record<string, string> = {
   '3d-multifunctional-gel': '/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg',
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg',
   
-  // Accessories
-  'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
-  'comfort-plus-l3': '/img/products/Consumables/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
-  'quick-cure-g1': '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg',
+  // Lamps
+  'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
+  'comfort-plus-l3': '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
+  'quick-cure-g1': '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
   
   // Packaging
   'jars-and-tubes': '/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg',
@@ -196,14 +196,18 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   },
   'lamps': {
     'comfort-plus-l3': [
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png',
+      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
+      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
+      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png',
+      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (5).png',
+      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (6).png',
     ],
     'quick-cure-g1': [
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg',
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (2).jpg',
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (5).jpg',
+      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
+      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg',
+      '/img/products/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg',
+      '/img/products/Lamps/Quick Cure G1/quick-cure-handhel-lamp (2).jpg',
+      '/img/products/Lamps/Quick Cure G1/quick-cure-handhel-lamp (5).jpg',
     ],
   },
 };
@@ -218,7 +222,7 @@ export const productPlaceholder: Record<string, string> = {
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
   'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
-  'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
+  'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
   'default': '/img/placeholders/category-placeholder.jpg',
 };
 

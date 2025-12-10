@@ -183,6 +183,29 @@ export const productCategories: ProductCategory[] = [
     group: 'Builder Gels',
   },
 
+  // Lamps - UV & LED
+  {
+    id: 'lamps',
+    key: 'lamps',
+    displayName: 'UV & LED Lamps',
+    imagePath: '/img/products/Lamps/UV_lamps_category_1.jpg',
+    group: 'Lamps',
+  },
+  {
+    id: 'comfort-plus-l3',
+    key: 'comfort-plus-l3',
+    displayName: 'Comfort Plus L3',
+    imagePath: '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
+    group: 'Lamps',
+  },
+  {
+    id: 'quick-cure-g1',
+    key: 'quick-cure-g1',
+    displayName: 'Quick Cure G1',
+    imagePath: '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
+    group: 'Lamps',
+  },
+
   // Jars & Tubes - Packaging
   {
     id: 'jars-and-tubes',
