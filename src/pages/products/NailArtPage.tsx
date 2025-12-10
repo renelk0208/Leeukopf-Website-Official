@@ -1,7 +1,52 @@
 import PageTemplate from '../../components/PageTemplate';
 import ProductSEO from '../../components/ProductSEO';
-import NailArtGallery from '../../components/NailArtGallery';
+import ProductGrid from '../../components/ProductGrid';
 import { categoryHero } from '../../config/imageMap';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load all nail art product images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/nail-art/**/*.jpg',
+  { eager: true }
+);
+
+/** Build gallery images from the glob results */
+function buildNailArtImages(): { src: string; alt: string }[] {
+  const images: { src: string; alt: string }[] = [];
+
+  Object.keys(imageModules).forEach((path) => {
+    // Skip if not jpg
+    if (!path.endsWith('.jpg')) return;
+
+    const filename = path.split('/').pop() || '';
+    
+    // Skip category images and desktop.ini
+    if (filename.toLowerCase().includes('category') || filename.toLowerCase().includes('desktop.ini')) return;
+
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.jpg$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    images.push({
+      src: imageSrc,
+      alt: `Nail Art - ${altText}`,
+    });
+  });
+
+  // Sort images by filename for consistent ordering
+  images.sort((a, b) => a.src.localeCompare(b.src));
+
+  return images;
+}
+
+const NAIL_ART_IMAGES = buildNailArtImages();
 
 export default function NailArtPage() {
   return (
@@ -36,7 +81,13 @@ export default function NailArtPage() {
       </div>
 
       {/* Product Gallery */}
-      <NailArtGallery />
+      {NAIL_ART_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Product Gallery"
+          description="Browse our complete range of nail art products"
+          images={NAIL_ART_IMAGES}
+        />
+      )}
 
       {/* Product Categories */}
       <div className="mb-10 sm:mb-12 md:mb-16">

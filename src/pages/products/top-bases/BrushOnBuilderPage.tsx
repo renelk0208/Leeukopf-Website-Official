@@ -1,17 +1,17 @@
-import PageTemplate from '../../../../components/PageTemplate';
-import ApplicationCuring from '../../../../components/ApplicationCuring';
-import ProductGrid from '../../../../components/ProductGrid';
+import PageTemplate from '../../../components/PageTemplate';
+import ApplicationCuring from '../../../components/ApplicationCuring';
+import ProductGrid from '../../../components/ProductGrid';
 
 /**
- * Use Vite's import.meta.glob to dynamically load all rubber base product images
+ * Use Vite's import.meta.glob to dynamically load all brush-on-builder product images
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/tops-and-bases/rubber-bases/**/*.{jpg,JPG,jpeg,JPEG}',
+  '/public/img/products/tops-and-bases/brush-on-builder/**/*.{jpg,JPG,jpeg,JPEG}',
   { eager: true }
 );
 
 /** Build gallery images from the glob results */
-function buildRubberBaseImages(): { src: string; alt: string }[] {
+function buildBrushOnBuilderImages(): { src: string; alt: string }[] {
   const images: { src: string; alt: string }[] = [];
 
   Object.keys(imageModules).forEach((path) => {
@@ -35,7 +35,7 @@ function buildRubberBaseImages(): { src: string; alt: string }[] {
 
     images.push({
       src: imageSrc,
-      alt: `Rubber Base - ${altText}`,
+      alt: `Brush-On Builder - ${altText}`,
     });
   });
 
@@ -45,48 +45,47 @@ function buildRubberBaseImages(): { src: string; alt: string }[] {
   return images;
 }
 
-const RUBBER_BASE_IMAGES = buildRubberBaseImages();
+const BRUSH_ON_BUILDER_IMAGES = buildBrushOnBuilderImages();
 
-export default function RubberBasePage() {
+export default function BrushOnBuilderPage() {
   return (
     <PageTemplate
-      title="Rubber Base Coats"
-      subtitle="Flexible, self-levelling bases ideal for natural nail reinforcement, free from HEMA and TPO."
+      title="Brush-On Builder"
+      subtitle="Convenient brush-on building system for quick overlays and natural nail reinforcement — HEMA-free and TPO-free."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
         { label: 'Top & Bases', path: '/products/top-and-bases' },
-        { label: 'Base Coats', path: '/products/top-and-bases/base-coats' },
-        { label: 'Rubber Base' }
+        { label: 'Brush-On Builder' }
       ]}
     >
       {/* Hero Description */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed mb-4">
-            Rubber base coats offer flexible, self-levelling adhesion that moves naturally with the nail. Perfect 
-            for natural nail reinforcement, overlay services and clients with thin or flexible nails that benefit 
-            from extra support.
+            Our brush-on builder system provides the strength and coverage of a builder gel in an easy-to-apply 
+            bottle format. Perfect for natural nail overlays, quick reinforcements and services where speed meets 
+            professional results.
           </p>
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
-            Our rubber base formulas are HEMA-free and TPO-free, providing safer alternatives without sacrificing 
-            the strength and flexibility professionals depend on. The self-levelling consistency smooths surface 
-            imperfections while creating a strong, flexible foundation.
+            Formulated without HEMA or TPO, this self-levelling builder gel flows smoothly from the bottle and 
+            provides excellent adhesion, strength and a natural-looking finish. Ideal for busy salons that want 
+            efficiency without sacrificing quality.
           </p>
         </div>
       </div>
 
       {/* Product Gallery */}
-      {RUBBER_BASE_IMAGES.length > 0 && (
+      {BRUSH_ON_BUILDER_IMAGES.length > 0 && (
         <ProductGrid
           title="Product Gallery"
-          description="Browse our complete range of rubber base coat products"
-          images={RUBBER_BASE_IMAGES}
+          description="Browse our complete range of brush-on builder products"
+          images={BRUSH_ON_BUILDER_IMAGES}
         />
       )}
 
       {/* Application & Curing */}
-      <ApplicationCuring type="base-coats" />
+      <ApplicationCuring type="builder-gels" />
 
       {/* Benefits */}
       <div className="bg-white rounded-lg p-5 sm:p-6 md:p-8 border border-gray-200">
@@ -96,15 +95,15 @@ export default function RubberBasePage() {
         <ul className="space-y-3 text-gray-600 font-light text-sm sm:text-base">
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
-            <span>Flexible formula that moves naturally with the nail</span>
+            <span>Convenient bottle application for fast services</span>
           </li>
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
-            <span>Self-levelling consistency smooths surface imperfections</span>
+            <span>Self-levelling formula for smooth, professional results</span>
           </li>
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
-            <span>Ideal for natural nail reinforcement and thin nails</span>
+            <span>Excellent strength for natural nail overlays</span>
           </li>
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
@@ -112,11 +111,11 @@ export default function RubberBasePage() {
           </li>
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
-            <span>Strong adhesion with reduced lifting</span>
+            <span>Multiple shades including clear and natural cover tones</span>
           </li>
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
-            <span>Can be used as a standalone overlay or under gel polish</span>
+            <span>Can be used alone or under gel polish</span>
           </li>
         </ul>
       </div>

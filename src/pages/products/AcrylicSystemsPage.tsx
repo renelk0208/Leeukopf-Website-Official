@@ -1,7 +1,52 @@
 import PageTemplate from '../../components/PageTemplate';
 import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
-import AcrylicSystemsGallery from '../../components/AcrylicSystemsGallery';
+import ProductGrid from '../../components/ProductGrid';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load all acrylic system product images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/builder-systems/Acrylic/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
+  { eager: true }
+);
+
+/** Build gallery images from the glob results */
+function buildAcrylicImages(): { src: string; alt: string }[] {
+  const images: { src: string; alt: string }[] = [];
+
+  Object.keys(imageModules).forEach((path) => {
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
+
+    const filename = path.split('/').pop() || '';
+    
+    // Skip the category image
+    if (filename.toLowerCase().includes('category')) return;
+
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.(jpg|jpeg|png)$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    images.push({
+      src: imageSrc,
+      alt: `Acrylic System - ${altText}`,
+    });
+  });
+
+  // Sort images by filename for consistent ordering
+  images.sort((a, b) => a.src.localeCompare(b.src));
+
+  return images;
+}
+
+const ACRYLIC_IMAGES = buildAcrylicImages();
 
 export default function AcrylicSystemsPage() {
   return (
@@ -25,7 +70,13 @@ export default function AcrylicSystemsPage() {
       </div>
 
       {/* Product Gallery */}
-      <AcrylicSystemsGallery />
+      {ACRYLIC_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Product Gallery"
+          description="Browse our complete range of acrylic system products"
+          images={ACRYLIC_IMAGES}
+        />
+      )}
 
       {/* System Types */}
       <div className="mb-10 sm:mb-12 md:mb-16">
