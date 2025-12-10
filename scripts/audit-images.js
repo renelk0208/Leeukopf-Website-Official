@@ -106,8 +106,8 @@ function scanCodebaseForReferences() {
     const patterns = [
       // Image src attributes: src="/img/products/..."
       /(?:src|href|imagePath|image|path|url)\s*[:=]\s*['"]([^'"]*\/img\/products\/[^'"]+)['"]/g,
-      // import.meta.glob patterns
-      /['"]\/public\/img\/products\/[^'"]+['"]/g,
+      // import.meta.glob patterns (skip - these are glob patterns, not actual paths)
+      // /['"]\/public\/img\/products\/[^'"]+['"]/g,
       // CSS url() patterns
       /url\s*\(\s*['"]?([^'")]*\/img\/products\/[^'")]+)['"]?\s*\)/g,
     ];
@@ -120,6 +120,11 @@ function scanCodebaseForReferences() {
         // Clean up the path
         imagePath = imagePath.replace(/^['"]|['"]$/g, '');
         imagePath = imagePath.replace('/public', '');
+        
+        // Skip glob patterns (contain ** or *)
+        if (imagePath.includes('**') || imagePath.includes('*')) {
+          continue;
+        }
         
         // Only include product image paths
         if (imagePath.includes('/img/products/')) {
