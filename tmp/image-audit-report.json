@@ -4463,6 +4463,4260 @@
         "isPattern": true,
         "context": "../../components/ProductGrid';\n\n/**\n * Use Vite's import.meta.glob to dynamically load all rubber base product images\n */\nconst imageModules = import.meta.glob<{ default: string }>(\n  '/public/img/products/tops-and-bases/rubber-bases/**/*.{jpg,JPG,jpeg,JPEG}',\n  { eager: true }\n);\n\n/** Build gallery images from the glob results */\nfunction buildRubberBaseIm"
       }
+  "timestamp": "2025-12-10T12:19:46.659Z",
+  "summary": {
+    "totalReferences": 309,
+    "validReferences": 285,
+    "missingReferences": 7,
+    "fixedReferences": 0,
+    "categoryMismatches": 0,
+    "availableImages": 361
+  },
+  "all_references": [
+    {
+      "file": "src/components/BuilderSystemsGallery.tsx",
+      "line": 26,
+      "path": "/img/products/builder-systems/**/*.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/BuilderSystemsGallery.tsx",
+      "line": 23,
+      "path": "/public/img/products/builder-systems/**/*.jpg",
+      "type": "glob"
+    },
+    {
+      "file": "src/components/CertificatesBanner.tsx",
+      "line": 8,
+      "path": "/img/certifications/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview (1).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 14,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 21,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 28,
+      "path": "/img/factory/pigment-blending.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 35,
+      "path": "/img/factory/quality-control.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/Footer.tsx",
+      "line": 62,
+      "path": "/leeukopf_black.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/Footer.tsx",
+      "line": 187,
+      "path": "/favicon_leeukopf.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/GelPolishCategoryGallery.tsx",
+      "line": 21,
+      "path": "/img/products/gel_polishes/**/*.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/GelPolishCategoryGallery.tsx",
+      "line": 17,
+      "path": "/public/img/products/gel_polishes/**/*.jpg",
+      "type": "glob"
+    },
+    {
+      "file": "src/components/Hero.tsx",
+      "line": 12,
+      "path": "/img/hero/home-page-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/Hero.tsx",
+      "line": 12,
+      "path": "/img/hero/home-page-hero.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/Hero.tsx",
+      "line": 27,
+      "path": "/leeukopf_black.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/Navigation.tsx",
+      "line": 82,
+      "path": "/leeukopf_black.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 13,
+      "path": "/img/products/tops-and-bases/rubber-base-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 20,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 27,
+      "path": "/img/products/tops-and-bases/tops/effect-tops-category.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 34,
+      "path": "/img/products/tops-and-bases/5-in-1-catergory-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 39,
+      "path": "/public/img/products/tops-and-bases/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/components/UnderConstruction.tsx",
+      "line": 48,
+      "path": "/leeukopf_black.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 28,
+      "path": "/img/products/gel_polishes/gel_polish_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 29,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 30,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 31,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 32,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 33,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 34,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 37,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 38,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 39,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 40,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 41,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 42,
+      "path": "/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 43,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 44,
+      "path": "/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 47,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 48,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 49,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 50,
+      "path": "/img/products/tops-and-bases/tops_&_bases_category_effects.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 51,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 52,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 55,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 56,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 59,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 60,
+      "path": "/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 61,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 64,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 66,
+      "path": "/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 69,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 80,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 81,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_warm_colors.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 82,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_rose_jewels_glitters.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 83,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_red_cat_eye.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 84,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cofee_cat_eye.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 85,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_galaxy_cat_eye.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 86,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_gold_leaf.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 87,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_laser_glitters.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 88,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_xmas_glitters.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 91,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 92,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 93,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 94,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 95,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (5).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 98,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 99,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 100,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 101,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 102,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (5).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 105,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 106,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_A.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 107,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_C.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 108,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_G.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 109,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_GL.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 110,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_GY.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 111,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_SF.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 114,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 115,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 116,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 117,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 118,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_5.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 121,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 122,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 123,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 124,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 125,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (5).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 130,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 131,
+      "path": "/img/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 132,
+      "path": "/img/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 133,
+      "path": "/img/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 136,
+      "path": "/img/products/builder-systems/3-in-1 Builder gel/Colour Gels/colour-gels.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 137,
+      "path": "/img/products/builder-systems/3-in-1 Builder gel/Colour Gels/Leeukopf_UGI-V.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 138,
+      "path": "/img/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-GY.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 139,
+      "path": "/img/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-VR.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 144,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 145,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 146,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 147,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 150,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 151,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 152,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 153,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 156,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 157,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 158,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 159,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 160,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (5).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 165,
+      "path": "/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 166,
+      "path": "/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 167,
+      "path": "/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 170,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 171,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 172,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 173,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 178,
+      "path": "/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 179,
+      "path": "/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 180,
+      "path": "/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 183,
+      "path": "/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 184,
+      "path": "/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 185,
+      "path": "/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 195,
+      "path": "/img/products/gel_polishes/gel_polish_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 196,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 197,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 198,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 199,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 200,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 201,
+      "path": "/img/placeholders/category-placeholder.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 208,
+      "path": "/img/hero/home-page-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 209,
+      "path": "/img/hero/about-us-hero-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 210,
+      "path": "/img/hero/our-brand-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 211,
+      "path": "/img/hero/our-products-hero (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 212,
+      "path": "/img/hero/private-label-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 213,
+      "path": "/img/hero/certifications-compliance-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 214,
+      "path": "/img/hero/distributors-wanted-hero-image-1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 215,
+      "path": "/img/hero/faq-starting-a-gel-polish-brand.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 25,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 32,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 39,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 46,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 53,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 60,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 69,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 76,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 83,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 90,
+      "path": "/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 99,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 106,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 113,
+      "path": "/img/products/tops-and-bases/tops_&_bases_category_effects.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 120,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 127,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 136,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 143,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 152,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 161,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 170,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 25,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 32,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 39,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 46,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 53,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 60,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 69,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 76,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 83,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 90,
+      "path": "/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 99,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 106,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 113,
+      "path": "/img/products/tops-and-bases/tops_&_bases_category_effects.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 120,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 127,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 136,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 143,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 152,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 161,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 170,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/lib/imageLoaders.ts",
+      "line": 20,
+      "path": "/",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 17,
+      "path": "/img/hero/about-us-hero-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 67,
+      "path": "/img/factory/qc-intake.png",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 89,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 111,
+      "path": "/img/factory/pigment-blending.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 133,
+      "path": "/img/factory/quality-control.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 67,
+      "path": "/img/factory/qc-intake.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 89,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 111,
+      "path": "/img/factory/pigment-blending.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 133,
+      "path": "/img/factory/quality-control.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 14,
+      "path": "/img/Certifications-And-Compliance/bcci-chamber-2025.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 22,
+      "path": "/img/Certifications-And-Compliance/free-sale-certificate-2025-2026-1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 30,
+      "path": "/img/Certifications-And-Compliance/GMP CERTIFICATE 2025-2026_page1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 38,
+      "path": "/img/Certifications-And-Compliance/iso-9001-2025-2026.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 46,
+      "path": "/img/Certifications-And-Compliance/leaping-bunny-2025-2026.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 54,
+      "path": "/img/Certifications-And-Compliance/bulgarian-cosmetics-membership-2025.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 62,
+      "path": "/img/Certifications-And-Compliance/fda-compliance-certificate_page-0001.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 70,
+      "path": "/img/Certifications-And-Compliance/sfda-certificate-of-conformity.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 78,
+      "path": "/img/Certifications-And-Compliance/s4648-01-TPOcompliance_page-0001.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 129,
+      "path": "/img/hero/certifications-compliance-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/DistributorsWantedPage.tsx",
+      "line": 81,
+      "path": "/img/hero/distributors-wanted-hero-image-1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/DistributorsWantedPage.tsx",
+      "line": 102,
+      "path": "/World map.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/DistributorsWantedPage.tsx",
+      "line": 190,
+      "path": "/distribution partnership.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/FaqStartBrandPage.tsx",
+      "line": 182,
+      "path": "/img/hero/faq-starting-a-gel-polish-brand.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 7,
+      "path": "/img/brands/gelitup/Gelitup1 (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 8,
+      "path": "/img/brands/gelitup/Gelitup1 (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 9,
+      "path": "/img/brands/gelitup/Gelitup1 (6).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 10,
+      "path": "/img/brands/gelitup/Gelitup1 (7).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 11,
+      "path": "/img/brands/gelitup/Gelitup1 (8).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 12,
+      "path": "/img/brands/gelitup/Gelitup1 (9).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 13,
+      "path": "/img/brands/gelitup/Gelitup1 (10).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 14,
+      "path": "/img/brands/gelitup/Gelitup1 (79).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 15,
+      "path": "/img/brands/gelitup/Gelitup1 (89).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 16,
+      "path": "/img/brands/gelitup/Gelitup1 (91).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 17,
+      "path": "/img/brands/gelitup/Gelitup1 (92).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 18,
+      "path": "/img/brands/gelitup/Gelitup1 (93).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 19,
+      "path": "/img/brands/gelitup/Gelitup1 (100).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 20,
+      "path": "/img/brands/gelitup/Gelitup1 (105).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 21,
+      "path": "/img/brands/gelitup/Gelitup1 (107).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 22,
+      "path": "/img/brands/gelitup/Gelitup1 (112).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 23,
+      "path": "/img/brands/gelitup/Gelitup1 (114).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 24,
+      "path": "/img/brands/gelitup/Gelitup1 (120).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 25,
+      "path": "/img/brands/gelitup/Gelitup1 (122).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 26,
+      "path": "/img/brands/gelitup/Gelitup1 (126).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 27,
+      "path": "/img/brands/gelitup/Gelitup1 (130).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 42,
+      "path": "/img/hero/our-brand-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 49,
+      "path": "/GEL.IT.UP-NEW-LOGO-2024_black_2.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 18,
+      "path": "/img/private-label/bulk/bulk-5kg-bucket.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 25,
+      "path": "/img/private-label/bulk/bulk-5kg-jerrycan.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 32,
+      "path": "/img/private-label/bulk/bulk-1kg-flask.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 39,
+      "path": "/img/private-label/bulk/bulk-500g-flask.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 46,
+      "path": "/img/private-label/bulk/bulk-1kg-bucket.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 101,
+      "path": "/img/hero/private-label-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 146,
+      "path": "/img/private-label/bottles/bottles-image-private label-solutions.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 170,
+      "path": "/img/private-label/bulk/bulk-5kg-bucket.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 194,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 146,
+      "path": "/img/private-label/bottles/bottles-image-private label-solutions.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 170,
+      "path": "/img/private-label/bulk/bulk-5kg-bucket.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 194,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 72,
+      "path": "/img/hero/our-products-hero (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 118,
+      "path": "/img/products/gel_polishes/gel_polish_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 144,
+      "path": "/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 170,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 196,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 222,
+      "path": "/img/products/builder-systems/Acrylic/acrylic-powders (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 248,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 274,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 118,
+      "path": "/img/products/gel_polishes/gel_polish_category_1.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 144,
+      "path": "/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 170,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 196,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 222,
+      "path": "/img/products/builder-systems/Acrylic/acrylic-powders (1).jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 248,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 274,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 39,
+      "path": "/img/season/aw/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 44,
+      "path": "/img/season/aw/2026_new_collection_gold_leaf.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 49,
+      "path": "/img/season/aw/2026_new_collection_laser_glitters.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 7,
+      "path": "/img/brands/gelitup/Gelitup1 (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 8,
+      "path": "/img/brands/gelitup/Gelitup1 (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 9,
+      "path": "/img/brands/gelitup/Gelitup1 (6).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 10,
+      "path": "/img/brands/gelitup/Gelitup1 (7).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 11,
+      "path": "/img/brands/gelitup/Gelitup1 (8).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 12,
+      "path": "/img/brands/gelitup/Gelitup1 (9).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 13,
+      "path": "/img/brands/gelitup/Gelitup1 (10).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 14,
+      "path": "/img/brands/gelitup/Gelitup1 (79).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 15,
+      "path": "/img/brands/gelitup/Gelitup1 (89).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 16,
+      "path": "/img/brands/gelitup/Gelitup1 (91).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 17,
+      "path": "/img/brands/gelitup/Gelitup1 (92).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 18,
+      "path": "/img/brands/gelitup/Gelitup1 (93).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 19,
+      "path": "/img/brands/gelitup/Gelitup1 (100).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 20,
+      "path": "/img/brands/gelitup/Gelitup1 (105).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 21,
+      "path": "/img/brands/gelitup/Gelitup1 (107).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 22,
+      "path": "/img/brands/gelitup/Gelitup1 (112).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 23,
+      "path": "/img/brands/gelitup/Gelitup1 (114).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 24,
+      "path": "/img/brands/gelitup/Gelitup1 (120).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 25,
+      "path": "/img/brands/gelitup/Gelitup1 (122).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 26,
+      "path": "/img/brands/gelitup/Gelitup1 (126).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 27,
+      "path": "/img/brands/gelitup/Gelitup1 (130).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 51,
+      "path": "/GEL.IT.UP-NEW-LOGO-2024_black_2.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/AcrylicSystemsPage.tsx",
+      "line": 7,
+      "path": "/public/img/products/builder-systems/Acrylic/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/JarsAndTubesPage.tsx",
+      "line": 7,
+      "path": "/public/img/products/jars-and-tubes/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/LampsPage.tsx",
+      "line": 40,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/LampsPage.tsx",
+      "line": 80,
+      "path": "/img/products/Consumables/Lamps/quick-cure-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/LampsPage.tsx",
+      "line": 40,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/LampsPage.tsx",
+      "line": 80,
+      "path": "/img/products/Consumables/Lamps/quick-cure-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/LiquidsAndSolutionsPage.tsx",
+      "line": 7,
+      "path": "/public/img/products/primers-and-liquids/**/*.{jpg,JPG,jpeg,JPEG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/NailArtPage.tsx",
+      "line": 10,
+      "path": "/img/products/nail-art/**/*.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/NailArtPage.tsx",
+      "line": 7,
+      "path": "/public/img/products/nail-art/**/*.jpg",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/PolygelAcrygelPage.tsx",
+      "line": 8,
+      "path": "/public/img/products/builder-systems/Acrygel/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/TopAndBasesPage.tsx",
+      "line": 13,
+      "path": "/img/products/tops-and-bases/tops_&_bases_category_effects.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/TopAndBasesPage.tsx",
+      "line": 20,
+      "path": "/img/products/tops-and-bases/rubber-base-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 10,
+      "path": "/img/products/builder-systems/Premium Builder Gels/**/*.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 15,
+      "path": "/img/products/builder-systems/Premium Builder Gels/**/*.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 35,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 7,
+      "path": "/public/img/products/builder-systems/Premium Builder Gels/**/*.jpg",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 35,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreeInOnePage.tsx",
+      "line": 35,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreeInOnePage.tsx",
+      "line": 7,
+      "path": "/public/img/products/builder-systems/3-in-1 Builder gel/**/*.{jpg,JPG,jpeg,JPEG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreeInOnePage.tsx",
+      "line": 35,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 11,
+      "path": "/img/products/builder-systems/Builder Gels/**/*.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 16,
+      "path": "/img/products/builder-systems/Builder Gels/**/*.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 37,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 7,
+      "path": "/public/img/products/builder-systems/Builder Gels/**/*.jpg",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 37,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/lamps/ComfortPlusL3Page.tsx",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/lamps/ComfortPlusL3Page.tsx",
+      "line": 5,
+      "path": "/public/img/products/Consumables/Lamps/Comfort PlusL3/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/lamps/ComfortPlusL3Page.tsx",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/lamps/QuickCureG1Page.tsx",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/quick-cure-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/lamps/QuickCureG1Page.tsx",
+      "line": 5,
+      "path": "/public/img/products/Consumables/Lamps/Quick Cure G1/**/*.{jpg,JPG,jpeg,JPEG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/lamps/QuickCureG1Page.tsx",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/quick-cure-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/top-bases/BrushOnBuilderPage.tsx",
+      "line": 6,
+      "path": "/public/img/products/tops-and-bases/brush-on-builder/**/*.{jpg,JPG,jpeg,JPEG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/top-bases/base-coats/RubberBasePage.tsx",
+      "line": 6,
+      "path": "/public/img/products/tops-and-bases/rubber-bases/**/*.{jpg,JPG,jpeg,JPEG}",
+      "type": "glob"
+    },
+    {
+      "file": "src/pages/products/top-bases/base-coats/SuperiorBasePage.tsx",
+      "line": 6,
+      "path": "/public/img/products/tops-and-bases/5-in-1/**/*.{jpg,JPG,jpeg,JPEG}",
+      "type": "glob"
+    }
+  ],
+  "valid_references": [
+    {
+      "file": "src/components/CertificatesBanner.tsx",
+      "line": 8,
+      "path": "/img/certifications/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview (1).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 14,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 21,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 28,
+      "path": "/img/factory/pigment-blending.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/FacilityCarousel.tsx",
+      "line": 35,
+      "path": "/img/factory/quality-control.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/Footer.tsx",
+      "line": 62,
+      "path": "/leeukopf_black.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/Footer.tsx",
+      "line": 187,
+      "path": "/favicon_leeukopf.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/Hero.tsx",
+      "line": 12,
+      "path": "/img/hero/home-page-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/Hero.tsx",
+      "line": 12,
+      "path": "/img/hero/home-page-hero.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/Hero.tsx",
+      "line": 27,
+      "path": "/leeukopf_black.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/Navigation.tsx",
+      "line": 82,
+      "path": "/leeukopf_black.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 13,
+      "path": "/img/products/tops-and-bases/rubber-base-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 20,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 27,
+      "path": "/img/products/tops-and-bases/tops/effect-tops-category.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/TopsAndBasesGallery.tsx",
+      "line": 34,
+      "path": "/img/products/tops-and-bases/5-in-1-catergory-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/components/UnderConstruction.tsx",
+      "line": 48,
+      "path": "/leeukopf_black.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 28,
+      "path": "/img/products/gel_polishes/gel_polish_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 29,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 30,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 31,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 32,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 33,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 34,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 37,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 38,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 39,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 40,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 41,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 42,
+      "path": "/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 43,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 44,
+      "path": "/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 47,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 48,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 49,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 50,
+      "path": "/img/products/tops-and-bases/tops_&_bases_category_effects.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 51,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 52,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 55,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 56,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 59,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 60,
+      "path": "/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 61,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 64,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 66,
+      "path": "/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 69,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 80,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 81,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_warm_colors.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 82,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_rose_jewels_glitters.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 83,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_red_cat_eye.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 84,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cofee_cat_eye.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 85,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_galaxy_cat_eye.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 86,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_gold_leaf.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 87,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_laser_glitters.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 88,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_xmas_glitters.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 91,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 92,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 93,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 94,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 95,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (5).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 98,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 99,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 100,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 101,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 102,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-gel (5).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 105,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 106,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_A.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 107,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_C.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 108,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_G.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 109,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_GL.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 110,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_GY.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 111,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO_SF.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 114,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 115,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 116,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 117,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 118,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_5.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 121,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 122,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 123,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 124,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 125,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (5).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 130,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 131,
+      "path": "/img/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 132,
+      "path": "/img/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 133,
+      "path": "/img/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 136,
+      "path": "/img/products/builder-systems/3-in-1 Builder gel/Colour Gels/colour-gels.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 137,
+      "path": "/img/products/builder-systems/3-in-1 Builder gel/Colour Gels/Leeukopf_UGI-V.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 138,
+      "path": "/img/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-GY.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 139,
+      "path": "/img/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-VR.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 144,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 145,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 146,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 147,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 150,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 151,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 152,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 153,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 156,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 157,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 158,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 159,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (4).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 160,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (5).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 165,
+      "path": "/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 166,
+      "path": "/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 167,
+      "path": "/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 170,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 171,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 172,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 173,
+      "path": "/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 178,
+      "path": "/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 179,
+      "path": "/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 180,
+      "path": "/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 183,
+      "path": "/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 184,
+      "path": "/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 185,
+      "path": "/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 195,
+      "path": "/img/products/gel_polishes/gel_polish_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 196,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 197,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 198,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 199,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 200,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 201,
+      "path": "/img/placeholders/category-placeholder.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 208,
+      "path": "/img/hero/home-page-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 209,
+      "path": "/img/hero/about-us-hero-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 210,
+      "path": "/img/hero/our-brand-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 211,
+      "path": "/img/hero/our-products-hero (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 212,
+      "path": "/img/hero/private-label-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 213,
+      "path": "/img/hero/certifications-compliance-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 214,
+      "path": "/img/hero/distributors-wanted-hero-image-1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/config/imageMap.ts",
+      "line": 215,
+      "path": "/img/hero/faq-starting-a-gel-polish-brand.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 25,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 32,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 39,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 46,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 53,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 60,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 69,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 76,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 83,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 90,
+      "path": "/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 99,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 106,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 113,
+      "path": "/img/products/tops-and-bases/tops_&_bases_category_effects.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 120,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 127,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 136,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 143,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 152,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 161,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 170,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 25,
+      "path": "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 32,
+      "path": "/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 39,
+      "path": "/img/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 46,
+      "path": "/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 53,
+      "path": "/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 60,
+      "path": "/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 69,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 76,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 83,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 90,
+      "path": "/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 99,
+      "path": "/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 106,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 113,
+      "path": "/img/products/tops-and-bases/tops_&_bases_category_effects.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 120,
+      "path": "/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 127,
+      "path": "/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 136,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 143,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 152,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 161,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/data/productCategories.ts",
+      "line": 170,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg",
+      "type": "config"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 17,
+      "path": "/img/hero/about-us-hero-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 67,
+      "path": "/img/factory/qc-intake.png",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 89,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 111,
+      "path": "/img/factory/pigment-blending.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 133,
+      "path": "/img/factory/quality-control.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 67,
+      "path": "/img/factory/qc-intake.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 89,
+      "path": "/img/factory/formulation-and-mixing.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 111,
+      "path": "/img/factory/pigment-blending.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/AboutPage.tsx",
+      "line": 133,
+      "path": "/img/factory/quality-control.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 14,
+      "path": "/img/Certifications-And-Compliance/bcci-chamber-2025.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 22,
+      "path": "/img/Certifications-And-Compliance/free-sale-certificate-2025-2026-1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 30,
+      "path": "/img/Certifications-And-Compliance/GMP CERTIFICATE 2025-2026_page1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 38,
+      "path": "/img/Certifications-And-Compliance/iso-9001-2025-2026.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 46,
+      "path": "/img/Certifications-And-Compliance/leaping-bunny-2025-2026.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 54,
+      "path": "/img/Certifications-And-Compliance/bulgarian-cosmetics-membership-2025.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 62,
+      "path": "/img/Certifications-And-Compliance/fda-compliance-certificate_page-0001.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 70,
+      "path": "/img/Certifications-And-Compliance/sfda-certificate-of-conformity.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 78,
+      "path": "/img/Certifications-And-Compliance/s4648-01-TPOcompliance_page-0001.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/CertificatesPage.tsx",
+      "line": 129,
+      "path": "/img/hero/certifications-compliance-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/DistributorsWantedPage.tsx",
+      "line": 81,
+      "path": "/img/hero/distributors-wanted-hero-image-1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/DistributorsWantedPage.tsx",
+      "line": 102,
+      "path": "/World map.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/DistributorsWantedPage.tsx",
+      "line": 190,
+      "path": "/distribution partnership.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/FaqStartBrandPage.tsx",
+      "line": 182,
+      "path": "/img/hero/faq-starting-a-gel-polish-brand.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 7,
+      "path": "/img/brands/gelitup/Gelitup1 (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 8,
+      "path": "/img/brands/gelitup/Gelitup1 (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 9,
+      "path": "/img/brands/gelitup/Gelitup1 (6).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 10,
+      "path": "/img/brands/gelitup/Gelitup1 (7).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 11,
+      "path": "/img/brands/gelitup/Gelitup1 (8).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 12,
+      "path": "/img/brands/gelitup/Gelitup1 (9).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 13,
+      "path": "/img/brands/gelitup/Gelitup1 (10).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 14,
+      "path": "/img/brands/gelitup/Gelitup1 (79).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 15,
+      "path": "/img/brands/gelitup/Gelitup1 (89).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 16,
+      "path": "/img/brands/gelitup/Gelitup1 (91).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 17,
+      "path": "/img/brands/gelitup/Gelitup1 (92).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 18,
+      "path": "/img/brands/gelitup/Gelitup1 (93).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 19,
+      "path": "/img/brands/gelitup/Gelitup1 (100).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 20,
+      "path": "/img/brands/gelitup/Gelitup1 (105).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 21,
+      "path": "/img/brands/gelitup/Gelitup1 (107).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 22,
+      "path": "/img/brands/gelitup/Gelitup1 (112).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 23,
+      "path": "/img/brands/gelitup/Gelitup1 (114).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 24,
+      "path": "/img/brands/gelitup/Gelitup1 (120).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 25,
+      "path": "/img/brands/gelitup/Gelitup1 (122).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 26,
+      "path": "/img/brands/gelitup/Gelitup1 (126).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 27,
+      "path": "/img/brands/gelitup/Gelitup1 (130).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 42,
+      "path": "/img/hero/our-brand-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/OurBrandsPage.tsx",
+      "line": 49,
+      "path": "/GEL.IT.UP-NEW-LOGO-2024_black_2.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 18,
+      "path": "/img/private-label/bulk/bulk-5kg-bucket.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 25,
+      "path": "/img/private-label/bulk/bulk-5kg-jerrycan.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 32,
+      "path": "/img/private-label/bulk/bulk-1kg-flask.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 39,
+      "path": "/img/private-label/bulk/bulk-500g-flask.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelBulkPage.tsx",
+      "line": 46,
+      "path": "/img/private-label/bulk/bulk-1kg-bucket.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 101,
+      "path": "/img/hero/private-label-hero.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 146,
+      "path": "/img/private-label/bottles/bottles-image-private label-solutions.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 170,
+      "path": "/img/private-label/bulk/bulk-5kg-bucket.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 194,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 146,
+      "path": "/img/private-label/bottles/bottles-image-private label-solutions.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 170,
+      "path": "/img/private-label/bulk/bulk-5kg-bucket.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/PrivateLabelPage.tsx",
+      "line": 194,
+      "path": "/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 72,
+      "path": "/img/hero/our-products-hero (2).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 118,
+      "path": "/img/products/gel_polishes/gel_polish_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 144,
+      "path": "/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 170,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 196,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 222,
+      "path": "/img/products/builder-systems/Acrylic/acrylic-powders (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 248,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 274,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 118,
+      "path": "/img/products/gel_polishes/gel_polish_category_1.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 144,
+      "path": "/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 170,
+      "path": "/img/products/tops-and-bases/tops/tops-bases_category_1.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 196,
+      "path": "/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 222,
+      "path": "/img/products/builder-systems/Acrylic/acrylic-powders (1).jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 248,
+      "path": "/img/products/primers-and-liquids/bonder-with-acid.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/ProductsPage.tsx",
+      "line": 274,
+      "path": "/img/products/nail-art/nail-art-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 39,
+      "path": "/img/season/aw/2026_new_collection_cover.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 44,
+      "path": "/img/season/aw/2026_new_collection_gold_leaf.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/SeasonTrendsPage.tsx",
+      "line": 49,
+      "path": "/img/season/aw/2026_new_collection_laser_glitters.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 7,
+      "path": "/img/brands/gelitup/Gelitup1 (1).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 8,
+      "path": "/img/brands/gelitup/Gelitup1 (3).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 9,
+      "path": "/img/brands/gelitup/Gelitup1 (6).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 10,
+      "path": "/img/brands/gelitup/Gelitup1 (7).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 11,
+      "path": "/img/brands/gelitup/Gelitup1 (8).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 12,
+      "path": "/img/brands/gelitup/Gelitup1 (9).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 13,
+      "path": "/img/brands/gelitup/Gelitup1 (10).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 14,
+      "path": "/img/brands/gelitup/Gelitup1 (79).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 15,
+      "path": "/img/brands/gelitup/Gelitup1 (89).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 16,
+      "path": "/img/brands/gelitup/Gelitup1 (91).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 17,
+      "path": "/img/brands/gelitup/Gelitup1 (92).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 18,
+      "path": "/img/brands/gelitup/Gelitup1 (93).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 19,
+      "path": "/img/brands/gelitup/Gelitup1 (100).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 20,
+      "path": "/img/brands/gelitup/Gelitup1 (105).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 21,
+      "path": "/img/brands/gelitup/Gelitup1 (107).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 22,
+      "path": "/img/brands/gelitup/Gelitup1 (112).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 23,
+      "path": "/img/brands/gelitup/Gelitup1 (114).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 24,
+      "path": "/img/brands/gelitup/Gelitup1 (120).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 25,
+      "path": "/img/brands/gelitup/Gelitup1 (122).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 26,
+      "path": "/img/brands/gelitup/Gelitup1 (126).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 27,
+      "path": "/img/brands/gelitup/Gelitup1 (130).jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/brands/GelItUpPage.tsx",
+      "line": 51,
+      "path": "/GEL.IT.UP-NEW-LOGO-2024_black_2.png",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/LampsPage.tsx",
+      "line": 40,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/LampsPage.tsx",
+      "line": 80,
+      "path": "/img/products/Consumables/Lamps/quick-cure-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/LampsPage.tsx",
+      "line": 40,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/LampsPage.tsx",
+      "line": 80,
+      "path": "/img/products/Consumables/Lamps/quick-cure-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/TopAndBasesPage.tsx",
+      "line": 13,
+      "path": "/img/products/tops-and-bases/tops_&_bases_category_effects.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/TopAndBasesPage.tsx",
+      "line": 20,
+      "path": "/img/products/tops-and-bases/rubber-base-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 35,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 35,
+      "path": "/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreeInOnePage.tsx",
+      "line": 35,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreeInOnePage.tsx",
+      "line": 35,
+      "path": "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 37,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 37,
+      "path": "/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/lamps/ComfortPlusL3Page.tsx",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/lamps/ComfortPlusL3Page.tsx",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "type": "jsx-src"
+    },
+    {
+      "file": "src/pages/products/lamps/QuickCureG1Page.tsx",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/quick-cure-category-image.jpg",
+      "type": "direct"
+    },
+    {
+      "file": "src/pages/products/lamps/QuickCureG1Page.tsx",
+      "line": 65,
+      "path": "/img/products/Consumables/Lamps/quick-cure-category-image.jpg",
+      "type": "jsx-src"
+    }
+  ],
+  "missing_references": [
+    {
+      "file": "src/components/BuilderSystemsGallery.tsx",
+      "line": 26,
+      "path": "/img/products/builder-systems/**/*.jpg",
+      "type": "direct",
+      "candidateMatches": [
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Bridal Gels/Leeukopf_Y2-UGI-WD.jpg",
+          "score": 35
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/Leeukopf_UGN.jpg",
+          "score": 35
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (1).jpg",
+          "score": 35
+        }
+      ]
+    },
+    {
+      "file": "src/components/GelPolishCategoryGallery.tsx",
+      "line": 21,
+      "path": "/img/products/gel_polishes/**/*.jpg",
+      "type": "direct",
+      "candidateMatches": [
+        {
+          "path": "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (10).jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (11).jpg",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "file": "src/pages/products/NailArtPage.tsx",
+      "line": 10,
+      "path": "/img/products/nail-art/**/*.jpg",
+      "type": "direct",
+      "candidateMatches": [
+        {
+          "path": "/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_2.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_3.jpg",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 10,
+      "path": "/img/products/builder-systems/Premium Builder Gels/**/*.jpg",
+      "type": "direct",
+      "candidateMatches": [
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Bridal Gels/Leeukopf_Y2-UGI-WD.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/Leeukopf_UGN.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (1).jpg",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "file": "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+      "line": 15,
+      "path": "/img/products/builder-systems/Premium Builder Gels/**/*.jpg",
+      "type": "direct",
+      "candidateMatches": [
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Bridal Gels/Leeukopf_Y2-UGI-WD.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/Leeukopf_UGN.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (1).jpg",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 11,
+      "path": "/img/products/builder-systems/Builder Gels/**/*.jpg",
+      "type": "direct",
+      "candidateMatches": [
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Bridal Gels/Leeukopf_Y2-UGI-WD.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/Leeukopf_UGN.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (1).jpg",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "file": "src/pages/products/builder-gels/ThreePhasePage.tsx",
+      "line": 16,
+      "path": "/img/products/builder-systems/Builder Gels/**/*.jpg",
+      "type": "direct",
+      "candidateMatches": [
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Bridal Gels/Leeukopf_Y2-UGI-WD.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/Leeukopf_UGN.jpg",
+          "score": 30
+        },
+        {
+          "path": "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (1).jpg",
+          "score": 30
+        }
+      ]
+    }
+  ],
+  "fixed_references": [],
+  "category_mismatches": [],
+  "available_images_by_category": {
+    "Certifications-And-Compliance": [
+      "/Certifications-And-Compliance/GMP CERTIFICATE 2025-2026_page1.jpg",
+      "/Certifications-And-Compliance/bcci-chamber-2025.jpg",
+      "/Certifications-And-Compliance/bulgarian-cosmetics-membership-2025.jpg",
+      "/Certifications-And-Compliance/fda-compliance-certificate_page-0001.jpg",
+      "/Certifications-And-Compliance/free-sale-certificate-2025-2026-1.jpg",
+      "/Certifications-And-Compliance/iso-9001-2025-2026.jpg",
+      "/Certifications-And-Compliance/leaping-bunny-2025-2026.jpg",
+      "/Certifications-And-Compliance/s4648-01-TPOcompliance_page-0001.jpg",
+      "/Certifications-And-Compliance/sfda-certificate-of-conformity.jpg"
+    ],
+    "Logos": [
+      "/Logos/apple-touch-icon.png",
+      "/Logos/favicon-16x16.png",
+      "/Logos/favicon-32x32.png",
+      "/Logos/test-logo.png"
+    ],
+    "brands": [
+      "/brands/gelitup/Gelitup1 (1).jpg",
+      "/brands/gelitup/Gelitup1 (10).jpg",
+      "/brands/gelitup/Gelitup1 (100).jpg",
+      "/brands/gelitup/Gelitup1 (105).jpg",
+      "/brands/gelitup/Gelitup1 (107).jpg",
+      "/brands/gelitup/Gelitup1 (112).jpg",
+      "/brands/gelitup/Gelitup1 (114).jpg",
+      "/brands/gelitup/Gelitup1 (120).jpg",
+      "/brands/gelitup/Gelitup1 (122).jpg",
+      "/brands/gelitup/Gelitup1 (126).jpg",
+      "/brands/gelitup/Gelitup1 (130).jpg",
+      "/brands/gelitup/Gelitup1 (3).jpg",
+      "/brands/gelitup/Gelitup1 (6).jpg",
+      "/brands/gelitup/Gelitup1 (7).jpg",
+      "/brands/gelitup/Gelitup1 (79).jpg",
+      "/brands/gelitup/Gelitup1 (8).jpg",
+      "/brands/gelitup/Gelitup1 (89).jpg",
+      "/brands/gelitup/Gelitup1 (9).jpg",
+      "/brands/gelitup/Gelitup1 (91).jpg",
+      "/brands/gelitup/Gelitup1 (92).jpg",
+      "/brands/gelitup/Gelitup1 (93).jpg"
+    ],
+    "certifications": [
+      "/certifications/GMP Logo.png",
+      "/certifications/gmp-logo.png",
+      "/certifications/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview (1).png"
+    ],
+    "factory": [
+      "/factory/formulation-and-mixing.jpg",
+      "/factory/pigment-blending.jpg",
+      "/factory/qc-intake.png",
+      "/factory/quality-control.jpg"
+    ],
+    "hero": [
+      "/hero/34629fc4-5670-460b-963e-10d4ed9e1925.png",
+      "/hero/about-us-hero-image.jpg",
+      "/hero/certifications-compliance-hero.jpg",
+      "/hero/distributors-wanted-hero-image-1.jpg",
+      "/hero/faq-starting-a-gel-polish-brand.jpg",
+      "/hero/home-page-hero.jpg",
+      "/hero/our-brand-hero.jpg",
+      "/hero/our-products-hero (2).jpg",
+      "/hero/private-label-hero.jpg"
+    ],
+    "placeholders": [
+      "/placeholders/category-placeholder.jpg"
+    ],
+    "private-label": [
+      "/private-label/Jars/website_leeukopf_acrylic_jar_1.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_10.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_11.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_2.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_3.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_4.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_4_1.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_4_2.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_4_3.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_4_4.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_4_5.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_4_6.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_4_7.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_6.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_7.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_8.jpg",
+      "/private-label/Jars/website_leeukopf_acrylic_jar_9.jpg",
+      "/private-label/Jars/website_leeukopf_black_jar_1.jpg",
+      "/private-label/Jars/website_leeukopf_black_jar_2.jpg",
+      "/private-label/Jars/website_leeukopf_black_jar_4.jpg",
+      "/private-label/Jars/website_leeukopf_colored_jar_1.jpg",
+      "/private-label/Jars/website_leeukopf_colored_jar_1_2.jpg",
+      "/private-label/Jars/website_leeukopf_colored_jar_1_3.jpg",
+      "/private-label/Jars/website_leeukopf_colored_jar_1_4.jpg",
+      "/private-label/Jars/website_leeukopf_colored_jar_1_5.jpg",
+      "/private-label/Jars/website_leeukopf_colored_jar_1_6.jpg",
+      "/private-label/Jars/website_leeukopf_colored_jar_1_7.jpg",
+      "/private-label/Jars/website_leeukopf_hexagonal_jar_1.jpg",
+      "/private-label/Jars/website_leeukopf_white_jar_1.jpg",
+      "/private-label/Jars/website_leeukopf_white_jar_2.jpg",
+      "/private-label/bottles/bottles-image-private label-solutions.jpg",
+      "/private-label/bulk/bulk-1kg-bucket.jpg",
+      "/private-label/bulk/bulk-1kg-flask.jpg",
+      "/private-label/bulk/bulk-500g-flask.jpg",
+      "/private-label/bulk/bulk-5kg-bucket.jpg",
+      "/private-label/bulk/bulk-5kg-jerrycan.jpg",
+      "/private-label/labels-bottles-jars-image.jpg"
+    ],
+    "Consumables/Lamps": [
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (10).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (5).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (6).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (7).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (8).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (9).png",
+      "/products/Consumables/Lamps/Comfort PlusL3/l3-lamp-category-image.png",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (10).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (11).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (12).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (13).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (14).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (15).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (16).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (17).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (18).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (2).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (3).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (4).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (5).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (6).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (7).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (8).jpg",
+      "/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (9).jpg",
+      "/products/Consumables/Lamps/comfort-plusL1-category-image.jpg",
+      "/products/Consumables/Lamps/quick-cure-category-image.jpg"
+    ],
+    "builder-systems/3-in-1 Builder gel": [
+      "/products/builder-systems/3-in-1 Builder gel/Bridal Gels/Leeukopf_Y2-UGI-WD.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/Leeukopf_UGN.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (1).jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (2).jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (3).jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Camouflage Gels/camouflage-gel (4).jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Colour Gels/Leeukopf_UGI-V.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Colour Gels/colour-gels.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_UGI-LM.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_UGI-MRF.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-BU.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-DSO.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-GY.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Effects Gels/Leeukopf_Y2-UGI-VR.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Shimmer Builder Gels/Leeukopf_UGS.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Shimmer Builder Gels/Leeukopf_Y2-UGI-PR.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Soft Glitter Gels/Leeukopf_UGI-RS.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Soft Glitter Gels/Leeukopf_Y2-UGI-BL.jpg",
+      "/products/builder-systems/3-in-1 Builder gel/Soft Glitter Gels/Leeukopf_Y2-UGI-RA.jpg"
+    ],
+    "builder-systems/3-phase-builder_gels_category_2.jpg": [
+      "/products/builder-systems/3-phase-builder_gels_category_2.jpg"
+    ],
+    "builder-systems/Acrygel": [
+      "/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (1).jpg",
+      "/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (2).jpg",
+      "/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (3).jpg",
+      "/products/builder-systems/Acrygel/Liquid Polygel/liquid-polygel (4).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (1).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (10).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (2).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (3).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (4).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (5).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (6).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (7).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (8).jpg",
+      "/products/builder-systems/Acrygel/PolygelAcrygel Images/acrylgel-polygel (9).jpg",
+      "/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg"
+    ],
+    "builder-systems/Acrylic": [
+      "/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-image.jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (1).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (10).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (11).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (12).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (2).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (3).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (4).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (5).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (6).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (7).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (8).jpg",
+      "/products/builder-systems/Acrylic/acrylic-powders (9).jpg",
+      "/products/builder-systems/Acrylic/acrylic_liquid_category_1.jpg",
+      "/products/builder-systems/Acrylic/acrylic_liquid_category_2.jpg"
+    ],
+    "builder-systems/Builder Gels": [
+      "/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg",
+      "/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg",
+      "/products/builder-systems/Builder Gels/builder_gels_category_2.jpg",
+      "/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg"
+    ],
+    "builder-systems/Premium Builder Gels": [
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (1).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (10).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (11).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (12).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (13).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (14).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (2).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (3).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (4).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (5).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (6).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (7).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (8).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gel (9).jpg",
+      "/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg"
+    ],
+    "builder-systems/acrylic-powder and liquid category-image.jpg": [
+      "/products/builder-systems/acrylic-powder and liquid category-image.jpg"
+    ],
+    "builder-systems/acrylic-powders-liquid-category-image.png": [
+      "/products/builder-systems/acrylic-powders-liquid-category-image.png"
+    ],
+    "builder-systems/builder_gels_category_1.jpg": [
+      "/products/builder-systems/builder_gels_category_1.jpg"
+    ],
+    "builder-systems/builder_gels_category_shimmer.jpg": [
+      "/products/builder-systems/builder_gels_category_shimmer.jpg"
+    ],
+    "builder-systems/primer_bonder_category_2.jpg": [
+      "/products/builder-systems/primer_bonder_category_2.jpg"
+    ],
+    "gel_polishes/Cat Eye Collection": [
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (10).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (11).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (12).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (13).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (14).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (15).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (16).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (17).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (18).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (19).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (2).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (20).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (21).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (3).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (4).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (5).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (6).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (7).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (8).jpg",
+      "/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (9).jpg"
+    ],
+    "gel_polishes/Cream Collection": [
+      "/products/gel_polishes/Cream Collection/solid-cream-category image.jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (1).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (10).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (2).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (3).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (4).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (5).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (6).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (7).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (8).jpg",
+      "/products/gel_polishes/Cream Collection/solid-cream-gel (9).jpg"
+    ],
+    "gel_polishes/Glitters Collection": [
+      "/products/gel_polishes/Glitters Collection/DSO.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_A.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_C.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_G.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_GL.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_GY.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_M.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_N.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_SF.jpg",
+      "/products/gel_polishes/Glitters Collection/DSO_TC.jpg"
+    ],
+    "gel_polishes/Solid Colour Collection": [
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_10.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_11.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_12.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_13.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_14.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_15.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_16.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_17.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_18.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_19.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_2.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_3.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_4.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_5.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_6.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_7.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_8.jpg",
+      "/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_9.jpg"
+    ],
+    "gel_polishes/Transparent Color Gel Polish": [
+      "/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg",
+      "/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (2).jpg",
+      "/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (3).jpg",
+      "/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (4).jpg",
+      "/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (5).jpg"
+    ],
+    "gel_polishes/autumn_winter_25_26": [
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cofee_cat_eye.jpg",
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg",
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_galaxy_cat_eye.jpg",
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_gold_leaf.jpg",
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_laser_glitters.jpg",
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_red_cat_eye.jpg",
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_rose_jewels_glitters.jpg",
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_warm_colors.jpg",
+      "/products/gel_polishes/autumn_winter_25_26/2026_new_collection_xmas_glitters.jpg"
+    ],
+    "gel_polishes/builder_gels_category_shimmer.jpg": [
+      "/products/gel_polishes/builder_gels_category_shimmer.jpg"
+    ],
+    "gel_polishes/gel_polish_category_1.jpg": [
+      "/products/gel_polishes/gel_polish_category_1.jpg"
+    ],
+    "jars-and-tubes/acrygel-tube black-30g.jpg": [
+      "/products/jars-and-tubes/acrygel-tube black-30g.jpg"
+    ],
+    "jars-and-tubes/acrygel-tube white-60g.jpg": [
+      "/products/jars-and-tubes/acrygel-tube white-60g.jpg"
+    ],
+    "jars-and-tubes/acrygel-tube-black-60g.jpg": [
+      "/products/jars-and-tubes/acrygel-tube-black-60g.jpg"
+    ],
+    "jars-and-tubes/acrygel-tube-white-30g.jpg": [
+      "/products/jars-and-tubes/acrygel-tube-white-30g.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_10.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_10.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_11.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_11.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_2.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_2.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_3.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_3.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_4.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_4.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_4_1.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_1.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_4_2.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_2.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_4_3.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_3.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_4_4.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_4.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_4_5.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_5.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_4_6.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_6.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_4_7.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_7.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_6.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_6.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_7.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_7.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_8.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_8.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_acrylic_jar_9.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_acrylic_jar_9.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_black_jar_1.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_black_jar_1.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_black_jar_2.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_black_jar_2.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_black_jar_4.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_black_jar_4.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_colored_jar_1.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_colored_jar_1_2.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_colored_jar_1_2.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_colored_jar_1_3.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_colored_jar_1_3.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_colored_jar_1_4.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_colored_jar_1_4.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_colored_jar_1_5.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_colored_jar_1_5.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_colored_jar_1_6.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_colored_jar_1_6.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_colored_jar_1_7.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_colored_jar_1_7.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_hexagonal_jar_1.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_hexagonal_jar_1.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_white_jar_1.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_white_jar_1.jpg"
+    ],
+    "jars-and-tubes/website_leeukopf_white_jar_2.jpg": [
+      "/products/jars-and-tubes/website_leeukopf_white_jar_2.jpg"
+    ],
+    "nail-art/3D-multifunctional-gel": [
+      "/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg",
+      "/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_2.jpg",
+      "/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_3.jpg"
+    ],
+    "nail-art/Solid Mirror Powders": [
+      "/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg",
+      "/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette2.jpg",
+      "/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette3.jpg",
+      "/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette4.jpg",
+      "/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_set1.jpg",
+      "/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_set2.jpg",
+      "/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_set3.jpg",
+      "/products/nail-art/Solid Mirror Powders/nail-art-category.jpg"
+    ],
+    "nail-art/nail-art-category-image.jpg": [
+      "/products/nail-art/nail-art-category-image.jpg"
+    ],
+    "primers-and-liquids/bonder-with-acid.jpg": [
+      "/products/primers-and-liquids/bonder-with-acid.jpg"
+    ],
+    "primers-and-liquids/bonder-without-acid.jpg": [
+      "/products/primers-and-liquids/bonder-without-acid.jpg"
+    ],
+    "primers-and-liquids/cleanser_1.jpg": [
+      "/products/primers-and-liquids/cleanser_1.jpg"
+    ],
+    "primers-and-liquids/sanitizer_1.jpg": [
+      "/products/primers-and-liquids/sanitizer_1.jpg"
+    ],
+    "tops-and-bases/5-in-1": [
+      "/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg",
+      "/products/tops-and-bases/5-in-1/5-in-1_colors_2.jpg",
+      "/products/tops-and-bases/5-in-1/5-in-1_colors_3.jpg",
+      "/products/tops-and-bases/5-in-1/5-in-1_colors_4.jpg"
+    ],
+    "tops-and-bases/5-in-1-catergory-image.jpg": [
+      "/products/tops-and-bases/5-in-1-catergory-image.jpg"
+    ],
+    "tops-and-bases/brush-on-builder": [
+      "/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg",
+      "/products/tops-and-bases/brush-on-builder/brush-on-builder (2).jpg",
+      "/products/tops-and-bases/brush-on-builder/brush-on-builder (3).jpg",
+      "/products/tops-and-bases/brush-on-builder/brush-on-builder (4).jpg",
+      "/products/tops-and-bases/brush-on-builder/brush-on-builder (5).jpg",
+      "/products/tops-and-bases/brush-on-builder/brush-on-builder (6).jpg",
+      "/products/tops-and-bases/brush-on-builder/brush-on-builder (7).jpg",
+      "/products/tops-and-bases/brush-on-builder/brush-on-builder (8).jpg"
+    ],
+    "tops-and-bases/brush-on-builder-category.jpg": [
+      "/products/tops-and-bases/brush-on-builder-category.jpg"
+    ],
+    "tops-and-bases/rubber-base-category-image.jpg": [
+      "/products/tops-and-bases/rubber-base-category-image.jpg"
+    ],
+    "tops-and-bases/rubber-bases": [
+      "/products/tops-and-bases/rubber-bases/rubber bases (1).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (10).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (2).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (3).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (4).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (5).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (6).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (7).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (8).jpg",
+      "/products/tops-and-bases/rubber-bases/rubber bases (9).jpg"
+    ],
+    "tops-and-bases/tops": [
+      "/products/tops-and-bases/tops/effect-tops-category.jpg",
+      "/products/tops-and-bases/tops/standard-top-coats-catergory-image.jpg",
+      "/products/tops-and-bases/tops/tops-bases_category_1.jpg"
+    ],
+    "tops-and-bases/tops_&_bases_category_effects.jpg": [
+      "/products/tops-and-bases/tops_&_bases_category_effects.jpg"
+    ],
+    "tops-and-bases/tops_category_1.jpg": [
+      "/products/tops-and-bases/tops_category_1.jpg"
+    ],
+    "season": [
+      "/season/aw/2026_new_collection_cofee_cat_eye.jpg",
+      "/season/aw/2026_new_collection_cover.jpg",
+      "/season/aw/2026_new_collection_galaxy_cat_eye.jpg",
+      "/season/aw/2026_new_collection_gold_leaf.jpg",
+      "/season/aw/2026_new_collection_laser_glitters.jpg",
+      "/season/aw/2026_new_collection_red_cat_eye.jpg",
+      "/season/aw/2026_new_collection_rose_jewels_glitters.jpg",
+      "/season/aw/2026_new_collection_warm_colors.jpg",
+      "/season/aw/2026_new_collection_xmas_glitters.jpg"
+    ]
+  },
+  "recommendations": [
+    {
+      "type": "missing-with-matches",
+      "priority": "high",
+      "message": "7 missing images have potential matches. Review and update references.",
+      "files": [
+        "src/components/BuilderSystemsGallery.tsx",
+        "src/components/GelPolishCategoryGallery.tsx",
+        "src/pages/products/NailArtPage.tsx",
+        "src/pages/products/builder-gels/PremiumFiberGlassPage.tsx",
+        "src/pages/products/builder-gels/ThreePhasePage.tsx"
+      ]
     }
   ]
 }
