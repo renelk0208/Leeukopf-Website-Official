@@ -23,7 +23,7 @@ const POLYGEL_VARIANTS = [
  * Use Vite's import.meta.glob to dynamically load all images from Acrygel folders.
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/builder-systems/Acrygel/**/*.jpg',
+  '/public/img/products/builder-systems/Acrygel/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
 
@@ -38,21 +38,23 @@ function buildVariantImages(): Record<string, { src: string; alt: string }[]> {
 
   // Process all image modules
   Object.keys(imageModules).forEach((path) => {
-    // Skip if not jpg
-    if (!path.endsWith('.jpg')) return;
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
 
     // Skip the category image in the Acrygel folder
     if (path.includes('acrygel_polygel-category_image')) return;
 
     // Extract the folder name from the path
+    // Path format: /public/img/products/builder-systems/Acrygel/FolderName/filename.jpg
     const pathParts = path.split('/');
     const acrygelIndex = pathParts.findIndex((part) => part === 'Acrygel');
     if (acrygelIndex === -1 || acrygelIndex + 1 >= pathParts.length) return;
 
+    // Get the immediate subfolder after Acrygel
     const folderName = pathParts[acrygelIndex + 1];
     const filename = pathParts[pathParts.length - 1];
 
-    // Find the matching variant
+    // Find the matching variant by checking if the folder name matches
     const variant = POLYGEL_VARIANTS.find((v) => v.folder === folderName);
     if (!variant) return;
 
@@ -61,7 +63,7 @@ function buildVariantImages(): Record<string, { src: string; alt: string }[]> {
 
     // Generate a readable alt text from the filename
     const altText = filename
-      .replace(/\.jpg$/i, '')
+      .replace(/\.(jpg|jpeg|png)$/i, '')
       .replace(/[-_]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();

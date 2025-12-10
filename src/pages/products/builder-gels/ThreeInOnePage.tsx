@@ -7,12 +7,12 @@ import { loadBuilderGelImages } from '../../../lib/imageLoaders';
  * Use Vite's import.meta.glob to dynamically load all 3-in-1 builder gel images
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/builder-systems/3-in-1 Builder gel/**/*.jpg',
+  '/public/img/products/builder-systems/3-in-1 Builder gel/**/*.{jpg,JPG,jpeg,JPEG}',
   { eager: true }
 );
 
 const PRODUCT_IMAGES = loadBuilderGelImages(imageModules, {
-  globPattern: '/public/img/products/builder-systems/3-in-1 Builder gel/**/*.jpg',
+  globPattern: '/public/img/products/builder-systems/3-in-1 Builder gel/**/*.{jpg,JPG,jpeg,JPEG}',
   altPrefix: '3-in-1 Builder Gel',
 });
 
@@ -32,7 +32,7 @@ export default function ThreeInOnePage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gel-category-image.JPG"
+            src="/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg"
             alt="3-in-1 Builder Gels"
             width="1600"
             height="400"

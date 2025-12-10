@@ -14,10 +14,11 @@ export const enabledCategories = {
   builderAndStructureGels: true, // Enabled - images available
   topAndBases: true, // Enabled - images available
   polygelAcrygel: true, // Enabled - images available
-  acrylicSystems: false, // Enable when ready
-  liquidsAndSolutions: false, // Enable when ready
+  acrylicSystems: true, // Enabled - images available
+  liquidsAndSolutions: true, // Enabled - images available
   nailArt: true, // Enabled - images available
   accessories: false, // Enable when ready
+  jarsAndTubes: false, // Moved to Private Label section - now at /private-label/jars-and-tubes
 };
 
 export const enabledSubcategories = {

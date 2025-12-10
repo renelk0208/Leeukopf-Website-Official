@@ -9,25 +9,29 @@ const TOPS_BASES_CATEGORIES = [
     id: 'rubberBases', 
     folder: 'rubber-bases', 
     title: 'Rubber Base Coats',
-    description: 'Flexible rubber bases for strength and adhesion'
+    description: 'Flexible rubber bases for strength and adhesion',
+    categoryImage: '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg'
   },
   { 
     id: 'brushOnBuilder', 
     folder: 'brush-on-builder', 
     title: 'Brush-On Builder',
-    description: 'Builder base for strengthening and extending'
+    description: 'Builder base for strengthening and extending',
+    categoryImage: '/img/products/tops-and-bases/tops-bases_category_1.jpg'
   },
   { 
     id: 'effectTops', 
     folder: 'tops/Effect Tops', 
     title: 'Effect Top Coats',
-    description: 'Special effect top coats for unique finishes'
+    description: 'Special effect top coats for unique finishes',
+    categoryImage: '/img/products/tops-and-bases/tops/Effect Tops/effect-tops-category.jpg'
   },
   { 
     id: 'fiveInOne', 
     folder: '5-in-1', 
     title: '5-in-1 System',
-    description: 'All-in-one base, builder, and top coat'
+    description: 'All-in-one base, builder, and top coat',
+    categoryImage: '/img/products/tops-and-bases/5-in-1-catergory-image.jpg'
   },
 ];
 
@@ -35,7 +39,7 @@ const TOPS_BASES_CATEGORIES = [
  * Use Vite's import.meta.glob to dynamically load all images from tops and bases folders.
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/tops-and-bases/**/*.jpg',
+  '/public/img/products/tops-and-bases/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
 
@@ -50,8 +54,8 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
 
   // Process all image modules
   Object.keys(imageModules).forEach((path) => {
-    // Skip if not jpg
-    if (!path.endsWith('.jpg')) return;
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
 
     // Skip the category image in the root tops-and-bases folder
     if (path.includes('tops-bases_category')) return;
@@ -81,7 +85,7 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
 
     // Generate a readable alt text from the filename
     const altText = filename
-      .replace(/\.jpg$/i, '')
+      .replace(/\.(jpg|jpeg|png)$/i, '')
       .replace(/[-_]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
@@ -302,25 +306,43 @@ export default function TopsAndBasesGallery() {
 
       {/* Category cards grid - responsive layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {categoriesWithImages.map((category) => (
-          <button
-            key={category.id}
-            type="button"
-            onClick={() => handleCategoryClick(category.id)}
-            aria-label={`Open ${category.title} collection`}
-            className="w-full rounded-xl shadow-md bg-white p-4 text-left hover:shadow-lg transition-all cursor-pointer border border-gray-100"
-          >
-            <div className="text-lg font-semibold text-gray-800 mb-1">
-              {category.title}
-            </div>
-            <div className="text-sm text-gray-600 font-light mb-2">
-              {category.description}
-            </div>
-            <div className="text-sm text-gray-500 font-light">
-              {CATEGORY_IMAGES[category.id].length} {CATEGORY_IMAGES[category.id].length === 1 ? 'image' : 'images'}
-            </div>
-          </button>
-        ))}
+        {categoriesWithImages.map((category) => {
+          // Use dedicated category image if available, otherwise fall back to first product image
+          const thumbnail = category.categoryImage || CATEGORY_IMAGES[category.id]?.[0]?.src;
+          
+          return (
+            <button
+              key={category.id}
+              type="button"
+              onClick={() => handleCategoryClick(category.id)}
+              aria-label={`Open ${category.title} collection`}
+              className="w-full rounded-xl shadow-md bg-white overflow-hidden hover:shadow-lg transition-all cursor-pointer border border-gray-100"
+            >
+              {/* Thumbnail image */}
+              {thumbnail && (
+                <div className="relative w-full aspect-square overflow-hidden bg-gray-100">
+                  <img
+                    src={thumbnail}
+                    alt={category.title}
+                    width="800"
+                    height="800"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              
+              {/* Category info */}
+              <div className="p-4">
+                <div className="text-lg font-semibold text-gray-800">
+                  {category.title}
+                </div>
+                <div className="text-sm text-gray-600 mt-1">
+                  {CATEGORY_IMAGES[category.id]?.length || 0} {CATEGORY_IMAGES[category.id]?.length === 1 ? 'image' : 'images'}
+                </div>
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       {/* Gallery modal */}

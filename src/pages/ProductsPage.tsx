@@ -167,7 +167,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/tops-and-bases/tops-bases_category_1.jpg"
+                  src="/img/products/tops-and-bases/tops/tops-bases_category_1.jpg"
                   alt="Top & Bases"
                   width="1600"
                   height="1200"
