@@ -45,7 +45,7 @@ export const categoryHero: Record<string, string> = {
   
   // Tops & Bases
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
-  'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg',
+  'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber_bases_category_2.jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'effect-tops': '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg',
   'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
@@ -61,9 +61,9 @@ export const categoryHero: Record<string, string> = {
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg',
   
   // Accessories
-  'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
-  'comfort-plus-l3': '/img/products/Consumables/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
-  'quick-cure-g1': '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
+  'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
+  'comfort-plus-l3': '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
+  'quick-cure-g1': '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
   
   // Packaging
   'jars-and-tubes': '/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg',
@@ -153,11 +153,11 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (4).jpg',
     ],
     'rubber-bases': [
-      '/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg',
-      '/img/products/tops-and-bases/rubber-bases/rubber bases (2).jpg',
-      '/img/products/tops-and-bases/rubber-bases/rubber bases (3).jpg',
-      '/img/products/tops-and-bases/rubber-bases/rubber bases (4).jpg',
-      '/img/products/tops-and-bases/rubber-bases/rubber bases (5).jpg',
+      '/img/products/tops-and-bases/rubber-bases/Standard Rubber Base/nude_rubber_base1.jpg',
+      '/img/products/tops-and-bases/rubber-bases/Standard Rubber Base/cover_rubber_base1.jpg',
+      '/img/products/tops-and-bases/rubber-bases/Effects Rubber Base/flash_rubber-base1.jpg',
+      '/img/products/tops-and-bases/rubber-bases/Effects Rubber Base/fairy_shimmer_rubber-base1.jpg',
+      '/img/products/tops-and-bases/rubber-bases/rubber_bases_category_2.jpg',
     ],
   },
   'nail-art': {
@@ -175,14 +175,14 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   },
   'lamps': {
     'comfort-plus-l3': [
-      '/img/products/Consumables/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
+      '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
+      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
+      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
     ],
     'quick-cure-g1': [
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg',
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
+      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
+      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg',
+      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
     ],
   },
 };
@@ -197,7 +197,7 @@ export const productPlaceholder: Record<string, string> = {
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'primers-liquids': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
-  'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
+  'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
   'default': '/img/placeholders/category-placeholder.jpg',
 };
 
