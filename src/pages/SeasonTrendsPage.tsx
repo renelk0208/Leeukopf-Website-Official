@@ -19,15 +19,21 @@ export default function SeasonTrendsPage() {
 
   // TODO: Add seasonal lookbook images (lookbook-1.jpg through lookbook-12.jpg) to public/img/season/aw/ directory
   // Using existing season images as placeholders
-  const lookbookImages = Array.from({ length: 9 }, (_, i) => ({
-    src: `/img/season/aw/2026_new_collection_${
-      ['cover', 'warm_colors', 'rose_jewels_glitters', 'red_cat_eye', 'cofee_cat_eye', 
-       'galaxy_cat_eye', 'gold_leaf', 'laser_glitters', 'xmas_glitters'][i]
-    }.jpg`,
-    alt: `Autumn/Winter 2025/26 Collection - ${
-      ['Cover', 'Warm Colors', 'Rose Jewels & Glitters', 'Red Cat Eye', 'Coffee Cat Eye',
-       'Galaxy Cat Eye', 'Gold Leaf', 'Laser Glitters', 'Xmas Glitters'][i]
-    }`,
+  const SEASON_IMAGE_MAPPING = [
+    { slug: 'cover', title: 'Cover' },
+    { slug: 'warm_colors', title: 'Warm Colors' },
+    { slug: 'rose_jewels_glitters', title: 'Rose Jewels & Glitters' },
+    { slug: 'red_cat_eye', title: 'Red Cat Eye' },
+    { slug: 'cofee_cat_eye', title: 'Coffee Cat Eye' },
+    { slug: 'galaxy_cat_eye', title: 'Galaxy Cat Eye' },
+    { slug: 'gold_leaf', title: 'Gold Leaf' },
+    { slug: 'laser_glitters', title: 'Laser Glitters' },
+    { slug: 'xmas_glitters', title: 'Xmas Glitters' },
+  ];
+
+  const lookbookImages = SEASON_IMAGE_MAPPING.map((item, i) => ({
+    src: `/img/season/aw/2026_new_collection_${item.slug}.jpg`,
+    alt: `Autumn/Winter 2025/26 Collection - ${item.title}`,
     caption: `Collection Look ${i + 1}`,
   }));
 

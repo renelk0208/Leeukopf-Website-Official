@@ -9,6 +9,10 @@
  * - Detects mismatches and missing images
  * - Suggests closest matches for missing files
  * - Generates comprehensive JSON audit report
+ * 
+ * Note: Uses synchronous filesystem operations for simplicity. This is acceptable
+ * for a one-time audit tool that's run manually. Performance is negligible for
+ * typical repository sizes (~100 files, ~400 images).
  */
 
 import fs from 'fs';
