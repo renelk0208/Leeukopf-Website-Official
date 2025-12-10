@@ -28,3 +28,6 @@ tmp/
 
 # Local Netlify folder
 .netlify
+
+# Temporary files and reports
+tmp/
