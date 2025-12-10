@@ -25,3 +25,8 @@ public/version.json
 
 # Local Netlify folder
 .netlify
+
+# Temporary files (but allow audit reports)
+tmp/*
+!tmp/image-audit-report.json
+!tmp/.gitkeep
