@@ -1,5 +1,51 @@
 import PageTemplate from '../../../../components/PageTemplate';
 import ApplicationCuring from '../../../../components/ApplicationCuring';
+import ProductGrid from '../../../../components/ProductGrid';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load all 5-in-1 superior base product images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/tops-and-bases/5-in-1/**/*.{jpg,JPG,jpeg,JPEG}',
+  { eager: true }
+);
+
+/** Build gallery images from the glob results */
+function buildSuperiorBaseImages(): { src: string; alt: string }[] {
+  const images: { src: string; alt: string }[] = [];
+
+  Object.keys(imageModules).forEach((path) => {
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg)$/i)) return;
+
+    const filename = path.split('/').pop() || '';
+    
+    // Skip category images
+    if (filename.toLowerCase().includes('category')) return;
+
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.(jpg|jpeg)$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    images.push({
+      src: imageSrc,
+      alt: `Superior Base 5-in-1 - ${altText}`,
+    });
+  });
+
+  // Sort images by filename for consistent ordering
+  images.sort((a, b) => a.src.localeCompare(b.src));
+
+  return images;
+}
+
+const SUPERIOR_BASE_IMAGES = buildSuperiorBaseImages();
 
 export default function SuperiorBasePage() {
   return (
@@ -97,6 +143,15 @@ export default function SuperiorBasePage() {
           </div>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      {SUPERIOR_BASE_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Product Gallery"
+          description="Browse our complete range of Superior Base 5-in-1 products"
+          images={SUPERIOR_BASE_IMAGES}
+        />
+      )}
 
       {/* Application & Curing */}
       <ApplicationCuring type="base-coats" />

@@ -1,8 +1,53 @@
 import PageTemplate from '../../components/PageTemplate';
 import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
-import PolygelGallery from '../../components/PolygelGallery';
+import ProductGrid from '../../components/ProductGrid';
 import { categoryHero } from '../../config/imageMap';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load all polygel/acrygel product images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/builder-systems/Acrygel/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
+  { eager: true }
+);
+
+/** Build gallery images from the glob results */
+function buildPolygelImages(): { src: string; alt: string }[] {
+  const images: { src: string; alt: string }[] = [];
+
+  Object.keys(imageModules).forEach((path) => {
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
+
+    // Skip the category image
+    if (path.toLowerCase().includes('category')) return;
+
+    const filename = path.split('/').pop() || '';
+    
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.(jpg|jpeg|png)$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    images.push({
+      src: imageSrc,
+      alt: `Polygel / AcryGel - ${altText}`,
+    });
+  });
+
+  // Sort images by filename for consistent ordering
+  images.sort((a, b) => a.src.localeCompare(b.src));
+
+  return images;
+}
+
+const POLYGEL_IMAGES = buildPolygelImages();
 
 export default function PolygelAcrygelPage() {
   return (
@@ -77,7 +122,13 @@ export default function PolygelAcrygelPage() {
       </div>
 
       {/* Product Gallery */}
-      <PolygelGallery />
+      {POLYGEL_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Product Gallery"
+          description="Browse our complete range of polygel and acrygel products"
+          images={POLYGEL_IMAGES}
+        />
+      )}
 
       {/* Available Shades */}
       <div className="mb-10 sm:mb-12 md:mb-16">
