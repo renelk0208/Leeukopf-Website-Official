@@ -17,7 +17,7 @@ export default function TopAndBasesPage() {
       title: 'Base Coats',
       path: '/products/top-and-bases/base-coats',
       description: 'Essential foundation systems for optimal adhesion and wear.',
-      image: '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg'
+      image: '/img/products/tops-and-bases/rubber-base-category-image.jpg'
     },
   ];
 
