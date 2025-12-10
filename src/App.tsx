@@ -6,7 +6,6 @@ import ContactPage from './pages/ContactPage';
 import CertificatesPage from './pages/CertificatesPage';
 import PrivateLabelPage from './pages/PrivateLabelPage';
 import PrivateLabelBottlesPage from './pages/PrivateLabelBottlesPage';
-import PrivateLabelJarsPage from './pages/PrivateLabelJarsPage';
 import PrivateLabelBulkPage from './pages/PrivateLabelBulkPage';
 import OurBrandsPage from './pages/OurBrandsPage';
 import DistributorsWantedPage from './pages/DistributorsWantedPage';
@@ -106,7 +105,6 @@ function App() {
         {/* Private Label */}
         <Route path="/private-label" element={<PrivateLabelPage />} />
         <Route path="/private-label/bottles" element={<PrivateLabelBottlesPage />} />
-        <Route path="/private-label/jars" element={<PrivateLabelJarsPage />} />
         <Route path="/private-label/jars-and-tubes" element={<JarsAndTubesPage />} />
         <Route path="/private-label/bulk" element={<PrivateLabelBulkPage />} />
 
