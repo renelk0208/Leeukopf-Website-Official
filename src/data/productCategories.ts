@@ -141,6 +141,7 @@ export const productCategories: ProductCategory[] = [
     key: 'primers-liquids',
     displayName: 'Primers & Liquids',
     imagePath: '/img/products/primers-and-liquids/bonder-without-acid.jpg',
+    imagePath: '/img/products/primers-and-liquids/bonder-with-acid.jpg',
     group: 'Primers & Liquids',
   },
 
