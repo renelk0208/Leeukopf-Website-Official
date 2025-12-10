@@ -41,7 +41,7 @@ export const categoryHero: Record<string, string> = {
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'three-phase-builder': '/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg',
   'three-in-one-builder': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
-  'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg',
+  'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/premium-builder-gel (1).jpg',
   'colour-builder-gels': '/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg',
   'polygel-acrygel': '/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg',
   'acrylic-systems': '/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-image.jpg',
@@ -51,8 +51,8 @@ export const categoryHero: Record<string, string> = {
   'rubber-bases': '/img/products/tops-and-bases/rubber-base-category-image.jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'effect-tops': '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg',
-  'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
-  'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
+  'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
+  'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/builder-gel-in-a-bottle.jpg',
   
   // Primers & Liquids
   'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
@@ -167,16 +167,11 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   },
   'tops-and-bases': {
     '5-in-1': [
-      '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
-      '/img/products/tops-and-bases/5-in-1/5-in-1_colors_2.jpg',
-      '/img/products/tops-and-bases/5-in-1/5-in-1_colors_3.jpg',
-      '/img/products/tops-and-bases/5-in-1/5-in-1_colors_4.jpg',
+      '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
+      '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-2.jpg',
     ],
     'brush-on-builder': [
-      '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
-      '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (2).jpg',
-      '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (3).jpg',
-      '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (4).jpg',
+      '/img/products/tops-and-bases/brush-on-builder/builder-gel-in-a-bottle.jpg',
     ],
     'rubber-bases': [
       '/img/products/tops-and-bases/rubber-bases/Standard Rubber Base/nude_rubber_base1.jpg',

@@ -101,7 +101,7 @@ export const productCategories: ProductCategory[] = [
     id: 'premium-builder-gels',
     key: 'premium-builder-gels',
     displayName: 'Premium Builder Gels',
-    imagePath: '/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg',
+    imagePath: '/img/products/builder-systems/Premium Builder Gels/premium-builder-gel (1).jpg',
     group: 'Builder Gels',
   },
   {
@@ -138,14 +138,14 @@ export const productCategories: ProductCategory[] = [
     id: 'five-in-one',
     key: 'five-in-one',
     displayName: '5-in-1 System',
-    imagePath: '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
+    imagePath: '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
     group: 'Tops & Bases',
   },
   {
     id: 'brush-on-builder',
     key: 'brush-on-builder',
     displayName: 'Brush-On Builder',
-    imagePath: '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
+    imagePath: '/img/products/tops-and-bases/brush-on-builder/builder-gel-in-a-bottle.jpg',
     group: 'Tops & Bases',
   },
 
