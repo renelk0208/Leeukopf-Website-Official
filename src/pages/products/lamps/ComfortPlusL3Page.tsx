@@ -5,7 +5,6 @@ import ProductGrid from '../../../components/ProductGrid';
  * Use Vite's import.meta.glob to dynamically load all Comfort Plus L3 product images
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/Lamps/Comfort PlusL3/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   '/public/img/products/Consumables/Lamps/Comfort PlusL3/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
@@ -63,7 +62,6 @@ export default function ComfortPlusL3Page() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/Lamps/UV_lamps_category_1.jpg"
             src="/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg"
             alt="Comfort Plus L3 LED Lamp"
             width="1600"
