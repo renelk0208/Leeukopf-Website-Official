@@ -140,7 +140,7 @@ export const productCategories: ProductCategory[] = [
     id: 'primers-liquids',
     key: 'primers-liquids',
     displayName: 'Primers & Liquids',
-    imagePath: '/img/products/primers-and-liquids/primer-liquds-category-image.jpeg',
+    imagePath: '/img/products/primers-and-liquids/primers-liquids-category-image.jpg',
     group: 'Primers & Liquids',
   },
 
