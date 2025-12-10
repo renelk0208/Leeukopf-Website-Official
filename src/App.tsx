@@ -43,6 +43,12 @@ import BaseCoatsPage from './pages/products/top-bases/BaseCoatsPage';
 import ClassicBasePage from './pages/products/top-bases/base-coats/ClassicBasePage';
 import RubberBasePage from './pages/products/top-bases/base-coats/RubberBasePage';
 import SuperiorBasePage from './pages/products/top-bases/base-coats/SuperiorBasePage';
+import BrushOnBuilderPage from './pages/products/top-bases/BrushOnBuilderPage';
+
+// Lamps Category
+import LampsPage from './pages/products/LampsPage';
+import ComfortPlusL3Page from './pages/products/lamps/ComfortPlusL3Page';
+import QuickCureG1Page from './pages/products/lamps/QuickCureG1Page';
 
 // Legacy Product Pages
 import TopsBasesPrimersPage from './pages/products/TopsBasesPrimersPage';
@@ -89,6 +95,12 @@ function App() {
         <Route path="/products/top-and-bases/base-coats/classic" element={<ClassicBasePage />} />
         <Route path="/products/top-and-bases/base-coats/rubber-base" element={<RubberBasePage />} />
         <Route path="/products/top-and-bases/base-coats/superior-base-5-in-1" element={<SuperiorBasePage />} />
+        <Route path="/products/top-and-bases/brush-on-builder" element={<BrushOnBuilderPage />} />
+        
+        {/* Lamps */}
+        <Route path="/products/lamps" element={<LampsPage />} />
+        <Route path="/products/lamps/comfort-plus-l3" element={<ComfortPlusL3Page />} />
+        <Route path="/products/lamps/quick-cure-g1" element={<QuickCureG1Page />} />
         
         {/* Other Product Categories */}
         <Route path="/products/polygel-acrygel" element={<PolygelAcrygelPage />} />
