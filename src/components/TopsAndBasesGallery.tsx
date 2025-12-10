@@ -10,21 +10,21 @@ const TOPS_BASES_CATEGORIES = [
     folder: 'rubber-bases', 
     title: 'Rubber Base Coats',
     description: 'Flexible rubber bases for strength and adhesion',
-    categoryImage: '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg'
+    categoryImage: '/img/products/tops-and-bases/rubber-base-category-image.jpg'
   },
   { 
     id: 'brushOnBuilder', 
     folder: 'brush-on-builder', 
     title: 'Brush-On Builder',
     description: 'Builder base for strengthening and extending',
-    categoryImage: '/img/products/tops-and-bases/tops-bases_category_1.jpg'
+    categoryImage: '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg'
   },
   { 
     id: 'effectTops', 
     folder: 'tops/Effect Tops', 
     title: 'Effect Top Coats',
     description: 'Special effect top coats for unique finishes',
-    categoryImage: '/img/products/tops-and-bases/tops/Effect Tops/effect-tops-category.jpg'
+    categoryImage: '/img/products/tops-and-bases/tops/effect-tops-category.jpg'
   },
   { 
     id: 'fiveInOne', 

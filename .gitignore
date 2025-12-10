@@ -30,3 +30,6 @@ public/version.json
 tmp/*
 !tmp/image-audit-report.json
 !tmp/.gitkeep
+
+# Backup files created by image fix scripts
+*.bak
