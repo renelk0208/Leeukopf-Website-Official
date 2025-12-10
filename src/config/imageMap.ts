@@ -41,19 +41,19 @@ export const categoryHero: Record<string, string> = {
   'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg',
   'colour-builder-gels': '/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg',
   'polygel-acrygel': '/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg',
-  'acrylic-systems': '/img/products/builder-systems/Acrylic/fd_angel_pink_LLA4091.jpg',
+  'acrylic-systems': '/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-image.jpg',
   
   // Tops & Bases
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber bases (1).jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
-  'effect-tops': '/img/products/tops-and-bases/rubber-bases/rubber_bases_effects-category.jpg',
+  'effect-tops': '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg',
   'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
   
   // Primers & Liquids
-  'primers-liquids': '/img/products/primers-and-liquids/primer-liquds-category-image.jpeg',
-  'primers-with-acid': '/img/products/primers-and-liquids/With Acid/primer-with-acid-image.jpeg',
+  'primers-liquids': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
+  'primers-with-acid': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   
   // Nail Art
   'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
@@ -61,9 +61,9 @@ export const categoryHero: Record<string, string> = {
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg',
   
   // Accessories
-  'lamps': '/img/products/Lamps/comfort-plusL1-category-image.jpg',
-  'comfort-plus-l3': '/img/products/Lamps/Comfort PlusL3/comfort-plus specifications (1).jpg',
-  'quick-cure-g1': '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
+  'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
+  'comfort-plus-l3': '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
+  'quick-cure-g1': '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
   
   // Packaging
   'jars-and-tubes': '/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg',
@@ -175,14 +175,14 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   },
   'lamps': {
     'comfort-plus-l3': [
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus specifications (1).jpg',
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus specifications (2).jpg',
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus specifications (3).jpg',
+      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
+      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
+      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png',
     ],
     'quick-cure-g1': [
-      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
-      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg',
-      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (3).jpg',
+      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
+      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg',
+      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg',
     ],
   },
 };
@@ -195,9 +195,9 @@ export const productPlaceholder: Record<string, string> = {
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_1.jpg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
-  'primers-liquids': '/img/products/primers-and-liquids/primer-liquds-category-image.jpeg',
+  'primers-liquids': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
-  'lamps': '/img/products/Lamps/comfort-plusL1-category-image.jpg',
+  'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
   'default': '/img/placeholders/category-placeholder.jpg',
 };
 
