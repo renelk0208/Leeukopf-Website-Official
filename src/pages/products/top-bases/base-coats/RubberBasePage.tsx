@@ -1,5 +1,51 @@
 import PageTemplate from '../../../../components/PageTemplate';
 import ApplicationCuring from '../../../../components/ApplicationCuring';
+import ProductGrid from '../../../../components/ProductGrid';
+
+/**
+ * Use Vite's import.meta.glob to dynamically load all rubber base product images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/tops-and-bases/rubber-bases/**/*.{jpg,JPG,jpeg,JPEG}',
+  { eager: true }
+);
+
+/** Build gallery images from the glob results */
+function buildRubberBaseImages(): { src: string; alt: string }[] {
+  const images: { src: string; alt: string }[] = [];
+
+  Object.keys(imageModules).forEach((path) => {
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg)$/i)) return;
+
+    const filename = path.split('/').pop() || '';
+    
+    // Skip category images
+    if (filename.toLowerCase().includes('category')) return;
+
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.(jpg|jpeg)$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    images.push({
+      src: imageSrc,
+      alt: `Rubber Base - ${altText}`,
+    });
+  });
+
+  // Sort images by filename for consistent ordering
+  images.sort((a, b) => a.src.localeCompare(b.src));
+
+  return images;
+}
+
+const RUBBER_BASE_IMAGES = buildRubberBaseImages();
 
 export default function RubberBasePage() {
   return (
@@ -29,6 +75,15 @@ export default function RubberBasePage() {
           </p>
         </div>
       </div>
+
+      {/* Product Gallery */}
+      {RUBBER_BASE_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Product Gallery"
+          description="Browse our complete range of rubber base coat products"
+          images={RUBBER_BASE_IMAGES}
+        />
+      )}
 
       {/* Application & Curing */}
       <ApplicationCuring type="base-coats" />
