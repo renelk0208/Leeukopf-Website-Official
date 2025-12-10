@@ -9,7 +9,10 @@ const GEL_POLISH_CATEGORIES = [
   { id: 'catEyeCollection', folder: 'Cat Eye Collection', title: 'Cat Eye Collection', description: 'Magnetic cat eye gel polishes with mesmerizing effects' },
   { id: 'creamCollection', folder: 'Cream Collection', title: 'Cream Collection', description: 'Creamy, opaque gel polishes with smooth coverage' },
   { id: 'glittersCollection', folder: 'Glitters Collection', title: 'Glitters Collection', description: 'Sparkling glitter gel polishes with stunning effects' },
+  { id: 'glowInTheDark', folder: 'Glow In the Dark', title: 'Glow In the Dark', description: 'Luminescent gel polishes that glow in the dark' },
+  { id: 'platinumGelPolish', folder: 'Platinum Gel Polish', title: 'Platinum Gel Polish', description: 'Premium platinum flash gel polishes with luxurious shimmer' },
   { id: 'solidColourCollection', folder: 'Solid Colour Collection', title: 'Solid Colour Collection', description: 'Bold and vibrant pure color gel polishes' },
+  { id: 'thermoMoodChanging', folder: 'Thermo Mood Changing', title: 'Thermo Mood Changing', description: 'Temperature-reactive gel polishes that change color' },
   { id: 'transparentColorGelPolish', folder: 'Transparent Color Gel Polish', title: 'Transparent Color Gel Polish', description: 'Translucent color gels for subtle effects' },
 ];
 

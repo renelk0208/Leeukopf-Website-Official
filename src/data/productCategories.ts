@@ -60,6 +60,27 @@ export const productCategories: ProductCategory[] = [
     imagePath: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
     group: 'Gel Polish',
   },
+  {
+    id: 'glow-in-the-dark',
+    key: 'glow-in-the-dark',
+    displayName: 'Glow In the Dark',
+    imagePath: '/img/products/gel_polishes/Glow In the Dark/glow_in_dark_gel_polish.jpg',
+    group: 'Gel Polish',
+  },
+  {
+    id: 'platinum-gel-polish',
+    key: 'platinum-gel-polish',
+    displayName: 'Platinum Gel Polish',
+    imagePath: '/img/products/gel_polishes/Platinum Gel Polish/platinum_premium_gel _polish.jpg',
+    group: 'Gel Polish',
+  },
+  {
+    id: 'thermo-mood-changing',
+    key: 'thermo-mood-changing',
+    displayName: 'Thermo Mood Changing',
+    imagePath: '/img/products/gel_polishes/Thermo Mood Changing/mood_therm_gel_polish.jpg',
+    group: 'Gel Polish',
+  },
 
   // Builder Gels Categories
   {
@@ -140,7 +161,6 @@ export const productCategories: ProductCategory[] = [
     id: 'primers-liquids',
     key: 'primers-liquids',
     displayName: 'Primers & Liquids',
-    imagePath: '/img/products/primers-and-liquids/bonder-with-acid.jpg',
     imagePath: '/img/products/primers-and-liquids/bonder-without-acid.jpg',
     group: 'Primers & Liquids',
   },

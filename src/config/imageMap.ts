@@ -32,6 +32,9 @@ export const categoryHero: Record<string, string> = {
   'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg',
   'transparent-color-gel-polish': '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',
   'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
+  'glow-in-the-dark': '/img/products/gel_polishes/Glow In the Dark/glow_in_dark_gel_polish.jpg',
+  'platinum-gel-polish': '/img/products/gel_polishes/Platinum Gel Polish/platinum_premium_gel _polish.jpg',
+  'thermo-mood-changing': '/img/products/gel_polishes/Thermo Mood Changing/mood_therm_gel_polish.jpg',
   
   // Builder Systems
   'builder-systems': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
@@ -45,7 +48,6 @@ export const categoryHero: Record<string, string> = {
   
   // Tops & Bases
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
-  'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber_bases_category_2.jpg',
   'rubber-bases': '/img/products/tops-and-bases/rubber-base-category-image.jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'effect-tops': '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg',
@@ -53,7 +55,6 @@ export const categoryHero: Record<string, string> = {
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
   
   // Primers & Liquids
-  'primers-liquids': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
   'primers-with-acid': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   
@@ -63,12 +64,6 @@ export const categoryHero: Record<string, string> = {
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg',
   
   // Accessories
-  'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
-  'comfort-plus-l3': '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
-  'quick-cure-g1': '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
-  'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
-  'comfort-plus-l3': '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
-  'quick-cure-g1': '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
   'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
   'comfort-plus-l3': '/img/products/Consumables/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
   'quick-cure-g1': '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg',
@@ -132,6 +127,29 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (4).jpg',
       '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (5).jpg',
     ],
+    'glow-in-the-dark': [
+      '/img/products/gel_polishes/Glow In the Dark/glow_in_dark_gel_polish.jpg',
+      '/img/products/gel_polishes/Glow In the Dark/angel_glow_gel_polish.jpg',
+      '/img/products/gel_polishes/Glow In the Dark/circular_pearl_glow__in_dark_gel_polish.jpg',
+      '/img/products/gel_polishes/Glow In the Dark/flash_glow_gel_polish.jpg',
+      '/img/products/gel_polishes/Glow In the Dark/glass_glow__in_dark_gel_polish.jpg',
+      '/img/products/gel_polishes/Glow In the Dark/glittering_glow__in_dark_gel_polish.jpg',
+    ],
+    'platinum-gel-polish': [
+      '/img/products/gel_polishes/Platinum Gel Polish/platinum_premium_gel _polish.jpg',
+      '/img/products/gel_polishes/Platinum Gel Polish/deroi_template.jpg',
+      '/img/products/gel_polishes/Platinum Gel Polish/nude_flash_platinum_gel _polish.jpg',
+      '/img/products/gel_polishes/Platinum Gel Polish/platinum_flash_gel _polish.jpg',
+      '/img/products/gel_polishes/Platinum Gel Polish/rose_flash_platinum_gel _polish.jpg',
+      '/img/products/gel_polishes/Platinum Gel Polish/super_flash_platinum_gel _polish.jpg',
+    ],
+    'thermo-mood-changing': [
+      '/img/products/gel_polishes/Thermo Mood Changing/mood_therm_gel_polish.jpg',
+      '/img/products/gel_polishes/Thermo Mood Changing/classic_cover__therm_gel_polish.jpg',
+      '/img/products/gel_polishes/Thermo Mood Changing/elegance_therm_gel_polish.jpg',
+      '/img/products/gel_polishes/Thermo Mood Changing/glitter_cover__therm_gel_polish.jpg',
+      '/img/products/gel_polishes/Thermo Mood Changing/sorbet_therm_gel_polish.jpg',
+    ],
   },
   'builder-systems': {
     'acrygel': [
@@ -188,30 +206,9 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png',
     ],
     'quick-cure-g1': [
-      '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
-    ],
-    'quick-cure-g1': [
-      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
-      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg',
-      '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
-    ],
-    'quick-cure-g1': [
       '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg',
       '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (2).jpg',
       '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (5).jpg',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
-      '/img/products/Consumables/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png',
-    ],
-    'quick-cure-g1': [
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (1).jpg',
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-hand-held (2).jpg',
-      '/img/products/Consumables/Lamps/Quick Cure G1/quick-cure-handhel-lamp (1).jpg',
     ],
   },
 };
@@ -224,9 +221,6 @@ export const productPlaceholder: Record<string, string> = {
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_1.jpg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
-  'primers-liquids': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
-  'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
-  'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
   'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
   'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
   'lamps': '/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg',
