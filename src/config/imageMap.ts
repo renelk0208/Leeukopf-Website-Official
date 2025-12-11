@@ -60,8 +60,8 @@ export const categoryHero: Record<string, string> = {
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
   
   // Primers & Liquids
-  'primers-liquids': '/img/products/primers-and-liquids/acrylic_liquid_category_1.jpg',
-  'liquids-and-solutions': '/img/products/primers-and-liquids/acrylic_liquid_category_1.jpg',
+  'primers-liquids': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
+  'liquids-and-solutions': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
   'primers-with-acid': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   
   // Nail Art
@@ -70,7 +70,7 @@ export const categoryHero: Record<string, string> = {
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/nail-art-category.jpg',
   
   // Lamps
-  'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
+  'lamps': '/img/products/Lamps/lamps_category_card-1.jpg',
   'comfort-plus-l3': '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
   'quick-cure-g1': '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
   
