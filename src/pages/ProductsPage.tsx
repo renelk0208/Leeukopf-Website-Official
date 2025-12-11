@@ -257,7 +257,7 @@ export default function ProductsPage() {
                   Liquids & Solutions
                 </h3>
                 <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  Professional prep, cleanse and removal solutions
+                  Professional prep and cleanse solutions
                 </p>
               </div>
             </Link>
