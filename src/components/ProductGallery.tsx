@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Package } from 'lucide-react';
 import { supabase, ProductCategory, Product } from '../lib/supabase';
 import Breadcrumbs from './Breadcrumbs';
@@ -13,6 +13,7 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [productsByCategory, setProductsByCategory] = useState<Record<string, Product[]>>({});
   const [loading, setLoading] = useState(true);
+  const loadedCategoriesRef = useRef<Set<string>>(new Set());
 
   const loadCategories = useCallback(async () => {
     try {
@@ -40,9 +41,13 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
   }, []);
 
   const loadProducts = useCallback(async (categoryId: string) => {
-    if (productsByCategory[categoryId]) {
+    // Check if already loaded or loading
+    if (loadedCategoriesRef.current.has(categoryId)) {
       return;
     }
+
+    // Mark as loading
+    loadedCategoriesRef.current.add(categoryId);
 
     try {
       const { data, error } = await supabase
@@ -58,8 +63,10 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
       }));
     } catch (error) {
       console.error('Error loading products:', error);
+      // Remove from loaded set on error so it can be retried
+      loadedCategoriesRef.current.delete(categoryId);
     }
-  }, [productsByCategory]);
+  }, []);
 
   useEffect(() => {
     loadCategories();
