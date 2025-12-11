@@ -115,7 +115,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/gel_polishes/gel_polish_category_1.jpg"
+                  src="/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg"
                   alt="Gel Polish"
                   width="1600"
                   height="1200"
@@ -219,7 +219,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/builder-systems/Acrylic/acrylic-powders (1).jpg"
+                  src="/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg"
                   alt="Acrylic Systems"
                   width="1600"
                   height="1200"

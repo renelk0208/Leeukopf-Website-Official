@@ -25,7 +25,7 @@ export interface ImageMap {
  */
 export const categoryHero: Record<string, string> = {
   // Gel Polish
-  'gel-polish': '/img/products/gel_polishes/gel_polish_category_1.jpg',
+  'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg',
   'cat-eye-collection': '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg',
   'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-category-image.jpg',
   'glitters-collection': '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
@@ -44,7 +44,7 @@ export const categoryHero: Record<string, string> = {
   'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/premium-builder-gel (1).jpg',
   'colour-builder-gels': '/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg',
   'polygel-acrygel': '/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg',
-  'acrylic-systems': '/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-image.jpg',
+  'acrylic-systems': '/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg',
   
   // Tops & Bases
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
@@ -217,7 +217,7 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
  * Used as fallback when specific product image is not available
  */
 export const productPlaceholder: Record<string, string> = {
-  'gel-polish': '/img/products/gel_polishes/gel_polish_category_1.jpg',
+  'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
