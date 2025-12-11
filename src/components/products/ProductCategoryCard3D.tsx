@@ -189,7 +189,7 @@ export default function ProductCategoryCard3D({
   );
 
   const commonProps = {
-    ref: cardRef as any,
+    ref: cardRef as React.Ref<HTMLButtonElement & HTMLAnchorElement>,
     className: `group block w-full max-w-xs mx-auto ${className}`,
     'aria-label': title,
     style: { perspective: '1000px' } as React.CSSProperties,
