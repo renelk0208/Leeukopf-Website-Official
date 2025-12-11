@@ -9,6 +9,12 @@ interface SiteSettings {
   accent_color: string;
 }
 
+const DEFAULT_COLORS: SiteSettings = {
+  primary_color: '#06b6d4',
+  secondary_color: '#3b82f6',
+  accent_color: '#22d3ee',
+};
+
 export default function AdminDashboard() {
   const { signOut, user } = useAuth();
   const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures'>('products');
@@ -16,11 +22,7 @@ export default function AdminDashboard() {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
   const [brochureRequests, setBrochureRequests] = useState<BrochureRequest[]>([]);
-  const [colors, setColors] = useState<SiteSettings>({
-    primary_color: '#06b6d4',
-    secondary_color: '#3b82f6',
-    accent_color: '#22d3ee',
-  });
+  const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -56,13 +58,8 @@ export default function AdminDashboard() {
     const { data } = await supabase.from('site_settings').select('*');
     if (data) {
       const settings: Partial<SiteSettings> = {};
-      const defaultColors = {
-        primary_color: '#06b6d4',
-        secondary_color: '#3b82f6',
-        accent_color: '#22d3ee',
-      };
       data.forEach((setting) => {
-        if (setting.key in defaultColors) {
+        if (setting.key in DEFAULT_COLORS) {
           settings[setting.key as keyof SiteSettings] = setting.value;
         }
       });
