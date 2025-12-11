@@ -37,7 +37,7 @@ export default function LampsPage() {
           >
             <div className="aspect-video bg-gray-100 overflow-hidden">
               <img
-                src="/img/products/Consumables/Lamps/comfort-plusL1-category-image.jpg"
+                src="/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png"
                 alt="Comfort Plus L3 LED Lamp"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -77,7 +77,6 @@ export default function LampsPage() {
           >
             <div className="aspect-video bg-gray-100 overflow-hidden">
               <img
-                src="/img/products/Consumables/Lamps/quick-cure-category-image.jpg"
                 src="/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg"
                 alt="Quick Cure G1 Handheld Lamp"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -133,7 +132,7 @@ export default function LampsPage() {
       </div>
 
       {/* SEO Content */}
-      <ProductSEO category="lamps" />
+      <ProductSEO category="accessories" />
     </PageTemplate>
   );
 }

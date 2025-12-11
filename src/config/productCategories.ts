@@ -17,6 +17,7 @@ export const enabledCategories = {
   acrylicSystems: true, // Enabled - images available
   liquidsAndSolutions: true, // Enabled - images available
   nailArt: true, // Enabled - images available
+  lamps: true, // Enabled - UV & LED Lamps with 2 models
   accessories: false, // Enable when ready
   jarsAndTubes: false, // Moved to Private Label section - now at /private-label/jars-and-tubes
 };

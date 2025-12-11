@@ -29,7 +29,7 @@ export const productCategories: ProductCategory[] = [
     id: 'cream-collection',
     key: 'cream-collection',
     displayName: 'Cream Collection',
-    imagePath: '/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg',
+    imagePath: '/img/products/gel_polishes/Cream Collection/solid-cream-category-image.jpg',
     group: 'Gel Polish',
   },
   {
@@ -60,6 +60,27 @@ export const productCategories: ProductCategory[] = [
     imagePath: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
     group: 'Gel Polish',
   },
+  {
+    id: 'glow-in-the-dark',
+    key: 'glow-in-the-dark',
+    displayName: 'Glow In the Dark',
+    imagePath: '/img/products/gel_polishes/Glow In the Dark/glow_in_dark_gel_polish.jpg',
+    group: 'Gel Polish',
+  },
+  {
+    id: 'platinum-gel-polish',
+    key: 'platinum-gel-polish',
+    displayName: 'Platinum Gel Polish',
+    imagePath: '/img/products/gel_polishes/Platinum Gel Polish/platinum_premium_gel _polish.jpg',
+    group: 'Gel Polish',
+  },
+  {
+    id: 'thermo-mood-changing',
+    key: 'thermo-mood-changing',
+    displayName: 'Thermo Mood Changing',
+    imagePath: '/img/products/gel_polishes/Thermo Mood Changing/mood_therm_gel_polish.jpg',
+    group: 'Gel Polish',
+  },
 
   // Builder Gels Categories
   {
@@ -80,7 +101,7 @@ export const productCategories: ProductCategory[] = [
     id: 'premium-builder-gels',
     key: 'premium-builder-gels',
     displayName: 'Premium Builder Gels',
-    imagePath: '/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg',
+    imagePath: '/img/products/builder-systems/Premium Builder Gels/premium-builder-gel (1).jpg',
     group: 'Builder Gels',
   },
   {
@@ -117,14 +138,14 @@ export const productCategories: ProductCategory[] = [
     id: 'five-in-one',
     key: 'five-in-one',
     displayName: '5-in-1 System',
-    imagePath: '/img/products/tops-and-bases/5-in-1/5-in-1_colors_1.jpg',
+    imagePath: '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
     group: 'Tops & Bases',
   },
   {
     id: 'brush-on-builder',
     key: 'brush-on-builder',
     displayName: 'Brush-On Builder',
-    imagePath: '/img/products/tops-and-bases/brush-on-builder/brush-on-builder (1).jpg',
+    imagePath: '/img/products/tops-and-bases/brush-on-builder/builder-gel-in-a-bottle.jpg',
     group: 'Tops & Bases',
   },
 
@@ -140,7 +161,6 @@ export const productCategories: ProductCategory[] = [
     id: 'primers-liquids',
     key: 'primers-liquids',
     displayName: 'Primers & Liquids',
-    imagePath: '/img/products/primers-and-liquids/bonder-with-acid.jpg',
     imagePath: '/img/products/primers-and-liquids/bonder-without-acid.jpg',
     group: 'Primers & Liquids',
   },
@@ -161,6 +181,29 @@ export const productCategories: ProductCategory[] = [
     displayName: 'Polygel / AcryGel',
     imagePath: '/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg',
     group: 'Builder Gels',
+  },
+
+  // Lamps - UV & LED
+  {
+    id: 'lamps',
+    key: 'lamps',
+    displayName: 'UV & LED Lamps',
+    imagePath: '/img/products/Lamps/UV_lamps_category_1.jpg',
+    group: 'Lamps',
+  },
+  {
+    id: 'comfort-plus-l3',
+    key: 'comfort-plus-l3',
+    displayName: 'Comfort Plus L3',
+    imagePath: '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
+    group: 'Lamps',
+  },
+  {
+    id: 'quick-cure-g1',
+    key: 'quick-cure-g1',
+    displayName: 'Quick Cure G1',
+    imagePath: '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
+    group: 'Lamps',
   },
 
   // Jars & Tubes - Packaging
