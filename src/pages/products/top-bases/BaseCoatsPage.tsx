@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
 import { isSubcategoryEnabled } from '../../../config/productCategories';
+import { categoryHero } from '../../../config/imageMap';
 
 export default function BaseCoatsPage() {
   const subcategories = [
@@ -10,18 +11,21 @@ export default function BaseCoatsPage() {
       title: 'Classic',
       path: '/products/top-and-bases/base-coats/classic',
       description: 'A smooth, dependable base for any system — always HEMA-free and TPO-free.',
+      image: categoryHero['classic-base'],
     },
     {
       key: 'rubberBase',
       title: 'Rubber Base',
       path: '/products/top-and-bases/base-coats/rubber-base',
       description: 'Flexible, self-levelling bases ideal for natural nail reinforcement, free from HEMA and TPO.',
+      image: categoryHero['rubber-base'],
     },
     {
       key: 'superiorBase',
-      title: 'Superior Base (5-in-1)',
+      title: 'Superior Base Coat',
       path: '/products/top-and-bases/base-coats/superior-base-5-in-1',
       description: 'A multifunction base that primes, levels, strengthens and perfects — HEMA-free and TPO-free.',
+      image: categoryHero['superior-base-coat'],
     },
   ].filter(sub => isSubcategoryEnabled('baseCoats', sub.key));
 
@@ -57,14 +61,25 @@ export default function BaseCoatsPage() {
             <Link
               key={subcategory.path}
               to={subcategory.path}
-              className="group bg-white rounded-lg border border-gray-200 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
-              <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                {subcategory.title}
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                {subcategory.description}
-              </p>
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src={subcategory.image}
+                  alt={subcategory.title}
+                  width="1600"
+                  height="1200"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+                  {subcategory.title}
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  {subcategory.description}
+                </p>
+              </div>
             </Link>
           ))}
         </div>

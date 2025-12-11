@@ -49,9 +49,12 @@ export const categoryHero: Record<string, string> = {
   // Tops & Bases
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'rubber-bases': '/img/products/tops-and-bases/rubber-base-category-image.jpg',
+  'rubber-base': '/img/products/tops-and-bases/rubber-bases/rubber_bases_category-card-image.jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'effect-tops': '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg',
   'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
+  'superior-base-coat': '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
+  'classic-base': '/img/products/tops-and-bases/rubber-base-category-image.jpg', // Placeholder until classic base image is available
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/builder-gel-in-a-bottle.jpg',
   
   // Primers & Liquids
