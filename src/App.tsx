@@ -51,6 +51,10 @@ import LampsPage from './pages/products/LampsPage';
 import ComfortPlusL3Page from './pages/products/lamps/ComfortPlusL3Page';
 import QuickCureG1Page from './pages/products/lamps/QuickCureG1Page';
 
+// Nail Art Subcategories
+import NailArtProductsPage from './pages/products/nail-art/NailArtProductsPage';
+import SolidMirrorPowdersPage from './pages/products/nail-art/SolidMirrorPowdersPage';
+
 // Legacy Product Pages
 import TopsBasesPrimersPage from './pages/products/TopsBasesPrimersPage';
 import BuilderSystemsPage from './pages/products/BuilderSystemsPage';
@@ -109,6 +113,8 @@ function App() {
         <Route path="/products/acrylic-systems" element={<AcrylicSystemsPage />} />
         <Route path="/products/liquids-and-solutions" element={<LiquidsAndSolutionsPage />} />
         <Route path="/products/nail-art" element={<NailArtPage />} />
+        <Route path="/products/nail-art/nail-art-products" element={<NailArtProductsPage />} />
+        <Route path="/products/nail-art/solid-mirror-powders" element={<SolidMirrorPowdersPage />} />
         <Route path="/products/accessories" element={<AccessoriesPage />} />
 
         {/* Legacy Product Routes (for backwards compatibility) */}
