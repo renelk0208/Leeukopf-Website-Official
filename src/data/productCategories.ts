@@ -117,7 +117,7 @@ export const productCategories: ProductCategory[] = [
     id: 'rubber-bases',
     key: 'rubber-bases',
     displayName: 'Rubber Bases',
-    imagePath: '/img/products/tops-and-bases/rubber-base-category-image.jpg',
+    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -131,7 +131,7 @@ export const productCategories: ProductCategory[] = [
     id: 'effect-tops',
     key: 'effect-tops',
     displayName: 'Effect Top Coats',
-    imagePath: '/img/products/tops-and-bases/tops/effect-tops-category.jpg',
+    imagePath: '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -154,14 +154,14 @@ export const productCategories: ProductCategory[] = [
     id: 'primers-with-acid',
     key: 'primers-with-acid',
     displayName: 'Primers with Acid',
-    imagePath: '/img/products/primers-and-liquids/bonder-with-acid.jpg',
+    imagePath: '/img/products/liquids-&-solutions/primer-liquid-images-1.jpg',
     group: 'Primers & Liquids',
   },
   {
     id: 'primers-liquids',
     key: 'primers-liquids',
     displayName: 'Primers & Liquids',
-    imagePath: '/img/products/primers-and-liquids/acrylic_liquid_category_1.jpg',
+    imagePath: '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
     group: 'Primers & Liquids',
   },
 
@@ -188,7 +188,7 @@ export const productCategories: ProductCategory[] = [
     id: 'lamps',
     key: 'lamps',
     displayName: 'UV & LED Lamps',
-    imagePath: '/img/products/Lamps/UV_lamps_category_1.jpg',
+    imagePath: '/img/products/Lamps/lamps_category_card-1.jpg',
     group: 'Lamps',
   },
   {
@@ -202,7 +202,7 @@ export const productCategories: ProductCategory[] = [
     id: 'quick-cure-g1',
     key: 'quick-cure-g1',
     displayName: 'Quick Cure G1',
-    imagePath: '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
+    imagePath: '/img/products/Lamps/Quick Cure G1/g1-quickcure-lamp-category-card-image.jpg',
     group: 'Lamps',
   },
 

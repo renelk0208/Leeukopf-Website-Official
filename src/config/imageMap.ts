@@ -48,12 +48,12 @@ export const categoryHero: Record<string, string> = {
   
   // Tops & Bases
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
-  'rubber-bases': '/img/products/tops-and-bases/rubber-base-category-image.jpg',
+  'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg',
   'rubber-base': '/img/products/tops-and-bases/rubber-bases/rubber_bases_category-card-image.jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/standard-top-coats-catergory-image.jpg',
   'standard-top-coats': '/img/products/tops-and-bases/tops/standard-top-coats-catergory-image.jpg',
-  'effect-tops': '/img/products/tops-and-bases/tops/effect-tops-category.jpg',
-  'effects-top-coats': '/img/products/tops-and-bases/tops/effect-tops-category.jpg',
+  'effect-tops': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category.jpg',
+  'effects-top-coats': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category.jpg',
   'superior-base-coat': '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
   'classic-base': '/img/products/tops-and-bases/Bases/classic-base-coat-category-image.png',
   'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card-image.jpg',
@@ -72,7 +72,7 @@ export const categoryHero: Record<string, string> = {
   // Lamps
   'lamps': '/img/products/Lamps/lamps_category_card-1.jpg',
   'comfort-plus-l3': '/img/products/Lamps/Comfort PlusL3/l3-lamp-category-image.png',
-  'quick-cure-g1': '/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg',
+  'quick-cure-g1': '/img/products/Lamps/Quick Cure G1/g1-quickcure-lamp-category-card-image.jpg',
   
   // Packaging
   'jars-and-tubes': '/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg',
@@ -266,12 +266,15 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/tops-and-bases/tops/Effects Top Coats/velvet-top-coat-non-wipe.jpg',
     ],
   },
-  'primers-and-liquids': {
+  'liquids-and-solutions': {
     'liquids-and-solutions': [
-      '/img/products/primers-and-liquids/bonder-with-acid.jpg',
-      '/img/products/primers-and-liquids/bonder-without-acid.jpg',
-      '/img/products/primers-and-liquids/cleanser_1.jpg',
-      '/img/products/primers-and-liquids/sanitizer_1.jpg',
+      '/img/products/liquids-&-solutions/primer-liquid-images-1.jpg',
+      '/img/products/liquids-&-solutions/primer-liquid-images-2.jpg',
+      '/img/products/liquids-&-solutions/primer-liquid-images-3.jpg',
+      '/img/products/liquids-&-solutions/primer-liquid-images-4.jpg',
+      '/img/products/liquids-&-solutions/primer-liquid-images-5.jpg',
+      '/img/products/liquids-&-solutions/primer-liquid-images-6.jpg',
+      '/img/products/liquids-&-solutions/primer-liquid-images-7.jpg',
     ],
   },
   'nail-art': {
@@ -313,9 +316,9 @@ export const productPlaceholder: Record<string, string> = {
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
-  'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
+  'primers-liquids': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
   'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
-  'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
+  'lamps': '/img/products/Lamps/lamps_category_card-1.jpg',
   'default': '/img/placeholders/category-placeholder.jpg',
 };
 

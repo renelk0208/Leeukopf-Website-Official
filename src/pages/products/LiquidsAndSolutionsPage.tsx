@@ -7,7 +7,7 @@ import ProductGrid from '../../components/ProductGrid';
  * Use Vite's import.meta.glob to dynamically load all primers and liquids product images
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/primers-and-liquids/**/*.{jpg,JPG,jpeg,JPEG}',
+  '/public/img/products/liquids-&-solutions/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
 
