@@ -60,7 +60,8 @@ export const categoryHero: Record<string, string> = {
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
   
   // Primers & Liquids
-  'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
+  'primers-liquids': '/img/products/primers-and-liquids/acrylic_liquid_category_1.jpg',
+  'liquids-and-solutions': '/img/products/primers-and-liquids/acrylic_liquid_category_1.jpg',
   'primers-with-acid': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   
   // Nail Art
@@ -252,6 +253,14 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/tops-and-bases/tops/Effects Top Coats/satin-top-coat-non-wipe.jpg',
       '/img/products/tops-and-bases/tops/Effects Top Coats/specks-top-coat-non-wipe.jpg',
       '/img/products/tops-and-bases/tops/Effects Top Coats/velvet-top-coat-non-wipe.jpg',
+    ],
+  },
+  'primers-and-liquids': {
+    'liquids-and-solutions': [
+      '/img/products/primers-and-liquids/bonder-with-acid.jpg',
+      '/img/products/primers-and-liquids/bonder-without-acid.jpg',
+      '/img/products/primers-and-liquids/cleanser_1.jpg',
+      '/img/products/primers-and-liquids/sanitizer_1.jpg',
     ],
   },
   'nail-art': {

@@ -245,7 +245,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/primers-and-liquids/bonder-without-acid.jpg"
+                  src="/img/products/primers-and-liquids/acrylic_liquid_category_1.jpg"
                   alt="Liquids & Solutions"
                   width="1600"
                   height="1200"
