@@ -245,7 +245,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/primers-and-liquids/acrylic_liquid_category_1.jpg"
+                  src="/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png"
                   alt="Liquids & Solutions"
                   width="1600"
                   height="1200"
@@ -297,7 +297,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/Lamps/UV_lamps_category_1.jpg"
+                  src="/img/products/Lamps/lamps_category_card-1.jpg"
                   alt="UV & LED Lamps"
                   width="1600"
                   height="1200"
