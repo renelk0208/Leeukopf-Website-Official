@@ -52,7 +52,6 @@ export const categoryHero: Record<string, string> = {
   'rubber-base': '/img/products/tops-and-bases/rubber-bases/rubber_bases_category-card-image.jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'effect-tops': '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg',
-  'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
   'superior-base-coat': '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
   'classic-base': '/img/products/tops-and-bases/rubber-base-category-image.jpg', // Placeholder until classic base image is available
   'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card-image.jpg',
@@ -174,8 +173,8 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   },
   'tops-and-bases': {
     '5-in-1': [
-      '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
-      '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-2.jpg',
+      '/img/products/tops-and-bases/Superior Base Coat/superior-base-coats (1).jpg',
+      '/img/products/tops-and-bases/Superior Base Coat/superior-base-coats (2).jpg',
     ],
     'brush-on-builder': [
       '/img/products/tops-and-bases/brush-on-builder/builder-gel-in-a-bottle.jpg',
@@ -228,7 +227,7 @@ export const productPlaceholder: Record<string, string> = {
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'primers-liquids': '/img/products/primers-and-liquids/bonder-without-acid.jpg',
-  'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
+  'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
   'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
   'default': '/img/placeholders/category-placeholder.jpg',
 };

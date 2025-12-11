@@ -138,7 +138,7 @@ export const productCategories: ProductCategory[] = [
     id: 'five-in-one',
     key: 'five-in-one',
     displayName: '5-in-1 System',
-    imagePath: '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
+    imagePath: '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -170,7 +170,7 @@ export const productCategories: ProductCategory[] = [
     id: 'nail-art',
     key: 'nail-art',
     displayName: 'Nail Art',
-    imagePath: '/img/products/nail-art/nail-art-category-image.jpg',
+    imagePath: '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
     group: 'Nail Art',
   },
 
