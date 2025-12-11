@@ -27,6 +27,13 @@ export default function BaseCoatsPage() {
       description: 'A multifunction base that primes, levels, strengthens and perfects — HEMA-free and TPO-free.',
       image: categoryHero['superior-base-coat'],
     },
+    {
+      key: 'noHeatSpikeBuilderGel',
+      title: 'No Heat Spike Builder Gel',
+      path: '/products/top-and-bases/base-coats/no-heat-spike-builder-gel',
+      description: 'Advanced formula that minimizes heat generation during curing — HEMA-free and TPO-free.',
+      image: categoryHero['no-heat-spike-builder-gel'],
+    },
   ].filter(sub => isSubcategoryEnabled('baseCoats', sub.key));
 
   return (
@@ -56,7 +63,7 @@ export default function BaseCoatsPage() {
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
           Choose Your Base System
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {subcategories.map((subcategory) => (
             <Link
               key={subcategory.path}

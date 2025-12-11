@@ -41,6 +41,7 @@ export const enabledSubcategories = {
     classic: true, // Enabled - images available
     rubberBase: true, // Enabled - images available
     superiorBase: true, // Enabled - images available
+    noHeatSpikeBuilderGel: true, // Enabled - No Heat Spike Builder Gel category
   },
 };
 

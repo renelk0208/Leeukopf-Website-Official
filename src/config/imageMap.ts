@@ -55,6 +55,7 @@ export const categoryHero: Record<string, string> = {
   'five-in-one': '/img/products/tops-and-bases/5-in-1/5-in-1-superior-base-1.jpg',
   'superior-base-coat': '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
   'classic-base': '/img/products/tops-and-bases/rubber-base-category-image.jpg', // Placeholder until classic base image is available
+  'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card-image.jpg',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/builder-gel-in-a-bottle.jpg',
   
   // Primers & Liquids
