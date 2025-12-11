@@ -271,7 +271,7 @@ export default function ProductsPage() {
             >
               <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
                 <img
-                  src="/img/products/nail-art/nail-art-category-image.jpg"
+                  src="/img/products/nail-art/Nail Art/nail-art-category-card-imge.png"
                   alt="Nail Art"
                   width="1600"
                   height="1200"

@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-11T13:54:17.020Z",
-  "commit": "bbaaae7",
-  "branch": "copilot/fix-images-not-showing",
+  "buildDate": "2025-12-11T15:32:48.426Z",
+  "commit": "49c5ec5",
+  "branch": "copilot/update-category-boxes-to-images",
   "message": "Build deployed successfully"
 }
