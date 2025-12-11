@@ -27,7 +27,7 @@ export const categoryHero: Record<string, string> = {
   // Gel Polish
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_1.jpg',
   'cat-eye-collection': '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg',
-  'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg',
+  'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-category-image.jpg',
   'glitters-collection': '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
   'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg',
   'transparent-color-gel-polish': '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',

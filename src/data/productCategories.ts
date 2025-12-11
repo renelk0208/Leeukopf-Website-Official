@@ -29,7 +29,7 @@ export const productCategories: ProductCategory[] = [
     id: 'cream-collection',
     key: 'cream-collection',
     displayName: 'Cream Collection',
-    imagePath: '/img/products/gel_polishes/Cream Collection/solid-cream-category image.jpg',
+    imagePath: '/img/products/gel_polishes/Cream Collection/solid-cream-category-image.jpg',
     group: 'Gel Polish',
   },
   {
