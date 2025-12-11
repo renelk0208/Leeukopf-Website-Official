@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { subcategoryImages, categoryHero } from '../config/imageMap';
+import ProductCategoryCard3D from './products/ProductCategoryCard3D';
 
 /** 
  * Configuration for gel polish categories with their folder paths and English titles.
@@ -240,38 +241,17 @@ export default function GelPolishCategoryGallery() {
         {GEL_POLISH_CATEGORIES.map((category) => {
           // Get the category card image from categoryHero, fallback to first subcategory image
           const thumbnail = categoryHero[category.key] || CATEGORY_IMAGES[category.id]?.[0]?.src;
+          const imageCount = CATEGORY_IMAGES[category.id]?.length || 0;
           
           return (
-            <button
+            <ProductCategoryCard3D
               key={category.id}
-              type="button"
+              title={category.title}
+              subtitle={`${imageCount} images`}
+              imageSrc={thumbnail || ''}
               onClick={() => handleCategoryClick(category.id)}
-              aria-label={`Open ${category.title} gel polish collection`}
-              className="w-full rounded-xl shadow-md bg-white overflow-hidden hover:shadow-lg transition-all cursor-pointer border border-gray-100"
-            >
-              {/* Thumbnail image */}
-              {thumbnail && (
-                <div className="relative w-full aspect-square overflow-hidden bg-gray-100">
-                  <img
-                    src={thumbnail}
-                    alt={category.title}
-                    width="800"
-                    height="800"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-              
-              {/* Category info */}
-              <div className="p-4">
-                <div className="text-lg font-semibold text-gray-800">
-                  {category.title}
-                </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  {CATEGORY_IMAGES[category.id]?.length || 0} images
-                </div>
-              </div>
-            </button>
+              alt={category.title}
+            />
           );
         })}
       </div>

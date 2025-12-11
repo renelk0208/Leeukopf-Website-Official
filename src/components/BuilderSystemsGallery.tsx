@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import ProductCategoryCard3D from './products/ProductCategoryCard3D';
 
 /** 
  * Configuration for builder systems subcategories with their folder paths.
@@ -282,22 +283,21 @@ export default function BuilderSystemsGallery() {
 
       {/* Category cards grid - responsive layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {categoriesWithImages.map((category) => (
-          <button
-            key={category.id}
-            type="button"
-            onClick={() => handleCategoryClick(category.id)}
-            aria-label={`Open ${category.title} collection`}
-            className="w-full rounded-xl shadow-md bg-white p-4 text-left hover:shadow-lg transition-all cursor-pointer border border-gray-100"
-          >
-            <div className="text-lg font-semibold text-gray-800 mb-1">
-              {category.title}
-            </div>
-            <div className="text-sm text-gray-600 font-light">
-              {CATEGORY_IMAGES[category.id].length} {CATEGORY_IMAGES[category.id].length === 1 ? 'image' : 'images'}
-            </div>
-          </button>
-        ))}
+        {categoriesWithImages.map((category) => {
+          const thumbnail = CATEGORY_IMAGES[category.id]?.[0]?.src || '';
+          const imageCount = CATEGORY_IMAGES[category.id]?.length || 0;
+          
+          return (
+            <ProductCategoryCard3D
+              key={category.id}
+              title={category.title}
+              subtitle={`${imageCount} ${imageCount === 1 ? 'image' : 'images'}`}
+              imageSrc={thumbnail}
+              onClick={() => handleCategoryClick(category.id)}
+              alt={category.title}
+            />
+          );
+        })}
       </div>
 
       {/* Gallery modal */}

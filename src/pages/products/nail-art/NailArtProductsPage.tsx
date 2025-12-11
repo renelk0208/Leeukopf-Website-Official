@@ -1,49 +1,66 @@
-import { Link } from 'react-router-dom';
-import PageTemplate from '../../components/PageTemplate';
-import ProductSEO from '../../components/ProductSEO';
-import { categoryHero } from '../../config/imageMap';
+import PageTemplate from '../../../components/PageTemplate';
+import ProductSEO from '../../../components/ProductSEO';
+import ProductGrid from '../../../components/ProductGrid';
 
-export default function NailArtPage() {
-  const subcategories = [
-    {
-      key: 'nail-art',
-      title: 'Nail Art',
-      path: '/products/nail-art/nail-art-products',
-      description: 'Creative gels, glitters, and specialty products for professional nail art services.',
-      image: categoryHero['nail-art'],
-    },
-    {
-      key: 'solid-mirror-powders',
-      title: 'Solid Mirror Powders',
-      path: '/products/nail-art/solid-mirror-powders',
-      description: 'Ultra-fine chrome and mirror powders for stunning metallic finishes.',
-      image: categoryHero['solid-mirror-powders'],
-    },
-  ];
+/**
+ * Use Vite's import.meta.glob to dynamically load nail art product images
+ */
+const imageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/nail-art/Nail Art/*.jpg',
+  { eager: true }
+);
 
+/** Build gallery images from the glob results */
+function buildNailArtImages(): { src: string; alt: string }[] {
+  const images: { src: string; alt: string }[] = [];
+
+  Object.keys(imageModules).forEach((path) => {
+    // Skip if not jpg
+    if (!path.endsWith('.jpg')) return;
+
+    const filename = path.split('/').pop() || '';
+    
+    // Skip category images
+    if (filename.toLowerCase().includes('category')) return;
+
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Generate a readable alt text from the filename
+    const altText = filename
+      .replace(/\.jpg$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    images.push({
+      src: imageSrc,
+      alt: `Nail Art - ${altText}`,
+    });
+  });
+
+  // Sort images by filename for consistent ordering
+  images.sort((a, b) => a.src.localeCompare(b.src));
+
+  return images;
+}
+
+const NAIL_ART_IMAGES = buildNailArtImages();
+
+export default function NailArtProductsPage() {
   return (
     <PageTemplate
-      title="Nail Art"
-      subtitle="Speciality products for creative nail art and advanced services."
+      title="Nail Art Products"
+      subtitle="Creative gels, glitters, and specialty products for professional nail art services."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
-        { label: 'Nail Art' }
+        { label: 'Nail Art', path: '/products/nail-art' },
+        { label: 'Nail Art Products' }
       ]}
     >
-      {/* Hero Section */}
+      {/* Hero Description */}
       <div className="mb-10 sm:mb-12 md:mb-16">
-        <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
-          <img
-            src={categoryHero['nail-art']}
-            alt="Nail Art Products"
-            width="1600"
-            height="400"
-            className="category-hero"
-          />
-        </div>
-
-        {/* Hero Description */}
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
             Creative products designed for nail artists who want to push boundaries and offer unique services. 
@@ -52,39 +69,14 @@ export default function NailArtPage() {
         </div>
       </div>
 
-      {/* Subcategories Grid */}
-      <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-          Browse by Category
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {subcategories.map((subcategory) => (
-            <Link
-              key={subcategory.path}
-              to={subcategory.path}
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src={subcategory.image}
-                  alt={subcategory.title}
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                  {subcategory.title}
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  {subcategory.description}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+      {/* Product Gallery */}
+      {NAIL_ART_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Product Gallery"
+          description="Browse our complete range of nail art products"
+          images={NAIL_ART_IMAGES}
+        />
+      )}
 
       {/* Product Categories */}
       <div className="mb-10 sm:mb-12 md:mb-16">
@@ -132,28 +124,6 @@ export default function NailArtPage() {
               <li className="flex items-start">
                 <span className="text-primary mr-2">•</span>
                 <span>Multiple color families</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Chrome & Mirror Powders</h3>
-            <p className="text-sm text-gray-600 font-light leading-relaxed mb-3">
-              Ultra-fine pigment powders that create mirror-like finishes over gel color. Available in 
-              chrome, holographic and color-shift varieties.
-            </p>
-            <ul className="space-y-2 text-sm text-gray-600 font-light">
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>True mirror finish</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>Easy application with applicator</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>Multiple color options</span>
               </li>
             </ul>
           </div>
@@ -235,10 +205,6 @@ export default function NailArtPage() {
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
             <span>All gel-based art products cure under LED or UV lamps (follow standard cure times)</span>
-          </li>
-          <li className="flex items-start">
-            <span className="text-primary mr-2">•</span>
-            <span>Chrome and mirror powders apply over cured non-wipe top coat</span>
           </li>
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
