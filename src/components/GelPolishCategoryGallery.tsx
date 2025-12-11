@@ -160,7 +160,6 @@ function GalleryModal({
             src={images[currentIndex].src}
             alt={images[currentIndex].alt}
             className="max-w-full max-h-[70vh] object-contain"
-            loading="lazy"
             onError={() => handleImageError(currentIndex)}
           />
         )}
@@ -189,7 +188,6 @@ function GalleryModal({
                   src={image.src}
                   alt=""
                   className="w-full h-full object-cover"
-                  loading="lazy"
                   onError={() => handleImageError(index)}
                 />
               )}
