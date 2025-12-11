@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
 import { isSubcategoryEnabled } from '../../../config/productCategories';
+import { categoryHero } from '../../../config/imageMap';
 
 export default function TopCoatsPage() {
   const subcategories = [
@@ -10,12 +11,14 @@ export default function TopCoatsPage() {
       title: 'Standard',
       path: '/products/top-and-bases/top-coats/standard',
       description: 'Classic high-shine finishes that seal and protect — fully HEMA-free and TPO-free.',
+      image: categoryHero['standard-top-coats'],
     },
     {
       key: 'effects',
       title: 'Effects',
       path: '/products/top-and-bases/top-coats/effects',
       description: 'Finishes with texture, shimmer or visual accents, formulated without HEMA and TPO.',
+      image: categoryHero['effects-top-coats'],
     },
   ].filter(sub => isSubcategoryEnabled('topCoats', sub.key));
 
@@ -50,14 +53,25 @@ export default function TopCoatsPage() {
             <Link
               key={subcategory.path}
               to={subcategory.path}
-              className="group bg-white rounded-lg border border-gray-200 p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                {subcategory.title}
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                {subcategory.description}
-              </p>
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src={subcategory.image}
+                  alt={subcategory.title}
+                  width="1600"
+                  height="1200"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+                  {subcategory.title}
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  {subcategory.description}
+                </p>
+              </div>
             </Link>
           ))}
         </div>

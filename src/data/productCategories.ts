@@ -101,7 +101,7 @@ export const productCategories: ProductCategory[] = [
     id: 'premium-builder-gels',
     key: 'premium-builder-gels',
     displayName: 'Premium Builder Gels',
-    imagePath: '/img/products/builder-systems/Premium Builder Gels/premium-builder-gel (1).jpg',
+    imagePath: '/img/products/builder-systems/Premium Builder Gels/1-premium-builder-gels-category-card-image.jpg',
     group: 'Builder Gels',
   },
   {
@@ -124,14 +124,14 @@ export const productCategories: ProductCategory[] = [
     id: 'classic-top-coats',
     key: 'classic-top-coats',
     displayName: 'Classic Top Coats',
-    imagePath: '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
+    imagePath: '/img/products/tops-and-bases/tops/standard-top-coats-catergory-image.jpg',
     group: 'Tops & Bases',
   },
   {
     id: 'effect-tops',
     key: 'effect-tops',
     displayName: 'Effect Top Coats',
-    imagePath: '/img/products/tops-and-bases/tops_&_bases_category_effects.jpg',
+    imagePath: '/img/products/tops-and-bases/tops/effect-tops-category.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -145,7 +145,7 @@ export const productCategories: ProductCategory[] = [
     id: 'brush-on-builder',
     key: 'brush-on-builder',
     displayName: 'Brush-On Builder',
-    imagePath: '/img/products/tops-and-bases/brush-on-builder/builder-gel-in-a-bottle.jpg',
+    imagePath: '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
     group: 'Tops & Bases',
   },
 
