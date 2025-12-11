@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
 import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText } from 'lucide-react';
@@ -9,6 +9,12 @@ interface SiteSettings {
   accent_color: string;
 }
 
+const DEFAULT_COLORS: SiteSettings = {
+  primary_color: '#06b6d4',
+  secondary_color: '#3b82f6',
+  accent_color: '#22d3ee',
+};
+
 export default function AdminDashboard() {
   const { signOut, user } = useAuth();
   const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures'>('products');
@@ -16,11 +22,7 @@ export default function AdminDashboard() {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
   const [brochureRequests, setBrochureRequests] = useState<BrochureRequest[]>([]);
-  const [colors, setColors] = useState<SiteSettings>({
-    primary_color: '#06b6d4',
-    secondary_color: '#3b82f6',
-    accent_color: '#22d3ee',
-  });
+  const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -32,19 +34,7 @@ export default function AdminDashboard() {
   const [bulkFiles, setBulkFiles] = useState<FileList | null>(null);
   const [bulkUploading, setBulkUploading] = useState(false);
 
-  useEffect(() => {
-    loadCategories();
-    loadColors();
-    loadBrochureRequests();
-  }, []);
-
-  useEffect(() => {
-    if (selectedCategory) {
-      loadProducts(selectedCategory);
-    }
-  }, [selectedCategory]);
-
-  const loadCategories = async () => {
+  const loadCategories = useCallback(async () => {
     const { data } = await supabase
       .from('product_categories')
       .select('*')
@@ -53,37 +43,49 @@ export default function AdminDashboard() {
       setCategories(data);
       if (data.length > 0) setSelectedCategory(data[0].id);
     }
-  };
+  }, []);
 
-  const loadProducts = async (categoryId: string) => {
+  const loadProducts = useCallback(async (categoryId: string) => {
     const { data } = await supabase
       .from('products')
       .select('*')
       .eq('category_id', categoryId)
       .order('display_order');
     if (data) setProducts(data);
-  };
+  }, []);
 
-  const loadColors = async () => {
+  const loadColors = useCallback(async () => {
     const { data } = await supabase.from('site_settings').select('*');
     if (data) {
       const settings: Partial<SiteSettings> = {};
       data.forEach((setting) => {
-        if (setting.key in colors) {
+        if (setting.key in DEFAULT_COLORS) {
           settings[setting.key as keyof SiteSettings] = setting.value;
         }
       });
-      setColors({ ...colors, ...settings } as SiteSettings);
+      setColors(prev => ({ ...prev, ...settings } as SiteSettings));
     }
-  };
+  }, []);
 
-  const loadBrochureRequests = async () => {
+  const loadBrochureRequests = useCallback(async () => {
     const { data } = await supabase
       .from('brochure_requests')
       .select('*')
       .order('created_at', { ascending: false });
     if (data) setBrochureRequests(data);
-  };
+  }, []);
+
+  useEffect(() => {
+    loadCategories();
+    loadColors();
+    loadBrochureRequests();
+  }, [loadCategories, loadColors, loadBrochureRequests]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      loadProducts(selectedCategory);
+    }
+  }, [selectedCategory, loadProducts]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

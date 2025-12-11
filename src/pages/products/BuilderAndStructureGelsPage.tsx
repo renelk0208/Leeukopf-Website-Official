@@ -12,18 +12,21 @@ export default function BuilderAndStructureGelsPage() {
       title: '3-Phase Builder Gels',
       path: '/products/builder-and-structure-gels/3-phase',
       description: 'A classic three-step system for controlled strength and precision, made without HEMA or TPO.',
+      image: categoryHero['three-phase-builder'],
     },
     {
       key: 'threeInOne',
       title: '3-in-1 Builder Gels',
       path: '/products/builder-and-structure-gels/3-in-1',
       description: 'One product to build, shape and finish — all safely HEMA-free and TPO-free.',
+      image: categoryHero['three-in-one-builder'],
     },
     {
       key: 'premiumFiberGlass',
       title: 'Premium Fiber Glass Builder Gels',
       path: '/products/builder-and-structure-gels/premium-fiber-glass',
       description: 'Reinforced flexibility and superior strength in a premium formula that stays fully HEMA-free and TPO-free.',
+      image: categoryHero['premium-builder-gels'],
     },
   ].filter(sub => isSubcategoryEnabled('builderGels', sub.key));
 
@@ -68,14 +71,25 @@ export default function BuilderAndStructureGelsPage() {
             <Link
               key={subcategory.path}
               to={subcategory.path}
-              className="group bg-white rounded-lg border border-gray-200 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
-              <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                {subcategory.title}
-              </h3>
-              <p className="text-sm text-gray-600 font-light leading-relaxed">
-                {subcategory.description}
-              </p>
+              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                <img
+                  src={subcategory.image}
+                  alt={subcategory.title}
+                  width="1600"
+                  height="1200"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+                  {subcategory.title}
+                </h3>
+                <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  {subcategory.description}
+                </p>
+              </div>
             </Link>
           ))}
         </div>

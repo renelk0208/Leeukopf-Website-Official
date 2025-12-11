@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
@@ -22,21 +22,21 @@ export default function ProductCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(autoPlay);
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
-  };
+  }, [images.length]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  }, [images.length]);
 
-  const goToSlide = (index: number) => {
+  const goToSlide = useCallback((index: number) => {
     setCurrentIndex(index);
-  };
+  }, []);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -46,7 +46,7 @@ export default function ProductCarousel({
     }, autoPlayInterval);
 
     return () => clearInterval(interval);
-  }, [currentIndex, isAutoPlaying, autoPlayInterval]);
+  }, [currentIndex, isAutoPlaying, autoPlayInterval, goToNext]);
 
   return (
     <div className="w-full">

@@ -14,7 +14,7 @@ const GEL_POLISH_CATEGORIES = [
   { id: 'platinumGelPolish', key: 'platinum-gel-polish', folder: 'Platinum Gel Polish', title: 'Platinum Gel Polish', description: 'Premium platinum flash gel polishes with luxurious shimmer' },
   { id: 'solidColourCollection', key: 'solid-colour-collection', folder: 'Solid Colour Collection', title: 'Solid Colour Collection', description: 'Bold and vibrant pure color gel polishes' },
   { id: 'thermoMoodChanging', key: 'thermo-mood-changing', folder: 'Thermo Mood Changing', title: 'Thermo Mood Changing', description: 'Temperature-reactive gel polishes that change color' },
-  { id: 'transparentColorGelPolish', key: 'transparent-color-gel-polish', folder: 'Transparent Color Gel Polish', title: 'Transparent Color Gel Polish', description: 'Translucent color gels for subtle effects' },
+  { id: 'frenchCollection', key: 'french-collection', folder: 'French Collection', title: 'French Collection', description: 'Elegant French manicure gel polishes for classic nail art' },
 ];
 
 /** Build category images from the imageMap data */
@@ -160,7 +160,6 @@ function GalleryModal({
             src={images[currentIndex].src}
             alt={images[currentIndex].alt}
             className="max-w-full max-h-[70vh] object-contain"
-            loading="lazy"
             onError={() => handleImageError(currentIndex)}
           />
         )}
@@ -189,7 +188,6 @@ function GalleryModal({
                   src={image.src}
                   alt=""
                   className="w-full h-full object-cover"
-                  loading="lazy"
                   onError={() => handleImageError(index)}
                 />
               )}
