@@ -43,6 +43,7 @@ import BaseCoatsPage from './pages/products/top-bases/BaseCoatsPage';
 import ClassicBasePage from './pages/products/top-bases/base-coats/ClassicBasePage';
 import RubberBasePage from './pages/products/top-bases/base-coats/RubberBasePage';
 import SuperiorBasePage from './pages/products/top-bases/base-coats/SuperiorBasePage';
+import NoHeatSpikeBuilderGelPage from './pages/products/top-bases/base-coats/NoHeatSpikeBuilderGelPage';
 import BrushOnBuilderPage from './pages/products/top-bases/BrushOnBuilderPage';
 
 // Lamps Category
@@ -95,6 +96,7 @@ function App() {
         <Route path="/products/top-and-bases/base-coats/classic" element={<ClassicBasePage />} />
         <Route path="/products/top-and-bases/base-coats/rubber-base" element={<RubberBasePage />} />
         <Route path="/products/top-and-bases/base-coats/superior-base-5-in-1" element={<SuperiorBasePage />} />
+        <Route path="/products/top-and-bases/base-coats/no-heat-spike-builder-gel" element={<NoHeatSpikeBuilderGelPage />} />
         <Route path="/products/top-and-bases/brush-on-builder" element={<BrushOnBuilderPage />} />
         
         {/* Lamps */}
