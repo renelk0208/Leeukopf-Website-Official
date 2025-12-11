@@ -47,10 +47,10 @@ export const productCategories: ProductCategory[] = [
     group: 'Gel Polish',
   },
   {
-    id: 'transparent-color-gel-polish',
-    key: 'transparent-color-gel-polish',
-    displayName: 'Transparent Color Gel Polish',
-    imagePath: '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',
+    id: 'french-collection',
+    key: 'french-collection',
+    displayName: 'French Collection',
+    imagePath: '/img/products/gel_polishes/French Collection/french-collection-category-card-image.png',
     group: 'Gel Polish',
   },
   {

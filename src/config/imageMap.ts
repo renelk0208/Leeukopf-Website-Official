@@ -30,7 +30,7 @@ export const categoryHero: Record<string, string> = {
   'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-category-image.jpg',
   'glitters-collection': '/img/products/gel_polishes/Glitters Collection/DSO.jpg',
   'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg',
-  'transparent-color-gel-polish': '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',
+  'french-collection': '/img/products/gel_polishes/French Collection/french-collection-category-card-image.png',
   'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
   'glow-in-the-dark': '/img/products/gel_polishes/Glow In the Dark/glow_in_dark_gel_polish.jpg',
   'platinum-gel-polish': '/img/products/gel_polishes/Platinum Gel Polish/platinum_premium_gel _polish.jpg',
@@ -120,12 +120,12 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_4.jpg',
       '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_5.jpg',
     ],
-    'transparent-color-gel-polish': [
-      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (1).jpg',
-      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (2).jpg',
-      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (3).jpg',
-      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (4).jpg',
-      '/img/products/gel_polishes/Transparent Color Gel Polish/transparent-colourgel-polish (5).jpg',
+    'french-collection': [
+      '/img/products/gel_polishes/French Collection/french-collection-gel-polish (1).jpg',
+      '/img/products/gel_polishes/French Collection/french-collection-gel-polish (2).jpg',
+      '/img/products/gel_polishes/French Collection/french-collection-gel-polish (3).jpg',
+      '/img/products/gel_polishes/French Collection/french-collection-gel-polish (4).jpg',
+      '/img/products/gel_polishes/French Collection/french-collection-gel-polish (5).jpg',
     ],
     'glow-in-the-dark': [
       '/img/products/gel_polishes/Glow In the Dark/glow_in_dark_gel_polish.jpg',
