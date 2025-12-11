@@ -3,6 +3,7 @@ import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
 import { isCategoryEnabled } from '../config/productCategories';
+import ProductCategoryCard3D from '../components/products/ProductCategoryCard3D';
 
 export default function ProductsPage() {
   // Product range sections with their English content
@@ -109,210 +110,90 @@ export default function ProductsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Gel Polish */}
           {isCategoryEnabled('gelPolish') && (
-            <Link
-              to="/products/gel-polish"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg"
-                  alt="Gel Polish"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Gel Polish
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  High-pigment, self-levelling UV/LED gel polishes with HEMA-free and TPO-free options
-                </p>
-              </div>
-            </Link>
+            <ProductCategoryCard3D
+              title="Gel Polish"
+              subtitle="High-pigment, self-levelling UV/LED gel polishes with HEMA-free and TPO-free options"
+              imageSrc="/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg"
+              href="/products/gel-polish"
+              alt="Gel Polish"
+            />
           )}
 
           {/* Builder & Structure Gels */}
           {isCategoryEnabled('builderAndStructureGels') && (
-            <Link
-              to="/products/builder-and-structure-gels"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg"
-                  alt="Builder & Structure Gels"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Builder & Structure Gels
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  Strengthening systems for shaping, extending and reinforcing — HEMA-free and TPO-free
-                </p>
-              </div>
-            </Link>
+            <ProductCategoryCard3D
+              title="Builder & Structure Gels"
+              subtitle="Strengthening systems for shaping, extending and reinforcing — HEMA-free and TPO-free"
+              imageSrc="/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg"
+              href="/products/builder-and-structure-gels"
+              alt="Builder & Structure Gels"
+            />
           )}
 
           {/* Top & Bases */}
           {isCategoryEnabled('topAndBases') && (
-            <Link
-              to="/products/top-and-bases"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/tops-and-bases/tops/tops-bases_category_1.jpg"
-                  alt="Top & Bases"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Top & Bases
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  Essential prep and finishing formulas — all safely HEMA-free and TPO-free
-                </p>
-              </div>
-            </Link>
+            <ProductCategoryCard3D
+              title="Top & Bases"
+              subtitle="Essential prep and finishing formulas — all safely HEMA-free and TPO-free"
+              imageSrc="/img/products/tops-and-bases/tops/tops-bases_category_1.jpg"
+              href="/products/top-and-bases"
+              alt="Top & Bases"
+            />
           )}
 
           {/* Polygel / AcryGel */}
           {isCategoryEnabled('polygelAcrygel') && (
-            <Link
-              to="/products/polygel-acrygel"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg"
-                  alt="Polygel / AcryGel"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Polygel / AcryGel
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free
-                </p>
-              </div>
-            </Link>
+            <ProductCategoryCard3D
+              title="Polygel / AcryGel"
+              subtitle="Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free"
+              imageSrc="/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg"
+              href="/products/polygel-acrygel"
+              alt="Polygel / AcryGel"
+            />
           )}
 
           {/* Acrylic Systems */}
           {isCategoryEnabled('acrylicSystems') && (
-            <Link
-              to="/products/acrylic-systems"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg"
-                  alt="Acrylic Systems"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Acrylic Systems
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  High-performance powders and liquids — always free from HEMA and TPO
-                </p>
-              </div>
-            </Link>
+            <ProductCategoryCard3D
+              title="Acrylic Systems"
+              subtitle="High-performance powders and liquids — always free from HEMA and TPO"
+              imageSrc="/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg"
+              href="/products/acrylic-systems"
+              alt="Acrylic Systems"
+            />
           )}
 
           {/* Liquids & Solutions */}
           {isCategoryEnabled('liquidsAndSolutions') && (
-            <Link
-              to="/products/liquids-and-solutions"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png"
-                  alt="Liquids & Solutions"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Liquids & Solutions
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  Professional prep and cleanse solutions
-                </p>
-              </div>
-            </Link>
+            <ProductCategoryCard3D
+              title="Liquids & Solutions"
+              subtitle="Professional prep and cleanse solutions"
+              imageSrc="/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png"
+              href="/products/liquids-and-solutions"
+              alt="Liquids & Solutions"
+            />
           )}
 
           {/* Nail Art */}
           {isCategoryEnabled('nailArt') && (
-            <Link
-              to="/products/nail-art"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/nail-art/Nail Art/nail-art-category-card-imge.png"
-                  alt="Nail Art"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Nail Art
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  Speciality products for nail art and advanced creative services
-                </p>
-              </div>
-            </Link>
+            <ProductCategoryCard3D
+              title="Nail Art"
+              subtitle="Speciality products for nail art and advanced creative services"
+              imageSrc="/img/products/nail-art/Nail Art/nail-art-category-card-imge.png"
+              href="/products/nail-art"
+              alt="Nail Art"
+            />
           )}
 
           {/* Lamps */}
           {isCategoryEnabled('lamps') && (
-            <Link
-              to="/products/lamps"
-              className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
-                <img
-                  src="/img/products/Lamps/lamps_category_card-1.jpg"
-                  alt="UV & LED Lamps"
-                  width="1600"
-                  height="1200"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  UV & LED Lamps
-                </h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">
-                  Professional curing lamps for efficient gel polymerization
-                </p>
-              </div>
-            </Link>
+            <ProductCategoryCard3D
+              title="UV & LED Lamps"
+              subtitle="Professional curing lamps for efficient gel polymerization"
+              imageSrc="/img/products/Lamps/lamps_category_card-1.jpg"
+              href="/products/lamps"
+              alt="UV & LED Lamps"
+            />
           )}
 
           {/* Accessories */}
