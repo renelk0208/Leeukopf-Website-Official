@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ImageLightboxProps {
@@ -9,6 +9,14 @@ interface ImageLightboxProps {
 
 export default function ImageLightbox({ images, currentIndex, onClose }: ImageLightboxProps) {
   const [index, setIndex] = useState(currentIndex);
+
+  const goToNext = useCallback(() => {
+    setIndex((prev) => (prev + 1) % images.length);
+  }, [images.length]);
+
+  const goToPrevious = useCallback(() => {
+    setIndex((prev) => (prev - 1 + images.length) % images.length);
+  }, [images.length]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -24,15 +32,7 @@ export default function ImageLightbox({ images, currentIndex, onClose }: ImageLi
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'unset';
     };
-  }, [index]);
-
-  const goToNext = () => {
-    setIndex((prev) => (prev + 1) % images.length);
-  };
-
-  const goToPrevious = () => {
-    setIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
+  }, [index, onClose, goToNext, goToPrevious]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
