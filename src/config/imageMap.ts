@@ -65,7 +65,7 @@ export const categoryHero: Record<string, string> = {
   // Nail Art
   'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
   '3d-multifunctional-gel': '/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg',
-  'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg',
+  'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/nail-art-category.jpg',
   
   // Lamps
   'lamps': '/img/products/Lamps/UV_lamps_category_1.jpg',
