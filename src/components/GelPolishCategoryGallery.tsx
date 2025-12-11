@@ -1,28 +1,23 @@
 import { useState, useCallback, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { subcategoryImages } from '../config/imageMap';
 
 /** 
  * Configuration for gel polish categories with their folder paths and English titles.
  */
 const GEL_POLISH_CATEGORIES = [
-  { id: 'autumnWinter2526', folder: 'autumn_winter_25_26', title: 'Autumn Winter 25/26', description: 'Seasonal collection with warm colors and festive effects' },
-  { id: 'catEyeCollection', folder: 'Cat Eye Collection', title: 'Cat Eye Collection', description: 'Magnetic cat eye gel polishes with mesmerizing effects' },
-  { id: 'creamCollection', folder: 'Cream Collection', title: 'Cream Collection', description: 'Creamy, opaque gel polishes with smooth coverage' },
-  { id: 'glittersCollection', folder: 'Glitters Collection', title: 'Glitters Collection', description: 'Sparkling glitter gel polishes with stunning effects' },
-  { id: 'solidColourCollection', folder: 'Solid Colour Collection', title: 'Solid Colour Collection', description: 'Bold and vibrant pure color gel polishes' },
-  { id: 'transparentColorGelPolish', folder: 'Transparent Color Gel Polish', title: 'Transparent Color Gel Polish', description: 'Translucent color gels for subtle effects' },
+  { id: 'autumnWinter2526', key: 'autumn-winter-25-26', folder: 'autumn_winter_25_26', title: 'Autumn Winter 25/26', description: 'Seasonal collection with warm colors and festive effects' },
+  { id: 'catEyeCollection', key: 'cat-eye-collection', folder: 'Cat Eye Collection', title: 'Cat Eye Collection', description: 'Magnetic cat eye gel polishes with mesmerizing effects' },
+  { id: 'creamCollection', key: 'cream-collection', folder: 'Cream Collection', title: 'Cream Collection', description: 'Creamy, opaque gel polishes with smooth coverage' },
+  { id: 'glittersCollection', key: 'glitters-collection', folder: 'Glitters Collection', title: 'Glitters Collection', description: 'Sparkling glitter gel polishes with stunning effects' },
+  { id: 'glowInTheDark', key: 'glow-in-the-dark', folder: 'Glow In the Dark', title: 'Glow In the Dark', description: 'Luminescent gel polishes that glow in the dark' },
+  { id: 'platinumGelPolish', key: 'platinum-gel-polish', folder: 'Platinum Gel Polish', title: 'Platinum Gel Polish', description: 'Premium platinum flash gel polishes with luxurious shimmer' },
+  { id: 'solidColourCollection', key: 'solid-colour-collection', folder: 'Solid Colour Collection', title: 'Solid Colour Collection', description: 'Bold and vibrant pure color gel polishes' },
+  { id: 'thermoMoodChanging', key: 'thermo-mood-changing', folder: 'Thermo Mood Changing', title: 'Thermo Mood Changing', description: 'Temperature-reactive gel polishes that change color' },
+  { id: 'transparentColorGelPolish', key: 'transparent-color-gel-polish', folder: 'Transparent Color Gel Polish', title: 'Transparent Color Gel Polish', description: 'Translucent color gels for subtle effects' },
 ];
 
-/**
- * Use Vite's import.meta.glob to dynamically load all images from gel polish folders.
- * This pattern allows Vite to discover and bundle the images without hardcoding filenames.
- */
-const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/gel_polishes/**/*.jpg',
-  { eager: true }
-);
-
-/** Build category images from the glob results */
+/** Build category images from the imageMap data */
 function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
   const categoryImages: Record<string, { src: string; alt: string }[]> = {};
 
@@ -31,43 +26,23 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
     categoryImages[category.id] = [];
   });
 
-  // Process all image modules
-  Object.keys(imageModules).forEach((path) => {
-    // Skip desktop.ini and other non-image files
-    if (!path.endsWith('.jpg')) return;
-
-    // Extract the folder name from the path
-    // Path format: /public/img/products/gel_polishes/FolderName/filename.jpg
-    const pathParts = path.split('/');
-    const folderIndex = pathParts.findIndex((part) => part === 'gel_polishes');
-    if (folderIndex === -1 || folderIndex + 1 >= pathParts.length) return;
-
-    const folderName = pathParts[folderIndex + 1];
-    const filename = pathParts[pathParts.length - 1];
-
-    // Find the matching category
-    const category = GEL_POLISH_CATEGORIES.find((cat) => cat.folder === folderName);
-    if (!category) return;
-
-    // Convert the public path to a URL path (remove /public prefix)
-    const imageSrc = path.replace('/public', '');
-
-    // Generate a readable alt text from the filename
-    const altText = filename
-      .replace(/\.jpg$/i, '')
-      .replace(/[-_]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-
-    categoryImages[category.id].push({
-      src: imageSrc,
-      alt: `${category.folder} - ${altText}`,
+  // Get images from the subcategoryImages mapping
+  GEL_POLISH_CATEGORIES.forEach((category) => {
+    const images = subcategoryImages['gel-polish']?.[category.key] || [];
+    
+    categoryImages[category.id] = images.map((src) => {
+      const filename = src.split('/').pop() || '';
+      const altText = filename
+        .replace(/\.jpg$/i, '')
+        .replace(/[-_]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      
+      return {
+        src,
+        alt: `${category.title} - ${altText}`,
+      };
     });
-  });
-
-  // Sort images within each category by filename for consistent ordering
-  Object.keys(categoryImages).forEach((key) => {
-    categoryImages[key].sort((a, b) => a.src.localeCompare(b.src));
   });
 
   return categoryImages;

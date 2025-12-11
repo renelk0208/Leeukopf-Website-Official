@@ -11,8 +11,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "check:images": "node scripts/check-images.js",
-    "audit:images": "node scripts/audit-images.js",
-    "apply:image-fixes": "node scripts/apply-image-fixes.js"
+    "apply:image-fixes": "node scripts/apply-image-fixes.js",
+    "audit:images": "node scripts/audit-images.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
