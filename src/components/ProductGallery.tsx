@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Package } from 'lucide-react';
 import { supabase, ProductCategory, Product } from '../lib/supabase';
 import Breadcrumbs from './Breadcrumbs';
@@ -13,19 +13,9 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [productsByCategory, setProductsByCategory] = useState<Record<string, Product[]>>({});
   const [loading, setLoading] = useState(true);
+  const loadedCategoriesRef = useRef<Set<string>>(new Set());
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
-
-  useEffect(() => {
-    if (selectedCategoryId) {
-      setExpandedCategory(selectedCategoryId);
-      loadProducts(selectedCategoryId);
-    }
-  }, [selectedCategoryId]);
-
-  const loadCategories = async () => {
+  const loadCategories = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('product_categories')
@@ -48,12 +38,16 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const loadProducts = async (categoryId: string) => {
-    if (productsByCategory[categoryId]) {
+  const loadProducts = useCallback(async (categoryId: string) => {
+    // Check if already loaded or loading
+    if (loadedCategoriesRef.current.has(categoryId)) {
       return;
     }
+
+    // Mark as loading
+    loadedCategoriesRef.current.add(categoryId);
 
     try {
       const { data, error } = await supabase
@@ -69,8 +63,21 @@ export default function ProductGallery({ selectedCategoryId, onCategoryChange }:
       }));
     } catch (error) {
       console.error('Error loading products:', error);
+      // Remove from loaded set on error so it can be retried
+      loadedCategoriesRef.current.delete(categoryId);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadCategories();
+  }, [loadCategories]);
+
+  useEffect(() => {
+    if (selectedCategoryId) {
+      setExpandedCategory(selectedCategoryId);
+      loadProducts(selectedCategoryId);
+    }
+  }, [selectedCategoryId, loadProducts]);
 
   const getBreadcrumbs = (categoryId: string) => {
     const breadcrumbs: { label: string; onClick?: () => void }[] = [
