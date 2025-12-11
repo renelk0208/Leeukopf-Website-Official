@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { subcategoryImages } from '../config/imageMap';
+import { subcategoryImages, categoryHero } from '../config/imageMap';
 
 /** 
  * Configuration for gel polish categories with their folder paths and English titles.
@@ -238,8 +238,8 @@ export default function GelPolishCategoryGallery() {
       {/* Category cards grid - responsive layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {GEL_POLISH_CATEGORIES.map((category) => {
-          // Get the first image from this category as thumbnail
-          const thumbnail = CATEGORY_IMAGES[category.id]?.[0]?.src;
+          // Get the category card image from categoryHero, fallback to first subcategory image
+          const thumbnail = categoryHero[category.key] || CATEGORY_IMAGES[category.id]?.[0]?.src;
           
           return (
             <button
