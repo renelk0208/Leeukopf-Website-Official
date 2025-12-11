@@ -52,7 +52,7 @@ export default function LiquidsAndSolutionsPage() {
   return (
     <PageTemplate
       title="Liquids & Solutions"
-      subtitle="Professional prep, cleanse and removal solutions for complete gel nail systems."
+      subtitle="Professional prep and cleanse solutions for complete gel nail systems."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -64,7 +64,7 @@ export default function LiquidsAndSolutionsPage() {
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
             Essential liquids and solutions that support every stage of gel nail services — from nail plate 
-            preparation to final cleanse and safe removal. Formulated for efficiency and safety in professional salon environments.
+            preparation to final cleanse. Formulated for efficiency and safety in professional salon environments.
           </p>
         </div>
       </div>
@@ -124,28 +124,6 @@ export default function LiquidsAndSolutionsPage() {
               <li className="flex items-start">
                 <span className="text-primary mr-2">•</span>
                 <span>Reveals high-gloss finish</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Gel Removers</h3>
-            <p className="text-sm text-gray-600 font-light leading-relaxed mb-3">
-              Professional-strength removal solutions for safe, efficient soak-off of gel polish and soft gel systems. 
-              Designed to minimize damage to the natural nail.
-            </p>
-            <ul className="space-y-2 text-sm text-gray-600 font-light">
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>Fast, effective gel removal</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>Minimizes natural nail damage</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>Professional salon strength</span>
               </li>
             </ul>
           </div>
