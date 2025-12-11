@@ -33,4 +33,3 @@ tmp/
 *.bak
 # Temporary files and reports
 tmp/
-public/version.json
