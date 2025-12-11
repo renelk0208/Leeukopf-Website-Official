@@ -4,6 +4,7 @@ export interface ProductCategoryCard3DProps {
   title: string;
   imageSrc: string;
   href?: string;
+  onClick?: () => void;
   subtitle?: string;
   alt?: string;
   className?: string;
@@ -16,17 +17,19 @@ export interface ProductCategoryCard3DProps {
  * - Pointer handlers with requestAnimationFrame
  * - respects prefers-reduced-motion
  * - touch fallback: subtle scale only
+ * - supports both link (href) and button (onClick) modes
  */
 export default function ProductCategoryCard3D({
   title,
   subtitle,
   imageSrc,
-  href = '#',
+  href,
+  onClick,
   alt = '',
   className = '',
   fallbackSrc,
 }: ProductCategoryCard3DProps) {
-  const cardRef = useRef<HTMLAnchorElement | null>(null);
+  const cardRef = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const shineRef = useRef<HTMLDivElement | null>(null);
@@ -139,57 +142,78 @@ export default function ProductCategoryCard3D({
     };
   }, [handlePointerMove, handlePointerLeave, handleTouchEnd, handleTouchStart]);
 
+  const cardContent = (
+    <div
+      ref={innerRef}
+      className="relative rounded-2xl overflow-hidden shadow-md"
+      style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
+    >
+      <img
+        ref={imgRef}
+        src={imageSrc}
+        alt={alt || title}
+        className="w-full h-48 object-cover block rounded-2xl pointer-events-none"
+        style={{ transform: 'translateZ(0)', transition: 'transform 420ms cubic-bezier(.2,.9,.2,1)', backfaceVisibility: 'hidden' }}
+        onError={(e) => {
+          const t = e.currentTarget;
+          if (fallbackSrc && t.src !== fallbackSrc) {
+            t.src = fallbackSrc;
+          }
+        }}
+      />
+
+      {/* sheen overlay */}
+      <div
+        ref={shineRef}
+        aria-hidden
+        className="absolute inset-0 pointer-events-none mix-blend-soft-light"
+        style={{
+          background:
+            'radial-gradient(600px 200px at 50% 20%, rgba(255,255,255,0.35), rgba(255,255,255,0.08), rgba(255,255,255,0) 40%)',
+          opacity: 0,
+          transition: 'opacity 180ms, background-position 90ms',
+          backgroundSize: '200% 200%',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+
+      {/* gradient layer for a subtle lift on hover */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/6 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-2xl" />
+
+      {/* content area */}
+      <div className="absolute left-4 right-4 bottom-4 bg-white/80 backdrop-blur-sm rounded-md px-3 py-2 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
+        {subtitle ? <p className="text-xs text-slate-700 mt-0.5">{subtitle}</p> : null}
+      </div>
+    </div>
+  );
+
+  const commonProps = {
+    ref: cardRef as any,
+    className: `group block w-full max-w-xs mx-auto ${className}`,
+    'aria-label': title,
+    style: { perspective: '1000px' } as React.CSSProperties,
+  };
+
+  // Render as button if onClick is provided, otherwise as link
+  if (onClick) {
+    return (
+      <button
+        {...commonProps}
+        type="button"
+        onClick={onClick}
+      >
+        {cardContent}
+      </button>
+    );
+  }
+
   return (
     <a
-      ref={cardRef}
-      href={href}
-      className={`group block w-full max-w-xs mx-auto ${className}`}
-      aria-label={title}
-      style={{ perspective: '1000px' }}
+      {...commonProps}
+      href={href || '#'}
     >
-      <div
-        ref={innerRef}
-        className="relative rounded-2xl overflow-hidden shadow-md"
-        style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
-      >
-        <img
-          ref={imgRef}
-          src={imageSrc}
-          alt={alt || title}
-          className="w-full h-48 object-cover block rounded-2xl pointer-events-none"
-          style={{ transform: 'translateZ(0)', transition: 'transform 420ms cubic-bezier(.2,.9,.2,1)', backfaceVisibility: 'hidden' }}
-          onError={(e) => {
-            const t = e.currentTarget;
-            if (fallbackSrc && t.src !== fallbackSrc) {
-              t.src = fallbackSrc;
-            }
-          }}
-        />
-
-        {/* sheen overlay */}
-        <div
-          ref={shineRef}
-          aria-hidden
-          className="absolute inset-0 pointer-events-none mix-blend-soft-light"
-          style={{
-            background:
-              'radial-gradient(600px 200px at 50% 20%, rgba(255,255,255,0.35), rgba(255,255,255,0.08), rgba(255,255,255,0) 40%)',
-            opacity: 0,
-            transition: 'opacity 180ms, background-position 90ms',
-            backgroundSize: '200% 200%',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
-
-        {/* gradient layer for a subtle lift on hover */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/6 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-2xl" />
-
-        {/* content area */}
-        <div className="absolute left-4 right-4 bottom-4 bg-white/80 backdrop-blur-sm rounded-md px-3 py-2 shadow-sm">
-          <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
-          {subtitle ? <p className="text-xs text-slate-700 mt-0.5">{subtitle}</p> : null}
-        </div>
-      </div>
+      {cardContent}
     </a>
   );
 }

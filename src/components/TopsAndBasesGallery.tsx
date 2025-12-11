@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import ProductCategoryCard3D from './products/ProductCategoryCard3D';
 
 /** 
  * Configuration for tops and bases product categories.
@@ -309,38 +310,17 @@ export default function TopsAndBasesGallery() {
         {categoriesWithImages.map((category) => {
           // Use dedicated category image if available, otherwise fall back to first product image
           const thumbnail = category.categoryImage || CATEGORY_IMAGES[category.id]?.[0]?.src;
+          const imageCount = CATEGORY_IMAGES[category.id]?.length || 0;
           
           return (
-            <button
+            <ProductCategoryCard3D
               key={category.id}
-              type="button"
+              title={category.title}
+              subtitle={`${imageCount} ${imageCount === 1 ? 'image' : 'images'}`}
+              imageSrc={thumbnail || ''}
               onClick={() => handleCategoryClick(category.id)}
-              aria-label={`Open ${category.title} collection`}
-              className="w-full rounded-xl shadow-md bg-white overflow-hidden hover:shadow-lg transition-all cursor-pointer border border-gray-100"
-            >
-              {/* Thumbnail image */}
-              {thumbnail && (
-                <div className="relative w-full aspect-square overflow-hidden bg-gray-100">
-                  <img
-                    src={thumbnail}
-                    alt={category.title}
-                    width="800"
-                    height="800"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-              
-              {/* Category info */}
-              <div className="p-4">
-                <div className="text-lg font-semibold text-gray-800">
-                  {category.title}
-                </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  {CATEGORY_IMAGES[category.id]?.length || 0} {CATEGORY_IMAGES[category.id]?.length === 1 ? 'image' : 'images'}
-                </div>
-              </div>
-            </button>
+              alt={category.title}
+            />
           );
         })}
       </div>
