@@ -62,7 +62,7 @@ export const categoryHero: Record<string, string> = {
   'primers-with-acid': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
   
   // Nail Art
-  'nail-art': '/img/products/nail-art/nail-art-category-image.jpg',
+  'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
   '3d-multifunctional-gel': '/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg',
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg',
   
