@@ -21,7 +21,7 @@ const TOPS_BASES_CATEGORIES = [
   },
   { 
     id: 'effectTops', 
-    folder: 'tops/Effect Tops', 
+    folder: 'tops/Effects Top Coats', 
     title: 'Effect Top Coats',
     description: 'Special effect top coats for unique finishes',
     categoryImage: '/img/products/tops-and-bases/tops/effect-tops-category.jpg'
