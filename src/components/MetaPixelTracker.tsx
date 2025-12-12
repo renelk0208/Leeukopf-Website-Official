@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { initMetaPixel, trackPageView } from '../lib/metaPixel';
 
@@ -15,6 +15,7 @@ import { initMetaPixel, trackPageView } from '../lib/metaPixel';
  */
 export default function MetaPixelTracker() {
   const location = useLocation();
+  const isInitialMount = useRef(true);
 
   // Initialize Meta Pixel on mount (production only)
   useEffect(() => {
@@ -43,6 +44,11 @@ export default function MetaPixelTracker() {
     }
 
     // Skip the initial page view (already tracked in initMetaPixel)
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     // Track subsequent route changes
     if (window.fbq) {
       trackPageView();

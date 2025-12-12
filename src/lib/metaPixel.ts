@@ -43,16 +43,24 @@ export function initMetaPixel(pixelId: string): void {
   try {
     // Initialize fbq stub function if it doesn't exist
     if (!window.fbq) {
-      const fbq = (...args: unknown[]) => {
+      interface FbqFunction {
+        (...args: unknown[]): void;
+        callMethod?: ((...args: unknown[]) => void) | null;
+        queue: unknown[][];
+        loaded: boolean;
+        version: string;
+      }
+      
+      const fbq = ((...args: unknown[]) => {
         if (fbq.callMethod) {
           fbq.callMethod(...args);
         } else {
           fbq.queue.push(args);
         }
-      };
+      }) as FbqFunction;
       
-      fbq.callMethod = null as unknown as ((...args: unknown[]) => void) | null;
-      fbq.queue = [] as unknown[][];
+      fbq.callMethod = null;
+      fbq.queue = [];
       fbq.loaded = true;
       fbq.version = '2.0';
       
