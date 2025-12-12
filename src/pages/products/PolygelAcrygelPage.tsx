@@ -8,7 +8,7 @@ import { categoryHero } from '../../config/imageMap';
  * Use Vite's import.meta.glob to dynamically load all polygel/acrygel product images
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/builder-systems/{Acrygel,PolygelAcrygel Images,Liquid Polygel}/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
+  '/public/img/products/{builder-systems/Acrygel-Polygel,Liquid Polygel}/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
 

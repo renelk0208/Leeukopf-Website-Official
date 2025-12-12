@@ -179,7 +179,7 @@ export const productCategories: ProductCategory[] = [
     id: 'polygel-acrygel',
     key: 'polygel-acrygel',
     displayName: 'Polygel / AcryGel',
-    imagePath: '/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg',
+    imagePath: '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-category-card-image.png',
     group: 'Builder Gels',
   },
 

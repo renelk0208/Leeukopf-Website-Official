@@ -146,7 +146,7 @@ export default function ProductsPage() {
             <ProductCategoryCard3D
               title="Polygel / AcryGel"
               subtitle="Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free"
-              imageSrc="/img/products/builder-systems/Acrygel/acrygel_polygel-category_image.jpg"
+              imageSrc="/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-category-card-image.png"
               href="/products/polygel-acrygel"
               alt="Polygel / AcryGel"
             />

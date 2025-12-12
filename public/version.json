@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-12T07:50:36.199Z",
-  "commit": "ccc9707",
-  "branch": "copilot/fix-category-image-issues",
+  "buildDate": "2025-12-12T08:10:17.633Z",
+  "commit": "4a61f72",
+  "branch": "copilot/update-category-name-for-images",
   "message": "Build deployed successfully"
 }
