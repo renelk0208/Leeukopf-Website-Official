@@ -178,9 +178,6 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   'builder-systems': {
     'acrygel': [
       '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-category-card-image.png',
-      '/img/products/Liquid Polygel/liquid-polygel (1).jpg',
-      '/img/products/Liquid Polygel/liquid-polygel (2).jpg',
-      '/img/products/Liquid Polygel/liquid-polygel (3).jpg',
     ],
     '3-in-1-builder': [
       '/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gels (2).jpg',
