@@ -105,7 +105,7 @@ export function initMetaPixel(pixelId: string): void {
 
   // Guard: Ensure script is loaded
   if (!window.fbq) {
-    console.warn('[Meta Pixel] fbq not available. Call loadMetaPixelScript() first');
+    console.warn('[Meta Pixel] Script not loaded yet, initialization deferred');
     return;
   }
 

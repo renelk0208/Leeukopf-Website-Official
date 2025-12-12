@@ -1,30 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { loadMetaPixelScript, initMetaPixel, trackPageView } from '../lib/metaPixel';
-
-/**
- * Check if analytics cookies are accepted
- * Reads the cookie consent choice from the lkp_cookie_consent cookie
- */
-function hasAnalyticsConsent(): boolean {
-  if (typeof document === 'undefined') return false;
-
-  const match = document.cookie
-    .split(';')
-    .map(c => c.trim())
-    .find(c => c.startsWith('lkp_cookie_consent='));
-
-  if (!match) return false;
-
-  try {
-    const [, raw] = match.split('=');
-    const decoded = decodeURIComponent(raw);
-    const parsed = JSON.parse(decoded);
-    return parsed && parsed.choice === 'all';
-  } catch {
-    return false;
-  }
-}
+import { hasAnalyticsConsent } from '../lib/cookieConsent';
 
 /**
  * MetaPixelTracker Component
