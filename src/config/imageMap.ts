@@ -125,9 +125,6 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/Glitters Collection/glitters-images (11).jpg',
     ],
     'solid-colour-collection': [
-      '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (1).jpg',
-      '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (2).jpg',
-      '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (3).jpg',
       '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (4).jpg',
       '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (5).jpg',
       '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (6).jpg',
@@ -143,7 +140,6 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (16).jpg',
       '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (17).jpg',
       '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (18).jpg',
-      '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (19).jpg',
     ],
     'french-collection': [
       '/img/products/gel_polishes/French Collection/french-collection-gel-polish (2).jpg',

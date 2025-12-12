@@ -117,7 +117,7 @@ export const productCategories: ProductCategory[] = [
     id: 'rubber-bases',
     key: 'rubber-bases',
     displayName: 'Rubber Bases',
-    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg',
+    imagePath: '/img/products/tops-and-bases/rubber-bases/rubber-base-category-card-image.jpg',
     group: 'Tops & Bases',
   },
   {
@@ -145,7 +145,7 @@ export const productCategories: ProductCategory[] = [
     id: 'brush-on-builder',
     key: 'brush-on-builder',
     displayName: 'Brush-On Builder',
-    imagePath: '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
+    imagePath: '/img/products/builder-systems/brush-on-builder/brush-on-builder-category-card-image.jpg',
     group: 'Tops & Bases',
   },
 
