@@ -13,7 +13,7 @@ export const enabledCategories = {
   gelPolish: true,
   builderAndStructureGels: true, // Enabled - images available
   topAndBases: true, // Enabled - images available
-  polygelAcrygel: true, // Enabled - images available
+  polygelAcrygel: false, // Moved to Builder & Structure Gels subcategory
   acrylicSystems: true, // Enabled - images available
   liquidsAndSolutions: true, // Enabled - images available
   nailArt: true, // Enabled - images available
@@ -28,6 +28,8 @@ export const enabledSubcategories = {
     threePhase: true, // Enabled - images available
     threeInOne: true, // Enabled - images available
     premiumFiberGlass: true, // Enabled - images available
+    polygelAcrygel: true, // Enabled - Polygel/AcryGel
+    noHeatSpikeBuilderGel: true, // Enabled - No Heat Spike Builder Gel
   },
   
   // Top & Bases subcategories
@@ -39,9 +41,9 @@ export const enabledSubcategories = {
   baseCoats: {
     enabled: true, // Main Base Coats page - enabled
     classic: true, // Enabled - images available
-    rubberBase: true, // Enabled - images available
+    standardRubberBase: true, // Enabled - Standard Rubber Base subcategory
+    effectsRubberBase: true, // Enabled - Effects Rubber Base subcategory
     superiorBase: true, // Enabled - images available
-    noHeatSpikeBuilderGel: true, // Enabled - No Heat Spike Builder Gel category
   },
 };
 
