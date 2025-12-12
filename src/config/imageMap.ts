@@ -43,7 +43,7 @@ export const categoryHero: Record<string, string> = {
   'three-in-one-builder': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/1-premium-builder-gels-category-card-image.jpg',
   'colour-builder-gels': '/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg',
-  'polygel-acrygel': '/img/products/builder-systems/Acrygel-Polygel/acrygel_polygel-catergory-hero-image.jpg',
+  'polygel-acrygel': '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-category-hero-image.jpg',
   'liquid-polygel': '/img/products/Liquid Polygel/liquid-polygel-catergory-card-image.png',
   'acrylic-systems': '/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg',
   
