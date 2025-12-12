@@ -55,8 +55,7 @@ export default function NoHeatSpikeBuilderGelPage() {
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
-        { label: 'Top & Bases', path: '/products/top-and-bases' },
-        { label: 'Base Coats', path: '/products/top-and-bases/base-coats' },
+        { label: 'Builder & Structure Gels', path: '/products/builder-and-structure-gels' },
         { label: 'No Heat Spike Builder Gel' }
       ]}
     >

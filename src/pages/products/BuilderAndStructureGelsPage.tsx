@@ -28,6 +28,20 @@ export default function BuilderAndStructureGelsPage() {
       description: 'Reinforced flexibility and superior strength in a premium formula that stays fully HEMA-free and TPO-free.',
       image: categoryHero['premium-builder-gels'],
     },
+    {
+      key: 'polygelAcrygel',
+      title: 'Polygel / AcryGel',
+      path: '/products/polygel-acrygel',
+      description: 'Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free.',
+      image: categoryHero['polygel-acrygel'],
+    },
+    {
+      key: 'noHeatSpikeBuilderGel',
+      title: 'No Heat Spike Builder Gel',
+      path: '/products/builder-and-structure-gels/no-heat-spike-builder-gel',
+      description: 'Advanced formula that minimizes heat generation during curing — HEMA-free and TPO-free.',
+      image: categoryHero['no-heat-spike-builder-gel'],
+    },
   ].filter(sub => isSubcategoryEnabled('builderGels', sub.key));
 
   return (

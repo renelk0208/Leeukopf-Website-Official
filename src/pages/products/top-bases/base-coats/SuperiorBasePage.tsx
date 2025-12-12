@@ -3,10 +3,10 @@ import ApplicationCuring from '../../../../components/ApplicationCuring';
 import ProductGrid from '../../../../components/ProductGrid';
 
 /**
- * Use Vite's import.meta.glob to dynamically load all 5-in-1 superior base product images
+ * Use Vite's import.meta.glob to dynamically load all Superior Base Coat product images
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/tops-and-bases/5-in-1/**/*.{jpg,JPG,jpeg,JPEG}',
+  '/public/img/products/tops-and-bases/Superior Base Coat/**/*.{jpg,JPG,jpeg,JPEG}',
   { eager: true }
 );
 
@@ -35,7 +35,7 @@ function buildSuperiorBaseImages(): { src: string; alt: string }[] {
 
     images.push({
       src: imageSrc,
-      alt: `Superior Base 5-in-1 - ${altText}`,
+      alt: `Superior Base Coat - ${altText}`,
     });
   });
 
@@ -50,21 +50,21 @@ const SUPERIOR_BASE_IMAGES = buildSuperiorBaseImages();
 export default function SuperiorBasePage() {
   return (
     <PageTemplate
-      title="Superior Base (5-in-1)"
+      title="Superior Base Coat"
       subtitle="A multifunction base that primes, levels, strengthens and perfects — HEMA-free and TPO-free."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
         { label: 'Top & Bases', path: '/products/top-and-bases' },
         { label: 'Base Coats', path: '/products/top-and-bases/base-coats' },
-        { label: 'Superior Base (5-in-1)' }
+        { label: 'Superior Base Coat' }
       ]}
     >
       {/* Hero Description */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed mb-4">
-            Our Superior Base 5-in-1 combines multiple functions into one efficient formula: primer, base coat, 
+            Our Superior Base Coat combines multiple functions into one efficient formula: primer, base coat, 
             strengthener, self-leveller and ridge filler. This advanced system streamlines application while 
             delivering professional results for busy salons.
           </p>
@@ -148,7 +148,7 @@ export default function SuperiorBasePage() {
       {SUPERIOR_BASE_IMAGES.length > 0 && (
         <ProductGrid
           title="Product Gallery"
-          description="Browse our complete range of Superior Base 5-in-1 products"
+          description="Browse our complete range of Superior Base Coat products"
           images={SUPERIOR_BASE_IMAGES}
         />
       )}
