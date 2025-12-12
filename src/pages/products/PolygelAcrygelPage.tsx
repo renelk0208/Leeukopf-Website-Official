@@ -23,6 +23,9 @@ function buildPolygelImages(): { src: string; alt: string }[] {
     // Skip the category image
     if (path.toLowerCase().includes('category')) return;
 
+    // Exclude Liquid Polygel images (only show Acrygel-Polygel)
+    if (path.match(/liquid\s*polygel/i)) return;
+
     const filename = path.split('/').pop() || '';
     
     // Convert the public path to a URL path (remove /public prefix)

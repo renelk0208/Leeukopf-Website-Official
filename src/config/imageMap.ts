@@ -44,6 +44,7 @@ export const categoryHero: Record<string, string> = {
   'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/1-premium-builder-gels-category-card-image.jpg',
   'colour-builder-gels': '/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg',
   'polygel-acrygel': '/img/products/builder-systems/Acrygel-Polygel/acrygel_polygel-catergory-hero-image.jpg',
+  'liquid-polygel': '/img/products/Liquid Polygel/liquid-polygel-catergory-card-image.png',
   'acrylic-systems': '/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg',
   
   // Tops & Bases
@@ -225,6 +226,8 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-products-images (9).jpg',
       '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-products-images (10).jpg',
       '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-products-images (11).jpg',
+    ],
+    'liquid-polygel': [
       '/img/products/Liquid Polygel/liquid-polygel (1).jpg',
       '/img/products/Liquid Polygel/liquid-polygel (2).jpg',
       '/img/products/Liquid Polygel/liquid-polygel (3).jpg',
