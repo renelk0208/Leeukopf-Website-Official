@@ -4,6 +4,7 @@ interface ProductSEOProps {
     | 'builder-gels' 
     | 'top-bases' 
     | 'polygel-acrygel' 
+    | 'liquid-polygel'
     | 'acrylic-systems' 
     | 'liquids-solutions' 
     | 'nail-art' 
@@ -93,6 +94,27 @@ export default function ProductSEO({ category }: ProductSEOProps) {
           <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
             Suitable for dual-form application, sculpting with forms, or brush-on techniques. Available for 
             private label with custom shade development and complete regulatory documentation for European compliance.
+          </p>
+        </>
+      ),
+    },
+    'liquid-polygel': {
+      title: 'Liquid Polygel Systems',
+      content: (
+        <>
+          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
+            Our Liquid Polygel represents the next evolution in hybrid gel technology, offering a revolutionary 
+            liquid formula that combines effortless flow with superior control. This innovative system delivers 
+            the strength of polygel in a brush-on formula that's perfect for technicians seeking ultimate precision.
+          </p>
+          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
+            Formulated without HEMA or TPO, Liquid Polygel provides extended working time with self-levelling 
+            properties for smooth, professional results. The liquid consistency allows for detailed work while 
+            maintaining the durability and flexibility expected from polygel systems.
+          </p>
+          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
+            Ideal for natural nail overlays, extensions, and nail art applications. Available for private label 
+            with flexible customization options and comprehensive regulatory support for European market compliance.
           </p>
         </>
       ),
