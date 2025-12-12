@@ -29,7 +29,7 @@ export const categoryHero: Record<string, string> = {
   'cat-eye-collection': '/img/products/gel_polishes/Cat Eye Collection/cat-eye_categoty_card-image.png',
   'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-category-card-image.jpg',
   'glitters-collection': '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.png',
-  'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg',
+  'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-category card image.jpg',
   'french-collection': '/img/products/gel_polishes/French Collection/french-collection-category-card-image.png',
   'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
   'glow-in-the-dark': '/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polish-category-card-image.png',
@@ -48,15 +48,18 @@ export const categoryHero: Record<string, string> = {
   
   // Tops & Bases
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
+  'base-coats': '/img/products/tops-and-bases/base-coat-category-card-image.png',
   'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg',
-  'rubber-base': '/img/products/tops-and-bases/rubber-bases/rubber_bases_category-card-image.jpg',
+  'rubber-base': '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg',
+  'standard-rubber-base': '/img/products/tops-and-bases/rubber-bases/Standard Rubber Base/rubber-base-images (1).jpg',
+  'effects-rubber-base': '/img/products/tops-and-bases/rubber-bases/Effects Rubber Base/effects-rubber-base-images (1).jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/standard-top-coats-catergory-image.jpg',
   'standard-top-coats': '/img/products/tops-and-bases/tops/standard-top-coats-catergory-image.jpg',
   'effect-tops': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category.jpg',
   'effects-top-coats': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category.jpg',
   'superior-base-coat': '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
-  'classic-base': '/img/products/tops-and-bases/Bases/classic-base-coat-category-image.png',
-  'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card-image.jpg',
+  'classic-base': '/img/products/tops-and-bases/Bases/classic-base-coat-category-card-image.png',
+  'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-category-card-image.png',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
   
   // Primers & Liquids
@@ -67,7 +70,7 @@ export const categoryHero: Record<string, string> = {
   // Nail Art
   'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
   '3d-multifunctional-gel': '/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg',
-  'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/nail-art-category.jpg',
+  'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/solid-mirror-category-card.jpg',
   
   // Lamps
   'lamps': '/img/products/Lamps/lamps_category_card-1.jpg',
@@ -218,7 +221,7 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
     ],
   },
   'tops-and-bases': {
-    '5-in-1': [
+    'superior-base-coat': [
       '/img/products/tops-and-bases/Superior Base Coat/superior-base-coats (1).jpg',
       '/img/products/tops-and-bases/Superior Base Coat/superior-base-coats (2).jpg',
     ],

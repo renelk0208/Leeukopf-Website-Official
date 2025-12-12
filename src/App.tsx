@@ -90,6 +90,7 @@ function App() {
         <Route path="/products/builder-and-structure-gels/3-phase" element={<ThreePhasePage />} />
         <Route path="/products/builder-and-structure-gels/3-in-1" element={<ThreeInOnePage />} />
         <Route path="/products/builder-and-structure-gels/premium-fiber-glass" element={<PremiumFiberGlassPage />} />
+        <Route path="/products/builder-and-structure-gels/no-heat-spike-builder-gel" element={<NoHeatSpikeBuilderGelPage />} />
         
         {/* Top & Bases */}
         <Route path="/products/top-and-bases" element={<TopAndBasesPage />} />
@@ -100,7 +101,6 @@ function App() {
         <Route path="/products/top-and-bases/base-coats/classic" element={<ClassicBasePage />} />
         <Route path="/products/top-and-bases/base-coats/rubber-base" element={<RubberBasePage />} />
         <Route path="/products/top-and-bases/base-coats/superior-base-5-in-1" element={<SuperiorBasePage />} />
-        <Route path="/products/top-and-bases/base-coats/no-heat-spike-builder-gel" element={<NoHeatSpikeBuilderGelPage />} />
         <Route path="/products/top-and-bases/brush-on-builder" element={<BrushOnBuilderPage />} />
         
         {/* Lamps */}
