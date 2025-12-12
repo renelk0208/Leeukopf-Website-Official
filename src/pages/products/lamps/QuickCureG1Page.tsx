@@ -1,5 +1,6 @@
 import PageTemplate from '../../../components/PageTemplate';
 import ProductGrid from '../../../components/ProductGrid';
+import { categoryHero } from '../../../config/imageMap';
 
 /**
  * Use Vite's import.meta.glob to dynamically load all Quick Cure G1 product images
@@ -62,7 +63,7 @@ export default function QuickCureG1Page() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/Lamps/Quick Cure G1/quick-cure-hand-held-category-image.jpg"
+            src={categoryHero['quick-cure-g1'] || '/img/products/Lamps/Quick Cure G1/g1-quickcure-lamp-category-card-image.jpg'}
             alt="Quick Cure G1 Handheld LED Lamp"
             width="1600"
             height="400"
