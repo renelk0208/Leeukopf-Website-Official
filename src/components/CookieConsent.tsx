@@ -1,43 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { getConsentCookie, CookieConsentChoice, CookieConsentValue, CONSENT_COOKIE_NAME } from "../lib/cookieConsent";
 
-type CookieConsentChoice = "all" | "necessary";
-
-interface CookieConsentValue {
-  choice: CookieConsentChoice;
-  timestamp: number;
-}
-
-const CONSENT_COOKIE_NAME = "lkp_cookie_consent";
 const CONSENT_COOKIE_MAX_AGE_DAYS = 365;
 
 function setConsentCookie(value: CookieConsentValue) {
   const maxAge = CONSENT_COOKIE_MAX_AGE_DAYS * 24 * 60 * 60; // seconds
   const encoded = encodeURIComponent(JSON.stringify(value));
   document.cookie = `${CONSENT_COOKIE_NAME}=${encoded};path=/;max-age=${maxAge};SameSite=Lax`;
-}
-
-function getConsentCookie(): CookieConsentValue | null {
-  if (typeof document === "undefined") return null;
-
-  const match = document.cookie
-    .split(";")
-    .map(c => c.trim())
-    .find(c => c.startsWith(`${CONSENT_COOKIE_NAME}=`));
-
-  if (!match) return null;
-
-  try {
-    const [, raw] = match.split("=");
-    const decoded = decodeURIComponent(raw);
-    const parsed = JSON.parse(decoded) as CookieConsentValue;
-
-    if (parsed && (parsed.choice === "all" || parsed.choice === "necessary")) {
-      return parsed;
-    }
-    return null;
-  } catch {
-    return null;
-  }
 }
 
 function dispatchConsentEvent(choice: CookieConsentChoice) {
