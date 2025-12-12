@@ -50,9 +50,7 @@ export default function MetaPixelTracker() {
     }
 
     // Track subsequent route changes
-    if (window.fbq) {
-      trackPageView();
-    }
+    trackPageView();
   }, [location.pathname, location.search]); // Track when pathname or search params change
 
   // This component doesn't render anything
