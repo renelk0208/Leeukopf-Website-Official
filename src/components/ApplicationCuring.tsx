@@ -1,5 +1,5 @@
 interface ApplicationCuringProps {
-  type: 'gel-polish' | 'builder-gels' | 'top-coats' | 'base-coats' | 'polygel-acrygel' | 'acrylic-systems' | 'liquids';
+  type: 'gel-polish' | 'builder-gels' | 'top-coats' | 'base-coats' | 'polygel-acrygel' | 'liquid-polygel' | 'acrylic-systems' | 'liquids';
 }
 
 export default function ApplicationCuring({ type }: ApplicationCuringProps) {
@@ -39,6 +39,14 @@ export default function ApplicationCuring({ type }: ApplicationCuringProps) {
       title: 'Application & Curing',
       items: [
         { label: 'Application', value: 'Sculpt with slip solution for easy shaping' },
+        { label: 'LED Cure Time', value: '60–90 seconds' },
+        { label: 'Flash cure', value: 'Allowed for building layers' },
+      ],
+    },
+    'liquid-polygel': {
+      title: 'Application & Curing',
+      items: [
+        { label: 'Application', value: 'Brush on with slip solution for smooth application' },
         { label: 'LED Cure Time', value: '60–90 seconds' },
         { label: 'Flash cure', value: 'Allowed for building layers' },
       ],

@@ -29,6 +29,7 @@ export const enabledSubcategories = {
     threeInOne: true, // Enabled - images available
     premiumFiberGlass: true, // Enabled - images available
     polygelAcrygel: true, // Enabled - Polygel/AcryGel
+    liquidPolygel: true, // Enabled - Liquid Polygel
     noHeatSpikeBuilderGel: true, // Enabled - No Heat Spike Builder Gel
   },
   

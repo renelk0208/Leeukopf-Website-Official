@@ -34,6 +34,7 @@ import CategoryGridTestPage from './pages/products/CategoryGridTestPage';
 import ThreePhasePage from './pages/products/builder-gels/ThreePhasePage';
 import ThreeInOnePage from './pages/products/builder-gels/ThreeInOnePage';
 import PremiumFiberGlassPage from './pages/products/builder-gels/PremiumFiberGlassPage';
+import LiquidPolygelPage from './pages/products/LiquidPolygelPage';
 
 // Top & Bases Subcategories
 import TopCoatsPage from './pages/products/top-bases/TopCoatsPage';
@@ -110,6 +111,7 @@ function App() {
         
         {/* Other Product Categories */}
         <Route path="/products/polygel-acrygel" element={<PolygelAcrygelPage />} />
+        <Route path="/products/liquid-polygel" element={<LiquidPolygelPage />} />
         <Route path="/products/acrylic-systems" element={<AcrylicSystemsPage />} />
         <Route path="/products/liquids-and-solutions" element={<LiquidsAndSolutionsPage />} />
         <Route path="/products/nail-art" element={<NailArtPage />} />

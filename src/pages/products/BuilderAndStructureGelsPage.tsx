@@ -36,6 +36,13 @@ export default function BuilderAndStructureGelsPage() {
       image: categoryHero['polygel-acrygel'],
     },
     {
+      key: 'liquidPolygel',
+      title: 'Liquid Polygel',
+      path: '/products/liquid-polygel',
+      description: 'Revolutionary liquid formula for effortless application and superior control — HEMA-free and TPO-free.',
+      image: categoryHero['liquid-polygel'],
+    },
+    {
       key: 'noHeatSpikeBuilderGel',
       title: 'No Heat Spike Builder Gel',
       path: '/products/builder-and-structure-gels/no-heat-spike-builder-gel',

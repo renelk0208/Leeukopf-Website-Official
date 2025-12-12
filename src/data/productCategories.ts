@@ -182,6 +182,13 @@ export const productCategories: ProductCategory[] = [
     imagePath: '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-category-card-image.png',
     group: 'Builder Gels',
   },
+  {
+    id: 'liquid-polygel',
+    key: 'liquid-polygel',
+    displayName: 'Liquid Polygel',
+    imagePath: '/img/products/liquid polygel/liquid-polygel-category-card-image.png',
+    group: 'Builder Gels',
+  },
 
   // Lamps - UV & LED
   {
