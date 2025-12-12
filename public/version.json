@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-11T22:19:07.338Z",
-  "commit": "4256eae",
-  "branch": "copilot/fix-missing-category-card-images",
+  "buildDate": "2025-12-12T07:23:16.481Z",
+  "commit": "8083737",
+  "branch": "copilot/fix-category-image-issues",
   "message": "Build deployed successfully"
 }

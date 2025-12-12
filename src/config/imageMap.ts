@@ -48,6 +48,7 @@ export const categoryHero: Record<string, string> = {
   
   // Tops & Bases
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
+  'base-coats': '/img/products/tops-and-bases/base-coat-category-card-image.png',
   'rubber-bases': '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg',
   'rubber-base': '/img/products/tops-and-bases/rubber-bases/rubber-base-category-image.jpg',
   'standard-rubber-base': '/img/products/tops-and-bases/rubber-bases/Standard Rubber Base/rubber-base-images (1).jpg',
@@ -220,7 +221,7 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
     ],
   },
   'tops-and-bases': {
-    '5-in-1': [
+    'superior-base-coat': [
       '/img/products/tops-and-bases/Superior Base Coat/superior-base-coats (1).jpg',
       '/img/products/tops-and-bases/Superior Base Coat/superior-base-coats (2).jpg',
     ],
