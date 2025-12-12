@@ -25,7 +25,7 @@ const TOPS_BASES_CATEGORIES = [
     folder: 'tops/Effects Top Coats', 
     title: 'Effect Top Coats',
     description: 'Special effect top coats for unique finishes',
-    categoryImage: '/img/products/tops-and-bases/tops/effect-tops-category.jpg'
+    categoryImage: '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category-card.jpg'
   },
   { 
     id: 'fiveInOne', 
