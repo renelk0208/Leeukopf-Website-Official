@@ -7,6 +7,7 @@ import AdminDashboard from './pages/AdminDashboard.tsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.tsx';
 import ScrollToTopOnRouteChange from './components/ScrollToTopOnRouteChange.tsx';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
+import MetaPixelTracker from './components/MetaPixelTracker.tsx';
 import './index.css';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')!).render(
     <ErrorBoundary>
       <BrowserRouter>
         <ScrollToTopOnRouteChange />
+        <MetaPixelTracker />
         <AuthProvider>
           <Routes>
             <Route path="/admin/login" element={<AdminLogin />} />
