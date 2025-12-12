@@ -19,7 +19,12 @@ let isPixelInitialized = false;
 
 /**
  * Load the Meta Pixel script from Facebook CDN
- * This function is idempotent - safe to call multiple times
+ * 
+ * This function is idempotent - safe to call multiple times.
+ * It creates a stub fbq() function immediately that queues calls,
+ * then asynchronously loads the actual Meta Pixel script from Facebook.
+ * This pattern allows initMetaPixel() to be called immediately after
+ * without waiting for the script to load.
  */
 export function loadMetaPixelScript(): void {
   // Guard: Prevent double loading
@@ -30,6 +35,7 @@ export function loadMetaPixelScript(): void {
 
   try {
     // Initialize fbq stub function if it doesn't exist
+    // This stub queues calls until the actual script loads
     if (!window.fbq) {
       interface FbqFunction {
         (...args: unknown[]): void;
@@ -103,9 +109,10 @@ export function initMetaPixel(pixelId: string): void {
     return;
   }
 
-  // Guard: Ensure script is loaded
+  // Guard: Ensure script is loaded (stub fbq should exist)
+  // The stub allows immediate calls that get queued until script loads
   if (!window.fbq) {
-    console.warn('[Meta Pixel] Script not loaded yet, initialization deferred');
+    console.warn('[Meta Pixel] fbq stub not available, script loading may have failed');
     return;
   }
 

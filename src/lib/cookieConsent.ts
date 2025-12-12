@@ -36,7 +36,8 @@ export function getConsentCookie(): CookieConsentValue | null {
       return parsed;
     }
     return null;
-  } catch {
+  } catch (error) {
+    console.warn('[Cookie Consent] Failed to parse consent cookie:', error);
     return null;
   }
 }
