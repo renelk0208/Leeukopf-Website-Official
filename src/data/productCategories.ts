@@ -43,7 +43,7 @@ export const productCategories: ProductCategory[] = [
     id: 'solid-colour-collection',
     key: 'solid-colour-collection',
     displayName: 'Solid Colour Collection',
-    imagePath: '/img/products/gel_polishes/Solid Colour Collection/FH_pure_color_gel_polish_hema_free_1.jpg',
+    imagePath: '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-category card image.jpg',
     group: 'Gel Polish',
   },
   {
@@ -131,7 +131,7 @@ export const productCategories: ProductCategory[] = [
     id: 'effect-tops',
     key: 'effect-tops',
     displayName: 'Effect Top Coats',
-    imagePath: '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category.jpg',
+    imagePath: '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category-card.jpg',
     group: 'Tops & Bases',
   },
   {

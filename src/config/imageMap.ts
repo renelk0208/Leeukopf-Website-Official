@@ -55,21 +55,21 @@ export const categoryHero: Record<string, string> = {
   'effects-rubber-base': '/img/products/tops-and-bases/rubber-bases/Effects Rubber Base/effects-rubber-base-images (1).jpg',
   'classic-top-coats': '/img/products/tops-and-bases/tops/standard-top-coats-catergory-image.jpg',
   'standard-top-coats': '/img/products/tops-and-bases/tops/standard-top-coats-catergory-image.jpg',
-  'effect-tops': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category.jpg',
-  'effects-top-coats': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category.jpg',
+  'effect-tops': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category-card.jpg',
+  'effects-top-coats': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category-card.jpg',
   'superior-base-coat': '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
-  'classic-base': '/img/products/tops-and-bases/Bases/classic-base-coat-category-card-image.png',
+  'classic-base': '/img/products/tops-and-bases/Bases/base-coat-category-card-image.png',
   'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-category-card-image.png',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
   
   // Primers & Liquids
   'primers-liquids': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
   'liquids-and-solutions': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
-  'primers-with-acid': '/img/products/primers-and-liquids/bonder-with-acid.jpg',
+  'primers-with-acid': '/img/products/liquids-&-solutions/primer-liquid-images-1.jpg',
   
   // Nail Art
   'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
-  '3d-multifunctional-gel': '/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg',
+  '3d-multifunctional-gel': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/solid-mirror-category-card.jpg',
   
   // Lamps
@@ -282,11 +282,6 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
     ],
   },
   'nail-art': {
-    '3d-multifunctional-gel': [
-      '/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_1.jpg',
-      '/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_2.jpg',
-      '/img/products/nail-art/3D-multifunctional-gel/leeukopf_multifunctional_3D_gel_3.jpg',
-    ],
     'solid-mirror-powders': [
       '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette1.jpg',
       '/img/products/nail-art/Solid Mirror Powders/aquarelle_color_shift_palette2.jpg',
