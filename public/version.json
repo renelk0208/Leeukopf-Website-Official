@@ -1,7 +1,7 @@
 {
   "version": "0.0.0",
-  "buildDate": "2025-12-12T14:00:49.238Z",
-  "commit": "cf23de9",
-  "branch": "copilot/fix-website-link-preview",
+  "buildDate": "2025-12-13T09:27:25.187Z",
+  "commit": "f6aeede",
+  "branch": "copilot/fix-about-us-button-links",
   "message": "Build deployed successfully"
 }
