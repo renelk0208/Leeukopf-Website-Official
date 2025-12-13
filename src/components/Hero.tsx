@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
+import ProductCategoryCard3D from './products/ProductCategoryCard3D';
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -60,23 +61,29 @@ export default function Hero() {
             </button>
           </div>
 
-          {/* Responsive stats grid */}
+          {/* Product Category Cards with 3D effects */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 px-2 sm:px-0">
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">3000+</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">Colours</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Premium gel polish collection</div>
-            </div>
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">Builder</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">Gel Systems</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Professional strength & durability</div>
-            </div>
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">Nail Art</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">& Consumables</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Complete product range</div>
-            </div>
+            <ProductCategoryCard3D
+              title="Gel Polish"
+              subtitle="3000+ Colours - Premium gel polish collection"
+              imageSrc="/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg"
+              href="/products/gel-polish"
+              alt="Gel Polish - 3000+ premium colours"
+            />
+            <ProductCategoryCard3D
+              title="Builder Gel Systems"
+              subtitle="Professional strength & durability"
+              imageSrc="/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg"
+              href="/products/builder-and-structure-gels"
+              alt="Builder Gel Systems - Professional strength"
+            />
+            <ProductCategoryCard3D
+              title="Nail Art & Consumables"
+              subtitle="Complete product range for creative services"
+              imageSrc="/img/products/nail-art/Nail Art/nail-art-category-card-imge.png"
+              href="/products/nail-art"
+              alt="Nail Art & Consumables - Complete range"
+            />
           </div>
         </div>
       </div>
