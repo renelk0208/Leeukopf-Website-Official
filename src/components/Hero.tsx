@@ -5,6 +5,9 @@ import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 export default function Hero() {
   const navigate = useNavigate();
 
+  // Common styling for category links
+  const categoryLinkClass = "group block w-full max-w-xs mx-auto bg-white/90 backdrop-blur-sm rounded-lg px-6 py-6 shadow-md hover:shadow-xl hover:bg-white transition-all duration-300 border-2 border-transparent hover:border-primary";
+
   return (
     <section id="home" className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Hero background image */}
@@ -64,7 +67,7 @@ export default function Hero() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 px-2 sm:px-0">
             <a
               href="/products/gel-polish"
-              className="group block w-full max-w-xs mx-auto bg-white/90 backdrop-blur-sm rounded-lg px-6 py-6 shadow-md hover:shadow-xl hover:bg-white transition-all duration-300 border-2 border-transparent hover:border-primary"
+              className={categoryLinkClass}
             >
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
                 2000+ Colours to choose from
@@ -75,7 +78,7 @@ export default function Hero() {
             </a>
             <a
               href="/products/builder-and-structure-gels"
-              className="group block w-full max-w-xs mx-auto bg-white/90 backdrop-blur-sm rounded-lg px-6 py-6 shadow-md hover:shadow-xl hover:bg-white transition-all duration-300 border-2 border-transparent hover:border-primary"
+              className={categoryLinkClass}
             >
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
                 Professional Strength & Durability
@@ -86,7 +89,7 @@ export default function Hero() {
             </a>
             <a
               href="/products/nail-art"
-              className="group block w-full max-w-xs mx-auto bg-white/90 backdrop-blur-sm rounded-lg px-6 py-6 shadow-md hover:shadow-xl hover:bg-white transition-all duration-300 border-2 border-transparent hover:border-primary"
+              className={categoryLinkClass}
             >
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
                 Complete Product Range
