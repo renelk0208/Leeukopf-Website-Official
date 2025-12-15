@@ -36,6 +36,11 @@ export default function Hero() {
             />
           </div>
 
+          {/* H1 - Main keyword-rich heading for SEO */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 max-w-4xl mx-auto leading-tight px-2 bg-white/90 rounded-lg py-4 inline-block">
+            Private Label Gel Polish Manufacturer
+          </h1>
+
           {/* Responsive typography with clamp-like approach */}
           <p className="text-lg sm:text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto leading-relaxed font-medium px-2 bg-white/90 rounded-lg py-3 inline-block">
             Premium Gel Polish Manufacturing & Private Label Excellence
