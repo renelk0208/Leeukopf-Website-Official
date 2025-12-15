@@ -55,7 +55,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         {/* Responsive grid - stacks on mobile, 4 cols on desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
-          {/* Brand section */}
+          {/* Brand section with contact info */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/" className="block mb-4">
               <OptimizedImage
@@ -69,6 +69,34 @@ export default function Footer() {
             <p className="text-[#6B6B6B] text-sm font-light leading-relaxed mb-4">
               Premium beauty products manufactured in Bulgaria, trusted by professionals worldwide.
             </p>
+            
+            {/* Business Address - More visible for local SEO */}
+            <div className="mb-4 text-sm">
+              <p className="text-[#444444] font-semibold mb-2">Head Office</p>
+              <p className="text-[#6B6B6B] font-light leading-relaxed">
+                8 Racho Dimchev<br />
+                Sofia, Bulgaria 1000
+              </p>
+            </div>
+            
+            <div className="mb-4 text-sm">
+              <p className="text-[#444444] font-semibold mb-2">Factory</p>
+              <p className="text-[#6B6B6B] font-light leading-relaxed">
+                Zelendolsko shose 30<br />
+                Blagoevgrad 2700, Bulgaria
+              </p>
+            </div>
+            
+            <div className="mb-4 text-sm">
+              <p className="text-[#444444] font-semibold mb-1">Phone</p>
+              <a 
+                href="tel:+35973891041" 
+                className="text-[#6B6B6B] hover:text-[#A3005A] font-light transition-colors"
+              >
+                (+359) 73 891 041
+              </a>
+            </div>
+            
             <div className="flex items-center space-x-2 text-[#6B6B6B] text-sm font-light">
               <span>Made with</span>
               <Heart className="text-red-400 fill-red-400" size={14} />

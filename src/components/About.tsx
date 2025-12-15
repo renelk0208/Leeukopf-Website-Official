@@ -14,7 +14,7 @@ export default function About() {
         </div>
 
         {/* Responsive content card */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-12 shadow-sm">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-12 shadow-sm mb-8 sm:mb-12">
           <div className="max-w-4xl mx-auto">
             <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-4 sm:mb-6">
               Our Mission
@@ -50,6 +50,134 @@ export default function About() {
             <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
               We love seeing ideas turn into brands — and we'd love to help you build yours with skill, integrity, and genuine support from start to finish.
             </p>
+          </div>
+        </div>
+
+        {/* Why Choose Leeukopf Section */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-12 shadow-sm mb-8 sm:mb-12">
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-6 sm:mb-8 text-center">
+              Why Choose Leeukopf Laboratories?
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                    🏭 State-of-the-Art Manufacturing Facility
+                  </h4>
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                    Our certified factory in Blagoevgrad, Bulgaria, uses cutting-edge technology and adheres to the highest international quality standards. 
+                    We manufacture premium gel polish, builder gels, and professional nail care products with precision and consistency.
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                    🎨 3000+ Premium Colors
+                  </h4>
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                    Choose from our extensive collection of over 3000 vibrant gel polish colors. From timeless classics to trendy seasonal shades, 
+                    our diverse palette ensures you'll find the perfect colors to represent your brand and delight your customers.
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                    ✅ HEMA-Free Formulations
+                  </h4>
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                    We prioritize safety and innovation with our HEMA-free gel polish formulations. Our products are gentler on nails while 
+                    maintaining professional-grade quality, long-lasting wear, and brilliant shine that nail technicians and clients love.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                    🌍 Global Distribution Network
+                  </h4>
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                    We partner with distributors and private label clients worldwide. Our experienced logistics team ensures reliable delivery, 
+                    proper documentation, and seamless international shipping to help your brand succeed in any market.
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                    📜 Certified & Compliant
+                  </h4>
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                    All our products meet EU cosmetics regulations and international safety standards. We provide complete documentation, 
+                    safety assessments, and certificates to ensure your brand complies with regulations in your target markets.
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                    🤝 Personalized Consultation & Support
+                  </h4>
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                    Unlike large manufacturers, we offer dedicated one-on-one support. From product selection to packaging design and market strategy, 
+                    our expert consultants guide you through every step of launching and growing your private label nail care brand.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Our Services Section */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-12 shadow-sm">
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-6 sm:mb-8 text-center">
+              Comprehensive Private Label Services
+            </h3>
+            
+            <div className="space-y-6">
+              <div className="border-l-4 border-blue-800 pl-4 sm:pl-6">
+                <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                  Private Label Gel Polish Manufacturing
+                </h4>
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                  Create your own branded gel polish line with our comprehensive private label service. We offer custom color development, 
+                  bottle selection, label design support, and complete production management. Whether you need 100 bottles or 100,000, 
+                  we scale to meet your business needs.
+                </p>
+              </div>
+              
+              <div className="border-l-4 border-blue-800 pl-4 sm:pl-6">
+                <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                  Builder Gel & Professional Systems
+                </h4>
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                  Expand your product line with professional builder gels, rubber bases, top coats, and complete gel systems. 
+                  Our builder gels offer superior strength and flexibility, perfect for nail extensions and overlays. All products 
+                  are formulated for professional salon use with excellent workability and curing properties.
+                </p>
+              </div>
+              
+              <div className="border-l-4 border-blue-800 pl-4 sm:pl-6">
+                <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                  Custom Packaging & Branding
+                </h4>
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                  Make your brand stand out with custom packaging solutions. We offer various bottle styles, cap options, and label printing. 
+                  Our design team can help create professional labels that reflect your brand identity and appeal to your target market.
+                </p>
+              </div>
+              
+              <div className="border-l-4 border-blue-800 pl-4 sm:pl-6">
+                <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                  Quality Assurance & Testing
+                </h4>
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
+                  Every batch undergoes rigorous quality control testing to ensure consistency in color, viscosity, curing time, and wear. 
+                  We provide full documentation including safety data sheets, ingredient lists, and certificates of analysis for complete transparency and compliance.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
