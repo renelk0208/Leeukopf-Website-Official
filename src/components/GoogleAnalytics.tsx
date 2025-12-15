@@ -93,8 +93,8 @@ function initGA(measurementId: string) {
 
   // Initialize gtag function
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments);
+  window.gtag = function gtag(...args: unknown[]) {
+    window.dataLayer.push(args);
   };
 
   // Configure GA4
@@ -126,7 +126,7 @@ function trackPageView(page: string) {
 // Type declarations for Google Analytics
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
+    dataLayer: unknown[];
+    gtag: (...args: unknown[]) => void;
   }
 }
