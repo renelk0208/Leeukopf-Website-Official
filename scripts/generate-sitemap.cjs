@@ -8,7 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DOMAIN = 'https://www.leeukopf.com';
+const DOMAIN = 'https://leeukopf.com';
 
 // All pages on the website
 const pages = [
