@@ -101,7 +101,7 @@ function initGA(measurementId: string) {
   window.gtag('js', new Date());
   window.gtag('config', measurementId, {
     send_page_view: true,
-    anonymize_ip: true, // GDPR compliance
+    // Note: IP anonymization is automatic in GA4 (no longer needs to be configured)
   });
 
   console.log('[GA] Initialized with measurement ID:', measurementId);
@@ -111,8 +111,8 @@ function initGA(measurementId: string) {
  * Track a page view
  */
 function trackPageView(page: string) {
-  if (!window.gtag) {
-    console.warn('[GA] gtag not initialized');
+  if (typeof window.gtag !== 'function' || !window.dataLayer) {
+    console.warn('[GA] gtag not properly initialized');
     return;
   }
 

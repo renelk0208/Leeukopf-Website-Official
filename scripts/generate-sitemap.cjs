@@ -80,13 +80,29 @@ const pages = [
 function generateSitemap() {
   const now = new Date().toISOString();
   
+  // For better SEO, use different lastmod dates based on page type
+  // Static pages: use less frequent updates
+  // Dynamic pages: use more recent dates
+  const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const lastMonth = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
   
   pages.forEach(page => {
+    // Use different lastmod based on changefreq to avoid unnecessary re-crawling
+    let lastmod = now;
+    if (page.changefreq === 'yearly') {
+      lastmod = lastMonth;
+    } else if (page.changefreq === 'monthly') {
+      lastmod = lastMonth;
+    } else if (page.changefreq === 'weekly') {
+      lastmod = lastWeek;
+    }
+    
     xml += '  <url>\n';
     xml += `    <loc>${DOMAIN}${page.url}</loc>\n`;
-    xml += `    <lastmod>${now}</lastmod>\n`;
+    xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
     xml += `    <priority>${page.priority}</priority>\n`;
     xml += '  </url>\n';
