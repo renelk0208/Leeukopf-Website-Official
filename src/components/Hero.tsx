@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
-import ProductCategoryCard3D from './products/ProductCategoryCard3D';
 
 export default function Hero() {
   const navigate = useNavigate();
+
+  // Common styling for category links
+  const categoryLinkClass = "group block w-full max-w-xs mx-auto bg-white/90 backdrop-blur-sm rounded-lg px-6 py-6 shadow-md hover:shadow-xl hover:bg-white transition-all duration-300 border-2 border-transparent hover:border-primary";
 
   return (
     <section id="home" className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
@@ -66,29 +68,41 @@ export default function Hero() {
             </button>
           </div>
 
-          {/* Product Category Cards with 3D effects */}
+          {/* Product Category Links - Text Only */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 px-2 sm:px-0">
-            <ProductCategoryCard3D
-              title="Gel Polish"
-              subtitle="3000+ Colours - Premium gel polish collection"
-              imageSrc="/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg"
+            <a
               href="/products/gel-polish"
-              alt="Gel Polish - 3000+ premium colours"
-            />
-            <ProductCategoryCard3D
-              title="Builder Gel Systems"
-              subtitle="Professional strength & durability"
-              imageSrc="/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg"
+              className={categoryLinkClass}
+            >
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                2000+ Colours to choose from
+              </h3>
+              <p className="text-base sm:text-lg font-semibold text-primary">
+                Gel Polish
+              </p>
+            </a>
+            <a
               href="/products/builder-and-structure-gels"
-              alt="Builder Gel Systems - Professional strength"
-            />
-            <ProductCategoryCard3D
-              title="Nail Art & Consumables"
-              subtitle="Complete product range for creative services"
-              imageSrc="/img/products/nail-art/Nail Art/nail-art-category-card-imge.png"
+              className={categoryLinkClass}
+            >
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                Professional Strength & Durability
+              </h3>
+              <p className="text-base sm:text-lg font-semibold text-primary">
+                Builder Gel Systems
+              </p>
+            </a>
+            <a
               href="/products/nail-art"
-              alt="Nail Art & Consumables - Complete range"
-            />
+              className={categoryLinkClass}
+            >
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                Complete Product Range
+              </h3>
+              <p className="text-base sm:text-lg font-semibold text-primary">
+                Nail Art
+              </p>
+            </a>
           </div>
         </div>
       </div>
