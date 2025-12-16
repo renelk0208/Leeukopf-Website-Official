@@ -407,3 +407,6 @@ For questions or issues with the Meta Pixel implementation:
 - Verify environment variable is set correctly in Netlify
 - Ensure deployment was triggered after adding environment variable
 - Check Meta Events Manager for incoming events
+
+---
+*Last updated: December 2025*
