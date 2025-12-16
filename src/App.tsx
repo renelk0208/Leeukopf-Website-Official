@@ -34,6 +34,7 @@ import CategoryGridTestPage from './pages/products/CategoryGridTestPage';
 import ThreePhasePage from './pages/products/builder-gels/ThreePhasePage';
 import ThreeInOnePage from './pages/products/builder-gels/ThreeInOnePage';
 import PremiumFiberGlassPage from './pages/products/builder-gels/PremiumFiberGlassPage';
+import BiabBuilderInABottlePage from './pages/products/builder-gels/BiabBuilderInABottlePage';
 import LiquidPolygelPage from './pages/products/LiquidPolygelPage';
 
 // Top & Bases Subcategories
@@ -92,6 +93,7 @@ function App() {
         <Route path="/products/builder-and-structure-gels/3-in-1" element={<ThreeInOnePage />} />
         <Route path="/products/builder-and-structure-gels/premium-fiber-glass" element={<PremiumFiberGlassPage />} />
         <Route path="/products/builder-and-structure-gels/no-heat-spike-builder-gel" element={<NoHeatSpikeBuilderGelPage />} />
+        <Route path="/products/builder-and-structure-gels/biab-builder-in-a-bottle" element={<BiabBuilderInABottlePage />} />
         
         {/* Top & Bases */}
         <Route path="/products/top-and-bases" element={<TopAndBasesPage />} />

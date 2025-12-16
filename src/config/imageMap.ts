@@ -62,6 +62,7 @@ export const categoryHero: Record<string, string> = {
   'classic-base': '/img/products/tops-and-bases/Bases/base-coat-category-card-image.png',
   'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-category-card-image.png',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
+  'biab-builder-in-a-bottle': '/img/products/builder-systems/BIAB builder-in-a-bottle/biab-builder-in-a-bottle-category-card.jpg',
   
   // Primers & Liquids
   'primers-liquids': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
@@ -229,6 +230,9 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/Liquid Polygel/liquid-polygel (2).jpg',
       '/img/products/Liquid Polygel/liquid-polygel (3).jpg',
       '/img/products/Liquid Polygel/liquid-polygel (4).jpg',
+    ],
+    'biab-builder-in-a-bottle': [
+      '/img/products/builder-systems/BIAB builder-in-a-bottle/biab-builder-in-a-bottle.jpg',
     ],
   },
   'tops-and-bases': {
