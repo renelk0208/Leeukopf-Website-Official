@@ -1,5 +1,6 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { Resend } from 'resend';
+import { google } from 'googleapis';
 
 // Configure the function path
 export const config = {
@@ -102,6 +103,83 @@ function generateAutoReplyBody(): string {
 `;
 }
 
+// Append data to Google Sheets
+async function appendToGoogleSheets(formData: FormData): Promise<void> {
+  const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+  const spreadsheetId = process.env.GOOGLE_SHEET_ID;
+  const sheetTab = process.env.GOOGLE_SHEET_TAB || 'Raw_Leads';
+
+  if (!serviceAccountEmail || !privateKey || !spreadsheetId) {
+    console.error('Missing Google Sheets configuration');
+    throw new Error('Google Sheets configuration is incomplete');
+  }
+
+  // Replace \\n with actual newlines in the private key
+  const formattedPrivateKey = privateKey.replace(/\\n/g, '\n');
+
+  // Authenticate with Google Sheets API
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: serviceAccountEmail,
+      private_key: formattedPrivateKey,
+    },
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
+
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  // Format data in exact column order:
+  // Timestamp, Source, Page, company, contact, role, email, phone, country, website, 
+  // instagram, businessType, interests (comma separated), monthlyVolume, vatEori, 
+  // billingAddress, shippingAddress, language, notes, gdprConsent (Yes/No), Lead Status (New)
+  const timestamp = new Date().toISOString();
+  const source = 'Website Form';
+  const page = 'Client Registration';
+  const gdprConsentText = 'Yes'; // Form requires consent to submit
+  const leadStatus = 'New';
+  const interestsText = formData.interests.join(', ');
+
+  const rowData = [
+    timestamp,
+    source,
+    page,
+    formData.company || '',
+    formData.contact || '',
+    formData.role || '',
+    formData.email || '',
+    formData.phone || '',
+    formData.country || '',
+    formData.website || '',
+    formData.instagram || '',
+    formData.businessType || '',
+    interestsText,
+    formData.monthlyVolume || '',
+    formData.vatEori || '',
+    formData.billingAddress || '',
+    formData.shippingAddress || '',
+    formData.language || '',
+    formData.notes || '',
+    gdprConsentText,
+    leadStatus,
+  ];
+
+  try {
+    await sheets.spreadsheets.values.append({
+      spreadsheetId,
+      range: `${sheetTab}!A:U`, // Columns A through U (21 columns)
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [rowData],
+      },
+    });
+    console.log('Successfully appended data to Google Sheets');
+  } catch (error) {
+    console.error('Error appending to Google Sheets:', error);
+    throw error;
+  }
+}
+
 const handler: Handler = async (event: HandlerEvent) => {
   const requestOrigin = event.headers.origin || event.headers.Origin;
   
@@ -199,6 +277,24 @@ const handler: Handler = async (event: HandlerEvent) => {
     });
     console.log('Auto-reply email sent successfully:', autoReplyResult.id);
 
+    // Append data to Google Sheets
+    console.log('Appending data to Google Sheets...');
+    try {
+      await appendToGoogleSheets(formData);
+    } catch (sheetsError) {
+      console.error('Failed to append to Google Sheets:', sheetsError);
+      // Continue execution - email was sent successfully
+      // We'll still return success but log the Sheets error
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ 
+          success: true,
+          warning: 'Email sent but failed to log to spreadsheet'
+        }),
+      };
+    }
+
     return {
       statusCode: 200,
       headers,
@@ -216,6 +312,7 @@ const handler: Handler = async (event: HandlerEvent) => {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
+        success: false,
         error: 'Failed to send emails',
         details: err instanceof Error ? err.message : 'Unknown error'
       }),
