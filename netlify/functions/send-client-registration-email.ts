@@ -109,6 +109,9 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   const privateKey = process.env.GOOGLE_PRIVATE_KEY;
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
   const sheetTab = process.env.GOOGLE_SHEET_TAB || 'Raw_Leads';
+  
+  // Column range for 21 columns (A through U)
+  const COLUMN_RANGE = 'A:U';
 
   if (!serviceAccountEmail || !privateKey || !spreadsheetId) {
     console.error('Missing Google Sheets configuration');
@@ -138,7 +141,7 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   const page = 'Client Registration';
   const gdprConsentText = 'Yes'; // Form requires consent to submit
   const leadStatus = 'New';
-  const interestsText = formData.interests.join(', ');
+  const interestsText = (formData.interests || []).join(', ');
 
   const rowData = [
     timestamp,
@@ -167,7 +170,7 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   try {
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${sheetTab}!A:U`, // Columns A through U (21 columns)
+      range: `${sheetTab}!${COLUMN_RANGE}`,
       valueInputOption: 'RAW',
       requestBody: {
         values: [rowData],
