@@ -173,7 +173,7 @@ export default function AboutPage() {
       {/* Pigment Mixing Videos Section */}
       <VideoGallery
         videos={pigmentMixingVideos}
-        title="Pigment Mixing Process"
+        title="See Pigment and Colour Being Mixed"
         subtitle="Watch our expert technicians create custom gel polish colors through precise pigment blending"
       />
     </PageTemplate>
