@@ -49,6 +49,13 @@ export default function BuilderAndStructureGelsPage() {
       description: 'Advanced formula that minimizes heat generation during curing — HEMA-free and TPO-free.',
       image: categoryHero['no-heat-spike-builder-gel'],
     },
+    {
+      key: 'biabBuilderInABottle',
+      title: 'BIAB (Builder in a Bottle)',
+      path: '/products/builder-and-structure-gels/biab-builder-in-a-bottle',
+      description: 'Convenient brush-on building system for quick overlays and natural nail reinforcement — HEMA-free and TPO-free.',
+      image: categoryHero['biab-builder-in-a-bottle'],
+    },
   ].filter(sub => isSubcategoryEnabled('builderGels', sub.key));
 
   return (

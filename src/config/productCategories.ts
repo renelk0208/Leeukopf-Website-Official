@@ -31,6 +31,7 @@ export const enabledSubcategories = {
     polygelAcrygel: true, // Enabled - Polygel/AcryGel
     liquidPolygel: true, // Enabled - Liquid Polygel
     noHeatSpikeBuilderGel: true, // Enabled - No Heat Spike Builder Gel
+    biabBuilderInABottle: true, // Enabled - BIAB Builder in a Bottle
   },
   
   // Top & Bases subcategories

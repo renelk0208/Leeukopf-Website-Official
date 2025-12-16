@@ -41,6 +41,7 @@ const pages = [
   { url: '/products/builder-and-structure-gels/3-in-1', priority: '0.7', changefreq: 'monthly' },
   { url: '/products/builder-and-structure-gels/premium-fiber-glass', priority: '0.7', changefreq: 'monthly' },
   { url: '/products/builder-and-structure-gels/no-heat-spike-builder-gel', priority: '0.7', changefreq: 'monthly' },
+  { url: '/products/builder-and-structure-gels/biab-builder-in-a-bottle', priority: '0.7', changefreq: 'monthly' },
   
   // Top & Bases Subcategories
   { url: '/products/top-and-bases/top-coats', priority: '0.7', changefreq: 'monthly' },
