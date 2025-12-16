@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/update-version.cjs",
+    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "check:images": "node scripts/check-images.js",
     "apply:image-fixes": "node scripts/apply-image-fixes.js",
-    "audit:images": "node scripts/audit-images.js"
+    "audit:images": "node scripts/audit-images.js",
+    "generate:sitemap": "node scripts/generate-sitemap.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",

@@ -5,6 +5,9 @@ import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 export default function Hero() {
   const navigate = useNavigate();
 
+  // Common styling for category links
+  const categoryLinkClass = "group block w-full max-w-xs mx-auto bg-white/90 backdrop-blur-sm rounded-lg px-6 py-6 shadow-md hover:shadow-xl hover:bg-white transition-all duration-300 border-2 border-transparent hover:border-primary";
+
   return (
     <section id="home" className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Hero background image */}
@@ -35,6 +38,11 @@ export default function Hero() {
             />
           </div>
 
+          {/* H1 - Main keyword-rich heading for SEO */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 max-w-4xl mx-auto leading-tight px-2 bg-white/90 rounded-lg py-4 inline-block">
+            Private Label Gel Polish Manufacturer
+          </h1>
+
           {/* Responsive typography with clamp-like approach */}
           <p className="text-lg sm:text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto leading-relaxed font-medium px-2 bg-white/90 rounded-lg py-3 inline-block">
             Premium Gel Polish Manufacturing & Private Label Excellence
@@ -60,23 +68,41 @@ export default function Hero() {
             </button>
           </div>
 
-          {/* Responsive stats grid */}
+          {/* Product Category Links - Text Only */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 px-2 sm:px-0">
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">3000+</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">Colours</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Premium gel polish collection</div>
-            </div>
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">Builder</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">Gel Systems</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Professional strength & durability</div>
-            </div>
-            <div className="p-4 sm:p-6 bg-white rounded-xl border-2 border-primary-100 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1">
-              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2 tracking-tight">Nail Art</div>
-              <div className="text-gray-800 font-semibold text-sm sm:text-base">& Consumables</div>
-              <div className="text-gray-600 text-xs sm:text-sm mt-1 font-light">Complete product range</div>
-            </div>
+            <a
+              href="/products/gel-polish"
+              className={categoryLinkClass}
+            >
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                2000+ Colours to choose from
+              </h3>
+              <p className="text-base sm:text-lg font-semibold text-primary">
+                Gel Polish
+              </p>
+            </a>
+            <a
+              href="/products/builder-and-structure-gels"
+              className={categoryLinkClass}
+            >
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                Professional Strength & Durability
+              </h3>
+              <p className="text-base sm:text-lg font-semibold text-primary">
+                Builder Gel Systems
+              </p>
+            </a>
+            <a
+              href="/products/nail-art"
+              className={categoryLinkClass}
+            >
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                Complete Product Range
+              </h3>
+              <p className="text-base sm:text-lg font-semibold text-primary">
+                Nail Art
+              </p>
+            </a>
           </div>
         </div>
       </div>
