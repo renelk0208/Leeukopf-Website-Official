@@ -2,9 +2,27 @@ import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
 import WhyChooseLeeukopf from '../components/WhyChooseLeeukopf';
 import OptimizedImage from '../components/OptimizedImage';
+import VideoGallery from '../components/VideoGallery';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function AboutPage() {
+  // Pigment mixing videos
+  const pigmentMixingVideos = [
+    { src: '/videos/pigment-mixing/candy-pink-pigment-mixing.MP4', title: 'Candy Pink Pigment Mixing' },
+    { src: '/videos/pigment-mixing/chocolate-pink-pigment-mixing.MOV', title: 'Chocolate Pink Pigment Mixing' },
+    { src: '/videos/pigment-mixing/electric-blue-pigment-mixing.MOV', title: 'Electric Blue Pigment Mixing' },
+    { src: '/videos/pigment-mixing/fuchsia-pigment-mixing.MOV', title: 'Fuchsia Pigment Mixing' },
+    { src: '/videos/pigment-mixing/lime-green-pigment-mixing.MOV', title: 'Lime Green Pigment Mixing' },
+    { src: '/videos/pigment-mixing/orange-pigment-mixing.MOV', title: 'Orange Pigment Mixing' },
+    { src: '/videos/pigment-mixing/peach-pigment-mixing.MOV', title: 'Peach Pigment Mixing' },
+    { src: '/videos/pigment-mixing/purple-pigment-mixing.MOV', title: 'Purple Pigment Mixing' },
+    { src: '/videos/pigment-mixing/red-black-pigment-mixing.MP4', title: 'Red Black Pigment Mixing' },
+    { src: '/videos/pigment-mixing/red-yellow-orange-pigment-mixing.MP4', title: 'Red Yellow Orange Pigment Mixing' },
+    { src: '/videos/pigment-mixing/royal-purple-pigment-mixing.MOV', title: 'Royal Purple Pigment Mixing' },
+    { src: '/videos/pigment-mixing/white-pigment-mixing.MOV', title: 'White Pigment Mixing' },
+    { src: '/videos/pigment-mixing/white-shimmer-pigment-mixing.MOV', title: 'White Shimmer Pigment Mixing' },
+  ];
+
   return (
     <PageTemplate
       title="About Leeukopf Laboratories"
@@ -151,6 +169,13 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
+      {/* Pigment Mixing Videos Section */}
+      <VideoGallery
+        videos={pigmentMixingVideos}
+        title="Pigment Mixing Process"
+        subtitle="Watch our expert technicians create custom gel polish colors through precise pigment blending"
+      />
     </PageTemplate>
   );
 }
