@@ -252,7 +252,9 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
 
     if (!appendResponse.ok) {
       console.error('Failed to append to Google Sheets:', appendResponse.status);
-      throw new Error(`Failed to append to Google Sheets: ${appendResponse.status}`);
+      const errorBody = await appendResponse.text();
+      console.error('Sheets API error body:', errorBody);
+      throw new Error(`Failed to append to Google Sheets: ${appendResponse.status} - ${errorBody}`);
     }
 
     console.log('Successfully appended data to Google Sheets');
