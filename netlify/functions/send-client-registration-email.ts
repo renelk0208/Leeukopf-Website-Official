@@ -103,6 +103,9 @@ function generateAutoReplyBody(): string {
 `;
 }
 
+// JWT expiration time in seconds (1 hour)
+const JWT_EXPIRATION_SECONDS = 3600;
+
 // Get OAuth access token using jose for JWT signing
 async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: string): Promise<string> {
   // Replace \\n with actual newlines in the private key
@@ -121,7 +124,7 @@ async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: str
     .setSubject(serviceAccountEmail)
     .setAudience('https://oauth2.googleapis.com/token')
     .setIssuedAt(now)
-    .setExpirationTime(now + 3600)
+    .setExpirationTime(now + JWT_EXPIRATION_SECONDS)
     .sign(privateKeyObj);
 
   // Exchange JWT for access token
@@ -137,8 +140,8 @@ async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: str
   });
 
   if (!tokenResponse.ok) {
-    const errorText = await tokenResponse.text();
-    throw new Error(`Failed to get access token: ${tokenResponse.status} ${errorText}`);
+    console.error('Failed to get OAuth access token:', tokenResponse.status);
+    throw new Error(`Failed to get access token: ${tokenResponse.status}`);
   }
 
   const tokenData = await tokenResponse.json();
@@ -217,8 +220,8 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
     );
 
     if (!appendResponse.ok) {
-      const errorText = await appendResponse.text();
-      throw new Error(`Failed to append to Google Sheets: ${appendResponse.status} ${errorText}`);
+      console.error('Failed to append to Google Sheets:', appendResponse.status);
+      throw new Error(`Failed to append to Google Sheets: ${appendResponse.status}`);
     }
 
     console.log('Successfully appended data to Google Sheets');
