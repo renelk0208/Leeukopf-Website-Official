@@ -232,6 +232,8 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
 }
 
 const handler: Handler = async (event: HandlerEvent) => {
+  console.log('FUNCTION VERSION: jose-auth-v1');
+  
   const requestOrigin = event.headers.origin || event.headers.Origin;
   
   const headers = {
