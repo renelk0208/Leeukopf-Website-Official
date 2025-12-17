@@ -1,6 +1,7 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { Resend } from 'resend';
 import * as jose from 'jose';
+import { createPrivateKey } from 'crypto';
 
 // Force deployment version marker
 const __force = 'prod-force-upload-2025-12-17-1016';
@@ -111,8 +112,50 @@ const JWT_EXPIRATION_SECONDS = 3600;
 
 // Get OAuth access token using jose for JWT signing
 async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: string): Promise<string> {
-  // Replace \\n with actual newlines in the private key
-  const formattedPrivateKey = privateKey.replace(/\\n/g, '\n');
+  // Normalize the private key:
+  // 1. Trim whitespace
+  // 2. Replace escaped newlines (\n) with actual newlines
+  // 3. Strip wrapping quotes if present
+  let normalizedKey = privateKey.trim();
+  normalizedKey = normalizedKey.replace(/\\n/g, '\n');
+  
+  // Remove wrapping quotes (single or double) if present
+  if ((normalizedKey.startsWith('"') && normalizedKey.endsWith('"')) ||
+      (normalizedKey.startsWith("'") && normalizedKey.endsWith("'"))) {
+    normalizedKey = normalizedKey.slice(1, -1);
+  }
+
+  // Detect key type and convert if necessary
+  let formattedPrivateKey: string;
+  let isPkcs1 = false;
+  
+  if (normalizedKey.includes('BEGIN RSA PRIVATE KEY')) {
+    // PKCS#1 format - needs conversion to PKCS#8
+    isPkcs1 = true;
+    console.log('Google key format: PKCS#1 (converting to PKCS#8)');
+    
+    try {
+      const pkcs8 = createPrivateKey({
+        key: normalizedKey,
+        format: 'pem'
+      }).export({
+        format: 'pem',
+        type: 'pkcs8'
+      }).toString();
+      
+      formattedPrivateKey = pkcs8;
+    } catch (error) {
+      console.error('Failed to convert PKCS#1 to PKCS#8:', error);
+      throw new Error('Failed to convert PKCS#1 private key to PKCS#8 format');
+    }
+  } else if (normalizedKey.includes('BEGIN PRIVATE KEY')) {
+    // PKCS#8 format - use as-is
+    console.log('Google key format: PKCS#8');
+    formattedPrivateKey = normalizedKey;
+  } else {
+    // Invalid format
+    throw new Error('GOOGLE_PRIVATE_KEY must be PEM formatted with BEGIN PRIVATE KEY (PKCS#8) or BEGIN RSA PRIVATE KEY (PKCS#1).');
+  }
 
   // Import the private key for RS256 signing
   const privateKeyObj = await jose.importPKCS8(formattedPrivateKey, 'RS256');
