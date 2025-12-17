@@ -1,6 +1,13 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { Resend } from 'resend';
 import * as jose from 'jose';
+import { webcrypto } from 'crypto';
+
+// Polyfill global crypto for jose on Netlify
+if (!globalThis.crypto) {
+  // @ts-ignore
+  globalThis.crypto = webcrypto as any;
+}
 
 // Force deployment version marker
 const __force = 'prod-force-upload-2025-12-17-1016';
