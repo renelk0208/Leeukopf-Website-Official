@@ -2,6 +2,9 @@ import type { Handler, HandlerEvent } from '@netlify/functions';
 import { Resend } from 'resend';
 import * as jose from 'jose';
 
+// Force deployment version marker
+const __force = 'prod-force-upload-2025-12-17-1016';
+
 // Configure the function path
 export const config = {
   path: '/api/client-registration-email'
@@ -150,7 +153,7 @@ async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: str
 
 // Append data to Google Sheets using jose for authentication
 async function appendToGoogleSheets(formData: FormData): Promise<void> {
-  console.log('FUNCTION VERSION: jose-auth-v1');
+  console.log('FUNCTION VERSION: prod-force-upload-2025-12-17-1016');
   
   const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const privateKey = process.env.GOOGLE_PRIVATE_KEY;
@@ -232,7 +235,7 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
 }
 
 const handler: Handler = async (event: HandlerEvent) => {
-  console.log('FUNCTION VERSION: jose-auth-v1');
+  console.log('FUNCTION VERSION: prod-force-upload-2025-12-17-1016');
   
   const requestOrigin = event.headers.origin || event.headers.Origin;
   
