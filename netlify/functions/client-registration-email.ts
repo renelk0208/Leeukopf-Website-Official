@@ -111,11 +111,32 @@ const JWT_EXPIRATION_SECONDS = 3600;
 
 // Get OAuth access token using jose for JWT signing
 async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: string): Promise<string> {
-  // Replace \\n with actual newlines in the private key
-  const formattedPrivateKey = privateKey.replace(/\\n/g, '\n');
-
+  // Normalize the private key exactly as specified
+  const rawKey = privateKey || "";
+  let key = rawKey.trim();
+  
+  // Remove wrapping quotes if present
+  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
+    key = key.slice(1, -1);
+  }
+  
+  // Restore newlines if stored with escaped \n
+  key = key.replace(/\\n/g, "\n");
+  
+  // Also handle accidental \r\n sequences
+  key = key.replace(/\\r\\n/g, "\n");
+  
+  // Strict validation before importPKCS8
+  if (!key.includes("-----BEGIN PRIVATE KEY-----") || !key.includes("-----END PRIVATE KEY-----")) {
+    throw new Error("GOOGLE_PRIVATE_KEY is not a valid PKCS#8 PEM. Check header/footer and newline formatting.");
+  }
+  
+  // Safe debug logs (no secrets)
+  console.log("GOOGLE_PRIVATE_KEY length:", key.length);
+  console.log("GOOGLE_PRIVATE_KEY header ok:", key.startsWith("-----BEGIN PRIVATE KEY-----"));
+  
   // Import the private key for RS256 signing
-  const privateKeyObj = await jose.importPKCS8(formattedPrivateKey, 'RS256');
+  const privateKeyObj = await jose.importPKCS8(key, 'RS256');
 
   // Create JWT assertion
   const now = Math.floor(Date.now() / 1000);
