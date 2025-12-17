@@ -1,6 +1,6 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { Resend } from 'resend';
-import { google } from 'googleapis';
+import * as jose from 'jose';
 
 // Configure the function path
 export const config = {
@@ -103,8 +103,52 @@ function generateAutoReplyBody(): string {
 `;
 }
 
-// Append data to Google Sheets
+// Get OAuth access token using jose for JWT signing
+async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: string): Promise<string> {
+  // Replace \\n with actual newlines in the private key
+  const formattedPrivateKey = privateKey.replace(/\\n/g, '\n');
+
+  // Import the private key for RS256 signing
+  const privateKeyObj = await jose.importPKCS8(formattedPrivateKey, 'RS256');
+
+  // Create JWT assertion
+  const now = Math.floor(Date.now() / 1000);
+  const jwt = await new jose.SignJWT({
+    scope: 'https://www.googleapis.com/auth/spreadsheets',
+  })
+    .setProtectedHeader({ alg: 'RS256', typ: 'JWT' })
+    .setIssuer(serviceAccountEmail)
+    .setSubject(serviceAccountEmail)
+    .setAudience('https://oauth2.googleapis.com/token')
+    .setIssuedAt(now)
+    .setExpirationTime(now + 3600)
+    .sign(privateKeyObj);
+
+  // Exchange JWT for access token
+  const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt,
+    }),
+  });
+
+  if (!tokenResponse.ok) {
+    const errorText = await tokenResponse.text();
+    throw new Error(`Failed to get access token: ${tokenResponse.status} ${errorText}`);
+  }
+
+  const tokenData = await tokenResponse.json();
+  return tokenData.access_token;
+}
+
+// Append data to Google Sheets using jose for authentication
 async function appendToGoogleSheets(formData: FormData): Promise<void> {
+  console.log('FUNCTION VERSION: jose-auth-v1');
+  
   const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const privateKey = process.env.GOOGLE_PRIVATE_KEY;
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
@@ -118,19 +162,8 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
     throw new Error('Google Sheets configuration is incomplete');
   }
 
-  // Replace \\n with actual newlines in the private key
-  const formattedPrivateKey = privateKey.replace(/\\n/g, '\n');
-
-  // Authenticate with Google Sheets API
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      client_email: serviceAccountEmail,
-      private_key: formattedPrivateKey,
-    },
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
-
-  const sheets = google.sheets({ version: 'v4', auth });
+  // Get OAuth access token using jose
+  const accessToken = await getGoogleAccessToken(serviceAccountEmail, privateKey);
 
   // Format data in exact column order:
   // Timestamp, Source, Page, company, contact, role, email, phone, country, website, 
@@ -168,14 +201,26 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   ];
 
   try {
-    await sheets.spreadsheets.values.append({
-      spreadsheetId,
-      range: `${sheetTab}!${COLUMN_RANGE}`,
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: [rowData],
-      },
-    });
+    // Call Google Sheets API directly using fetch with the access token
+    const appendResponse = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetTab}!${COLUMN_RANGE}:append?valueInputOption=RAW`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          values: [rowData],
+        }),
+      }
+    );
+
+    if (!appendResponse.ok) {
+      const errorText = await appendResponse.text();
+      throw new Error(`Failed to append to Google Sheets: ${appendResponse.status} ${errorText}`);
+    }
+
     console.log('Successfully appended data to Google Sheets');
   } catch (error) {
     console.error('Error appending to Google Sheets:', error);
