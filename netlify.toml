@@ -20,6 +20,20 @@
   from = "/api/client-registration-email"
   to = "/.netlify/functions/client-registration-email"
   status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/client-registration-email/*"
+  to = "/.netlify/functions/client-registration-email/:splat"
+  status = 200
+  force = true
+
+# Backward compatibility for old function URL
+[[redirects]]
+  from = "/.netlify/functions/send-client-registration-email"
+  to = "/.netlify/functions/client-registration-email"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/api/instagram"
