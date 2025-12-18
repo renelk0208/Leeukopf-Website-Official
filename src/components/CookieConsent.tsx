@@ -99,7 +99,7 @@ export const CookieConsent: React.FC = () => {
     <>
       {/* Centered Modal with Backdrop */}
       {isVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" style={{ overflow: 'hidden' }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-hidden">
           <div className="mx-4 max-w-2xl w-full rounded-2xl bg-white p-6 md:p-8 shadow-2xl border border-primary-100">
             <div className="space-y-4">
               <div className="space-y-2">
