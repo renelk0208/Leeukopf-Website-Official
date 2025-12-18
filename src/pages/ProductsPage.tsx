@@ -4,8 +4,11 @@ import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
 import { isCategoryEnabled } from '../config/productCategories';
 import ProductCategoryCard3D from '../components/products/ProductCategoryCard3D';
+import { getOurProductsVideoSrc } from '../config/seasonal';
 
 export default function ProductsPage() {
+  const videoSrc = getOurProductsVideoSrc();
+  
   // Product range sections with their English content
   const productRanges = [
     {
@@ -103,21 +106,23 @@ export default function ProductsPage() {
         </div>
 
         {/* Seasonal Hero Video - BEFORE "Explore our products" section */}
-        <section className="w-full mb-10 sm:mb-12 md:mb-16">
-          <div className="relative w-full overflow-hidden rounded-2xl bg-black/5 aspect-[16/9] sm:aspect-[21/9]">
-            <video
-              className="absolute inset-0 h-full w-full object-cover"
-              src="/videos/seasonal/our-products__christmas__2025.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              controls={false}
-              disablePictureInPicture
-            />
-          </div>
-        </section>
+        {videoSrc && (
+          <section className="w-full mb-10 sm:mb-12 md:mb-16">
+            <div className="relative w-full overflow-hidden rounded-2xl bg-black/5 aspect-[16/9] sm:aspect-[21/9]">
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src={videoSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                controls={false}
+                disablePictureInPicture
+              />
+            </div>
+          </section>
+        )}
 
         {/* Product Categories Section */}
         <div className="mb-10 sm:mb-12 md:mb-16">
