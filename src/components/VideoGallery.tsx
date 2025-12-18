@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { Play } from 'lucide-react';
-import VideoModal from './VideoModal';
+import { useEffect, useRef } from 'react';
 
 interface Video {
   src: string;
@@ -15,15 +13,24 @@ interface VideoGalleryProps {
 }
 
 export default function VideoGallery({ videos, title, subtitle }: VideoGalleryProps) {
-  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  const handleVideoClick = (video: Video) => {
-    setSelectedVideo(video);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedVideo(null);
-  };
+  useEffect(() => {
+    // Attempt to autoplay all videos on mount
+    // This ensures videos start playing even if browser policies delay autoplay
+    videoRefs.current.forEach((video) => {
+      if (video) {
+        video.play().catch(() => {
+          // Silently catch autoplay failures without impacting UX
+          // Common scenarios:
+          // - Browser autoplay policy requires user interaction first
+          // - Video not yet loaded enough to play
+          // - User has disabled autoplay in browser settings
+          // The native autoplay attribute will retry once conditions are met
+        });
+      }
+    });
+  }, []);
 
   return (
     <div className="mb-10 sm:mb-12 md:mb-16">
@@ -42,33 +49,24 @@ export default function VideoGallery({ videos, title, subtitle }: VideoGalleryPr
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         {videos.map((video, index) => (
-          <button
+          <div
             key={index}
-            onClick={() => handleVideoClick(video)}
-            className="group relative aspect-video bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer"
-            aria-label={`Play video: ${video.title}`}
+            className="relative aspect-video bg-gray-900 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
           >
-            {video.thumbnail ? (
-              <img
-                src={video.thumbnail}
-                alt={video.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                <div className="text-center">
-                  <Play size={48} className="mx-auto mb-2 text-white opacity-80" aria-hidden="true" />
-                  <p className="text-white text-sm font-light px-4">{video.title}</p>
-                </div>
-              </div>
-            )}
-            
-            {/* Play button overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
-              <div className="bg-white rounded-full p-3 sm:p-4 opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
-                <Play size={24} className="text-gray-900" aria-hidden="true" fill="currentColor" />
-              </div>
-            </div>
+            <video
+              ref={(el) => (videoRefs.current[index] = el)}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={video.thumbnail}
+              className="w-full h-full object-cover"
+              aria-label={video.title}
+            >
+              <source src={video.src} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
 
             {/* Video title overlay */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 sm:p-4">
@@ -76,16 +74,9 @@ export default function VideoGallery({ videos, title, subtitle }: VideoGalleryPr
                 {video.title}
               </p>
             </div>
-          </button>
+          </div>
         ))}
       </div>
-
-      {selectedVideo && (
-        <VideoModal
-          videoSrc={selectedVideo.src}
-          onClose={handleCloseModal}
-        />
-      )}
     </div>
   );
 }
