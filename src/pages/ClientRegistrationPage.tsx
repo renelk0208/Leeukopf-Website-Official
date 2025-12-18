@@ -157,6 +157,17 @@ export default function ClientRegistrationPage() {
     }
   };
 
+  // Helper function to determine if phone dial code should be auto-filled
+  const shouldAutoFillDialCode = (currentPhone: string): boolean => {
+    // Auto-prefill dial code if:
+    // 1. Phone is empty, OR
+    // 2. Phone currently equals just a dial code (e.g., "+30"), OR
+    // 3. Phone currently starts with a different dial code but user hasn't typed beyond it
+    return !currentPhone || 
+           Object.values(countryDialCodes).includes(currentPhone) ||
+           (currentPhone.startsWith('+') && currentPhone.length <= 5 && !currentPhone.match(/\d{3,}/));
+  };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
@@ -166,25 +177,11 @@ export default function ClientRegistrationPage() {
       const dialCode = countryDialCodes[value];
       const currentPhone = formData.phone;
       
-      // Auto-prefill dial code if:
-      // 1. Phone is empty, OR
-      // 2. Phone currently equals just a dial code (e.g., "+30"), OR
-      // 3. Phone currently starts with a different dial code but user hasn't typed beyond it
-      const shouldAutoFill = !currentPhone || 
-                             Object.values(countryDialCodes).includes(currentPhone) ||
-                             (currentPhone.startsWith('+') && currentPhone.length <= 5 && !currentPhone.match(/\d{3,}/));
-      
-      if (dialCode && shouldAutoFill && value !== 'Other') {
+      if (dialCode && shouldAutoFillDialCode(currentPhone) && value !== 'Other') {
         setFormData(prev => ({
           ...prev,
           country: value,
           phone: dialCode
-        }));
-      } else if (value === 'Other') {
-        // Don't auto-fill for "Other"
-        setFormData(prev => ({
-          ...prev,
-          country: value
         }));
       } else {
         setFormData(prev => ({
