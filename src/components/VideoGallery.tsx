@@ -17,11 +17,16 @@ export default function VideoGallery({ videos, title, subtitle }: VideoGalleryPr
 
   useEffect(() => {
     // Attempt to autoplay all videos on mount
+    // This ensures videos start playing even if browser policies delay autoplay
     videoRefs.current.forEach((video) => {
       if (video) {
         video.play().catch(() => {
-          // Silently catch autoplay failures
-          // Browser may block autoplay in some cases
+          // Silently catch autoplay failures without impacting UX
+          // Common scenarios:
+          // - Browser autoplay policy requires user interaction first
+          // - Video not yet loaded enough to play
+          // - User has disabled autoplay in browser settings
+          // The native autoplay attribute will retry once conditions are met
         });
       }
     });
