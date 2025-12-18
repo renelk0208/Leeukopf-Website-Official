@@ -4,9 +4,6 @@ import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
 import { isCategoryEnabled } from '../config/productCategories';
 import ProductCategoryCard3D from '../components/products/ProductCategoryCard3D';
-import SeasonalHeroVideo from "../components/SeasonalHeroVideo";
-import SeasonalSnowOverlay from "../components/SeasonalSnowOverlay";
-import { shouldShowSnow } from "../config/seasonal";
 
 export default function ProductsPage() {
   // Product range sections with their English content
@@ -75,52 +72,59 @@ export default function ProductsPage() {
       ctaText="Explore product ranges"
       heroImage="/img/hero/our-products-hero (2).jpg"
     >
-      {/* Start Your Brand Banner */}
-      <StartHereBanner />
+        {/* Start Your Brand Banner */}
+        <StartHereBanner />
 
-      {/* Hero CTA Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10 sm:mb-12 md:mb-16">
-        <Link
-          to="/products/gel-polish"
-          className="btn-primary px-6 py-3 rounded-lg font-semibold text-center"
-        >
-          Explore product ranges
-        </Link>
-        <Link
-          to="/private-label"
-          className="btn-secondary px-6 py-3 rounded-lg font-semibold text-center"
-        >
-          Private label options
-        </Link>
-      </div>
-
-      {/* Intro Section */}
-      <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
-          Complete systems, not just single products
-          <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
-        </h2>
-        <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base max-w-3xl">
-          We don't simply fill bottles. We design full, compatible systems – gel polishes, bases, tops, builders and accessories – that work together for long-lasting, salon-proof results.
-        </p>
-      </div>
-
-      {/* Seasonal video + snow (seasonal) */}
-      <div className="relative">
-        {shouldShowSnow ? <SeasonalSnowOverlay /> : null}
-
-        {/* Content layer above snow */}
-        <div className="relative z-10">
-          <SeasonalHeroVideo className="mb-10" />
+        {/* Hero CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10 sm:mb-12 md:mb-16">
+          <Link
+            to="/products/gel-polish"
+            className="btn-primary px-6 py-3 rounded-lg font-semibold text-center"
+          >
+            Explore product ranges
+          </Link>
+          <Link
+            to="/private-label"
+            className="btn-secondary px-6 py-3 rounded-lg font-semibold text-center"
+          >
+            Private label options
+          </Link>
         </div>
-      </div>
 
-      {/* Product Categories Section */}
-      <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-          Explore our product categories
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {/* Intro Section */}
+        <div className="mb-10 sm:mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
+            Complete systems, not just single products
+            <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
+          </h2>
+          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base max-w-3xl">
+            We don't simply fill bottles. We design full, compatible systems – gel polishes, bases, tops, builders and accessories – that work together for long-lasting, salon-proof results.
+          </p>
+        </div>
+
+        {/* Seasonal Hero Video - BEFORE "Explore our products" section */}
+        <section className="w-full mb-10 sm:mb-12 md:mb-16">
+          <div className="relative w-full overflow-hidden rounded-2xl bg-black/5 aspect-[16/9] sm:aspect-[21/9]">
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src="/videos/seasonal/our-products__christmas__2025.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              controls={false}
+              disablePictureInPicture
+            />
+          </div>
+        </section>
+
+        {/* Product Categories Section */}
+        <div className="mb-10 sm:mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
+            Explore our product categories
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Gel Polish */}
           {isCategoryEnabled('gelPolish') && (
             <ProductCategoryCard3D
