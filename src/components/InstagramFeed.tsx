@@ -1,9 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Instagram, ExternalLink, AlertCircle, Play, X } from 'lucide-react';
 
-// Configuration
-const INSTAGRAM_PROFILE = 'leeukopf_laboratories';
-const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_PROFILE}/`;
+// Brand type
+type Brand = 'leeukopf' | 'gelitup';
+
+// Brand configurations
+const BRAND_CONFIG = {
+  leeukopf: {
+    profile: 'leeukopf_laboratories',
+    heading: 'See Leeukopf in Action',
+    description: 'See the latest colour trends and behind the scenes colour mixing.',
+  },
+  gelitup: {
+    profile: 'gel.it.up',
+    heading: 'Follow GEL.IT.UP on Instagram',
+    description: 'Discover the latest nail art trends and professional tips.',
+  },
+} as const;
 
 // Number of posts to display in the grid (2x2 = 4)
 const POST_COUNT = 4;
@@ -46,7 +59,12 @@ function SkeletonGrid() {
 }
 
 // Error fallback component
-function ErrorFallback() {
+interface ErrorFallbackProps {
+  profile: string;
+  profileUrl: string;
+}
+
+function ErrorFallback({ profile, profileUrl }: ErrorFallbackProps) {
   return (
     <div className="text-center py-8 sm:py-12 px-4">
       <div className="flex justify-center mb-4">
@@ -56,10 +74,10 @@ function ErrorFallback() {
         Our live Instagram feed is not available right now.
         <br className="hidden sm:block" />
         {' '}Visit us on Instagram →{' '}
-        <span className="font-medium text-gray-900">@{INSTAGRAM_PROFILE}</span>
+        <span className="font-medium text-gray-900">@{profile}</span>
       </p>
       <a
-        href={INSTAGRAM_PROFILE_URL}
+        href={profileUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 min-h-[44px]"
@@ -76,9 +94,10 @@ function ErrorFallback() {
 interface MediaModalProps {
   post: InstagramItem;
   onClose: () => void;
+  brandName: string;
 }
 
-function MediaModal({ post, onClose }: MediaModalProps) {
+function MediaModal({ post, onClose, brandName }: MediaModalProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const isVideo = post.type === 'VIDEO' || post.type === 'REEL';
@@ -154,14 +173,14 @@ function MediaModal({ post, onClose }: MediaModalProps) {
               controls
               autoPlay
               playsInline
-              aria-label={post.caption || 'Instagram video from Leeukopf Laboratories'}
+              aria-label={post.caption || `Instagram video from ${brandName}`}
             >
               Your browser does not support the video tag.
             </video>
           ) : (
             <img
               src={post.imageUrl}
-              alt={post.caption || 'Instagram post from Leeukopf Laboratories'}
+              alt={post.caption || `Instagram post from ${brandName}`}
               className="w-full h-full object-contain"
             />
           )}
@@ -173,7 +192,7 @@ function MediaModal({ post, onClose }: MediaModalProps) {
             id="modal-title" 
             className={post.caption ? "text-gray-300 text-sm mb-3 line-clamp-3" : "sr-only"}
           >
-            {post.caption || 'Instagram Media from Leeukopf Laboratories'}
+            {post.caption || `Instagram Media from ${brandName}`}
           </h2>
           <a
             href={post.permalink}
@@ -195,9 +214,10 @@ function MediaModal({ post, onClose }: MediaModalProps) {
 interface PostTileProps {
   post: InstagramItem;
   onSelect: (post: InstagramItem) => void;
+  brandName: string;
 }
 
-function PostTile({ post, onSelect }: PostTileProps) {
+function PostTile({ post, onSelect, brandName }: PostTileProps) {
   const [imageError, setImageError] = useState(false);
   const isVideo = post.type === 'VIDEO' || post.type === 'REEL';
 
@@ -224,7 +244,7 @@ function PostTile({ post, onSelect }: PostTileProps) {
       {post.imageUrl && !imageError ? (
         <img
           src={post.imageUrl}
-          alt={post.caption || 'Instagram post from Leeukopf Laboratories'}
+          alt={post.caption || `Instagram post from ${brandName}`}
           className="w-full h-full object-contain bg-gray-50"
           loading="lazy"
           onError={() => setImageError(true)}
@@ -255,12 +275,21 @@ function PostTile({ post, onSelect }: PostTileProps) {
 }
 
 // Main Instagram Feed component
-export default function InstagramFeed() {
+interface InstagramFeedProps {
+  brand?: Brand;
+}
+
+export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps) {
   const [loadState, setLoadState] = useState<LoadState>('idle');
   const [posts, setPosts] = useState<InstagramItem[]>([]);
   const [selectedPost, setSelectedPost] = useState<InstagramItem | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const hasLoaded = useRef(false);
+
+  // Get brand configuration
+  const config = BRAND_CONFIG[brand];
+  const profileUrl = `https://www.instagram.com/${config.profile}/`;
+  const brandDisplayName = brand === 'leeukopf' ? 'Leeukopf Laboratories' : 'GEL.IT.UP';
 
   // Load Instagram feed data from API
   const loadFeed = useCallback(async () => {
@@ -270,8 +299,8 @@ export default function InstagramFeed() {
     setLoadState('loading');
     
     try {
-      // Fetch from /api/instagram endpoint
-      const response = await fetch('/api/instagram');
+      // Fetch from /api/instagram endpoint with brand parameter
+      const response = await fetch(`/api/instagram?brand=${brand}`);
       
       if (!response.ok) {
         throw new Error(`API returned ${response.status}`);
@@ -291,7 +320,7 @@ export default function InstagramFeed() {
       console.error('Failed to load Instagram feed:', error);
       setLoadState('error');
     }
-  }, []);
+  }, [brand]);
 
   // Set up IntersectionObserver for lazy loading
   useEffect(() => {
@@ -342,10 +371,10 @@ export default function InstagramFeed() {
               id="instagram-feed-heading"
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight"
             >
-              See Leeukopf in Action
+              {config.heading}
             </h2>
             <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-light px-2">
-              See the latest colour trends and behind the scenes colour mixing.
+              {config.description}
             </p>
           </div>
 
@@ -354,24 +383,24 @@ export default function InstagramFeed() {
             {loadState === 'idle' || loadState === 'loading' ? (
               <SkeletonGrid />
             ) : loadState === 'error' ? (
-              <ErrorFallback />
+              <ErrorFallback profile={config.profile} profileUrl={profileUrl} />
             ) : (
               <>
                 <div className={GRID_CLASSES}>
                   {posts.map((post) => (
-                    <PostTile key={post.id} post={post} onSelect={openModal} />
+                    <PostTile key={post.id} post={post} onSelect={openModal} brandName={brandDisplayName} />
                   ))}
                 </div>
                 {/* CTA to visit Instagram profile */}
                 <div className="text-center mt-8 sm:mt-10">
                   <a
-                    href={INSTAGRAM_PROFILE_URL}
+                    href={profileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-pink-500 hover:text-pink-600 transition-all duration-300 min-h-[44px]"
                   >
                     <Instagram size={20} className="mr-2" aria-hidden="true" />
-                    Follow @{INSTAGRAM_PROFILE}
+                    Follow @{config.profile}
                     <ExternalLink size={16} className="ml-2" aria-hidden="true" />
                   </a>
                 </div>
@@ -383,7 +412,7 @@ export default function InstagramFeed() {
 
       {/* Modal for viewing media */}
       {selectedPost && (
-        <MediaModal post={selectedPost} onClose={closeModal} />
+        <MediaModal post={selectedPost} onClose={closeModal} brandName={brandDisplayName} />
       )}
     </>
   );
