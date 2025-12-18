@@ -4,6 +4,9 @@ import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
 import { isCategoryEnabled } from '../config/productCategories';
 import ProductCategoryCard3D from '../components/products/ProductCategoryCard3D';
+import SeasonalHeroVideo from "../components/SeasonalHeroVideo";
+import SeasonalSnowOverlay from "../components/SeasonalSnowOverlay";
+import { shouldShowSnow } from "../config/seasonal";
 
 export default function ProductsPage() {
   // Product range sections with their English content
@@ -100,6 +103,16 @@ export default function ProductsPage() {
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base max-w-3xl">
           We don't simply fill bottles. We design full, compatible systems – gel polishes, bases, tops, builders and accessories – that work together for long-lasting, salon-proof results.
         </p>
+      </div>
+
+      {/* Seasonal video + snow (seasonal) */}
+      <div className="relative">
+        {shouldShowSnow ? <SeasonalSnowOverlay /> : null}
+
+        {/* Content layer above snow */}
+        <div className="relative z-10">
+          <SeasonalHeroVideo className="mb-10" />
+        </div>
       </div>
 
       {/* Product Categories Section */}
