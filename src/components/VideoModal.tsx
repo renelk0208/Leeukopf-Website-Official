@@ -76,16 +76,15 @@ export default function VideoModal({ videoSrc, isYouTube = false, onClose }: Vid
               <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
                 <div className="text-center px-4">
                   <p className="text-white text-lg mb-2">Unable to load video</p>
-                  <p className="text-gray-400 text-sm">The video file may be too large or in an unsupported format.</p>
+                  <p className="text-gray-400 text-sm mb-2">The video file may be too large or in an unsupported format.</p>
+                  <p className="text-gray-500 text-xs">Please check your internet connection and try refreshing the page.</p>
                 </div>
               </div>
             )}
             <video
               src={videoSrc}
               controls
-              autoPlay
-              muted
-              preload="metadata"
+              preload="none"
               playsInline
               onLoadedData={handleVideoLoad}
               onError={handleVideoError}

@@ -35,16 +35,19 @@ Current video inventory:
 ## Implemented Optimizations
 
 ### Code Changes (VideoModal.tsx)
-1. **Added `preload="metadata"`** - Only loads video metadata initially, not the entire file
-2. **Added `playsInline` attribute** - Better mobile browser support
-3. **Added loading states** - Shows spinner while video is buffering
-4. **Added error handling** - User-friendly error message if video fails to load
-5. **Added event handlers** - `onLoadedData` and `onError` for better state management
+1. **Changed to `preload="none"`** - Videos don't load until user clicks play (best for large files)
+2. **Removed `autoPlay` and `muted`** - User has full control, better accessibility and mobile data usage
+3. **Added `playsInline` attribute** - Better mobile browser support
+4. **Added loading states** - Shows spinner while video is buffering
+5. **Enhanced error handling** - User-friendly error message with troubleshooting steps
+6. **Added event handlers** - `onLoadedData` and `onError` for better state management
 
 These optimizations improve user experience by:
-- Reducing initial load time
+- No bandwidth wasted until user chooses to play
+- User control over playback (accessibility improvement)
 - Providing visual feedback during loading
-- Gracefully handling errors
+- Gracefully handling errors with actionable guidance
+- Better mobile data usage (user initiates loading)
 
 ## Recommended Solutions
 
