@@ -9,17 +9,26 @@ interface FormData {
   email: string;
   phone: string;
   country: string;
+  countryOther: string;
   website: string;
   instagram: string;
   businessType: string;
   interests: string[];
+  interestPrivateLabel: boolean;
+  interestDistribution: boolean;
   monthlyVolume: string;
   vatEori: string;
   billingAddress: string;
   shippingAddress: string;
+  requestSampleBox: boolean;
+  street: string;
+  district: string;
+  postalCode: string;
   language: string;
   notes: string;
   gdprConsent: boolean;
+  privacyPolicyAccepted: boolean;
+  marketingConsent: boolean;
   honeypot: string;
 }
 
@@ -76,6 +85,21 @@ const languages = [
   { code: 'Other', name: 'Other' }
 ];
 
+// Country dial code mapping
+const countryDialCodes: { [key: string]: string } = {
+  'Greece': '+30',
+  'Italy': '+39',
+  'Bulgaria': '+359',
+  'Spain': '+34',
+  'France': '+33',
+  'Germany': '+49',
+  'United Kingdom': '+44',
+  'United States': '+1',
+  'United Arab Emirates': '+971',
+  'Saudi Arabia': '+966',
+  'Qatar': '+974'
+};
+
 export default function ClientRegistrationPage() {
   const [formData, setFormData] = useState<FormData>({
     company: '',
@@ -84,17 +108,26 @@ export default function ClientRegistrationPage() {
     email: '',
     phone: '',
     country: '',
+    countryOther: '',
     website: '',
     instagram: '',
     businessType: '',
     interests: [],
+    interestPrivateLabel: false,
+    interestDistribution: false,
     monthlyVolume: '',
     vatEori: '',
     billingAddress: '',
     shippingAddress: '',
+    requestSampleBox: false,
+    street: '',
+    district: '',
+    postalCode: '',
     language: 'EN',
     notes: '',
     gdprConsent: false,
+    privacyPolicyAccepted: false,
+    marketingConsent: false,
     honeypot: ''
   });
 
@@ -123,19 +156,51 @@ export default function ClientRegistrationPage() {
         return typeof value === 'string' && value === '' ? 'Business type is required' : '';
       case 'gdprConsent':
         return typeof value === 'boolean' && !value ? 'You must agree to the data processing terms' : '';
+      case 'privacyPolicyAccepted':
+        return typeof value === 'boolean' && !value ? 'You must accept the Privacy Policy to submit the form' : '';
       default:
         return '';
     }
+  };
+
+  // Helper function to determine if phone dial code should be auto-filled
+  const shouldAutoFillDialCode = (currentPhone: string): boolean => {
+    // Auto-prefill dial code if:
+    // 1. Phone is empty, OR
+    // 2. Phone currently equals just a dial code (e.g., "+30"), OR
+    // 3. Phone currently starts with a different dial code but user hasn't typed beyond it
+    return !currentPhone || 
+           Object.values(countryDialCodes).includes(currentPhone) ||
+           (currentPhone.startsWith('+') && currentPhone.length <= 5 && !currentPhone.match(/\d{3,}/));
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
 
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    // Handle country change to auto-fill phone dial code
+    if (name === 'country') {
+      const dialCode = countryDialCodes[value];
+      const currentPhone = formData.phone;
+      
+      if (dialCode && shouldAutoFillDialCode(currentPhone) && value !== 'Other') {
+        setFormData(prev => ({
+          ...prev,
+          country: value,
+          phone: dialCode
+        }));
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          country: value
+        }));
+      }
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      }));
+    }
 
     const error = validateField(name, type === 'checkbox' ? checked : value);
     setErrors(prev => ({
@@ -158,12 +223,40 @@ export default function ClientRegistrationPage() {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
+    // Required fields for all submissions
     newErrors.company = validateField('company', formData.company);
     newErrors.contact = validateField('contact', formData.contact);
     newErrors.email = validateField('email', formData.email);
     newErrors.country = validateField('country', formData.country);
     newErrors.businessType = validateField('businessType', formData.businessType);
     newErrors.gdprConsent = validateField('gdprConsent', formData.gdprConsent);
+    newErrors.privacyPolicyAccepted = validateField('privacyPolicyAccepted', formData.privacyPolicyAccepted);
+
+    // Business Interest validation: at least one must be selected
+    if (!formData.interestPrivateLabel && !formData.interestDistribution) {
+      newErrors.businessInterest = 'Please select Private Label or Distribution.';
+    }
+
+    // Country "Other" validation
+    if (formData.country === 'Other' && !formData.countryOther.trim()) {
+      newErrors.countryOther = 'Please specify country';
+    }
+
+    // Conditional validation for sample box fields
+    if (formData.requestSampleBox) {
+      if (!formData.street.trim()) {
+        newErrors.street = 'Street address is required when requesting a sample box';
+      }
+      if (!formData.district.trim()) {
+        newErrors.district = 'Suburb/District is required when requesting a sample box';
+      }
+      if (!formData.postalCode.trim()) {
+        newErrors.postalCode = 'Postal code is required when requesting a sample box';
+      }
+      if (!formData.phone.trim()) {
+        newErrors.phone = 'Contact number is required when requesting a sample box';
+      }
+    }
 
     const filteredErrors = Object.fromEntries(
       Object.entries(newErrors).filter(([, v]) => v !== '')
@@ -227,17 +320,26 @@ export default function ClientRegistrationPage() {
         email: '',
         phone: '',
         country: '',
+        countryOther: '',
         website: '',
         instagram: '',
         businessType: '',
         interests: [],
+        interestPrivateLabel: false,
+        interestDistribution: false,
         monthlyVolume: '',
         vatEori: '',
         billingAddress: '',
         shippingAddress: '',
+        requestSampleBox: false,
+        street: '',
+        district: '',
+        postalCode: '',
         language: 'EN',
         notes: '',
         gdprConsent: false,
+        privacyPolicyAccepted: false,
+        marketingConsent: false,
         honeypot: ''
       });
       setErrors({});
@@ -260,7 +362,13 @@ export default function ClientRegistrationPage() {
 
   const isFormValid = formData.company && formData.contact && formData.email &&
                       validateEmail(formData.email) && formData.country &&
-                      formData.businessType && formData.gdprConsent;
+                      formData.businessType && formData.gdprConsent && formData.privacyPolicyAccepted &&
+                      (formData.interestPrivateLabel || formData.interestDistribution) &&
+                      (formData.country !== 'Other' || formData.countryOther.trim()) &&
+                      (!formData.requestSampleBox || (
+                        formData.street.trim() && formData.district.trim() && 
+                        formData.postalCode.trim() && formData.phone.trim()
+                      ));
 
   return (
     <PageTemplate
@@ -396,7 +504,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-2">
-                Phone Number
+                Phone Number{formData.requestSampleBox && <span className="text-red-500"> *</span>}
               </label>
               <input
                 type="tel"
@@ -404,9 +512,19 @@ export default function ClientRegistrationPage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="+1 234 567 8900"
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                  errors.phone ? 'border-red-500' : 'border-gray-300'
+                }`}
+                placeholder={formData.country === 'Other' ? '+___' : '+1 234 567 8900'}
+                aria-required={formData.requestSampleBox}
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? 'phone-error' : undefined}
               />
+              {errors.phone && (
+                <p id="phone-error" className="mt-1 text-sm text-red-600" role="alert">
+                  {errors.phone}
+                </p>
+              )}
             </div>
 
             <div>
@@ -429,11 +547,37 @@ export default function ClientRegistrationPage() {
                 {countries.map(country => (
                   <option key={country} value={country}>{country}</option>
                 ))}
+                <option value="Other">Other</option>
               </select>
               {errors.country && (
                 <p id="country-error" className="mt-1 text-sm text-red-600" role="alert">
                   {errors.country}
                 </p>
+              )}
+              {formData.country === 'Other' && (
+                <div className="mt-3">
+                  <label htmlFor="countryOther" className="block text-sm font-medium text-gray-900 mb-2">
+                    Please specify country <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="countryOther"
+                    name="countryOther"
+                    value={formData.countryOther}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.countryOther ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    aria-required="true"
+                    aria-invalid={!!errors.countryOther}
+                    aria-describedby={errors.countryOther ? 'countryOther-error' : undefined}
+                  />
+                  {errors.countryOther && (
+                    <p id="countryOther-error" className="mt-1 text-sm text-red-600" role="alert">
+                      {errors.countryOther}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
 
@@ -496,6 +640,41 @@ export default function ClientRegistrationPage() {
               {errors.businessType && (
                 <p id="businessType-error" className="mt-1 text-sm text-red-600" role="alert">
                   {errors.businessType}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-3">
+                Business Interest <span className="text-red-500">*</span>
+              </label>
+              <div className="space-y-3">
+                <label className="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                  <input
+                    type="checkbox"
+                    id="interestPrivateLabel"
+                    name="interestPrivateLabel"
+                    checked={formData.interestPrivateLabel}
+                    onChange={handleInputChange}
+                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  />
+                  <span className="text-sm text-gray-900">Private Label</span>
+                </label>
+                <label className="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                  <input
+                    type="checkbox"
+                    id="interestDistribution"
+                    name="interestDistribution"
+                    checked={formData.interestDistribution}
+                    onChange={handleInputChange}
+                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  />
+                  <span className="text-sm text-gray-900">Distribution</span>
+                </label>
+              </div>
+              {errors.businessInterest && (
+                <p className="mt-2 text-sm text-red-600" role="alert">
+                  {errors.businessInterest}
                 </p>
               )}
             </div>
@@ -584,6 +763,102 @@ export default function ClientRegistrationPage() {
             </div>
 
             <div>
+              <label className="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                <input
+                  type="checkbox"
+                  id="requestSampleBox"
+                  name="requestSampleBox"
+                  checked={formData.requestSampleBox}
+                  onChange={handleInputChange}
+                  className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                />
+                <span className="text-sm text-gray-900">Request a sample box</span>
+              </label>
+              <p className="mt-2 ml-7 text-xs text-gray-500">
+                Sample boxes are subject to a minimum charge plus shipping costs.
+              </p>
+            </div>
+
+            {formData.requestSampleBox && (
+              <div className="space-y-6 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900">Shipping Details</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="street" className="block text-sm font-medium text-gray-900 mb-2">
+                      Street Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="street"
+                      name="street"
+                      value={formData.street}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                        errors.street ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      aria-required="true"
+                      aria-invalid={!!errors.street}
+                      aria-describedby={errors.street ? 'street-error' : undefined}
+                    />
+                    {errors.street && (
+                      <p id="street-error" className="mt-1 text-sm text-red-600" role="alert">
+                        {errors.street}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="district" className="block text-sm font-medium text-gray-900 mb-2">
+                      Suburb / District <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="district"
+                      name="district"
+                      value={formData.district}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                        errors.district ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      aria-required="true"
+                      aria-invalid={!!errors.district}
+                      aria-describedby={errors.district ? 'district-error' : undefined}
+                    />
+                    {errors.district && (
+                      <p id="district-error" className="mt-1 text-sm text-red-600" role="alert">
+                        {errors.district}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="postalCode" className="block text-sm font-medium text-gray-900 mb-2">
+                      Postal Code <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="postalCode"
+                      name="postalCode"
+                      value={formData.postalCode}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                        errors.postalCode ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      aria-required="true"
+                      aria-invalid={!!errors.postalCode}
+                      aria-describedby={errors.postalCode ? 'postalCode-error' : undefined}
+                    />
+                    {errors.postalCode && (
+                      <p id="postalCode-error" className="mt-1 text-sm text-red-600" role="alert">
+                        {errors.postalCode}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
               <label htmlFor="language" className="block text-sm font-medium text-gray-900 mb-2">
                 Preferred Language
               </label>
@@ -625,7 +900,44 @@ export default function ClientRegistrationPage() {
         </div>
 
         <div className="bg-gray-50 rounded-lg border border-gray-200 p-8">
-          <div className="space-y-4">
+          <div className="space-y-6">
+            {/* Privacy Policy Acceptance - Required */}
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                id="privacyPolicyAccepted"
+                name="privacyPolicyAccepted"
+                checked={formData.privacyPolicyAccepted}
+                onChange={handleInputChange}
+                className={`mt-1 w-5 h-5 text-primary border rounded focus:ring-primary ${
+                  errors.privacyPolicyAccepted ? 'border-red-500' : 'border-gray-300'
+                }`}
+                aria-required="true"
+                aria-invalid={!!errors.privacyPolicyAccepted}
+                aria-describedby={errors.privacyPolicyAccepted ? 'privacy-policy-error' : undefined}
+              />
+              <div>
+                <label htmlFor="privacyPolicyAccepted" className="text-sm text-gray-900">
+                  I have read and accept the{' '}
+                  <a 
+                    href="/privacy-policy" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary-hover underline font-medium"
+                  >
+                    Privacy Policy
+                  </a>
+                  . <span className="text-red-500">*</span>
+                </label>
+                {errors.privacyPolicyAccepted && (
+                  <p id="privacy-policy-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {errors.privacyPolicyAccepted}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* GDPR Data Processing Consent - Required */}
             <div className="flex items-start space-x-3">
               <input
                 type="checkbox"
@@ -640,19 +952,35 @@ export default function ClientRegistrationPage() {
                 aria-invalid={!!errors.gdprConsent}
                 aria-describedby={errors.gdprConsent ? 'gdpr-error' : undefined}
               />
-              <label htmlFor="gdprConsent" className="text-sm text-gray-900">
-                <span className="font-medium">I agree to the processing of my data</span> for the purpose of responding to this enquiry. <span className="text-red-500">*</span>
+              <div>
+                <label htmlFor="gdprConsent" className="text-sm text-gray-900">
+                  I agree to the processing of my data for the purpose of responding to this enquiry. <span className="text-red-500">*</span>
+                </label>
+                {errors.gdprConsent && (
+                  <p id="gdpr-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {errors.gdprConsent}
+                  </p>
+                )}
+                <p className="mt-2 text-sm text-gray-600 font-light">
+                  Your information is used only to respond to your enquiry. We respect your privacy and will never share your data with third parties.
+                </p>
+              </div>
+            </div>
+
+            {/* Marketing Communications - Optional */}
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                id="marketingConsent"
+                name="marketingConsent"
+                checked={formData.marketingConsent}
+                onChange={handleInputChange}
+                className="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
+              />
+              <label htmlFor="marketingConsent" className="text-sm text-gray-900">
+                I agree to receive marketing communications from Leeukopf Laboratories. (Optional)
               </label>
             </div>
-            {errors.gdprConsent && (
-              <p id="gdpr-error" className="text-sm text-red-600 ml-8" role="alert">
-                {errors.gdprConsent}
-              </p>
-            )}
-
-            <p className="text-sm text-gray-600 font-light ml-8">
-              Your information is used only to respond to your enquiry. We respect your privacy and will never share your data with third parties.
-            </p>
           </div>
 
           <div className="mt-8 flex justify-center">

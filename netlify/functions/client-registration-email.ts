@@ -1,6 +1,16 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { Resend } from 'resend';
-import { google } from 'googleapis';
+import * as jose from 'jose';
+import { webcrypto } from 'crypto';
+
+// Polyfill global crypto for jose on Netlify
+if (!globalThis.crypto) {
+  // @ts-ignore
+  globalThis.crypto = webcrypto as any;
+}
+
+// Force deployment version marker
+const __force = 'prod-force-upload-2025-12-17-1016';
 
 // Configure the function path
 export const config = {
@@ -14,18 +24,28 @@ interface FormData {
   email: string;
   phone?: string;
   country: string;
+  countryOther?: string;
   website?: string;
   instagram?: string;
   businessType: string;
   interests: string[];
+  interestPrivateLabel?: boolean;
+  interestDistribution?: boolean;
   monthlyVolume?: string;
   vatEori?: string;
   billingAddress?: string;
   shippingAddress?: string;
+  requestSampleBox?: boolean;
+  street?: string;
+  district?: string;
+  postalCode?: string;
   language: string;
   notes?: string;
   attachments?: Array<{ filename: string; url: string }>;
   honeypot?: string;
+  source?: string;
+  page?: string;
+  gdprConsent?: boolean;
 }
 
 // Get allowed origins for CORS
@@ -59,12 +79,16 @@ function generateInternalEmailBody(formData: FormData): string {
 ${formData.role ? `<p><strong>Role/Title:</strong> ${formData.role}</p>` : ''}
 <p><strong>Email:</strong> ${formData.email}</p>
 ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
-<p><strong>Country:</strong> ${formData.country}</p>
+<p><strong>Country:</strong> ${formData.country}${formData.country === 'Other' && formData.countryOther ? ` (${formData.countryOther})` : ''}</p>
 ${formData.website ? `<p><strong>Website:</strong> ${formData.website}</p>` : ''}
 ${formData.instagram ? `<p><strong>Instagram:</strong> ${formData.instagram}</p>` : ''}
 
 <h3>Business Details</h3>
 <p><strong>Business Type:</strong> ${formData.businessType}</p>
+<p><strong>Business Interest:</strong> ${[
+  formData.interestPrivateLabel ? 'Private Label' : '',
+  formData.interestDistribution ? 'Distribution' : ''
+].filter(Boolean).join(', ')}</p>
 <p><strong>Product Interests:</strong> ${formData.interests.length > 0 ? formData.interests.join(', ') : 'None specified'}</p>
 ${formData.monthlyVolume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.monthlyVolume}</p>` : ''}
 ${formData.vatEori ? `<p><strong>VAT/EORI Number:</strong> ${formData.vatEori}</p>` : ''}
@@ -72,6 +96,14 @@ ${formData.vatEori ? `<p><strong>VAT/EORI Number:</strong> ${formData.vatEori}</
 <h3>Addresses</h3>
 ${formData.billingAddress ? `<p><strong>Billing Address:</strong><br>${formData.billingAddress.replace(/\n/g, '<br>')}</p>` : ''}
 ${formData.shippingAddress ? `<p><strong>Shipping Address:</strong><br>${formData.shippingAddress.replace(/\n/g, '<br>')}</p>` : ''}
+
+${formData.requestSampleBox ? `
+<h3>Sample Box Request</h3>
+<p><strong>Sample Box Requested:</strong> Yes</p>
+${formData.street ? `<p><strong>Street Address:</strong> ${formData.street}</p>` : ''}
+${formData.district ? `<p><strong>Suburb/District:</strong> ${formData.district}</p>` : ''}
+${formData.postalCode ? `<p><strong>Postal Code:</strong> ${formData.postalCode}</p>` : ''}
+` : ''}
 
 <h3>Additional Information</h3>
 <p><strong>Preferred Language:</strong> ${formData.language}</p>
@@ -103,79 +135,149 @@ function generateAutoReplyBody(): string {
 `;
 }
 
-// Append data to Google Sheets
+// JWT expiration time in seconds (1 hour)
+const JWT_EXPIRATION_SECONDS = 3600;
+
+// Get OAuth access token using jose for JWT signing
+async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: string): Promise<string> {
+  // Normalize the private key exactly as specified
+  const rawKey = privateKey || "";
+  let key = rawKey.trim();
+  
+  // Remove wrapping quotes if present
+  if ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'"))) {
+    key = key.slice(1, -1);
+  }
+  
+  // Restore newlines if stored with escaped \n
+  key = key.replace(/\\n/g, "\n");
+  
+  // Also handle accidental \r\n sequences
+  key = key.replace(/\\r\\n/g, "\n");
+  
+  // Strict validation before importPKCS8
+  if (!key.includes("-----BEGIN PRIVATE KEY-----") || !key.includes("-----END PRIVATE KEY-----")) {
+    throw new Error("GOOGLE_PRIVATE_KEY is not a valid PKCS#8 PEM. Check header/footer and newline formatting.");
+  }
+  
+  // Safe debug logs (no secrets)
+  console.log("GOOGLE_PRIVATE_KEY length:", key.length);
+  console.log("GOOGLE_PRIVATE_KEY header ok:", key.startsWith("-----BEGIN PRIVATE KEY-----"));
+  
+  // Import the private key for RS256 signing
+  const privateKeyObj = await jose.importPKCS8(key, 'RS256');
+
+  // Create JWT assertion
+  const now = Math.floor(Date.now() / 1000);
+  const jwt = await new jose.SignJWT({
+    scope: 'https://www.googleapis.com/auth/spreadsheets',
+  })
+    .setProtectedHeader({ alg: 'RS256', typ: 'JWT' })
+    .setIssuer(serviceAccountEmail)
+    .setSubject(serviceAccountEmail)
+    .setAudience('https://oauth2.googleapis.com/token')
+    .setIssuedAt(now)
+    .setExpirationTime(now + JWT_EXPIRATION_SECONDS)
+    .sign(privateKeyObj);
+
+  // Exchange JWT for access token
+  const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt,
+    }),
+  });
+
+  if (!tokenResponse.ok) {
+    console.error('Failed to get OAuth access token:', tokenResponse.status);
+    throw new Error(`Failed to get access token: ${tokenResponse.status}`);
+  }
+
+  const tokenData = await tokenResponse.json();
+  return tokenData.access_token;
+}
+
+// Append data to Google Sheets using jose for authentication
 async function appendToGoogleSheets(formData: FormData): Promise<void> {
+  console.log('FUNCTION VERSION: prod-force-upload-2025-12-17-1016');
+  
   const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const privateKey = process.env.GOOGLE_PRIVATE_KEY;
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
   const sheetTab = process.env.GOOGLE_SHEET_TAB || 'Raw_Leads';
-  
-  // Column range for 21 columns (A through U)
-  const COLUMN_RANGE = 'A:U';
 
   if (!serviceAccountEmail || !privateKey || !spreadsheetId) {
     console.error('Missing Google Sheets configuration');
     throw new Error('Google Sheets configuration is incomplete');
   }
 
-  // Replace \\n with actual newlines in the private key
-  const formattedPrivateKey = privateKey.replace(/\\n/g, '\n');
+  // Get OAuth access token using jose
+  const accessToken = await getGoogleAccessToken(serviceAccountEmail, privateKey);
 
-  // Authenticate with Google Sheets API
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      client_email: serviceAccountEmail,
-      private_key: formattedPrivateKey,
-    },
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
+  // Format data in exact column order matching the header:
+  // Timestamp, Source, Page, Company, Contact, Role, Email, Phone, Country, Country Other, 
+  // District, Postal Code, Street, Billing Address, Shipping Address, Website, Instagram, 
+  // Business Type, Interests, Monthly Volume, VAT/EORI, Interest: Distribution, 
+  // Interest: Private Label, Request Sample Box, Notes, GDPR Consent, Honeypot
+  const interestsStr = Array.isArray(formData.interests) ? formData.interests.join(", ") : "";
 
-  const sheets = google.sheets({ version: 'v4', auth });
-
-  // Format data in exact column order:
-  // Timestamp, Source, Page, company, contact, role, email, phone, country, website, 
-  // instagram, businessType, interests (comma separated), monthlyVolume, vatEori, 
-  // billingAddress, shippingAddress, language, notes, gdprConsent (Yes/No), Lead Status (New)
-  const timestamp = new Date().toISOString();
-  const source = 'Website Form';
-  const page = 'Client Registration';
-  const gdprConsentText = 'Yes'; // Form requires consent to submit
-  const leadStatus = 'New';
-  const interestsText = (formData.interests || []).join(', ');
-
-  const rowData = [
-    timestamp,
-    source,
-    page,
-    formData.company || '',
-    formData.contact || '',
-    formData.role || '',
-    formData.email || '',
-    formData.phone || '',
-    formData.country || '',
-    formData.website || '',
-    formData.instagram || '',
-    formData.businessType || '',
-    interestsText,
-    formData.monthlyVolume || '',
-    formData.vatEori || '',
-    formData.billingAddress || '',
-    formData.shippingAddress || '',
-    formData.language || '',
-    formData.notes || '',
-    gdprConsentText,
-    leadStatus,
+  const row = [
+    new Date().toISOString(),
+    formData.source || "Website Form",
+    formData.page || "Client Registration",
+    formData.company || "",
+    formData.contact || "",
+    formData.role || "",
+    formData.email || "",
+    formData.phone || "",
+    formData.country || "",
+    formData.countryOther || "",
+    formData.district || "",
+    formData.postalCode || "",
+    formData.street || "",
+    formData.billingAddress || "",
+    formData.shippingAddress || "",
+    formData.website || "",
+    formData.instagram || "",
+    formData.businessType || "",
+    interestsStr,
+    formData.monthlyVolume || "",
+    formData.vatEori || "",
+    formData.interestDistribution ? "Yes" : "No",
+    formData.interestPrivateLabel ? "Yes" : "No",
+    formData.requestSampleBox ? "Yes" : "No",
+    formData.notes || "",
+    formData.gdprConsent ? "Yes" : "No",
+    formData.honeypot || "",
   ];
 
   try {
-    await sheets.spreadsheets.values.append({
-      spreadsheetId,
-      range: `${sheetTab}!${COLUMN_RANGE}`,
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: [rowData],
-      },
-    });
+    // Call Google Sheets API directly using fetch with the access token
+    const appendResponse = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetTab}!A2:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          values: [row],
+        }),
+      }
+    );
+
+    if (!appendResponse.ok) {
+      console.error('Failed to append to Google Sheets:', appendResponse.status);
+      const errorBody = await appendResponse.text();
+      console.error('Sheets API error body:', errorBody);
+      throw new Error(`Failed to append to Google Sheets: ${appendResponse.status} - ${errorBody}`);
+    }
+
     console.log('Successfully appended data to Google Sheets');
   } catch (error) {
     console.error('Error appending to Google Sheets:', error);
@@ -184,6 +286,8 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
 }
 
 const handler: Handler = async (event: HandlerEvent) => {
+  console.log('FUNCTION VERSION: prod-force-upload-2025-12-17-1016');
+  
   const requestOrigin = event.headers.origin || event.headers.Origin;
   
   const headers = {
