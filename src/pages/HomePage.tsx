@@ -14,10 +14,10 @@ export default function HomePage() {
       <ScrollToTop />
       <Navigation />
       <Hero />
+      <InstagramFeed />
       <StartHereBanner />
       <CertificatesBanner />
       <About />
-      <InstagramFeed />
       <Contact />
       <Footer />
     </>
