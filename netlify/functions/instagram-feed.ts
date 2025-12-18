@@ -48,9 +48,8 @@ interface InstagramApiResponse {
   error: string | null;
 }
 
-// In-memory cache
-let lastResponse: InstagramApiResponse | null = null;
-let lastFetchTime: number | null = null;
+// In-memory cache - store separate cache for each brand
+const cache = new Map<string, { response: InstagramApiResponse; timestamp: number }>();
 
 // Get cache TTL from environment or default to 300 seconds
 function getCacheTTL(): number {
@@ -201,13 +200,29 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 
-  // Get environment variables
-  const accessToken = process.env.IG_ACCESS_TOKEN;
-  const userId = process.env.IG_USER_ID;
+  // Get brand from query parameter (default to leeukopf)
+  const brand = event.queryStringParameters?.brand || 'leeukopf';
+  
+  // Validate brand parameter
+  if (brand !== 'leeukopf' && brand !== 'gelitup') {
+    return {
+      statusCode: 400,
+      headers,
+      body: JSON.stringify({ items: [], error: 'Invalid brand parameter' }),
+    };
+  }
+
+  // Get environment variables based on brand
+  const accessToken = brand === 'leeukopf' 
+    ? process.env.IG_ACCESS_TOKEN 
+    : process.env.IG_GELITUP_ACCESS_TOKEN;
+  const userId = brand === 'leeukopf' 
+    ? process.env.IG_USER_ID 
+    : process.env.IG_GELITUP_USER_ID;
 
   // Check for required environment variables
   if (!accessToken || !userId) {
-    console.error('Instagram API misconfigured: missing env vars.');
+    console.error(`Instagram API misconfigured for brand ${brand}: missing env vars.`);
     return {
       statusCode: 503,
       headers,
@@ -218,15 +233,16 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 
-  // Check in-memory cache
+  // Check in-memory cache (separate cache per brand)
   const cacheTTL = getCacheTTL();
   const now = Date.now();
+  const cached = cache.get(brand);
   
-  if (lastResponse && lastFetchTime && (now - lastFetchTime) < cacheTTL * 1000) {
+  if (cached && (now - cached.timestamp) < cacheTTL * 1000) {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(lastResponse),
+      body: JSON.stringify(cached.response),
     };
   }
 
@@ -234,9 +250,8 @@ const handler: Handler = async (event: HandlerEvent) => {
     // Fetch and transform Instagram media
     const response = await fetchInstagramMedia(accessToken, userId);
 
-    // Update cache
-    lastResponse = response;
-    lastFetchTime = now;
+    // Update cache for this brand
+    cache.set(brand, { response, timestamp: now });
 
     return {
       statusCode: 200,

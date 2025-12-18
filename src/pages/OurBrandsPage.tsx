@@ -1,31 +1,7 @@
 import PageTemplate from '../components/PageTemplate';
 import OptimizedImage from '../components/OptimizedImage';
+import InstagramFeed from '../components/InstagramFeed';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
-
-// GelitUp product images - only existing images in the repo
-const GELITUP_IMAGES = [
-  { src: '/img/brands/gelitup/Gelitup1 (1).jpg', alt: 'GEL.IT.UP gel polish collection showcase' },
-  { src: '/img/brands/gelitup/Gelitup1 (3).jpg', alt: 'GEL.IT.UP vibrant color range' },
-  { src: '/img/brands/gelitup/Gelitup1 (6).jpg', alt: 'GEL.IT.UP professional nail supplies' },
-  { src: '/img/brands/gelitup/Gelitup1 (7).jpg', alt: 'GEL.IT.UP color palette display' },
-  { src: '/img/brands/gelitup/Gelitup1 (8).jpg', alt: 'GEL.IT.UP salon-quality products' },
-  { src: '/img/brands/gelitup/Gelitup1 (9).jpg', alt: 'GEL.IT.UP gel polish application' },
-  { src: '/img/brands/gelitup/Gelitup1 (10).jpg', alt: 'GEL.IT.UP nail art inspiration' },
-  { src: '/img/brands/gelitup/Gelitup1 (79).jpg', alt: 'GEL.IT.UP luxury nail collection' },
-  { src: '/img/brands/gelitup/Gelitup1 (89).jpg', alt: 'GEL.IT.UP salon essentials' },
-  { src: '/img/brands/gelitup/Gelitup1 (91).jpg', alt: 'GEL.IT.UP gel polish finish' },
-  { src: '/img/brands/gelitup/Gelitup1 (92).jpg', alt: 'GEL.IT.UP nail care products' },
-  { src: '/img/brands/gelitup/Gelitup1 (93).jpg', alt: 'GEL.IT.UP color innovation' },
-  { src: '/img/brands/gelitup/Gelitup1 (100).jpg', alt: 'GEL.IT.UP complete nail system' },
-  { src: '/img/brands/gelitup/Gelitup1 (105).jpg', alt: 'GEL.IT.UP gel polish durability' },
-  { src: '/img/brands/gelitup/Gelitup1 (107).jpg', alt: 'GEL.IT.UP nail artistry' },
-  { src: '/img/brands/gelitup/Gelitup1 (112).jpg', alt: 'GEL.IT.UP gel polish shine' },
-  { src: '/img/brands/gelitup/Gelitup1 (114).jpg', alt: 'GEL.IT.UP color selection' },
-  { src: '/img/brands/gelitup/Gelitup1 (120).jpg', alt: 'GEL.IT.UP premium nail products' },
-  { src: '/img/brands/gelitup/Gelitup1 (122).jpg', alt: 'GEL.IT.UP salon quality' },
-  { src: '/img/brands/gelitup/Gelitup1 (126).jpg', alt: 'GEL.IT.UP gel polish variety' },
-  { src: '/img/brands/gelitup/Gelitup1 (130).jpg', alt: 'GEL.IT.UP professional collection' },
-];
 
 export default function OurBrandsPage() {
 
@@ -74,24 +50,7 @@ export default function OurBrandsPage() {
 
         {/* Product Gallery Section - Responsive Grid */}
         <div className="mt-4 sm:mt-6 md:mt-8">
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">Our Product Collection</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {GELITUP_IMAGES.map((image, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-              >
-                <div className="aspect-square p-3 sm:p-4 flex items-center justify-center bg-gray-50">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    loading="lazy"
-                    className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+          <InstagramFeed brand="gelitup" />
         </div>
       </div>
     </PageTemplate>
