@@ -43,6 +43,9 @@ interface FormData {
   notes?: string;
   attachments?: Array<{ filename: string; url: string }>;
   honeypot?: string;
+  source?: string;
+  page?: string;
+  gdprConsent?: boolean;
 }
 
 // Get allowed origins for CORS
@@ -206,9 +209,6 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   const privateKey = process.env.GOOGLE_PRIVATE_KEY;
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
   const sheetTab = process.env.GOOGLE_SHEET_TAB || 'Raw_Leads';
-  
-  // Column range - extending to accommodate new fields
-  const COLUMN_RANGE = 'A:Z';
 
   if (!serviceAccountEmail || !privateKey || !spreadsheetId) {
     console.error('Missing Google Sheets configuration');
@@ -218,56 +218,47 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   // Get OAuth access token using jose
   const accessToken = await getGoogleAccessToken(serviceAccountEmail, privateKey);
 
-  // Format data in exact column order:
-  // Timestamp, Source, Page, company, contact, role, email, phone, country, countryOther,
-  // website, instagram, businessType, interestPrivateLabel, interestDistribution,
-  // interests (comma separated), monthlyVolume, vatEori, billingAddress, shippingAddress,
-  // requestSampleBox, street, district, postalCode, language, notes, gdprConsent (Yes/No), Lead Status (New)
-  const timestamp = new Date().toISOString();
-  const source = 'Website Form';
-  const page = 'Client Registration';
-  const gdprConsentText = 'Yes'; // Form requires consent to submit
-  const leadStatus = 'New';
-  const interestsText = (formData.interests || []).join(', ');
-  const businessInterestText = [
-    formData.interestPrivateLabel ? 'Private Label' : '',
-    formData.interestDistribution ? 'Distribution' : ''
-  ].filter(Boolean).join(', ');
+  // Format data in exact column order matching the header:
+  // Timestamp, Source, Page, Company, Contact, Role, Email, Phone, Country, Country Other, 
+  // District, Postal Code, Street, Billing Address, Shipping Address, Website, Instagram, 
+  // Business Type, Interests, Monthly Volume, VAT/EORI, Interest: Distribution, 
+  // Interest: Private Label, Request Sample Box, Notes, GDPR Consent, Honeypot
+  const interestsStr = Array.isArray(formData.interests) ? formData.interests.join(", ") : "";
 
-  const rowData = [
-    timestamp,
-    source,
-    page,
-    formData.company || '',
-    formData.contact || '',
-    formData.role || '',
-    formData.email || '',
-    formData.phone || '',
-    formData.country || '',
-    formData.countryOther || '',
-    formData.website || '',
-    formData.instagram || '',
-    formData.businessType || '',
-    businessInterestText,
-    interestsText,
-    formData.monthlyVolume || '',
-    formData.vatEori || '',
-    formData.billingAddress || '',
-    formData.shippingAddress || '',
-    formData.requestSampleBox ? 'Yes' : 'No',
-    formData.street || '',
-    formData.district || '',
-    formData.postalCode || '',
-    formData.language || '',
-    formData.notes || '',
-    gdprConsentText,
-    leadStatus,
+  const row = [
+    new Date().toISOString(),
+    formData.source || "Website Form",
+    formData.page || "Client Registration",
+    formData.company || "",
+    formData.contact || "",
+    formData.role || "",
+    formData.email || "",
+    formData.phone || "",
+    formData.country || "",
+    formData.countryOther || "",
+    formData.district || "",
+    formData.postalCode || "",
+    formData.street || "",
+    formData.billingAddress || "",
+    formData.shippingAddress || "",
+    formData.website || "",
+    formData.instagram || "",
+    formData.businessType || "",
+    interestsStr,
+    formData.monthlyVolume || "",
+    formData.vatEori || "",
+    formData.interestDistribution ? "Yes" : "No",
+    formData.interestPrivateLabel ? "Yes" : "No",
+    formData.requestSampleBox ? "Yes" : "No",
+    formData.notes || "",
+    formData.gdprConsent ? "Yes" : "No",
+    formData.honeypot || "",
   ];
 
   try {
     // Call Google Sheets API directly using fetch with the access token
     const appendResponse = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetTab}!${COLUMN_RANGE}:append?valueInputOption=RAW`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetTab}!A1:append?valueInputOption=RAW`,
       {
         method: 'POST',
         headers: {
@@ -275,7 +266,7 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          values: [rowData],
+          values: [row],
         }),
       }
     );
