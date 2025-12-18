@@ -24,14 +24,21 @@ interface FormData {
   email: string;
   phone?: string;
   country: string;
+  countryOther?: string;
   website?: string;
   instagram?: string;
   businessType: string;
   interests: string[];
+  interestPrivateLabel?: boolean;
+  interestDistribution?: boolean;
   monthlyVolume?: string;
   vatEori?: string;
   billingAddress?: string;
   shippingAddress?: string;
+  requestSampleBox?: boolean;
+  street?: string;
+  district?: string;
+  postalCode?: string;
   language: string;
   notes?: string;
   attachments?: Array<{ filename: string; url: string }>;
@@ -69,12 +76,16 @@ function generateInternalEmailBody(formData: FormData): string {
 ${formData.role ? `<p><strong>Role/Title:</strong> ${formData.role}</p>` : ''}
 <p><strong>Email:</strong> ${formData.email}</p>
 ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
-<p><strong>Country:</strong> ${formData.country}</p>
+<p><strong>Country:</strong> ${formData.country}${formData.country === 'Other' && formData.countryOther ? ` (${formData.countryOther})` : ''}</p>
 ${formData.website ? `<p><strong>Website:</strong> ${formData.website}</p>` : ''}
 ${formData.instagram ? `<p><strong>Instagram:</strong> ${formData.instagram}</p>` : ''}
 
 <h3>Business Details</h3>
 <p><strong>Business Type:</strong> ${formData.businessType}</p>
+<p><strong>Business Interest:</strong> ${[
+  formData.interestPrivateLabel ? 'Private Label' : '',
+  formData.interestDistribution ? 'Distribution' : ''
+].filter(Boolean).join(', ')}</p>
 <p><strong>Product Interests:</strong> ${formData.interests.length > 0 ? formData.interests.join(', ') : 'None specified'}</p>
 ${formData.monthlyVolume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.monthlyVolume}</p>` : ''}
 ${formData.vatEori ? `<p><strong>VAT/EORI Number:</strong> ${formData.vatEori}</p>` : ''}
@@ -82,6 +93,14 @@ ${formData.vatEori ? `<p><strong>VAT/EORI Number:</strong> ${formData.vatEori}</
 <h3>Addresses</h3>
 ${formData.billingAddress ? `<p><strong>Billing Address:</strong><br>${formData.billingAddress.replace(/\n/g, '<br>')}</p>` : ''}
 ${formData.shippingAddress ? `<p><strong>Shipping Address:</strong><br>${formData.shippingAddress.replace(/\n/g, '<br>')}</p>` : ''}
+
+${formData.requestSampleBox ? `
+<h3>Sample Box Request</h3>
+<p><strong>Sample Box Requested:</strong> Yes</p>
+${formData.street ? `<p><strong>Street Address:</strong> ${formData.street}</p>` : ''}
+${formData.district ? `<p><strong>Suburb/District:</strong> ${formData.district}</p>` : ''}
+${formData.postalCode ? `<p><strong>Postal Code:</strong> ${formData.postalCode}</p>` : ''}
+` : ''}
 
 <h3>Additional Information</h3>
 <p><strong>Preferred Language:</strong> ${formData.language}</p>
@@ -188,8 +207,8 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
   const sheetTab = process.env.GOOGLE_SHEET_TAB || 'Raw_Leads';
   
-  // Column range for 21 columns (A through U)
-  const COLUMN_RANGE = 'A:U';
+  // Column range - extending to accommodate new fields
+  const COLUMN_RANGE = 'A:Z';
 
   if (!serviceAccountEmail || !privateKey || !spreadsheetId) {
     console.error('Missing Google Sheets configuration');
@@ -200,15 +219,20 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   const accessToken = await getGoogleAccessToken(serviceAccountEmail, privateKey);
 
   // Format data in exact column order:
-  // Timestamp, Source, Page, company, contact, role, email, phone, country, website, 
-  // instagram, businessType, interests (comma separated), monthlyVolume, vatEori, 
-  // billingAddress, shippingAddress, language, notes, gdprConsent (Yes/No), Lead Status (New)
+  // Timestamp, Source, Page, company, contact, role, email, phone, country, countryOther,
+  // website, instagram, businessType, interestPrivateLabel, interestDistribution,
+  // interests (comma separated), monthlyVolume, vatEori, billingAddress, shippingAddress,
+  // requestSampleBox, street, district, postalCode, language, notes, gdprConsent (Yes/No), Lead Status (New)
   const timestamp = new Date().toISOString();
   const source = 'Website Form';
   const page = 'Client Registration';
   const gdprConsentText = 'Yes'; // Form requires consent to submit
   const leadStatus = 'New';
   const interestsText = (formData.interests || []).join(', ');
+  const businessInterestText = [
+    formData.interestPrivateLabel ? 'Private Label' : '',
+    formData.interestDistribution ? 'Distribution' : ''
+  ].filter(Boolean).join(', ');
 
   const rowData = [
     timestamp,
@@ -220,14 +244,20 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
     formData.email || '',
     formData.phone || '',
     formData.country || '',
+    formData.countryOther || '',
     formData.website || '',
     formData.instagram || '',
     formData.businessType || '',
+    businessInterestText,
     interestsText,
     formData.monthlyVolume || '',
     formData.vatEori || '',
     formData.billingAddress || '',
     formData.shippingAddress || '',
+    formData.requestSampleBox ? 'Yes' : 'No',
+    formData.street || '',
+    formData.district || '',
+    formData.postalCode || '',
     formData.language || '',
     formData.notes || '',
     gdprConsentText,
