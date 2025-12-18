@@ -51,6 +51,20 @@ export default function AboutPage() {
         </p>
       </div>
 
+      {/* Pigment Mixing Videos Section - Moved to top for immediate engagement */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <div className="text-center mb-6 sm:mb-8">
+          <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">
+            Step inside our factory.
+          </p>
+        </div>
+        <VideoGallery
+          videos={pigmentMixingVideos}
+          title="See Pigment and Colour Being Mixed"
+          subtitle="Watch our expert technicians create custom gel polish colors through precise pigment blending"
+        />
+      </div>
+
       {/* Responsive Quality & Compliance */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 relative inline-block">
@@ -169,13 +183,6 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
-
-      {/* Pigment Mixing Videos Section */}
-      <VideoGallery
-        videos={pigmentMixingVideos}
-        title="See Pigment and Colour Being Mixed"
-        subtitle="Watch our expert technicians create custom gel polish colors through precise pigment blending"
-      />
     </PageTemplate>
   );
 }
