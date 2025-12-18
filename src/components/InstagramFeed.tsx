@@ -12,7 +12,7 @@ const BRAND_CONFIG = {
     description: 'See the latest colour trends and behind the scenes colour mixing.',
   },
   gelitup: {
-    profile: 'gel.it.up',
+    profile: 'gelitup',
     heading: 'Follow GEL.IT.UP on Instagram',
     description: 'Discover the latest nail art trends and professional tips.',
   },
