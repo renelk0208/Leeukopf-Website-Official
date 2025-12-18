@@ -7,6 +7,8 @@ export default function Contact() {
     email: '',
     subject: '',
     message: '',
+    privacyPolicyAccepted: false,
+    marketingConsent: false,
     honeypot: '', // spam protection
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -65,6 +67,8 @@ export default function Contact() {
           email: '',
           subject: '',
           message: '',
+          privacyPolicyAccepted: false,
+          marketingConsent: false,
           honeypot: '',
         });
         
@@ -282,10 +286,52 @@ export default function Contact() {
                 ></textarea>
               </div>
 
+              {/* Privacy Policy Acceptance - Required */}
+              <div className="flex items-start space-x-3">
+                <input
+                  type="checkbox"
+                  id="privacyPolicyAccepted"
+                  name="privacyPolicyAccepted"
+                  checked={formData.privacyPolicyAccepted}
+                  onChange={handleChange}
+                  required
+                  disabled={status === 'sending'}
+                  className="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                <label htmlFor="privacyPolicyAccepted" className="text-sm text-gray-700">
+                  I have read and accept the{' '}
+                  <a 
+                    href="/privacy-policy" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary-hover underline font-medium"
+                  >
+                    Privacy Policy
+                  </a>
+                  . <span className="text-red-500">*</span>
+                </label>
+              </div>
+
+              {/* Marketing Communications - Optional */}
+              <div className="flex items-start space-x-3">
+                <input
+                  type="checkbox"
+                  id="marketingConsent"
+                  name="marketingConsent"
+                  checked={formData.marketingConsent}
+                  onChange={handleChange}
+                  disabled={status === 'sending'}
+                  className="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                <label htmlFor="marketingConsent" className="text-sm text-gray-700">
+                  I agree to receive marketing communications from Leeukopf Laboratories. (Optional)
+                </label>
+              </div>
+
               {/* Full width submit button with proper tap target */}
               <button
                 type="submit"
-                disabled={status === 'sending'}
+                disabled={status === 'sending' || !formData.privacyPolicyAccepted}
                 className="btn-primary w-full px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status === 'sending' ? 'Sending...' : 'Send Message'}

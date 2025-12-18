@@ -27,6 +27,8 @@ interface FormData {
   language: string;
   notes: string;
   gdprConsent: boolean;
+  privacyPolicyAccepted: boolean;
+  marketingConsent: boolean;
   honeypot: string;
 }
 
@@ -124,6 +126,8 @@ export default function ClientRegistrationPage() {
     language: 'EN',
     notes: '',
     gdprConsent: false,
+    privacyPolicyAccepted: false,
+    marketingConsent: false,
     honeypot: ''
   });
 
@@ -152,6 +156,8 @@ export default function ClientRegistrationPage() {
         return typeof value === 'string' && value === '' ? 'Business type is required' : '';
       case 'gdprConsent':
         return typeof value === 'boolean' && !value ? 'You must agree to the data processing terms' : '';
+      case 'privacyPolicyAccepted':
+        return typeof value === 'boolean' && !value ? 'You must accept the Privacy Policy to submit the form' : '';
       default:
         return '';
     }
@@ -224,6 +230,7 @@ export default function ClientRegistrationPage() {
     newErrors.country = validateField('country', formData.country);
     newErrors.businessType = validateField('businessType', formData.businessType);
     newErrors.gdprConsent = validateField('gdprConsent', formData.gdprConsent);
+    newErrors.privacyPolicyAccepted = validateField('privacyPolicyAccepted', formData.privacyPolicyAccepted);
 
     // Business Interest validation: at least one must be selected
     if (!formData.interestPrivateLabel && !formData.interestDistribution) {
@@ -331,6 +338,8 @@ export default function ClientRegistrationPage() {
         language: 'EN',
         notes: '',
         gdprConsent: false,
+        privacyPolicyAccepted: false,
+        marketingConsent: false,
         honeypot: ''
       });
       setErrors({});
@@ -353,7 +362,7 @@ export default function ClientRegistrationPage() {
 
   const isFormValid = formData.company && formData.contact && formData.email &&
                       validateEmail(formData.email) && formData.country &&
-                      formData.businessType && formData.gdprConsent &&
+                      formData.businessType && formData.gdprConsent && formData.privacyPolicyAccepted &&
                       (formData.interestPrivateLabel || formData.interestDistribution) &&
                       (formData.country !== 'Other' || formData.countryOther.trim()) &&
                       (!formData.requestSampleBox || (
@@ -891,7 +900,44 @@ export default function ClientRegistrationPage() {
         </div>
 
         <div className="bg-gray-50 rounded-lg border border-gray-200 p-8">
-          <div className="space-y-4">
+          <div className="space-y-6">
+            {/* Privacy Policy Acceptance - Required */}
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                id="privacyPolicyAccepted"
+                name="privacyPolicyAccepted"
+                checked={formData.privacyPolicyAccepted}
+                onChange={handleInputChange}
+                className={`mt-1 w-5 h-5 text-primary border rounded focus:ring-primary ${
+                  errors.privacyPolicyAccepted ? 'border-red-500' : 'border-gray-300'
+                }`}
+                aria-required="true"
+                aria-invalid={!!errors.privacyPolicyAccepted}
+                aria-describedby={errors.privacyPolicyAccepted ? 'privacy-policy-error' : undefined}
+              />
+              <div>
+                <label htmlFor="privacyPolicyAccepted" className="text-sm text-gray-900">
+                  I have read and accept the{' '}
+                  <a 
+                    href="/privacy-policy" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary-hover underline font-medium"
+                  >
+                    Privacy Policy
+                  </a>
+                  . <span className="text-red-500">*</span>
+                </label>
+                {errors.privacyPolicyAccepted && (
+                  <p id="privacy-policy-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {errors.privacyPolicyAccepted}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* GDPR Data Processing Consent - Required */}
             <div className="flex items-start space-x-3">
               <input
                 type="checkbox"
@@ -906,19 +952,35 @@ export default function ClientRegistrationPage() {
                 aria-invalid={!!errors.gdprConsent}
                 aria-describedby={errors.gdprConsent ? 'gdpr-error' : undefined}
               />
-              <label htmlFor="gdprConsent" className="text-sm text-gray-900">
-                <span className="font-medium">I agree to the processing of my data</span> for the purpose of responding to this enquiry. <span className="text-red-500">*</span>
+              <div>
+                <label htmlFor="gdprConsent" className="text-sm text-gray-900">
+                  I agree to the processing of my data for the purpose of responding to this enquiry. <span className="text-red-500">*</span>
+                </label>
+                {errors.gdprConsent && (
+                  <p id="gdpr-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {errors.gdprConsent}
+                  </p>
+                )}
+                <p className="mt-2 text-sm text-gray-600 font-light">
+                  Your information is used only to respond to your enquiry. We respect your privacy and will never share your data with third parties.
+                </p>
+              </div>
+            </div>
+
+            {/* Marketing Communications - Optional */}
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                id="marketingConsent"
+                name="marketingConsent"
+                checked={formData.marketingConsent}
+                onChange={handleInputChange}
+                className="mt-1 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
+              />
+              <label htmlFor="marketingConsent" className="text-sm text-gray-900">
+                I agree to receive marketing communications from Leeukopf Laboratories. (Optional)
               </label>
             </div>
-            {errors.gdprConsent && (
-              <p id="gdpr-error" className="text-sm text-red-600 ml-8" role="alert">
-                {errors.gdprConsent}
-              </p>
-            )}
-
-            <p className="text-sm text-gray-600 font-light ml-8">
-              Your information is used only to respond to your enquiry. We respect your privacy and will never share your data with third parties.
-            </p>
           </div>
 
           <div className="mt-8 flex justify-center">
