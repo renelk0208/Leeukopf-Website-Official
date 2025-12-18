@@ -20,7 +20,6 @@ export default function AboutPage() {
     { src: '/videos/pigment-mixing/red-yellow-orange-pigment-mixing.MP4', title: 'Red Yellow Orange Pigment Mixing' },
     { src: '/videos/pigment-mixing/royal-purple-pigment-mixing.MOV', title: 'Royal Purple Pigment Mixing' },
     { src: '/videos/pigment-mixing/white-pigment-mixing.MOV', title: 'White Pigment Mixing' },
-    { src: '/videos/pigment-mixing/white-shimmer-pigment-mixing.MOV', title: 'White Shimmer Pigment Mixing' },
   ];
 
   return (
@@ -49,6 +48,20 @@ export default function AboutPage() {
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
           We specialize in gel polish systems, builder gels, acrylics, and complete nail care solutions. Every product is developed with meticulous attention to detail, ensuring safety, performance, and stunning results for nail professionals and their clients worldwide.
         </p>
+      </div>
+
+      {/* Pigment Mixing Videos Section - Moved to top for immediate engagement */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <div className="text-center mb-6 sm:mb-8">
+          <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">
+            Step inside our factory.
+          </p>
+        </div>
+        <VideoGallery
+          videos={pigmentMixingVideos}
+          title="See Pigment and Colour Being Mixed"
+          subtitle="Watch our expert technicians create custom gel polish colors through precise pigment blending"
+        />
       </div>
 
       {/* Responsive Quality & Compliance */}
@@ -169,13 +182,6 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
-
-      {/* Pigment Mixing Videos Section */}
-      <VideoGallery
-        videos={pigmentMixingVideos}
-        title="See Pigment and Colour Being Mixed"
-        subtitle="Watch our expert technicians create custom gel polish colors through precise pigment blending"
-      />
     </PageTemplate>
   );
 }
