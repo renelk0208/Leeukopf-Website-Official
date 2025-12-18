@@ -20,7 +20,6 @@ export default function AboutPage() {
     { src: '/videos/pigment-mixing/red-yellow-orange-pigment-mixing.MP4', title: 'Red Yellow Orange Pigment Mixing' },
     { src: '/videos/pigment-mixing/royal-purple-pigment-mixing.MOV', title: 'Royal Purple Pigment Mixing' },
     { src: '/videos/pigment-mixing/white-pigment-mixing.MOV', title: 'White Pigment Mixing' },
-    { src: '/videos/pigment-mixing/white-shimmer-pigment-mixing.MOV', title: 'White Shimmer Pigment Mixing' },
   ];
 
   return (
