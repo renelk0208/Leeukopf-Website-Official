@@ -84,6 +84,7 @@ export default function VideoModal({ videoSrc, isYouTube = false, onClose }: Vid
             <video
               src={videoSrc}
               controls
+              muted
               preload="none"
               playsInline
               onLoadedData={handleVideoLoad}
