@@ -65,14 +65,14 @@ export const categoryHero: Record<string, string> = {
   'biab-builder-in-a-bottle': '/img/products/builder-systems/BIAB builder-in-a-bottle/biab-builder-in-a-bottle-category-card.jpg',
   
   // Primers & Liquids
-  'primers-liquids': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
-  'liquids-and-solutions': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
+  'primers-liquids': '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',
+  'liquids-and-solutions': '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',
   'primers-with-acid': '/img/products/liquids-&-solutions/primer-liquid-images-1.jpg',
   
   // Nail Art
   'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
   '3d-multifunctional-gel': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
-  'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/solid-mirror-category-card.jpg',
+  'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/webp/solid-mirror-category-card.webp',
   
   // Lamps
   'lamps': '/img/products/Lamps/lamps_category_card-1.jpg',
@@ -178,7 +178,7 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   },
   'builder-systems': {
     'acrygel': [
-      '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-category-card-image.png',
+      '/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp',
     ],
     '3-in-1-builder': [
       '/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gels (2).jpg',
@@ -308,11 +308,11 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
   },
   'lamps': {
     'comfort-plus-l3': [
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (1).png',
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (2).png',
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (4).png',
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (5).png',
-      '/img/products/Lamps/Comfort PlusL3/comfort-plus-product-image (6).png',
+      '/img/products/Lamps/Comfort PlusL3/webp/comfort-plus-product-image (1).webp',
+      '/img/products/Lamps/Comfort PlusL3/webp/comfort-plus-product-image (2).webp',
+      '/img/products/Lamps/Comfort PlusL3/webp/comfort-plus-product-image (4).webp',
+      '/img/products/Lamps/Comfort PlusL3/webp/comfort-plus-product-image (5).webp',
+      '/img/products/Lamps/Comfort PlusL3/webp/comfort-plus-product-image (6).webp',
     ],
     'quick-cure-g1': [
       '/img/products/Lamps/Quick Cure G1/g1-quickcure-lamp (1).jpg',
@@ -337,7 +337,7 @@ export const productPlaceholder: Record<string, string> = {
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
-  'primers-liquids': '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
+  'primers-liquids': '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',
   'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
   'lamps': '/img/products/Lamps/lamps_category_card-1.jpg',
   'default': '/img/placeholders/category-placeholder.jpg',

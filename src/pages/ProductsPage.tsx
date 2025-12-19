@@ -168,7 +168,7 @@ export default function ProductsPage() {
             <ProductCategoryCard3D
               title="Polygel / AcryGel"
               subtitle="Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free"
-              imageSrc="/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-category-card-image.png"
+              imageSrc="/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp"
               href="/products/polygel-acrygel"
               alt="Polygel / AcryGel"
             />
@@ -190,7 +190,7 @@ export default function ProductsPage() {
             <ProductCategoryCard3D
               title="Liquids & Solutions"
               subtitle="Professional prep and cleanse solutions"
-              imageSrc="/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png"
+              imageSrc="/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp"
               href="/products/liquids-and-solutions"
               alt="Liquids & Solutions"
             />

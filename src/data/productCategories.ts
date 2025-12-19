@@ -161,7 +161,7 @@ export const productCategories: ProductCategory[] = [
     id: 'primers-liquids',
     key: 'primers-liquids',
     displayName: 'Primers & Liquids',
-    imagePath: '/img/products/liquids-&-solutions/liquids-&-solutions-category-card-image.png',
+    imagePath: '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',
     group: 'Primers & Liquids',
   },
 
@@ -179,7 +179,7 @@ export const productCategories: ProductCategory[] = [
     id: 'polygel-acrygel',
     key: 'polygel-acrygel',
     displayName: 'Polygel / AcryGel',
-    imagePath: '/img/products/builder-systems/Acrygel-Polygel/acrygel-polygel-category-card-image.png',
+    imagePath: '/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp',
     group: 'Builder Gels',
   },
   {

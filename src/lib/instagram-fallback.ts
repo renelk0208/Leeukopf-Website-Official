@@ -26,14 +26,14 @@ function validatePlaceholderPath(path: string): boolean {
  * @returns Array of exactly 4 image paths for fallback placeholders
  */
 export function getInstagramFallbackImages(brand: Brand): string[] {
-  const basePath = `/img/instagram/${brand}/placeholder`;
+  const basePath = `/img/instagram/${brand}/placeholder/webp`;
   
   // Build placeholder paths - always return exactly PLACEHOLDER_COUNT items
   const availablePlaceholders = [
-    `${basePath}/placeholder-1.jpg`,
-    `${basePath}/placeholder-2.jpg`,
-    `${basePath}/placeholder-3.jpg`,
-    `${basePath}/placeholder-4.jpg`,
+    `${basePath}/placeholder-1.webp`,
+    `${basePath}/placeholder-2.webp`,
+    `${basePath}/placeholder-3.webp`,
+    `${basePath}/placeholder-4.webp`,
   ];
   
   // Ensure we have exactly PLACEHOLDER_COUNT items
