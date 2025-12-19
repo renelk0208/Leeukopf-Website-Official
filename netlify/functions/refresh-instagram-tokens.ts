@@ -17,7 +17,11 @@ import type { Handler } from '@netlify/functions';
 
 // Configuration
 const DAYS_BEFORE_EXPIRY_TO_REFRESH = 7; // Refresh when less than 7 days remain
-const GRAPH_API_VERSION = 'v18.0';
+
+// Get API version from environment or default (consistent with instagram-feed.ts)
+function getApiVersion(): string {
+  return process.env.IG_GRAPH_API_VERSION || 'v18.0';
+}
 
 interface TokenDebugResponse {
   data: {
@@ -45,7 +49,8 @@ async function checkTokenExpiry(accessToken: string, appId: string, appSecret: s
   daysUntilExpiry: number;
 }> {
   const appToken = `${appId}|${appSecret}`;
-  const url = `https://graph.facebook.com/${GRAPH_API_VERSION}/debug_token?input_token=${accessToken}&access_token=${appToken}`;
+  const apiVersion = getApiVersion();
+  const url = `https://graph.facebook.com/${apiVersion}/debug_token?input_token=${accessToken}&access_token=${appToken}`;
 
   try {
     const response = await fetch(url);
@@ -80,7 +85,8 @@ async function checkTokenExpiry(accessToken: string, appId: string, appSecret: s
 
 // Refresh/extend a long-lived token
 async function refreshLongLivedToken(accessToken: string): Promise<string | null> {
-  const url = `https://graph.facebook.com/${GRAPH_API_VERSION}/oauth/access_token?grant_type=fb_exchange_token&client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&fb_exchange_token=${accessToken}`;
+  const apiVersion = getApiVersion();
+  const url = `https://graph.facebook.com/${apiVersion}/oauth/access_token?grant_type=fb_exchange_token&client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&fb_exchange_token=${accessToken}`;
 
   try {
     const response = await fetch(url);
@@ -118,7 +124,7 @@ async function updateNetlifyEnvVar(varName: string, newValue: string): Promise<b
   }
 
   try {
-    // Netlify API v2 endpoint for updating environment variables
+    // Netlify API v1 endpoint for updating environment variables
     const url = `https://api.netlify.com/api/v1/accounts/-/env/${varName}`;
     
     const response = await fetch(url, {
