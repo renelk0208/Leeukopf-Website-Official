@@ -51,6 +51,9 @@ interface InstagramApiResponse {
 // In-memory cache - store separate cache for each brand
 const cache = new Map<string, { response: InstagramApiResponse; timestamp: number }>();
 
+// Number of posts to fetch from API (matches display count to minimize response size)
+const API_FETCH_LIMIT = 4;
+
 // Get cache TTL from environment or default to 300 seconds
 function getCacheTTL(): number {
   const ttl = process.env.IG_CACHE_TTL_SECONDS;
@@ -147,7 +150,7 @@ async function fetchInstagramMedia(accessToken: string, pageId: string): Promise
   // Step 2: Fetch media from Instagram Business Account
   const apiVersion = getApiVersion();
   const fields = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp';
-  const url = `https://graph.facebook.com/${apiVersion}/${igAccountId}?fields=media.limit(12){${fields}}&access_token=${accessToken}`;
+  const url = `https://graph.facebook.com/${apiVersion}/${igAccountId}?fields=media.limit(${API_FETCH_LIMIT}){${fields}}&access_token=${accessToken}`;
 
   try {
     const response = await fetch(url);
@@ -176,8 +179,8 @@ async function fetchInstagramMedia(accessToken: string, pageId: string): Promise
     // Extract media items from the nested structure
     const mediaData = data.media?.data || [];
     
-    // Transform and return items (at most 4 for display)
-    const items = mediaData.slice(0, 4).map(transformItem);
+    // Transform and return items (limit to API_FETCH_LIMIT for display)
+    const items = mediaData.slice(0, API_FETCH_LIMIT).map(transformItem);
     
     console.log(`Successfully fetched ${items.length} Instagram posts`);
     
@@ -267,6 +270,13 @@ const handler: Handler = async (event: HandlerEvent) => {
   const pageId = brand === 'leeukopf' 
     ? (process.env.IG_PAGE_ID || process.env.IG_USER_ID)
     : (process.env.IG_GELITUP_PAGE_ID || process.env.IG_GELITUP_USER_ID);
+
+  // Log deprecation warning if old variable names are being used
+  if (brand === 'leeukopf' && !process.env.IG_PAGE_ID && process.env.IG_USER_ID) {
+    console.warn('DEPRECATION WARNING: IG_USER_ID is deprecated. Please use IG_PAGE_ID instead.');
+  } else if (brand === 'gelitup' && !process.env.IG_GELITUP_PAGE_ID && process.env.IG_GELITUP_USER_ID) {
+    console.warn('DEPRECATION WARNING: IG_GELITUP_USER_ID is deprecated. Please use IG_GELITUP_PAGE_ID instead.');
+  }
 
   // Check for required environment variables
   if (!accessToken || !pageId) {
