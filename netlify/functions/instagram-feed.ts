@@ -472,17 +472,24 @@ const handler: Handler = async (event: HandlerEvent) => {
     let response: InstagramApiResponse;
     
     if (brand === 'gelitup') {
-      // GelItUp: Always use direct fetch with userId
+      // GelItUp: Always use direct fetch with userId (already validated above)
+      if (!userId) {
+        // This should never happen due to validation above, but TypeScript needs assurance
+        throw new Error('userId is required for gelitup but was not found');
+      }
       console.log(`IG[${brand}] Mode: direct fetch`);
-      response = await fetchInstagramMediaDirect(accessToken, userId!, brand, debug);
+      response = await fetchInstagramMediaDirect(accessToken, userId, brand, debug);
     } else {
       // Leeukopf: Use direct fetch if userId is available, otherwise use page lookup
       if (userId) {
         console.log(`IG[${brand}] Mode: direct fetch (userId available)`);
         response = await fetchInstagramMediaDirect(accessToken, userId, brand, debug);
-      } else {
+      } else if (pageId) {
         console.log(`IG[${brand}] Mode: page lookup (no userId, using pageId)`);
-        response = await fetchInstagramMediaViaPage(accessToken, pageId!, brand, debug);
+        response = await fetchInstagramMediaViaPage(accessToken, pageId, brand, debug);
+      } else {
+        // This should never happen due to validation above, but TypeScript needs assurance
+        throw new Error('Either userId or pageId is required for leeukopf but neither was found');
       }
     }
 

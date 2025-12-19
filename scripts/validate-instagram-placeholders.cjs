@@ -35,10 +35,10 @@ brands.forEach((brand) => {
       console.error(`❌ ERROR: Missing placeholder image: ${placeholderPath}`);
       hasErrors = true;
     } else {
-      // Validate that the path doesn't contain /products/
+      // Validate that the path doesn't contain /products/ directory
       const relativePath = path.relative(path.join(__dirname, '..'), placeholderPath);
-      if (relativePath.includes('products')) {
-        console.error(`❌ ERROR: Invalid placeholder path (contains 'products'): ${relativePath}`);
+      if (relativePath.includes('/products/')) {
+        console.error(`❌ ERROR: Invalid placeholder path (contains '/products/'): ${relativePath}`);
         hasErrors = true;
       } else {
         console.log(`  ✅ placeholder-${i}.jpg exists`);

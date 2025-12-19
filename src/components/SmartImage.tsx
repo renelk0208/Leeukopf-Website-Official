@@ -38,7 +38,6 @@ interface SmartImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'loa
  * - Async decoding for non-blocking rendering
  * - Required width/height to prevent Cumulative Layout Shift (CLS)
  * - Optional fetchPriority for LCP optimization
- * - Responsive images via sizes attribute
  * 
  * @example
  * // Hero image (above the fold)
@@ -58,7 +57,6 @@ interface SmartImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'loa
  *   alt="Product image"
  *   width={800}
  *   height={600}
- *   sizes="(max-width: 640px) 100vw, 800px"
  * />
  */
 export default function SmartImage({
@@ -73,15 +71,9 @@ export default function SmartImage({
   style,
   ...rest
 }: SmartImageProps) {
-  // Generate srcSet for responsive images if needed
-  // For now, we'll use the single src, but this can be extended
-  // to support multiple resolutions (e.g., 1x, 2x, 3x)
-  const srcSet = generateSrcSet(src, width);
-  
   return (
     <img
       src={src}
-      srcSet={srcSet}
       alt={alt}
       width={width}
       height={height}
@@ -98,22 +90,4 @@ export default function SmartImage({
       {...rest}
     />
   );
-}
-
-/**
- * Generate srcSet for responsive images
- * In a real implementation, this would generate multiple sizes
- * For now, it returns the original source
- * 
- * @param src - Image source URL
- * @param width - Image width
- * @returns srcSet string
- */
-function generateSrcSet(src: string, width: number): string | undefined {
-  // For static images, we just use the single source
-  // In a more advanced setup, you could generate multiple sizes:
-  // e.g., "image-400w.jpg 400w, image-800w.jpg 800w, image-1200w.jpg 1200w"
-  
-  // For now, return undefined to let the browser use src
-  return undefined;
 }
