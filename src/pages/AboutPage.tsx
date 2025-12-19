@@ -3,7 +3,6 @@ import StartHereBanner from '../components/StartHereBanner';
 import WhyChooseLeeukopf from '../components/WhyChooseLeeukopf';
 import OptimizedImage from '../components/OptimizedImage';
 import VideoGallery from '../components/VideoGallery';
-import InstagramFeed from '../components/InstagramFeed';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function AboutPage() {
@@ -183,11 +182,6 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Instagram Feed - 8 tiles on About Us page */}
-      <div className="mb-10 sm:mb-12 md:mb-16">
-        <InstagramFeed brand="leeukopf" limit={8} />
       </div>
     </PageTemplate>
   );

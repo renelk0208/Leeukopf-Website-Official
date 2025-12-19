@@ -36,7 +36,7 @@ export const productCategories: ProductCategory[] = [
     id: 'glitters-collection',
     key: 'glitters-collection',
     displayName: 'Glitters Collection',
-    imagePath: '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.png',
+    imagePath: '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp',
     group: 'Gel Polish',
   },
   {

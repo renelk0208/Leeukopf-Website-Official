@@ -28,7 +28,7 @@ export const categoryHero: Record<string, string> = {
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg',
   'cat-eye-collection': '/img/products/gel_polishes/Cat Eye Collection/cat-eye_categoty_card-image.png',
   'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-category-card-image.jpg',
-  'glitters-collection': '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.png',
+  'glitters-collection': '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp',
   'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-category card image.jpg',
   'french-collection': '/img/products/gel_polishes/French Collection/french-collection-category-card-image.png',
   'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
