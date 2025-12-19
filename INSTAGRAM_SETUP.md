@@ -30,8 +30,8 @@ To enable both Instagram feeds, you need to set the following environment variab
 
 ### Leeukopf Laboratories (@leeukopf_laboratories)
 ```
-IG_ACCESS_TOKEN=<your_long_lived_access_token>
-IG_PAGE_ID=<your_facebook_page_id>
+LEEUKOPF_IG_ACCESS_TOKEN=<your_long_lived_access_token>
+LEEUKOPF_IG_PAGE_ID=<your_facebook_page_id>
 ```
 
 **Note:** Use your **Facebook Page ID**, NOT the Instagram Business Account ID. The function will automatically resolve the Instagram Business Account ID from the Page ID.
