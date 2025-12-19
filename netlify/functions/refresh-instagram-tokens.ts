@@ -4,7 +4,7 @@ import type { Handler } from '@netlify/functions';
  * Scheduled function to automatically refresh Instagram long-lived access tokens
  * Runs daily to check token expiry and refresh when needed
  * 
- * Schedule: Daily at 2 AM UTC (configured in netlify.toml)
+ * Schedule: Daily at midnight UTC (configured via schedule export)
  * 
  * Environment Variables Required:
  * - IG_ACCESS_TOKEN: Leeukopf long-lived access token
@@ -287,5 +287,8 @@ const handler: Handler = async () => {
     body: JSON.stringify(results, null, 2),
   };
 };
+
+// Schedule configuration for Netlify
+export const schedule = '@daily'; // Run once per day at midnight UTC
 
 export { handler };

@@ -13,7 +13,7 @@ This system automatically refreshes Instagram long-lived access tokens before th
 │                   Netlify Scheduled Function                │
 │            (refresh-instagram-tokens.ts)                    │
 │                                                             │
-│  Runs Daily at 2 AM UTC                                     │
+│  Runs Daily at midnight UTC                                 │
 │                                                             │
 │  1. Check token expiry (debug_token API)                    │
 │  2. Refresh if < 7 days until expiry                        │
@@ -40,7 +40,7 @@ This system automatically refreshes Instagram long-lived access tokens before th
 
 ### Workflow
 
-1. **Daily Check** (2 AM UTC)
+1. **Daily Check** (midnight UTC)
    - Scheduled function runs automatically
    - Checks both Leeukopf and GEL.IT.UP tokens independently
 
@@ -141,7 +141,7 @@ After deployment:
    - Check days until expiry for each token
 
 3. **Monitor Daily Runs**
-   - Function runs automatically at 2 AM UTC
+   - Function runs automatically at midnight UTC
    - Check logs daily for first week
    - Ensure no errors
 
@@ -159,20 +159,23 @@ const DAYS_BEFORE_EXPIRY_TO_REFRESH = 7; // Change this value
 
 ### Schedule
 
-Default: **Daily at 2 AM UTC**
+Default: **Daily at midnight UTC** (using `@daily` schedule)
 
-To change, edit `netlify.toml`:
+The schedule is configured in the function file itself using Netlify's schedule export:
 
-```toml
-[[functions]]
-  path = "refresh-instagram-tokens"
-  schedule = "0 2 * * *"  # Cron expression
+```typescript
+export const schedule = '@daily'; // Run once per day at midnight UTC
 ```
 
-Common schedules:
-- `0 2 * * *` - Daily at 2 AM UTC
+You can also use cron expressions:
+- `@daily` - Daily at midnight UTC
+- `@hourly` - Every hour
+- `@weekly` - Weekly on Sunday at midnight
+- `0 2 * * *` - Daily at 2 AM UTC (cron syntax)
 - `0 */6 * * *` - Every 6 hours
 - `0 0 * * 0` - Weekly on Sunday at midnight
+
+To change the schedule, edit the `schedule` export in `netlify/functions/refresh-instagram-tokens.ts`.
 
 ## Monitoring
 
