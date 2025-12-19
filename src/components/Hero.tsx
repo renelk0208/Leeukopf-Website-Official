@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
+import SmartImage from './SmartImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function Hero() {
@@ -10,16 +11,15 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Hero background image */}
-      <img
+      {/* Hero background image - optimized for LCP */}
+      <SmartImage
         src="/img/hero/home-page-hero.jpg"
         alt="Leeukopf Laboratories Premium Gel Polish"
         width={2000}
         height={848}
-        className="absolute inset-0 w-full h-full object-cover object-center z-0"
         fetchPriority="high"
-        loading="eager"
-        draggable={false}
+        lazy={false}
+        className="absolute inset-0 w-full h-full object-cover object-center z-0"
       />
       {/* Responsive padding: more compact on mobile, spacious on desktop */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-8 md:pb-12">

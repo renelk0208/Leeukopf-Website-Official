@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Instagram, ExternalLink, Play, X } from 'lucide-react';
+import { getInstagramFallbackImages } from '../lib/instagram-fallback';
 
 // Brand type
 type Brand = 'leeukopf' | 'gelitup';
@@ -58,26 +59,24 @@ function SkeletonGrid() {
   );
 }
 
-// Fallback images for when Instagram feed is unavailable
-const FALLBACK_IMAGES = [
-  '/img/instagram-fallback/fallback-1.jpg',
-  '/img/instagram-fallback/fallback-2.png',
-  '/img/instagram-fallback/fallback-3.png',
-  '/img/instagram-fallback/fallback-4.png',
-];
+// Fallback images for when Instagram feed is unavailable - removed, now using getInstagramFallbackImages()
+// const FALLBACK_IMAGES = [...];
 
 // Error fallback component with static images
 interface ErrorFallbackProps {
   profile: string;
   profileUrl: string;
+  brand: Brand;
 }
 
-function ErrorFallback({ profile, profileUrl }: ErrorFallbackProps) {
+function ErrorFallback({ profile, profileUrl, brand }: ErrorFallbackProps) {
+  const fallbackImages = getInstagramFallbackImages(brand);
+  
   return (
     <>
       {/* Display fallback images in grid */}
       <div className={GRID_CLASSES}>
-        {FALLBACK_IMAGES.map((imageSrc, index) => (
+        {fallbackImages.map((imageSrc, index) => (
           <a
             key={index}
             href={profileUrl}
@@ -420,7 +419,7 @@ export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps
             {loadState === 'idle' || loadState === 'loading' ? (
               <SkeletonGrid />
             ) : loadState === 'error' ? (
-              <ErrorFallback profile={config.profile} profileUrl={profileUrl} />
+              <ErrorFallback profile={config.profile} profileUrl={profileUrl} brand={brand} />
             ) : (
               <>
                 <div className={GRID_CLASSES}>
