@@ -36,7 +36,7 @@ export const productCategories: ProductCategory[] = [
     id: 'glitters-collection',
     key: 'glitters-collection',
     displayName: 'Glitters Collection',
-    imagePath: '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.png',
+    imagePath: '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp',
     group: 'Gel Polish',
   },
   {
@@ -71,7 +71,7 @@ export const productCategories: ProductCategory[] = [
     id: 'platinum-gel-polish',
     key: 'platinum-gel-polish',
     displayName: 'Platinum Gel Polish',
-    imagePath: '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.png',
+    imagePath: '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.webp',
     group: 'Gel Polish',
   },
   {
@@ -170,7 +170,7 @@ export const productCategories: ProductCategory[] = [
     id: 'nail-art',
     key: 'nail-art',
     displayName: 'Nail Art',
-    imagePath: '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
+    imagePath: '/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp',
     group: 'Nail Art',
   },
 

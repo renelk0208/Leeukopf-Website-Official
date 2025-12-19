@@ -187,7 +187,7 @@ export default function DistributorsWantedPage() {
       <div className="flex justify-center">
         <div className="image-frame w-full max-w-2xl">
           <OptimizedImage
-            src="/distribution partnership.png"
+            src="/distribution partnership.webp"
             alt="Distribution partnership"
             width={1024}
             height={1536}
