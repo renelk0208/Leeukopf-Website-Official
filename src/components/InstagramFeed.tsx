@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Instagram, ExternalLink, AlertCircle, Play, X } from 'lucide-react';
+import { Instagram, ExternalLink, Play, X } from 'lucide-react';
 
 // Brand type
 type Brand = 'leeukopf' | 'gelitup';
@@ -58,7 +58,15 @@ function SkeletonGrid() {
   );
 }
 
-// Error fallback component
+// Fallback images for when Instagram feed is unavailable
+const FALLBACK_IMAGES = [
+  '/img/instagram-fallback/fallback-1.jpg',
+  '/img/instagram-fallback/fallback-2.png',
+  '/img/instagram-fallback/fallback-3.png',
+  '/img/instagram-fallback/fallback-4.png',
+];
+
+// Error fallback component with static images
 interface ErrorFallbackProps {
   profile: string;
   profileUrl: string;
@@ -66,27 +74,56 @@ interface ErrorFallbackProps {
 
 function ErrorFallback({ profile, profileUrl }: ErrorFallbackProps) {
   return (
-    <div className="text-center py-8 sm:py-12 px-4">
-      <div className="flex justify-center mb-4">
-        <AlertCircle size={48} className="text-gray-500" aria-hidden="true" />
+    <>
+      {/* Display fallback images in grid */}
+      <div className={GRID_CLASSES}>
+        {FALLBACK_IMAGES.map((imageSrc, index) => (
+          <a
+            key={index}
+            href={profileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] focus:ring-offset-2 w-full"
+            aria-label={`View sample ${index + 1} - Visit our Instagram @${profile}`}
+          >
+            <img
+              src={imageSrc}
+              alt={`Sample content ${index + 1}`}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+            {/* Instagram icon overlay */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="bg-white/90 rounded-full p-3">
+                <Instagram size={32} className="text-pink-500" aria-hidden="true" />
+              </div>
+            </div>
+          </a>
+        ))}
       </div>
-      <p className="text-gray-700 text-base sm:text-lg mb-6 font-light">
-        Our live Instagram feed is not available right now.
-        <br className="hidden sm:block" />
-        {' '}Visit us on Instagram →{' '}
-        <span className="font-medium text-gray-900">@{profile}</span>
-      </p>
-      <a
-        href={profileUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 min-h-[44px]"
-      >
-        <Instagram size={20} className="mr-2" aria-hidden="true" />
-        Visit Our Instagram
-        <ExternalLink size={16} className="ml-2" aria-hidden="true" />
-      </a>
-    </div>
+
+      {/* CTA message */}
+      <div className="text-center mt-8 sm:mt-10">
+        <p className="text-gray-700 text-base sm:text-lg mb-6 font-light">
+          Our live Instagram feed is temporarily unavailable.
+          <br className="hidden sm:block" />
+          {' '}Visit us on Instagram for the latest updates →{' '}
+          <span className="font-medium text-gray-900">@{profile}</span>
+        </p>
+        <a
+          href={profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 min-h-[44px]"
+        >
+          <Instagram size={20} className="mr-2" aria-hidden="true" />
+          Follow @{profile}
+          <ExternalLink size={16} className="ml-2" aria-hidden="true" />
+        </a>
+      </div>
+    </>
   );
 }
 

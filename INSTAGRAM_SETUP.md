@@ -31,14 +31,26 @@ To enable both Instagram feeds, you need to set the following environment variab
 ### Leeukopf Laboratories (@leeukopf_laboratories)
 ```
 IG_ACCESS_TOKEN=<your_long_lived_access_token>
-IG_USER_ID=<your_instagram_business_account_id>
+IG_PAGE_ID=<your_facebook_page_id>
 ```
+
+**Note:** Use your **Facebook Page ID**, NOT the Instagram Business Account ID. The function will automatically resolve the Instagram Business Account ID from the Page ID.
 
 ### GEL.IT.UP (@gelitup)
 ```
 IG_GELITUP_ACCESS_TOKEN=<your_long_lived_access_token>
-IG_GELITUP_USER_ID=<your_instagram_business_account_id>
+IG_GELITUP_PAGE_ID=<your_facebook_page_id>
 ```
+
+**Note:** Use your **Facebook Page ID**, NOT the Instagram Business Account ID. The function will automatically resolve the Instagram Business Account ID from the Page ID.
+
+### Backward Compatibility
+
+For backward compatibility, the function also supports the old variable names:
+- `IG_USER_ID` (deprecated, use `IG_PAGE_ID` instead)
+- `IG_GELITUP_USER_ID` (deprecated, use `IG_GELITUP_PAGE_ID` instead)
+
+If both old and new variables are set, the new ones (`IG_PAGE_ID`, `IG_GELITUP_PAGE_ID`) take precedence.
 
 ### Optional Settings
 ```
@@ -48,12 +60,37 @@ IG_CACHE_TTL_SECONDS=300    # Default: 300 (5 minutes)
 
 ## Getting Instagram API Credentials
 
-To get the required access tokens and user IDs, follow these steps:
+To get the required access tokens and Page IDs, follow these steps:
 
 ### Prerequisites
 - Instagram Business or Creator account
 - Facebook Page connected to the Instagram account
 - Facebook Developer account
+
+### Graph API Flow
+
+The Instagram feed uses a two-step Graph API flow:
+
+1. **First call**: Get the Instagram Business Account ID from your Facebook Page ID
+   ```
+   GET /{PAGE_ID}?fields=instagram_business_account&access_token={ACCESS_TOKEN}
+   ```
+   Response:
+   ```json
+   {
+     "instagram_business_account": {
+       "id": "17841400123456789"
+     },
+     "id": "123456789012345"
+   }
+   ```
+
+2. **Second call**: Get media from the Instagram Business Account
+   ```
+   GET /{IG_ACCOUNT_ID}?fields=media.limit(12){id,caption,media_type,media_url,thumbnail_url,permalink,timestamp}&access_token={ACCESS_TOKEN}
+   ```
+
+**Important:** You only need to provide the **Facebook Page ID** in the environment variables. The Netlify function automatically performs both steps to retrieve your Instagram posts.
 
 ### Steps
 
@@ -65,20 +102,21 @@ To get the required access tokens and user IDs, follow these steps:
 2. **Get a User Access Token**
    - Go to Facebook Graph API Explorer
    - Select your app
-   - Add these permissions: `instagram_basic`, `pages_show_list`, `pages_read_engagement`
+   - Add these permissions: `instagram_basic`, `pages_show_list`, `pages_read_engagement`, `instagram_manage_insights`
    - Generate an access token
 
-3. **Get Your Instagram Business Account ID**
+3. **Get Your Facebook Page ID**
    - Use the Graph API Explorer to make a GET request:
      ```
      GET /me/accounts
      ```
-   - Find your Facebook Page ID
-   - Then make another request:
+   - Find your Facebook Page in the response
+   - Copy the Page `id` field (this is what you'll use for `IG_PAGE_ID`)
+   - Verify it's connected to Instagram:
      ```
      GET /{page-id}?fields=instagram_business_account
      ```
-   - The response will contain your Instagram Business Account ID
+   - If the response includes `instagram_business_account`, you're good to go!
 
 4. **Exchange for a Long-Lived Token**
    - User access tokens expire after 1 hour
@@ -128,22 +166,31 @@ To get the required access tokens and user IDs, follow these steps:
 
 ### Feed shows "Our live Instagram feed is not available right now"
 This means:
-- Environment variables are missing or incorrect
+- Environment variables are missing or incorrect  
 - Access token has expired
 - Instagram API is returning an error
 - Instagram account is not a Business/Creator account
+- Facebook Page is not connected to an Instagram Business Account
 
 **Solutions:**
-1. Verify environment variables are set in Netlify
-2. Check Netlify function logs for error messages
-3. Verify access token is still valid
-4. Ensure Instagram account is Business/Creator type
-5. Refresh long-lived access token if expired
+1. Verify environment variables are set in Netlify (use `IG_PAGE_ID` not `IG_USER_ID`)
+2. Ensure you're using your **Facebook Page ID**, not Instagram Business Account ID
+3. Check Netlify function logs for specific error messages
+4. Verify access token is still valid
+5. Ensure Instagram account is Business/Creator type
+6. Verify Facebook Page is connected to Instagram: `GET /{page-id}?fields=instagram_business_account`
+7. Refresh long-lived access token if expired
 
 ### Only Leeukopf feed works, GEL.IT.UP shows fallback
 This means the GEL.IT.UP environment variables are not set:
-- Add `IG_GELITUP_ACCESS_TOKEN` and `IG_GELITUP_USER_ID` to Netlify
+- Add `IG_GELITUP_ACCESS_TOKEN` and `IG_GELITUP_PAGE_ID` to Netlify
 - Redeploy the site
+
+### Error: "Tried accessing nonexisting field (media) on node type (Page)"
+This error occurred in older versions when trying to access `/media` directly on a Page node. This is now fixed:
+- The function now uses the correct two-step flow (Page → IG Business Account → Media)
+- Make sure you're using `IG_PAGE_ID` (not `IG_USER_ID`) 
+- The function automatically resolves the Instagram Business Account ID from the Page ID
 
 ### Posts are outdated
 The feed is cached for 5 minutes by default:

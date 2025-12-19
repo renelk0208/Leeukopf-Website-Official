@@ -46,10 +46,18 @@ interface InstagramFeedItem {
 interface InstagramApiResponse {
   items: InstagramFeedItem[];
   error: string | null;
+  // Debug fields (only present when debug=1)
+  brand?: string;
+  pageIdLast4?: string;
+  igIdLast4?: string;
+  fetchedCount?: number;
 }
 
 // In-memory cache - store separate cache for each brand
 const cache = new Map<string, { response: InstagramApiResponse; timestamp: number }>();
+
+// Number of posts to fetch from API (matches display count to minimize response size)
+const API_FETCH_LIMIT = 4;
 
 // Get cache TTL from environment or default to 300 seconds
 function getCacheTTL(): number {
@@ -100,51 +108,135 @@ function transformItem(item: InstagramMediaItem): InstagramFeedItem {
   };
 }
 
+// Fetch Instagram Business Account ID from Facebook Page
+async function fetchInstagramBusinessAccountId(accessToken: string, pageId: string, brand: string): Promise<string | null> {
+  const apiVersion = getApiVersion();
+  const url = `https://graph.facebook.com/${apiVersion}/${pageId}?fields=instagram_business_account&access_token=${accessToken}`;
+
+  try {
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const errorMessage = (errorData as { error?: { message: string } })?.error?.message || 'Unknown error';
+      console.log(`IG[${brand}] Error fetching IG account: status=${response.status} error="${errorMessage}"`);
+      return null;
+    }
+
+    const data = await response.json();
+    
+    if (!data.instagram_business_account?.id) {
+      console.log(`IG[${brand}] No Instagram Business Account found for Page ID`);
+      return null;
+    }
+
+    return data.instagram_business_account.id;
+  } catch (error) {
+    console.log(`IG[${brand}] Exception fetching IG account: ${error instanceof Error ? error.message : 'Unknown'}`);
+    return null;
+  }
+}
+
 // Fetch Instagram media using the Facebook Graph API
-async function fetchInstagramMedia(accessToken: string, userId: string): Promise<InstagramApiResponse> {
+async function fetchInstagramMedia(accessToken: string, pageId: string, brand: string, debug: boolean): Promise<InstagramApiResponse> {
+  // Step 1: Get Instagram Business Account ID from Page ID
+  const igAccountId = await fetchInstagramBusinessAccountId(accessToken, pageId, brand);
+  
+  if (!igAccountId) {
+    const errorMsg = 'Failed to retrieve Instagram Business Account. Please ensure the Page ID is correct and connected to an Instagram Business Account.';
+    console.log(`IG[${brand}] Failed to get IG account from Page ID`);
+    const response: InstagramApiResponse = {
+      items: [],
+      error: errorMsg,
+    };
+    if (debug) {
+      response.brand = brand;
+      response.pageIdLast4 = pageId.slice(-4);
+      response.igIdLast4 = '';
+      response.fetchedCount = 0;
+    }
+    return response;
+  }
+
+  console.log(`IG[${brand}] Got IG account: ...${igAccountId.slice(-4)}`);
+
+  // Step 2: Fetch media from Instagram Business Account
   const apiVersion = getApiVersion();
   const fields = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp';
-  const url = `https://graph.facebook.com/${apiVersion}/${userId}/media?fields=${fields}&access_token=${accessToken}&limit=4`;
+  const url = `https://graph.facebook.com/${apiVersion}/${igAccountId}?fields=media.limit(${API_FETCH_LIMIT}){${fields}}&access_token=${accessToken}`;
 
-  const response = await fetch(url);
-  
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    const errorMessage = (errorData as InstagramAPIResponse)?.error?.message || 'Unknown error';
-    console.error('Instagram API error:', response.status, errorMessage);
-    return {
-      items: [],
-      error: 'UPSTREAM_ERROR',
-    };
-  }
-
-  let data: InstagramAPIResponse;
   try {
-    data = await response.json();
-  } catch (parseError) {
-    console.error('Failed to parse Instagram API response:', parseError);
-    return {
-      items: [],
-      error: 'PARSE_ERROR',
-    };
-  }
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const errorMessage = (errorData as InstagramAPIResponse)?.error?.message || 'Unknown error';
+      console.log(`IG[${brand}] API error: status=${response.status} error="${errorMessage}"`);
+      const result: InstagramApiResponse = {
+        items: [],
+        error: `Instagram API error: ${errorMessage}`,
+      };
+      if (debug) {
+        result.brand = brand;
+        result.pageIdLast4 = pageId.slice(-4);
+        result.igIdLast4 = igAccountId.slice(-4);
+        result.fetchedCount = 0;
+      }
+      return result;
+    }
 
-  // Check if we got an error in the response body
-  if (data.error) {
-    console.error('Instagram API returned error:', data.error.message);
-    return {
-      items: [],
-      error: 'UPSTREAM_ERROR',
-    };
-  }
+    const data = await response.json();
+    
+    // Check if we got an error in the response body
+    if (data.error) {
+      console.log(`IG[${brand}] API returned error: "${data.error.message}"`);
+      const result: InstagramApiResponse = {
+        items: [],
+        error: `Instagram API error: ${data.error.message}`,
+      };
+      if (debug) {
+        result.brand = brand;
+        result.pageIdLast4 = pageId.slice(-4);
+        result.igIdLast4 = igAccountId.slice(-4);
+        result.fetchedCount = 0;
+      }
+      return result;
+    }
 
-  // Transform and return items (at most 4)
-  const items = (data.data || []).slice(0, 4).map(transformItem);
-  
-  return {
-    items,
-    error: null,
-  };
+    // Extract media items from the nested structure
+    const mediaData = data.media?.data || [];
+    
+    // Transform and return items (limit to API_FETCH_LIMIT for display)
+    const items = mediaData.slice(0, API_FETCH_LIMIT).map(transformItem);
+    
+    console.log(`IG[${brand}] Success: fetched=${items.length} posts`);
+    
+    const result: InstagramApiResponse = {
+      items,
+      error: null,
+    };
+    if (debug) {
+      result.brand = brand;
+      result.pageIdLast4 = pageId.slice(-4);
+      result.igIdLast4 = igAccountId.slice(-4);
+      result.fetchedCount = items.length;
+    }
+    return result;
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : 'Unknown';
+    console.log(`IG[${brand}] Exception: ${errorMsg}`);
+    const result: InstagramApiResponse = {
+      items: [],
+      error: 'An unexpected error occurred while fetching Instagram posts.',
+    };
+    if (debug) {
+      result.brand = brand;
+      result.pageIdLast4 = pageId.slice(-4);
+      result.igIdLast4 = igAccountId.slice(-4);
+      result.fetchedCount = 0;
+    }
+    return result;
+  }
 }
 
 // Get allowed origins from environment or default to leeukopf.com
@@ -200,55 +292,96 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 
-  // Get brand from query parameter (default to leeukopf)
-  const brand = event.queryStringParameters?.brand || 'leeukopf';
-  
-  // Validate brand parameter
-  if (brand !== 'leeukopf' && brand !== 'gelitup') {
-    return {
-      statusCode: 400,
-      headers,
-      body: JSON.stringify({ items: [], error: 'Invalid brand parameter' }),
-    };
-  }
-
-  // Get environment variables based on brand
-  const accessToken = brand === 'leeukopf' 
-    ? process.env.IG_ACCESS_TOKEN 
-    : process.env.IG_GELITUP_ACCESS_TOKEN;
-  const userId = brand === 'leeukopf' 
-    ? process.env.IG_USER_ID 
-    : process.env.IG_GELITUP_USER_ID;
-
-  // Check for required environment variables
-  if (!accessToken || !userId) {
-    console.error(`Instagram API misconfigured for brand ${brand}: missing env vars.`);
-    return {
-      statusCode: 503,
-      headers,
-      body: JSON.stringify({ 
-        items: [],
-        error: 'SERVICE_UNAVAILABLE',
-      }),
-    };
-  }
-
-  // Check in-memory cache (separate cache per brand)
-  const cacheTTL = getCacheTTL();
-  const now = Date.now();
-  const cached = cache.get(brand);
-  
-  if (cached && (now - cached.timestamp) < cacheTTL * 1000) {
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify(cached.response),
-    };
-  }
-
   try {
+    // Get brand from query parameter (default to leeukopf)
+    const brand = event.queryStringParameters?.brand || 'leeukopf';
+    
+    // Get debug flag
+    const debug = event.queryStringParameters?.debug === '1';
+    
+    // Validate brand parameter
+    if (brand !== 'leeukopf' && brand !== 'gelitup') {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ items: [], error: 'Invalid brand parameter. Use brand=leeukopf or brand=gelitup' }),
+      };
+    }
+
+    // Get environment variables based on brand
+    // Support both new naming convention (VITE_*) and legacy names for backward compatibility
+    let accessToken: string | undefined;
+    let pageId: string | undefined;
+    
+    if (brand === 'leeukopf') {
+      // Try new names first, fall back to legacy names
+      accessToken = process.env.VITE_LEEUKOPF_IG_ACCESS_TOKEN || process.env.IG_ACCESS_TOKEN;
+      pageId = process.env.VITE_LEEUKOPF_IG_PAGE_ID || process.env.IG_PAGE_ID || process.env.IG_USER_ID;
+      
+      // Log deprecation warning if old variable names are being used
+      if (!process.env.VITE_LEEUKOPF_IG_ACCESS_TOKEN && process.env.IG_ACCESS_TOKEN) {
+        console.log('IG[leeukopf] Using legacy IG_ACCESS_TOKEN (consider migrating to VITE_LEEUKOPF_IG_ACCESS_TOKEN)');
+      }
+      if (!process.env.VITE_LEEUKOPF_IG_PAGE_ID && (process.env.IG_PAGE_ID || process.env.IG_USER_ID)) {
+        console.log('IG[leeukopf] Using legacy IG_PAGE_ID/IG_USER_ID (consider migrating to VITE_LEEUKOPF_IG_PAGE_ID)');
+      }
+    } else {
+      // gelitup brand
+      accessToken = process.env.VITE_GELITUP_IG_ACCESS_TOKEN || process.env.IG_GELITUP_ACCESS_TOKEN;
+      pageId = process.env.VITE_GELITUP_IG_PAGE_ID || process.env.IG_GELITUP_PAGE_ID || process.env.IG_GELITUP_USER_ID;
+      
+      // Log deprecation warning if old variable names are being used
+      if (!process.env.VITE_GELITUP_IG_ACCESS_TOKEN && process.env.IG_GELITUP_ACCESS_TOKEN) {
+        console.log('IG[gelitup] Using legacy IG_GELITUP_ACCESS_TOKEN (consider migrating to VITE_GELITUP_IG_ACCESS_TOKEN)');
+      }
+      if (!process.env.VITE_GELITUP_IG_PAGE_ID && (process.env.IG_GELITUP_PAGE_ID || process.env.IG_GELITUP_USER_ID)) {
+        console.log('IG[gelitup] Using legacy IG_GELITUP_PAGE_ID/IG_GELITUP_USER_ID (consider migrating to VITE_GELITUP_IG_PAGE_ID)');
+      }
+    }
+
+    // Check for required environment variables
+    if (!accessToken || !pageId) {
+      console.log(`IG[${brand}] Configuration error: missing access token or page ID`);
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ 
+          items: [],
+          error: 'Instagram feed is not configured. Please set the required environment variables.',
+        }),
+      };
+    }
+
+    // Check in-memory cache (separate cache per brand)
+    const cacheTTL = getCacheTTL();
+    const now = Date.now();
+    const cached = cache.get(brand);
+    
+    if (cached && (now - cached.timestamp) < cacheTTL * 1000) {
+      // If debug mode, add debug fields to cached response
+      if (debug && pageId) {
+        const cachedWithDebug = {
+          ...cached.response,
+          brand,
+          pageIdLast4: pageId.slice(-4),
+          igIdLast4: cached.response.igIdLast4 || '',
+          fetchedCount: cached.response.items.length,
+        };
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify(cachedWithDebug),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(cached.response),
+      };
+    }
+
     // Fetch and transform Instagram media
-    const response = await fetchInstagramMedia(accessToken, userId);
+    const response = await fetchInstagramMedia(accessToken, pageId, brand, debug);
 
     // Update cache for this brand
     cache.set(brand, { response, timestamp: now });
@@ -259,14 +392,16 @@ const handler: Handler = async (event: HandlerEvent) => {
       body: JSON.stringify(response),
     };
   } catch (error) {
-    console.error('Error fetching Instagram feed:', error);
+    // Catch-all error handler to ensure we NEVER return 500
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+    console.log(`IG[unknown] Unexpected handler error: ${errorMsg}`);
     
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({ 
         items: [],
-        error: 'UPSTREAM_ERROR',
+        error: 'An unexpected error occurred while loading the Instagram feed.',
       }),
     };
   }
