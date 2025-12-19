@@ -16,7 +16,6 @@ import type { Handler } from '@netlify/functions';
  */
 
 // Configuration
-const DAYS_BEFORE_EXPIRY_TO_REFRESH = 7; // Refresh when less than 7 days remain
 const API_VERSION = 'v20.0'; // Fixed API version as per requirements
 
 interface TokenDebugResponse {
@@ -218,7 +217,7 @@ async function processTokenRefresh(brand: 'leeukopf' | 'gelitup'): Promise<{
 
   console.log(`[${brand.toUpperCase()}] Token is valid. Days until expiry: ${tokenStatus.daysUntilExpiry}`);
 
-  // Always refresh the token (don't check threshold - ensure it happens on manual call)
+  // Refresh the token to extend its lifetime
   console.log(`[${brand.toUpperCase()}] Refreshing token...`);
 
   // Refresh the token

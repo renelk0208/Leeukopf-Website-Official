@@ -24,8 +24,8 @@ This system automatically refreshes Instagram long-lived access tokens before th
          ▼                            ▼
 ┌──────────────────┐         ┌──────────────────┐
 │  Leeukopf Token  │         │  GEL.IT.UP Token │
-│  (IG_ACCESS_TOKEN│         │(IG_GELITUP_ACCESS│
-│       )          │         │     _TOKEN)      │
+│(LEEUKOPF_IG_     │         │(IG_GELITUP_ACCESS│
+│  ACCESS_TOKEN)   │         │     _TOKEN)      │
 └──────────────────┘         └──────────────────┘
          │                            │
          └─────────┬──────────────────┘
@@ -72,15 +72,15 @@ This system automatically refreshes Instagram long-lived access tokens before th
 ## Environment Variables Required
 
 ### Instagram Tokens (Existing)
-- `IG_ACCESS_TOKEN` - Leeukopf long-lived access token
+- `LEEUKOPF_IG_ACCESS_TOKEN` - Leeukopf long-lived access token
 - `IG_GELITUP_ACCESS_TOKEN` - GEL.IT.UP long-lived access token
 
-### Facebook App Credentials (New)
-- `FACEBOOK_APP_ID` - Your Facebook App ID
-- `FACEBOOK_APP_SECRET` - Your Facebook App Secret
+### Facebook App Credentials (Required)
+- `FB_APP_ID` - Your Facebook App ID
+- `FB_APP_SECRET` - Your Facebook App Secret
 
-### Netlify API Credentials (New)
-- `NETLIFY_API_TOKEN` - Personal access token for Netlify API
+### Netlify API Credentials (Required)
+- `NETLIFY_ACCESS_TOKEN` - Personal access token for Netlify API
 - `NETLIFY_SITE_ID` - Your Netlify site ID
 
 ## Setup Instructions
@@ -118,9 +118,9 @@ If you need to create a new app, see `INSTAGRAM_SETUP.md`.
 2. Add these variables:
 
 ```
-FACEBOOK_APP_ID = your_app_id
-FACEBOOK_APP_SECRET = your_app_secret
-NETLIFY_API_TOKEN = your_personal_access_token
+FB_APP_ID = your_app_id
+FB_APP_SECRET = your_app_secret
+NETLIFY_ACCESS_TOKEN = your_personal_access_token
 NETLIFY_SITE_ID = your_site_id
 ```
 
@@ -332,7 +332,7 @@ A: Only when needed (< 7 days until expiry). Typically every ~53 days.
 A: Netlify scheduled functions are included in most plans. Check your plan limits.
 
 **Q: What if I change the Facebook App?**
-A: Update `FACEBOOK_APP_ID` and `FACEBOOK_APP_SECRET` in Netlify environment variables.
+A: Update `FB_APP_ID` and `FB_APP_SECRET` in Netlify environment variables.
 
 **Q: Can I add more brands?**
 A: Yes, modify `refresh-instagram-tokens.ts` to process additional tokens.
