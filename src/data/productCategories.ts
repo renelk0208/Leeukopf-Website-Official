@@ -170,7 +170,7 @@ export const productCategories: ProductCategory[] = [
     id: 'nail-art',
     key: 'nail-art',
     displayName: 'Nail Art',
-    imagePath: '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
+    imagePath: '/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp',
     group: 'Nail Art',
   },
 

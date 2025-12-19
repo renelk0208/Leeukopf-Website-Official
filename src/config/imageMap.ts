@@ -70,8 +70,8 @@ export const categoryHero: Record<string, string> = {
   'primers-with-acid': '/img/products/liquids-&-solutions/primer-liquid-images-1.jpg',
   
   // Nail Art
-  'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
-  '3d-multifunctional-gel': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
+  'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp',
+  '3d-multifunctional-gel': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp',
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/webp/solid-mirror-category-card.webp',
   
   // Lamps

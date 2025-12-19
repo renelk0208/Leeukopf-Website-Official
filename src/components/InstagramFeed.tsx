@@ -20,13 +20,15 @@ const BRAND_CONFIG = {
 } as const;
 
 // Grid classes - dynamic based on count
+// Currently supports 4 tiles (2x2) and 8 tiles (2x4 on mobile, 4x2 on desktop)
+// For other counts, defaults to 2-column responsive grid
 function getGridClasses(count: number): string {
-  // 4 items: 2x2 grid
-  // 8 items: 2x4 grid (2 cols, 4 rows) on mobile/tablet, 4x2 on desktop
   if (count === 8) {
+    // 8 items: 2x4 grid (2 cols, 4 rows) on mobile/tablet, 4x2 on desktop
     return 'grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6';
   }
-  // Default: 2x2 for 4 items
+  // Default: 2x2 for 4 items or any other count
+  // For counts other than 4 or 8, this will create a 2-column grid that wraps
   return 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6';
 }
 
@@ -402,7 +404,7 @@ export default function InstagramFeed({ brand = 'leeukopf', limit = 4 }: Instagr
     return () => {
       observer.disconnect();
     };
-  }, [loadState, loadFeed, limit]);
+  }, [loadState, loadFeed]); // limit not needed in deps since loadFeed is memoized with brand
 
   // Handle modal open/close
   const openModal = (post: InstagramItem) => {

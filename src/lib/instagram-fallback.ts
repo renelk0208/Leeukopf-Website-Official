@@ -20,15 +20,25 @@ function validatePlaceholderPath(path: string): boolean {
  * These are displayed when the Instagram API is unavailable
  * 
  * @param brand - The brand identifier (leeukopf or gelitup)
- * @param count - Number of placeholders to return (default: 4)
+ * @param count - Number of placeholders to return (default: 4, max: 8)
  * @returns Array of image paths for fallback placeholders
  */
 export function getInstagramFallbackImages(brand: Brand, count: number = 4): string[] {
   const basePath = `/img/instagram/${brand}/placeholder/webp`;
   
-  // Build placeholder paths based on requested count
+  // Validate count is within available range (we have placeholders 1-8)
+  const maxPlaceholders = 8;
+  const validatedCount = Math.min(Math.max(1, count), maxPlaceholders);
+  
+  if (count !== validatedCount) {
+    console.warn(
+      `[Instagram] Requested ${count} placeholders, but only ${maxPlaceholders} available. Using ${validatedCount}.`
+    );
+  }
+  
+  // Build placeholder paths based on validated count
   const placeholders: string[] = [];
-  for (let i = 1; i <= count; i++) {
+  for (let i = 1; i <= validatedCount; i++) {
     placeholders.push(`${basePath}/placeholder-${i}.webp`);
   }
   
