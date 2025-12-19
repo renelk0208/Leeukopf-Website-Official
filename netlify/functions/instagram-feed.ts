@@ -121,11 +121,13 @@ async function fetchInstagramMediaDirect(accessToken: string, userId: string, br
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      const errorMessage = (errorData as InstagramAPIResponse)?.error?.message || 'Unknown error';
-      console.log(`IG[${brand}] API error: status=${response.status} error="${errorMessage}"`);
+      const errorObj = (errorData as InstagramAPIResponse)?.error;
+      const errorMessage = errorObj?.message || 'Unknown error';
+      const errorCode = errorObj?.code;
+      console.log(`IG[${brand}] API error: status=${response.status} code=${errorCode || 'N/A'} message="${errorMessage}"`);
       const result: InstagramApiResponse = {
         items: [],
-        error: `Instagram API error: ${errorMessage}`,
+        error: `Instagram API error (code ${errorCode || 'unknown'}): ${errorMessage}`,
       };
       if (debug) {
         result.brand = brand;
@@ -139,10 +141,12 @@ async function fetchInstagramMediaDirect(accessToken: string, userId: string, br
     
     // Check if we got an error in the response body
     if (data.error) {
-      console.log(`IG[${brand}] API returned error: "${data.error.message}"`);
+      const errorCode = data.error.code;
+      const errorMessage = data.error.message;
+      console.log(`IG[${brand}] API returned error: code=${errorCode || 'N/A'} message="${errorMessage}"`);
       const result: InstagramApiResponse = {
         items: [],
-        error: `Instagram API error: ${data.error.message}`,
+        error: `Instagram API error (code ${errorCode || 'unknown'}): ${errorMessage}`,
       };
       if (debug) {
         result.brand = brand;
@@ -371,18 +375,27 @@ const handler: Handler = async (event: HandlerEvent) => {
   }
 
   try {
-    // Get brand from query parameter (default to leeukopf)
-    const brand = event.queryStringParameters?.brand || 'leeukopf';
+    // Get brand from query parameter (NO DEFAULT - must be explicit)
+    const brand = event.queryStringParameters?.brand;
     
     // Get debug flag
     const debug = event.queryStringParameters?.debug === '1';
+    
+    // Brand parameter is REQUIRED
+    if (!brand) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ items: [], error: 'Missing brand parameter (expected leeukopf|gelitup)' }),
+      };
+    }
     
     // Validate brand parameter
     if (brand !== 'leeukopf' && brand !== 'gelitup') {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ items: [], error: 'Invalid brand parameter. Use brand=leeukopf or brand=gelitup' }),
+        body: JSON.stringify({ items: [], error: 'Invalid brand parameter (expected leeukopf|gelitup)' }),
       };
     }
 
