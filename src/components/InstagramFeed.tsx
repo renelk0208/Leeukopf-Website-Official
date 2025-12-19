@@ -335,7 +335,7 @@ export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps
     setLoadState('loading');
     
     try {
-      // Fetch from /api/instagram endpoint with brand parameter
+      // Fetch from /api/instagram endpoint with brand parameter (REQUIRED)
       const response = await fetch(`/api/instagram?brand=${brand}`);
       
       if (!response.ok) {
@@ -344,8 +344,16 @@ export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps
 
       const data: InstagramApiResponse = await response.json();
       
+      // If API returned an error message, log it
+      if (data.error) {
+        console.warn(`[instagram-feed] ${brand}:`, data.error);
+        setLoadState('error');
+        return;
+      }
+      
       if (!data.items || data.items.length === 0) {
         // No items returned - show error state
+        console.warn(`[instagram-feed] ${brand}: No items returned`);
         setLoadState('error');
         return;
       }
@@ -353,7 +361,7 @@ export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps
       setPosts(data.items);
       setLoadState('loaded');
     } catch (error) {
-      console.error('Failed to load Instagram feed:', error);
+      console.error(`[instagram-feed] ${brand}: Failed to load Instagram feed:`, error);
       setLoadState('error');
     }
   }, [brand]);

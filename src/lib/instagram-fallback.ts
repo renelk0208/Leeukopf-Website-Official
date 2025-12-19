@@ -5,6 +5,9 @@
 
 type Brand = 'leeukopf' | 'gelitup';
 
+// CONSTANT: Always show exactly 4 placeholders
+const PLACEHOLDER_COUNT = 4;
+
 /**
  * Validate that a path is safe for Instagram placeholders
  * @param path - The path to validate
@@ -20,18 +23,34 @@ function validatePlaceholderPath(path: string): boolean {
  * These are displayed when the Instagram API is unavailable
  * 
  * @param brand - The brand identifier (leeukopf or gelitup)
- * @returns Array of image paths for fallback placeholders
+ * @returns Array of exactly 4 image paths for fallback placeholders
  */
 export function getInstagramFallbackImages(brand: Brand): string[] {
   const basePath = `/img/instagram/${brand}/placeholder`;
   
-  // Build placeholder paths
-  const placeholders = [
+  // Build placeholder paths - always return exactly PLACEHOLDER_COUNT items
+  const availablePlaceholders = [
     `${basePath}/placeholder-1.jpg`,
     `${basePath}/placeholder-2.jpg`,
     `${basePath}/placeholder-3.jpg`,
     `${basePath}/placeholder-4.jpg`,
   ];
+  
+  // Ensure we have exactly PLACEHOLDER_COUNT items
+  let placeholders: string[] = [];
+  
+  if (availablePlaceholders.length >= PLACEHOLDER_COUNT) {
+    // Take first PLACEHOLDER_COUNT items
+    placeholders = availablePlaceholders.slice(0, PLACEHOLDER_COUNT);
+  } else {
+    // If we have fewer than PLACEHOLDER_COUNT, repeat items to reach exactly PLACEHOLDER_COUNT
+    placeholders = [...availablePlaceholders];
+    while (placeholders.length < PLACEHOLDER_COUNT) {
+      placeholders.push(availablePlaceholders[placeholders.length % availablePlaceholders.length]);
+    }
+    // Ensure we don't exceed PLACEHOLDER_COUNT
+    placeholders = placeholders.slice(0, PLACEHOLDER_COUNT);
+  }
   
   // Runtime safeguard: Ensure no placeholder path contains /products/
   // This prevents accidentally using product images as Instagram placeholders
