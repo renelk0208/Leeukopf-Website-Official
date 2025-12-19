@@ -71,7 +71,7 @@ export const productCategories: ProductCategory[] = [
     id: 'platinum-gel-polish',
     key: 'platinum-gel-polish',
     displayName: 'Platinum Gel Polish',
-    imagePath: '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.png',
+    imagePath: '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.webp',
     group: 'Gel Polish',
   },
   {

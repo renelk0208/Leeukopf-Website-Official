@@ -3,6 +3,7 @@ import StartHereBanner from '../components/StartHereBanner';
 import WhyChooseLeeukopf from '../components/WhyChooseLeeukopf';
 import OptimizedImage from '../components/OptimizedImage';
 import VideoGallery from '../components/VideoGallery';
+import InstagramFeed from '../components/InstagramFeed';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function AboutPage() {
@@ -96,7 +97,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           <div className="image-frame hover:shadow-lg transition-shadow">
             <OptimizedImage
-              src="/img/factory/qc-intake.png"
+              src="/img/factory/qc-intake.webp"
               alt="Quality control testing of raw materials at Leeukopf Laboratories"
               width={800}
               height={600}
@@ -182,6 +183,11 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Instagram Feed - 8 tiles on About Us page */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <InstagramFeed brand="leeukopf" limit={8} />
       </div>
     </PageTemplate>
   );

@@ -5,9 +5,6 @@
 
 type Brand = 'leeukopf' | 'gelitup';
 
-// CONSTANT: Always show exactly 4 placeholders
-const PLACEHOLDER_COUNT = 4;
-
 /**
  * Validate that a path is safe for Instagram placeholders
  * @param path - The path to validate
@@ -23,18 +20,17 @@ function validatePlaceholderPath(path: string): boolean {
  * These are displayed when the Instagram API is unavailable
  * 
  * @param brand - The brand identifier (leeukopf or gelitup)
- * @returns Array of exactly 4 image paths for fallback placeholders
+ * @param count - Number of placeholders to return (default: 4)
+ * @returns Array of image paths for fallback placeholders
  */
-export function getInstagramFallbackImages(brand: Brand): string[] {
+export function getInstagramFallbackImages(brand: Brand, count: number = 4): string[] {
   const basePath = `/img/instagram/${brand}/placeholder/webp`;
   
-  // Build placeholder paths - always exactly PLACEHOLDER_COUNT items
-  const placeholders = [
-    `${basePath}/placeholder-1.webp`,
-    `${basePath}/placeholder-2.webp`,
-    `${basePath}/placeholder-3.webp`,
-    `${basePath}/placeholder-4.webp`,
-  ];
+  // Build placeholder paths based on requested count
+  const placeholders: string[] = [];
+  for (let i = 1; i <= count; i++) {
+    placeholders.push(`${basePath}/placeholder-${i}.webp`);
+  }
   
   // Runtime safeguard: Ensure no placeholder path contains /products/
   // This prevents accidentally using product images as Instagram placeholders
