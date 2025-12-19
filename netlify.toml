@@ -6,6 +6,11 @@
 [functions]
   directory = "netlify/functions"
 
+# Scheduled function to refresh Instagram tokens daily
+[[functions]]
+  path = "refresh-instagram-tokens"
+  schedule = "0 2 * * *"  # Run daily at 2 AM UTC
+
 [build.environment]
   NODE_VERSION = "18"
 
