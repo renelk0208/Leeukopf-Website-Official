@@ -28,29 +28,13 @@ function validatePlaceholderPath(path: string): boolean {
 export function getInstagramFallbackImages(brand: Brand): string[] {
   const basePath = `/img/instagram/${brand}/placeholder/webp`;
   
-  // Build placeholder paths - always return exactly PLACEHOLDER_COUNT items
-  const availablePlaceholders = [
+  // Build placeholder paths - always exactly PLACEHOLDER_COUNT items
+  const placeholders = [
     `${basePath}/placeholder-1.webp`,
     `${basePath}/placeholder-2.webp`,
     `${basePath}/placeholder-3.webp`,
     `${basePath}/placeholder-4.webp`,
   ];
-  
-  // Ensure we have exactly PLACEHOLDER_COUNT items
-  let placeholders: string[] = [];
-  
-  if (availablePlaceholders.length >= PLACEHOLDER_COUNT) {
-    // Take first PLACEHOLDER_COUNT items
-    placeholders = availablePlaceholders.slice(0, PLACEHOLDER_COUNT);
-  } else {
-    // If we have fewer than PLACEHOLDER_COUNT, repeat items to reach exactly PLACEHOLDER_COUNT
-    placeholders = [...availablePlaceholders];
-    while (placeholders.length < PLACEHOLDER_COUNT) {
-      placeholders.push(availablePlaceholders[placeholders.length % availablePlaceholders.length]);
-    }
-    // Ensure we don't exceed PLACEHOLDER_COUNT
-    placeholders = placeholders.slice(0, PLACEHOLDER_COUNT);
-  }
   
   // Runtime safeguard: Ensure no placeholder path contains /products/
   // This prevents accidentally using product images as Instagram placeholders

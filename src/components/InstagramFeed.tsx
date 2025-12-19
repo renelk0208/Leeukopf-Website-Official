@@ -344,15 +344,15 @@ export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps
 
       const data: InstagramApiResponse = await response.json();
       
-      // If API returned an error message, log it
+      // If API returned an error message, log it and show error state
       if (data.error) {
         console.warn(`[instagram-feed] ${brand}:`, data.error);
         setLoadState('error');
         return;
       }
       
+      // Check if we have items
       if (!data.items || data.items.length === 0) {
-        // No items returned - show error state
         console.warn(`[instagram-feed] ${brand}: No items returned`);
         setLoadState('error');
         return;
