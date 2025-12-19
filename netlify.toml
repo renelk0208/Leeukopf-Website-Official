@@ -7,7 +7,7 @@
   directory = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 # Explicit redirects for API endpoints to Netlify Functions
 # These MUST come before the SPA wildcard redirect
