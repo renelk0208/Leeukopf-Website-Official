@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Instagram, ExternalLink, AlertCircle, Play, X } from 'lucide-react';
+import { Instagram, ExternalLink, Play, X } from 'lucide-react';
 
 // Brand type
 type Brand = 'leeukopf' | 'gelitup';
