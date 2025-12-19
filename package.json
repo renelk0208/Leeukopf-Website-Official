@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/validate-instagram-placeholders.cjs",
+    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/report-large-images.cjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -16,7 +16,8 @@
     "check:images": "node scripts/check-images.js",
     "apply:image-fixes": "node scripts/apply-image-fixes.js",
     "audit:images": "node scripts/audit-images.js",
-    "generate:sitemap": "node scripts/generate-sitemap.cjs"
+    "generate:sitemap": "node scripts/generate-sitemap.cjs",
+    "report:images": "node scripts/report-large-images.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
