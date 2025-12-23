@@ -47,6 +47,8 @@ interface InstagramApiResponse {
   brand: string;
   items: InstagramFeedItem[];
   error?: string;
+  errorCode?: number;
+  errorType?: string;
   // Debug fields (only present when debug=1)
   igIdLast4?: string;
   fetchedCount?: number;
@@ -185,6 +187,11 @@ async function fetchInstagramMedia(accessToken: string, brand: string, debug: bo
         items: [],
         error: `Instagram API error (code ${errorCode || 'unknown'}): ${errorMessage}`,
       };
+      // Detect error code 190 (token invalidated)
+      if (errorCode === 190) {
+        result.errorCode = 190;
+        result.errorType = 'TOKEN_INVALIDATED';
+      }
       if (debug) {
         result.igIdLast4 = igUserId.slice(-4);
         result.fetchedCount = 0;
@@ -204,6 +211,11 @@ async function fetchInstagramMedia(accessToken: string, brand: string, debug: bo
         items: [],
         error: `Instagram API error (code ${errorCode || 'unknown'}): ${errorMessage}`,
       };
+      // Detect error code 190 (token invalidated)
+      if (errorCode === 190) {
+        result.errorCode = 190;
+        result.errorType = 'TOKEN_INVALIDATED';
+      }
       if (debug) {
         result.igIdLast4 = igUserId.slice(-4);
         result.fetchedCount = 0;
