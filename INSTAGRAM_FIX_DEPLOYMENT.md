@@ -74,7 +74,7 @@ For each brand (Leeukopf and GEL.IT.UP), you need to find the **Instagram Busine
    GET /me/accounts?fields=id,name,instagram_business_account
    ```
 5. In the response, find your Facebook Page and copy the `instagram_business_account.id` value
-6. This is your Instagram Business Account ID (e.g., "17841400008460056")
+6. This is your Instagram Business Account ID
 
 **Example Response:**
 ```json
@@ -84,7 +84,7 @@ For each brand (Leeukopf and GEL.IT.UP), you need to find the **Instagram Busine
       "id": "123456789",
       "name": "Leeukopf Laboratories",
       "instagram_business_account": {
-        "id": "17841400008460056"  ← Copy this value
+        "id": "17841476480581330"  ← Copy this value
       }
     }
   ]
