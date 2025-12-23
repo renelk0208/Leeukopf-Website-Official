@@ -44,8 +44,9 @@ interface InstagramItem {
 }
 
 interface InstagramApiResponse {
+  brand: string;
   items: InstagramItem[];
-  error: string | null;
+  error?: string;
 }
 
 type LoadState = 'idle' | 'loading' | 'loaded' | 'error';
@@ -371,14 +372,15 @@ export default function InstagramFeed({ brand = 'leeukopf', limit = 4 }: Instagr
         return;
       }
 
-      // Limit the number of posts to display
-      setPosts(data.items.slice(0, limit));
+      // Limit the number of posts to display to exactly 'limit'
+      const displayItems = data.items.slice(0, limit);
+      setPosts(displayItems);
       setLoadState('loaded');
     } catch (error) {
       console.error(`[instagram-feed] ${brand}: Failed to load Instagram feed:`, error);
       setLoadState('error');
     }
-  }, [brand]);
+  }, [brand, limit]);
 
   // Set up IntersectionObserver for lazy loading
   useEffect(() => {
@@ -445,8 +447,35 @@ export default function InstagramFeed({ brand = 'leeukopf', limit = 4 }: Instagr
             ) : (
               <>
                 <div className={getGridClasses(limit)}>
+                  {/* Render actual posts */}
                   {posts.map((post) => (
                     <PostTile key={post.id} post={post} onSelect={openModal} brandName={brandDisplayName} />
+                  ))}
+                  {/* Render placeholders for remaining slots (up to limit - posts.length) */}
+                  {posts.length < limit && getInstagramFallbackImages(brand, limit - posts.length).map((imageSrc, index) => (
+                    <a
+                      key={`placeholder-${index}`}
+                      href={profileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] focus:ring-offset-2 w-full"
+                      aria-label={`Visit our Instagram @${config.profile}`}
+                    >
+                      <img
+                        src={imageSrc}
+                        alt={`Sample content ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      {/* Hover overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                      {/* Instagram icon overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="bg-white/90 rounded-full p-3">
+                          <Instagram size={32} className="text-pink-500" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
                   ))}
                 </div>
                 {/* CTA to visit Instagram profile */}
