@@ -109,51 +109,35 @@ function transformItem(item: InstagramMediaItem): InstagramFeedItem {
   };
 }
 
-// Fetch Instagram Business Account ID from /me/accounts
-async function fetchInstagramBusinessAccountFromMeAccounts(accessToken: string, brand: string): Promise<string | null> {
-  const apiVersion = getApiVersion();
-  const url = `https://graph.facebook.com/${apiVersion}/me/accounts?fields=id,name,instagram_business_account&access_token=${accessToken}`;
-
-  console.log(`IG[${brand}] Fetching Instagram Business Account from /me/accounts`);
-
-  try {
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const errorMessage = (errorData as { error?: { message: string } })?.error?.message || 'Unknown error';
-      console.log(`IG[${brand}] Error fetching /me/accounts: status=${response.status} error="${errorMessage}"`);
-      return null;
-    }
-
-    const data = await response.json();
-    
-    // Find the first page that has an instagram_business_account
-    const pages = data.data || [];
-    for (const page of pages) {
-      if (page.instagram_business_account?.id) {
-        const igUserId = page.instagram_business_account.id;
-        console.log(`IG[${brand}] Found Instagram Business Account: ...${igUserId.slice(-4)} (page: ${page.name})`);
-        return igUserId;
-      }
-    }
-    
-    console.log(`IG[${brand}] No Instagram Business Account found in /me/accounts`);
-    return null;
-  } catch (error) {
-    console.log(`IG[${brand}] Exception fetching /me/accounts: ${error instanceof Error ? error.message : 'Unknown'}`);
+// Get Instagram Business Account ID from environment variables
+function getInstagramBusinessAccountId(brand: string): string | null {
+  let igUserId: string | undefined;
+  
+  if (brand === 'leeukopf') {
+    // For Leeukopf: support new IG_LEEUKOPF_USER_ID and legacy names
+    igUserId = process.env.IG_LEEUKOPF_USER_ID || process.env.LEEUKOPF_IG_USER_ID || process.env.IG_USER_ID;
+  } else if (brand === 'gelitup') {
+    // For GelItUp: support new IG_GELITUP_USER_ID and legacy names
+    igUserId = process.env.IG_GELITUP_USER_ID || process.env.GELITUP_IG_USER_ID;
+  }
+  
+  if (!igUserId) {
+    console.log(`IG[${brand}] No Instagram Business Account ID found in environment variables`);
     return null;
   }
+  
+  console.log(`IG[${brand}] Using Instagram Business Account ID: ...${igUserId.slice(-4)}`);
+  return igUserId;
 }
 
 // Fetch Instagram media using the correct Graph API flow
 async function fetchInstagramMedia(accessToken: string, brand: string, debug: boolean): Promise<InstagramApiResponse> {
-  // Step 1: Get Instagram Business Account ID from /me/accounts
-  const igUserId = await fetchInstagramBusinessAccountFromMeAccounts(accessToken, brand);
+  // Step 1: Get Instagram Business Account ID from environment variables
+  const igUserId = getInstagramBusinessAccountId(brand);
   
   if (!igUserId) {
-    const errorMsg = 'Failed to retrieve Instagram Business Account. Please ensure the access token has the required permissions and is connected to an Instagram Business Account.';
-    console.log(`IG[${brand}] Failed to get Instagram Business Account ID`);
+    const errorMsg = 'Failed to retrieve Instagram Business Account ID. Please ensure the required environment variables are set (IG_LEEUKOPF_USER_ID or IG_GELITUP_USER_ID).';
+    console.log(`IG[${brand}] Failed to get Instagram Business Account ID from environment`);
     const response: InstagramApiResponse = {
       brand,
       items: [],
@@ -166,7 +150,7 @@ async function fetchInstagramMedia(accessToken: string, brand: string, debug: bo
     return response;
   }
 
-  // Step 2: Fetch media from Instagram Business Account
+  // Step 2: Fetch media directly from Instagram Business Account
   const apiVersion = getApiVersion();
   const fields = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp';
   const url = `https://graph.facebook.com/${apiVersion}/${igUserId}/media?fields=${fields}&limit=${API_FETCH_LIMIT}&access_token=${accessToken}`;
