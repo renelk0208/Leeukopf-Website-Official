@@ -16,7 +16,7 @@ import type { Handler } from '@netlify/functions';
  */
 
 // Configuration
-const API_VERSION = 'v20.0'; // Fixed API version as per requirements
+const API_VERSION = 'v21.0'; // Fixed API version as per requirements
 
 interface TokenDebugResponse {
   data: {
@@ -178,13 +178,16 @@ async function processTokenRefresh(brand: 'leeukopf' | 'gelitup'): Promise<{
   tokenLast4?: string;
   errorMessage?: string;
 }> {
-  const envVarName = brand === 'leeukopf' ? 'LEEUKOPF_IG_ACCESS_TOKEN' : 'IG_GELITUP_ACCESS_TOKEN';
-  const accessToken = process.env[envVarName];
+  const envVarName = brand === 'leeukopf' ? 'IG_LEEUKOPF_ACCESS_TOKEN' : 'IG_GELITUP_ACCESS_TOKEN';
+  const legacyEnvVarName = brand === 'leeukopf' ? 'LEEUKOPF_IG_ACCESS_TOKEN' : 'IG_GELITUP_ACCESS_TOKEN';
+  
+  // Try new name first, then legacy name
+  const accessToken = process.env[envVarName] || process.env[legacyEnvVarName];
 
   if (!accessToken) {
     return {
       success: false,
-      errorMessage: `${envVarName} not found in environment variables`
+      errorMessage: `${envVarName} (or ${legacyEnvVarName}) not found in environment variables`
     };
   }
 
