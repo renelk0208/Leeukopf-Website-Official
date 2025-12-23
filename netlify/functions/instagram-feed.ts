@@ -136,7 +136,7 @@ async function fetchInstagramMedia(accessToken: string, brand: string, debug: bo
   const igUserId = getInstagramBusinessAccountId(brand);
   
   if (!igUserId) {
-    const errorMsg = 'Failed to retrieve Instagram Business Account ID. Please ensure the required environment variables are set (IG_LEEUKOPF_USER_ID or IG_GELITUP_USER_ID).';
+    const errorMsg = 'Failed to retrieve Instagram Business Account ID. Please ensure the required environment variables are set (IG_LEEUKOPF_USER_ID/IG_GELITUP_USER_ID or legacy: IG_USER_ID/LEEUKOPF_IG_USER_ID/GELITUP_IG_USER_ID).';
     console.log(`IG[${brand}] Failed to get Instagram Business Account ID from environment`);
     const response: InstagramApiResponse = {
       brand,

@@ -114,14 +114,18 @@ For each brand, you also need a **long-lived access token**:
 
 #### C. Test Your Credentials
 ```bash
-# Test Leeukopf
-curl "https://graph.facebook.com/v21.0/17841476480581330/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=12&access_token=YOUR_LEEUKOPF_TOKEN"
+# Test Leeukopf (using environment variable to protect token)
+export LEEUKOPF_TOKEN="your_leeukopf_token_here"
+curl "https://graph.facebook.com/v21.0/17841476480581330/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=12&access_token=$LEEUKOPF_TOKEN"
 
-# Test GEL.IT.UP
-curl "https://graph.facebook.com/v21.0/17841400843573520/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=12&access_token=YOUR_GELITUP_TOKEN"
+# Test GEL.IT.UP (using environment variable to protect token)
+export GELITUP_TOKEN="your_gelitup_token_here"
+curl "https://graph.facebook.com/v21.0/17841400843573520/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=12&access_token=$GELITUP_TOKEN"
 ```
 
 Expected response should include your Instagram media posts.
+
+**Security Note:** Using environment variables prevents tokens from being stored in shell history.
 
 **Why Direct IDs?** This approach uses Instagram Business Account IDs directly from environment variables to avoid the `/me/accounts` endpoint, which can return error code 200 subcode 2069030 "New Pages experience not supported" for some Pages. This is required for New Pages Experience compatibility.
 
