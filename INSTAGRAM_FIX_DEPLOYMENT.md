@@ -2,42 +2,35 @@
 
 ## Overview
 
-This fix implements the correct Facebook Graph API flow to fetch Instagram feeds for both Leeukopf and GEL.IT.UP brands. The implementation follows best practices for server-side API calls, proper error handling, and user experience.
+This guide documents the Instagram feed implementation that fetches Instagram feeds for both Leeukopf and GEL.IT.UP brands. The implementation uses Instagram Business Account IDs directly from environment variables to avoid issues with the `/me/accounts` endpoint.
 
 ## Critical Changes Made
 
-### 1. Correct Graph API Flow
-The function now uses the **correct** approach to fetch Instagram media:
+### 1. Graph API Flow
+The function uses a **direct** approach to fetch Instagram media:
 
-**OLD (BROKEN) APPROACH:**
+**CURRENT APPROACH:**
 ```
-/{page-id}/media  ❌  // Causes "nonexisting field (media) on node type (Page)"
+Step 1: Read IG_LEEUKOPF_USER_ID or IG_GELITUP_USER_ID from environment
+Step 2: GET /{ig-business-account-id}/media?fields=...&access_token=...
 ```
 
-**NEW (CORRECT) APPROACH:**
-```
-Step 1: GET /me/accounts?fields=id,name,instagram_business_account
-Step 2: Extract instagram_business_account.id (the IG Business Account ID)
-Step 3: GET /{ig-business-account-id}/media?fields=...
-```
+This avoids the problematic `/me/accounts` endpoint which returns error code 200 subcode 2069030 "New Pages experience not supported" for some pages.
 
 ### 2. Environment Variables
 
-**New Variable Names (Primary):**
+**Required Variables:**
 - `IG_LEEUKOPF_ACCESS_TOKEN` - Long-lived access token for Leeukopf Instagram
+- `IG_LEEUKOPF_USER_ID` - Instagram Business Account ID for Leeukopf
 - `IG_GELITUP_ACCESS_TOKEN` - Long-lived access token for GEL.IT.UP Instagram
+- `IG_GELITUP_USER_ID` - Instagram Business Account ID for GEL.IT.UP
 
 **Legacy Names (Still Supported for Backward Compatibility):**
-- `LEEUKOPF_IG_ACCESS_TOKEN`
-- `IG_GELITUP_ACCESS_TOKEN`
-
-**Removed Variables (No Longer Needed):**
-- ~~`LEEUKOPF_IG_PAGE_ID`~~ - No longer needed, derived from token
-- ~~`LEEUKOPF_IG_USER_ID`~~ - No longer needed, derived from token
-- ~~`IG_GELITUP_USER_ID`~~ - No longer needed, derived from token
+- Access tokens: `LEEUKOPF_IG_ACCESS_TOKEN`, `IG_ACCESS_TOKEN`
+- User IDs: `LEEUKOPF_IG_USER_ID`, `IG_USER_ID`, `GELITUP_IG_USER_ID`
 
 ### 3. API Version Update
-- Updated from `v20.0` to `v21.0` as specified in requirements
+- Uses `v21.0` as specified in requirements
 
 ### 4. Response Format
 The API now always returns:
@@ -64,17 +57,50 @@ The API now always returns:
 
 ## Deployment Steps
 
-### Step 1: Get Access Tokens
+### Step 1: Get Instagram Business Account IDs
 
-For each brand (Leeukopf and GEL.IT.UP), you need to generate a **long-lived access token**:
+For each brand (Leeukopf and GEL.IT.UP), you need to find the **Instagram Business Account ID**:
 
-#### A. Initial Setup (if not done already)
-1. Go to [Facebook Developers](https://developers.facebook.com/)
-2. Select your Facebook App
-3. Ensure the App has Instagram Basic Display API or Instagram Graph API permissions
-4. Connect your Facebook Page to your Instagram Business Account
+#### A. Find Your Instagram Business Account ID
 
-#### B. Generate Long-Lived Token
+1. Go to [Facebook Graph API Explorer](https://developers.facebook.com/tools/explorer/)
+2. Select your App from the dropdown
+3. Get a User Access Token with these permissions:
+   - `instagram_basic`
+   - `pages_show_list`
+   - `pages_read_engagement`
+4. Make this API call:
+   ```
+   GET /me/accounts?fields=id,name,instagram_business_account
+   ```
+5. In the response, find your Facebook Page and copy the `instagram_business_account.id` value
+6. This is your Instagram Business Account ID
+
+**Example Response:**
+```json
+{
+  "data": [
+    {
+      "id": "123456789",
+      "name": "Leeukopf Laboratories",
+      "instagram_business_account": {
+        "id": "17841476480581330"  ← Copy this value
+      }
+    }
+  ]
+}
+```
+
+**Confirmed Instagram Business Account IDs:**
+- **Leeukopf Laboratories**: `17841476480581330`
+- **GEL.IT.UP**: `17841400843573520`
+
+**Note:** If you encounter error code 2069030 "New Pages experience not supported" when trying to look up IDs, use the confirmed IDs above. This implementation avoids the `/me/accounts` endpoint entirely to prevent this issue.
+
+#### B. Get Access Tokens
+
+For each brand, you also need a **long-lived access token**:
+
 1. Get a short-lived User Access Token (valid for 1 hour):
    - Use Facebook Login flow or Graph API Explorer
    - Required permissions: `instagram_basic`, `pages_show_list`, `pages_read_engagement`
@@ -86,16 +112,22 @@ For each brand (Leeukopf and GEL.IT.UP), you need to generate a **long-lived acc
 
 3. The response will contain your long-lived access token
 
-#### C. Test the Token
+#### C. Test Your Credentials
 ```bash
-# Test Leeukopf token
-curl "https://graph.facebook.com/v21.0/me/accounts?fields=id,name,instagram_business_account&access_token=YOUR_LEEUKOPF_TOKEN"
+# Test Leeukopf (using environment variable to protect token)
+export LEEUKOPF_TOKEN="your_leeukopf_token_here"
+curl "https://graph.facebook.com/v21.0/17841476480581330/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=12&access_token=$LEEUKOPF_TOKEN"
 
-# Test GEL.IT.UP token
-curl "https://graph.facebook.com/v21.0/me/accounts?fields=id,name,instagram_business_account&access_token=YOUR_GELITUP_TOKEN"
+# Test GEL.IT.UP (using environment variable to protect token)
+export GELITUP_TOKEN="your_gelitup_token_here"
+curl "https://graph.facebook.com/v21.0/17841400843573520/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=12&access_token=$GELITUP_TOKEN"
 ```
 
-Expected response should include pages with `instagram_business_account` field.
+Expected response should include your Instagram media posts.
+
+**Security Note:** Using environment variables prevents tokens from being stored in shell history.
+
+**Why Direct IDs?** This approach uses Instagram Business Account IDs directly from environment variables to avoid the `/me/accounts` endpoint, which can return error code 200 subcode 2069030 "New Pages experience not supported" for some Pages. This is required for New Pages Experience compatibility.
 
 ### Step 2: Set Environment Variables in Netlify
 
@@ -105,10 +137,14 @@ Expected response should include pages with `instagram_business_account` field.
 
    ```
    IG_LEEUKOPF_ACCESS_TOKEN=your_leeukopf_long_lived_token_here
+   IG_LEEUKOPF_USER_ID=17841476480581330
    IG_GELITUP_ACCESS_TOKEN=your_gelitup_long_lived_token_here
+   IG_GELITUP_USER_ID=17841400843573520
    IG_GRAPH_API_VERSION=v21.0
    IG_CACHE_TTL_SECONDS=300
    ```
+   
+   **Note:** The Instagram Business Account IDs above are the confirmed values for Leeukopf and GEL.IT.UP brands.
 
 4. **Optional:** If you want automatic token refresh (recommended), also set:
    ```
@@ -118,10 +154,7 @@ Expected response should include pages with `instagram_business_account` field.
    NETLIFY_SITE_ID=your_netlify_site_id
    ```
 
-5. **Remove** old variables (if they exist):
-   - `LEEUKOPF_IG_PAGE_ID`
-   - `LEEUKOPF_IG_USER_ID`
-   - `IG_GELITUP_USER_ID`
+5. **Note:** Legacy variable names are still supported for backward compatibility, but the new names above are recommended.
 
 ### Step 3: Deploy
 
@@ -207,14 +240,15 @@ IG[leeukopf] Success: instagram_business_account_found=true fetchedCount=12
 
 ## Troubleshooting
 
-### Issue: "Failed to retrieve Instagram Business Account"
+### Issue: "Failed to retrieve Instagram Business Account ID"
 
-**Cause:** Token doesn't have required permissions or Page not connected to Instagram Business Account
+**Cause:** Instagram Business Account ID environment variable not set
 
 **Solution:**
-1. Verify the Page is connected to an Instagram Business Account in Facebook Business Manager
-2. Ensure the token has `pages_show_list` and `instagram_basic` permissions
-3. Test with the curl command from Step 1C above
+1. Verify you've set `IG_LEEUKOPF_USER_ID` and/or `IG_GELITUP_USER_ID` in Netlify
+2. Confirm you're using the Instagram Business Account ID (not Page ID)
+3. Get the ID from Graph API Explorer using the method in Step 1A above
+4. Check Netlify function logs to verify the environment variable is loaded
 
 ### Issue: "Instagram API error (code 190): Invalid OAuth access token"
 
@@ -222,7 +256,7 @@ IG[leeukopf] Success: instagram_business_account_found=true fetchedCount=12
 
 **Solution:**
 1. Generate a new long-lived token (see Step 1B)
-2. Update the environment variable in Netlify
+2. Update the `IG_LEEUKOPF_ACCESS_TOKEN` or `IG_GELITUP_ACCESS_TOKEN` in Netlify
 3. If automatic token refresh is configured, check `refresh-instagram-tokens` function logs
 
 ### Issue: No items returned but no error
@@ -241,7 +275,17 @@ IG[leeukopf] Success: instagram_business_account_found=true fetchedCount=12
 **Solution:**
 1. Check browser console for error messages
 2. Check Netlify function logs for detailed error information
-3. Verify environment variables are set correctly
+3. Verify both access token AND user ID environment variables are set correctly
+
+### Issue: Error code 2069030 "New Pages experience not supported"
+
+**Cause:** Some Facebook Pages don't support the `/me/accounts` endpoint
+
+**Solution:**
+This implementation doesn't use `/me/accounts`, so you should not encounter this error. If you do:
+1. Verify you're using the correct Instagram Business Account ID
+2. Test the direct media endpoint with curl (see Step 1C)
+3. Ensure your Instagram Business Account is properly set up
 
 ## Token Refresh
 
@@ -263,12 +307,12 @@ curl "https://leeukopf.com/.netlify/functions/refresh-instagram-tokens"
 3. **CORS is restricted** - API only accepts requests from leeukopf.com and localhost (dev)
 4. **Server-side only** - Instagram API is never called from client-side code
 
-## What Happened to Old Code?
+## What Changed?
 
-- **Page ID lookups removed**: No longer needed, we derive the Instagram Business Account ID directly from the token
-- **User ID configuration removed**: No longer needed, same reason
-- **Old API flow removed**: The broken `/{page-id}/media` approach has been completely removed
-- **Backward compatibility maintained**: Old environment variable names still work as fallbacks
+- **Removed `/me/accounts` endpoint**: No longer used to avoid "New Pages experience not supported" error
+- **Direct ID lookup**: Instagram Business Account IDs are now read directly from environment variables
+- **New required environment variables**: `IG_LEEUKOPF_USER_ID` and `IG_GELITUP_USER_ID` must be set
+- **Backward compatibility maintained**: Legacy environment variable names still work as fallbacks
 
 ## Support
 
