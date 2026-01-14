@@ -66,12 +66,10 @@ import FrenchCollectionPage from './pages/products/FrenchCollectionPage';
 import GelItUpPage from './pages/brands/GelItUpPage';
 
 import CookieConsent from './components/CookieConsent';
-import SeasonalSnow from './components/SeasonalSnow';
 
 function App() {
   return (
     <>
-      <SeasonalSnow enabled={true} flakeCount={28} />
       <Routes>
         {/* Main Pages */}
         <Route path="/" element={<HomePage />} />
