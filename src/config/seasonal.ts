@@ -12,4 +12,5 @@ export function getOurProductsVideoSrc(): string {
   return `/videos/seasonal/our-products__${CURRENT_SEASON}__${CURRENT_YEAR}.mp4`;
 }
 
+// Show snow during Christmas and winter seasons
 export const shouldShowSnow = CURRENT_SEASON === "christmas" || CURRENT_SEASON === "winter";
