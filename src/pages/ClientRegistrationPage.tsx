@@ -719,7 +719,7 @@ export default function ClientRegistrationPage() {
 
               <div>
                 <label htmlFor="vatEori" className="block text-sm font-medium text-gray-900 mb-2">
-                  VAT / EORI Number
+                  VAT Registration number
                 </label>
                 <input
                   type="text"

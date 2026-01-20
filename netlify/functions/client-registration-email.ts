@@ -91,7 +91,7 @@ ${formData.instagram ? `<p><strong>Instagram:</strong> ${formData.instagram}</p>
 ].filter(Boolean).join(', ')}</p>
 <p><strong>Product Interests:</strong> ${formData.interests.length > 0 ? formData.interests.join(', ') : 'None specified'}</p>
 ${formData.monthlyVolume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.monthlyVolume}</p>` : ''}
-${formData.vatEori ? `<p><strong>VAT/EORI Number:</strong> ${formData.vatEori}</p>` : ''}
+${formData.vatEori ? `<p><strong>VAT Registration number:</strong> ${formData.vatEori}</p>` : ''}
 
 <h3>Addresses</h3>
 ${formData.billingAddress ? `<p><strong>Billing Address:</strong><br>${formData.billingAddress.replace(/\n/g, '<br>')}</p>` : ''}
