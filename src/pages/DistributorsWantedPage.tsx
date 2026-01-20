@@ -25,10 +25,10 @@ const featureBlocks: FeatureBlock[] = [
   {
     title: 'What You Gain',
     bullets: [
-      'Competitive wholesale pricing with volume discounts',
-      'Professional marketing materials and product images',
-      'Comprehensive product training and troubleshooting',
-      'Full access to our complete product range'
+      'Competitive wholesale pricing',
+      'Professional marketing assets',
+      'Product training and support',
+      'Full product range access'
     ],
     icon: Gift
   },
