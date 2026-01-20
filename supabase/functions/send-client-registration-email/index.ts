@@ -77,7 +77,7 @@ Business Details:
 - Business Type: ${registrationData.businessType}
 - Product Interests: ${registrationData.interests.join(", ")}
 - Estimated Monthly Volume: ${registrationData.monthlyVolume || "Not provided"}
-- VAT/EORI: ${registrationData.vatEori || "Not provided"}
+- VAT Registration: ${registrationData.vatEori || "Not provided"}
 - Preferred Language: ${registrationData.language || "EN"}
 
 Addresses:

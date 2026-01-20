@@ -52,7 +52,7 @@ Open the downloaded JSON file and extract these values:
 2. Create a tab named `Raw_Leads` (or use a custom name)
 3. Add headers in the first row (optional but recommended):
    ```
-   Timestamp | Source | Page | Company | Contact | Role | Email | Phone | Country | Website | Instagram | Business Type | Interests | Monthly Volume | VAT/EORI | Billing Address | Shipping Address | Language | Notes | GDPR Consent | Lead Status
+   Timestamp | Source | Page | Company | Contact | Role | Email | Phone | Country | Website | Instagram | Business Type | Interests | Monthly Volume | VAT Registration | Billing Address | Shipping Address | Language | Notes | GDPR Consent | Lead Status
    ```
 
 4. Share the spreadsheet with the service account email:
@@ -118,7 +118,7 @@ Each submission creates a row with 21 columns in this exact order:
 12. **Business Type** - Type of business (Distributor, Salon Supply, etc.)
 13. **Interests** - Comma-separated list of product interests
 14. **Monthly Volume** - Estimated monthly volume
-15. **VAT/EORI** - VAT or EORI number
+15. **VAT Registration** - VAT Registration number
 16. **Billing Address** - Billing address
 17. **Shipping Address** - Shipping address
 18. **Language** - Preferred language (EN, EL, BG, Other)

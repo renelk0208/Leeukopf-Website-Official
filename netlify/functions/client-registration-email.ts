@@ -91,7 +91,7 @@ ${formData.instagram ? `<p><strong>Instagram:</strong> ${formData.instagram}</p>
 ].filter(Boolean).join(', ')}</p>
 <p><strong>Product Interests:</strong> ${formData.interests.length > 0 ? formData.interests.join(', ') : 'None specified'}</p>
 ${formData.monthlyVolume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.monthlyVolume}</p>` : ''}
-${formData.vatEori ? `<p><strong>VAT/EORI Number:</strong> ${formData.vatEori}</p>` : ''}
+${formData.vatEori ? `<p><strong>VAT Registration number:</strong> ${formData.vatEori}</p>` : ''}
 
 <h3>Addresses</h3>
 ${formData.billingAddress ? `<p><strong>Billing Address:</strong><br>${formData.billingAddress.replace(/\n/g, '<br>')}</p>` : ''}
@@ -221,7 +221,7 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   // Format data in exact column order matching the header:
   // Timestamp, Source, Page, Company, Contact, Role, Email, Phone, Country, Country Other, 
   // District, Postal Code, Street, Billing Address, Shipping Address, Website, Instagram, 
-  // Business Type, Interests, Monthly Volume, VAT/EORI, Interest: Distribution, 
+  // Business Type, Interests, Monthly Volume, VAT Registration, Interest: Distribution, 
   // Interest: Private Label, Request Sample Box, Notes, GDPR Consent, Honeypot
   const interestsStr = Array.isArray(formData.interests) ? formData.interests.join(", ") : "";
 
