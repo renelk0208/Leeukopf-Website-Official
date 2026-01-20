@@ -11,14 +11,18 @@ declare global {
 /**
  * MetaPixelTracker Component
  * 
- * This component tracks route changes for Meta Pixel.
- * The Meta Pixel base code is loaded directly in index.html head section.
- * This component only handles route change tracking.
+ * This component tracks route changes (virtual pageviews) for Meta Pixel.
+ * 
+ * IMPORTANT: 
+ * - Meta Pixel initialization is handled in index.html
+ * - Initial PageView is tracked in index.html after initialization
+ * - This component ONLY tracks subsequent route changes (not the initial page load)
  * 
  * Features:
  * - Only runs in production mode (import.meta.env.PROD)
  * - Tracks PageView on every route change (pathname or search changes)
- * - Checks if pixel is initialized before tracking
+ * - Skips initial mount to prevent duplicate PageView with index.html
+ * - Checks if fbq is available before tracking
  */
 export default function MetaPixelTracker() {
   const location = useLocation();
