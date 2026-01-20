@@ -163,7 +163,7 @@ export default function FaqStartBrandPage() {
               your own professional gel polish brand.
             </p>
             <a
-              href="/contact"
+              href="/client-registration"
               className="btn-primary inline-block px-6 sm:px-8 py-3 min-h-[44px]"
             >
               Request a Private Label Consultation

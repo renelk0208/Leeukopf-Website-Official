@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ProductsPage from './pages/ProductsPage';
-import ContactPage from './pages/ContactPage';
+
 import CertificatesPage from './pages/CertificatesPage';
 import PrivateLabelPage from './pages/PrivateLabelPage';
 import PrivateLabelBottlesPage from './pages/PrivateLabelBottlesPage';
@@ -74,7 +74,6 @@ function App() {
         {/* Main Pages */}
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
         <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
         <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
         <Route path="/client-registration" element={<ClientRegistrationPage />} />

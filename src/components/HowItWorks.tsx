@@ -99,7 +99,7 @@ export default function HowItWorks() {
         {/* CTA */}
         <div className="text-center mt-10 sm:mt-12">
           <button
-            onClick={() => navigate('/contact')}
+            onClick={() => navigate('/client-registration')}
             className="btn-primary px-8 py-4 min-h-[44px] text-base sm:text-lg"
           >
             Start Your Brand Journey
