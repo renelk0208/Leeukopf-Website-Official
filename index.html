@@ -124,6 +124,20 @@
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
       
+      // Initialize Meta Pixel with consent check
+      function initializeMetaPixel() {
+        if (!window.fbq) return;
+        
+        // Get the pixel ID from environment variable (injected by Vite)
+        var pixelId = '__VITE_META_PIXEL_ID__';
+        
+        // Only initialize if we have a valid pixel ID (not empty or placeholder)
+        if (pixelId && pixelId !== '__VITE_META_PIXEL_ID__' && pixelId.trim() !== '') {
+          fbq('init', pixelId);
+          fbq('track', 'PageView');
+        }
+      }
+      
       // Check for cookie consent before initializing
       function checkConsentAndInit() {
         // Get consent cookie
@@ -136,14 +150,8 @@
           try {
             var consentValue = JSON.parse(decodeURIComponent(consentMatch.split('=')[1]));
             // Only initialize if user accepted all cookies
-            if (consentValue.choice === 'all' && window.fbq) {
-              // Get the pixel ID from environment variable (injected by Vite)
-              var pixelId = '__VITE_META_PIXEL_ID__';
-              // Check if we have a valid pixel ID (not the placeholder)
-              if (pixelId && pixelId.indexOf('__VITE_') === -1 && pixelId.trim() !== '') {
-                fbq('init', pixelId);
-                fbq('track', 'PageView');
-              }
+            if (consentValue.choice === 'all') {
+              initializeMetaPixel();
             }
           } catch (e) {
             // Silently fail if cookie parsing fails
@@ -160,12 +168,8 @@
       
       // Listen for consent changes
       window.addEventListener('cookieConsentChanged', function(event) {
-        if (event.detail && event.detail.choice === 'all' && window.fbq) {
-          var pixelId = '__VITE_META_PIXEL_ID__';
-          if (pixelId && pixelId.indexOf('__VITE_') === -1 && pixelId.trim() !== '') {
-            fbq('init', pixelId);
-            fbq('track', 'PageView');
-          }
+        if (event.detail && event.detail.choice === 'all') {
+          initializeMetaPixel();
         }
       });
     </script>
