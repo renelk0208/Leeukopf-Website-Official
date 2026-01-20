@@ -14,7 +14,7 @@ export default function CertificatesBanner() {
     },
     {
       label: 'HEMA & TPO Free',
-      image: '/viber_image_2025-11-12_13-54-58-003.png',
+      image: '/img/certifications/hema-tpo-free-icon.png',
       alt: 'HEMA & TPO Free Logo',
       width: 120,
       height: 120
@@ -28,7 +28,7 @@ export default function CertificatesBanner() {
     },
     {
       label: 'CPNP Registered',
-      image: '/img/certifications/tuv-austria-icon.png',
+      image: '/img/certifications/cpnp-icon.png',
       alt: 'CPNP Registered - EU Cosmetic Product Notification Portal',
       width: 120,
       height: 120
