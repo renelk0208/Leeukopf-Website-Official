@@ -25,13 +25,17 @@ export default function MetaPixelTracker() {
   const initializePixel = () => {
     // Only run in production
     if (!import.meta.env.PROD) {
-      console.log('[Meta Pixel] Development mode detected, skipping initialization');
+      if (!import.meta.env.PROD) {
+        console.log('[Meta Pixel] Development mode detected, skipping initialization');
+      }
       return;
     }
 
     // Check if already initialized
     if (hasInitialized.current) {
-      console.log('[Meta Pixel] Already initialized');
+      if (!import.meta.env.PROD) {
+        console.log('[Meta Pixel] Already initialized');
+      }
       return;
     }
 
@@ -44,7 +48,9 @@ export default function MetaPixelTracker() {
 
     // Check for analytics consent
     if (!hasAnalyticsConsent()) {
-      console.log('[Meta Pixel] Analytics cookies not accepted, skipping initialization');
+      if (!import.meta.env.PROD) {
+        console.log('[Meta Pixel] Analytics cookies not accepted, skipping initialization');
+      }
       return;
     }
 
@@ -65,7 +71,9 @@ export default function MetaPixelTracker() {
 
     const handleConsentChange = (event: Event) => {
       const customEvent = event as CustomEvent<{ choice: string }>;
-      console.log('[Meta Pixel] Cookie consent changed:', customEvent.detail.choice);
+      if (!import.meta.env.PROD) {
+        console.log('[Meta Pixel] Cookie consent changed:', customEvent.detail.choice);
+      }
       
       // If user accepts all cookies, initialize the pixel
       if (customEvent.detail.choice === 'all') {
