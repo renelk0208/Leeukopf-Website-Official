@@ -96,7 +96,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           <div className="image-frame hover:shadow-lg transition-shadow">
             <OptimizedImage
-              src="/img/factory/qc-intake.png"
+              src="/img/factory/qc-intake.webp"
               alt="Quality control testing of raw materials at Leeukopf Laboratories"
               width={800}
               height={600}

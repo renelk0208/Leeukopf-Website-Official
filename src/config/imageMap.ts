@@ -28,12 +28,12 @@ export const categoryHero: Record<string, string> = {
   'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg',
   'cat-eye-collection': '/img/products/gel_polishes/Cat Eye Collection/cat-eye_categoty_card-image.png',
   'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-category-card-image.jpg',
-  'glitters-collection': '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.png',
+  'glitters-collection': '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp',
   'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-category card image.jpg',
   'french-collection': '/img/products/gel_polishes/French Collection/french-collection-category-card-image.png',
   'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
   'glow-in-the-dark': '/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polish-category-card-image.png',
-  'platinum-gel-polish': '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.png',
+  'platinum-gel-polish': '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.webp',
   'thermo-mood-changing': '/img/products/gel_polishes/Thermo Mood Changing/thermo-mood-changing-gel-polish-category-image.png',
   
   // Builder Systems
@@ -70,8 +70,8 @@ export const categoryHero: Record<string, string> = {
   'primers-with-acid': '/img/products/liquids-&-solutions/primer-liquid-images-1.jpg',
   
   // Nail Art
-  'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
-  '3d-multifunctional-gel': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
+  'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp',
+  '3d-multifunctional-gel': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp',
   'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/webp/solid-mirror-category-card.webp',
   
   // Lamps

@@ -19,11 +19,18 @@ const BRAND_CONFIG = {
   },
 } as const;
 
-// Number of posts to display in the grid (2x2 = 4)
-const POST_COUNT = 4;
-
-// Grid classes for 2x2 layout (responsive: 1 col mobile, 2 cols tablet+)
-const GRID_CLASSES = 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6';
+// Grid classes - dynamic based on count
+// Currently supports 4 tiles (2x2) and 8 tiles (2x4 on mobile, 4x2 on desktop)
+// For other counts, defaults to 2-column responsive grid
+function getGridClasses(count: number): string {
+  if (count === 8) {
+    // 8 items: 2x4 grid (2 cols, 4 rows) on mobile/tablet, 4x2 on desktop
+    return 'grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6';
+  }
+  // Default: 2x2 for 4 items or any other count
+  // For counts other than 4 or 8, this will create a 2-column grid that wraps
+  return 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6';
+}
 
 // Instagram post interface matching the /api/instagram response contract
 interface InstagramItem {
@@ -37,17 +44,22 @@ interface InstagramItem {
 }
 
 interface InstagramApiResponse {
+  brand: string;
   items: InstagramItem[];
-  error: string | null;
+  error?: string;
 }
 
 type LoadState = 'idle' | 'loading' | 'loaded' | 'error';
 
-// Skeleton loader component for 4 items (2x2 grid)
-function SkeletonGrid() {
+// Skeleton loader component - dynamic count
+interface SkeletonGridProps {
+  count: number;
+}
+
+function SkeletonGrid({ count }: SkeletonGridProps) {
   return (
-    <div className={GRID_CLASSES}>
-      {Array.from({ length: POST_COUNT }).map((_, index) => (
+    <div className={getGridClasses(count)}>
+      {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
           className="aspect-square bg-gray-200 rounded-lg animate-pulse"
@@ -67,15 +79,16 @@ interface ErrorFallbackProps {
   profile: string;
   profileUrl: string;
   brand: Brand;
+  limit: number;
 }
 
-function ErrorFallback({ profile, profileUrl, brand }: ErrorFallbackProps) {
-  const fallbackImages = getInstagramFallbackImages(brand);
+function ErrorFallback({ profile, profileUrl, brand, limit }: ErrorFallbackProps) {
+  const fallbackImages = getInstagramFallbackImages(brand, limit);
   
   return (
     <>
       {/* Display fallback images in grid */}
-      <div className={GRID_CLASSES}>
+      <div className={getGridClasses(limit)}>
         {fallbackImages.map((imageSrc, index) => (
           <a
             key={index}
@@ -313,9 +326,10 @@ function PostTile({ post, onSelect, brandName }: PostTileProps) {
 // Main Instagram Feed component
 interface InstagramFeedProps {
   brand?: Brand;
+  limit?: number;
 }
 
-export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps) {
+export default function InstagramFeed({ brand = 'leeukopf', limit = 4 }: InstagramFeedProps) {
   const [loadState, setLoadState] = useState<LoadState>('idle');
   const [posts, setPosts] = useState<InstagramItem[]>([]);
   const [selectedPost, setSelectedPost] = useState<InstagramItem | null>(null);
@@ -358,13 +372,15 @@ export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps
         return;
       }
 
-      setPosts(data.items);
+      // Limit the number of posts to display to exactly 'limit'
+      const displayItems = data.items.slice(0, limit);
+      setPosts(displayItems);
       setLoadState('loaded');
     } catch (error) {
       console.error(`[instagram-feed] ${brand}: Failed to load Instagram feed:`, error);
       setLoadState('error');
     }
-  }, [brand]);
+  }, [brand, limit]);
 
   // Set up IntersectionObserver for lazy loading
   useEffect(() => {
@@ -390,7 +406,7 @@ export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps
     return () => {
       observer.disconnect();
     };
-  }, [loadState, loadFeed]);
+  }, [loadState, loadFeed]); // limit not needed in deps since loadFeed is memoized with brand
 
   // Handle modal open/close
   const openModal = (post: InstagramItem) => {
@@ -425,14 +441,41 @@ export default function InstagramFeed({ brand = 'leeukopf' }: InstagramFeedProps
           {/* Content area */}
           <div className="min-h-[200px]">
             {loadState === 'idle' || loadState === 'loading' ? (
-              <SkeletonGrid />
+              <SkeletonGrid count={limit} />
             ) : loadState === 'error' ? (
-              <ErrorFallback profile={config.profile} profileUrl={profileUrl} brand={brand} />
+              <ErrorFallback profile={config.profile} profileUrl={profileUrl} brand={brand} limit={limit} />
             ) : (
               <>
-                <div className={GRID_CLASSES}>
+                <div className={getGridClasses(limit)}>
+                  {/* Render actual posts */}
                   {posts.map((post) => (
                     <PostTile key={post.id} post={post} onSelect={openModal} brandName={brandDisplayName} />
+                  ))}
+                  {/* Render placeholders for remaining slots (up to limit - posts.length) */}
+                  {posts.length < limit && getInstagramFallbackImages(brand, limit - posts.length).map((imageSrc, index) => (
+                    <a
+                      key={`placeholder-${index}`}
+                      href={profileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] focus:ring-offset-2 w-full"
+                      aria-label={`Visit our Instagram @${config.profile}`}
+                    >
+                      <img
+                        src={imageSrc}
+                        alt={`Sample content ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      {/* Hover overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                      {/* Instagram icon overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="bg-white/90 rounded-full p-3">
+                          <Instagram size={32} className="text-pink-500" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
                   ))}
                 </div>
                 {/* CTA to visit Instagram profile */}
