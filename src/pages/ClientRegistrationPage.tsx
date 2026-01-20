@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
+import { trackLead } from '../lib/metaPixel';
 
 interface FormData {
   company: string;
@@ -334,6 +335,15 @@ export default function ClientRegistrationPage() {
       }
 
       setSubmitSuccess(true);
+      
+      // Track Lead event with Meta Pixel
+      trackLead({
+        content_name: 'Client Registration Form',
+        content_category: 'registration',
+        value: 1,
+        currency: 'USD'
+      });
+      
       setFormData({
         company: '',
         contact: '',
