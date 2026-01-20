@@ -237,6 +237,11 @@ export default function ClientRegistrationPage() {
       newErrors.businessInterest = 'Please select Private Label or Distribution.';
     }
 
+    // Product Interests validation: at least one must be selected
+    if (formData.interests.length === 0) {
+      newErrors.productInterests = 'Please select at least one product interest.';
+    }
+
     // Country "Other" validation
     if (formData.country === 'Other' && !formData.countryOther.trim()) {
       newErrors.countryOther = 'Please specify country';
@@ -364,6 +369,7 @@ export default function ClientRegistrationPage() {
                       validateEmail(formData.email) && formData.country &&
                       formData.businessType && formData.gdprConsent && formData.privacyPolicyAccepted &&
                       (formData.interestPrivateLabel || formData.interestDistribution) &&
+                      formData.interests.length > 0 &&
                       (formData.country !== 'Other' || formData.countryOther.trim()) &&
                       (!formData.requestSampleBox || (
                         formData.street.trim() && formData.district.trim() && 
@@ -681,7 +687,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-3">
-                Product Interests
+                Product Interests <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {productInterests.map(interest => (
@@ -699,6 +705,11 @@ export default function ClientRegistrationPage() {
                   </label>
                 ))}
               </div>
+              {errors.productInterests && (
+                <p className="mt-2 text-sm text-red-600" role="alert">
+                  {errors.productInterests}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
