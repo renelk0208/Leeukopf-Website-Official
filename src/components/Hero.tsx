@@ -40,31 +40,27 @@ export default function Hero() {
 
           {/* H1 - Main keyword-rich heading for SEO */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 max-w-4xl mx-auto leading-tight px-2 bg-white/90 rounded-lg py-4 inline-block">
-            Private Label Gel Polish Manufacturer
+            Launch Your Gel Polish Brand in 6-8 Weeks
           </h1>
 
           {/* Responsive typography with clamp-like approach */}
           <p className="text-lg sm:text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto leading-relaxed font-medium px-2 bg-white/90 rounded-lg py-3 inline-block">
-            Premium Gel Polish Manufacturing & Private Label Excellence
-          </p>
-
-          <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto font-medium px-2 bg-white/90 rounded-lg py-2 inline-block">
-            Professional Gel Systems • Builder Gel • Nail Art • Bulgarian Cosmetics Excellence
+            2000+ Colors • HEMA-Free • EU Certified • GMP Manufacturing
           </p>
 
           {/* Responsive button group with full-width on mobile */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center pt-4 sm:pt-6 px-4 sm:px-0">
             <button
-              onClick={() => navigate('/products')}
+              onClick={() => navigate('/contact')}
               className="btn-primary w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px]"
             >
-              Explore Our Products
+              Book Free Consultation
             </button>
             <button
-              onClick={() => navigate('/contact')}
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] bg-white rounded-md font-semibold transition-all duration-300 border-2 text-primary border-primary hover:bg-primary hover:text-white"
+              onClick={() => navigate('/products/gel-polish')}
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] bg-white/80 rounded-md font-semibold transition-all duration-300 border-2 text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
             >
-              Contact Us
+              View Our Colors
             </button>
           </div>
 
@@ -75,7 +71,7 @@ export default function Hero() {
               className={categoryLinkClass}
             >
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                2000+ Colours to choose from
+                2000+ Colors to choose from
               </h3>
               <p className="text-base sm:text-lg font-semibold text-primary">
                 Gel Polish

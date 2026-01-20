@@ -24,7 +24,7 @@ function validatePlaceholderPath(path: string): boolean {
  * @returns Array of image paths for fallback placeholders
  */
 export function getInstagramFallbackImages(brand: Brand, count: number = 4): string[] {
-  const basePath = `/img/instagram/${brand}/placeholder/webp`;
+  const basePath = `/img/instagram/${brand}/placeholder`;
   
   // Validate count is within available range (we have placeholders 1-8)
   const maxPlaceholders = 8;
@@ -39,7 +39,7 @@ export function getInstagramFallbackImages(brand: Brand, count: number = 4): str
   // Build placeholder paths based on validated count
   const placeholders: string[] = [];
   for (let i = 1; i <= validatedCount; i++) {
-    placeholders.push(`${basePath}/placeholder-${i}.webp`);
+    placeholders.push(`${basePath}/placeholder-${i}.jpg`);
   }
   
   // Runtime safeguard: Ensure no placeholder path contains /products/

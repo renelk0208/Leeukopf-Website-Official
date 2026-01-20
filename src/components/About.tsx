@@ -64,31 +64,28 @@ export default function About() {
               <div className="space-y-4">
                 <div>
                   <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                    🏭 State-of-the-Art Manufacturing Facility
+                    <strong>🏭 State-of-the-Art Manufacturing</strong>
                   </h4>
                   <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
-                    Our certified factory in Blagoevgrad, Bulgaria, uses cutting-edge technology and adheres to the highest international quality standards. 
-                    We manufacture premium gel polish, builder gels, and professional nail care products with precision and consistency.
+                    Our certified factory in Blagoevgrad, Bulgaria uses cutting-edge technology and adheres to the highest international quality standards. We manufacture premium gel polish, builder gels, and professional nail care products with precision.
                   </p>
                 </div>
                 
                 <div>
                   <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                    🎨 3000+ Premium Colors
+                    <strong>🎨 2000+ Premium Colors</strong>
                   </h4>
                   <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
-                    Choose from our extensive collection of over 3000 vibrant gel polish colors. From timeless classics to trendy seasonal shades, 
-                    our diverse palette ensures you'll find the perfect colors to represent your brand and delight your customers.
+                    Choose from our extensive collection of over 2000 vibrant gel polish colors. From timeless classics to trendy seasonal shades, find the perfect colors for your brand.
                   </p>
                 </div>
                 
                 <div>
                   <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                    ✅ HEMA-Free Formulations
+                    <strong>✅ HEMA-Free Formulations</strong>
                   </h4>
                   <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
-                    We prioritize safety and innovation with our HEMA-free gel polish formulations. Our products are gentler on nails while 
-                    maintaining professional-grade quality, long-lasting wear, and brilliant shine that nail technicians and clients love.
+                    We prioritize safety with our HEMA-free gel polish formulations. Our products are gentler on nails while maintaining professional-grade quality and brilliant shine.
                   </p>
                 </div>
               </div>
@@ -96,31 +93,28 @@ export default function About() {
               <div className="space-y-4">
                 <div>
                   <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                    🌍 Global Distribution Network
+                    <strong>🌍 Global Distribution Network</strong>
                   </h4>
                   <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
-                    We partner with distributors and private label clients worldwide. Our experienced logistics team ensures reliable delivery, 
-                    proper documentation, and seamless international shipping to help your brand succeed in any market.
+                    We partner with distributors and private label clients worldwide. Our experienced logistics team ensures reliable delivery and seamless international shipping to help your brand succeed.
                   </p>
                 </div>
                 
                 <div>
                   <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                    📜 Certified & Compliant
+                    <strong>📜 Certified & Compliant</strong>
                   </h4>
                   <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
-                    All our products meet EU cosmetics regulations and international safety standards. We provide complete documentation, 
-                    safety assessments, and certificates to ensure your brand complies with regulations in your target markets.
+                    All our products meet EU cosmetics regulations and international safety standards. We provide complete documentation and certificates to ensure your brand complies with regulations.
                   </p>
                 </div>
                 
                 <div>
                   <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                    🤝 Personalized Consultation & Support
+                    <strong>🤝 Personalized Consultation & Support</strong>
                   </h4>
                   <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-light">
-                    Unlike large manufacturers, we offer dedicated one-on-one support. From product selection to packaging design and market strategy, 
-                    our expert consultants guide you through every step of launching and growing your private label nail care brand.
+                    Unlike large manufacturers, we offer dedicated one-on-one support. Our expert consultants guide you through every step of launching and growing your private label nail care brand.
                   </p>
                 </div>
               </div>

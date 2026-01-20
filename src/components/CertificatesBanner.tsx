@@ -1,28 +1,37 @@
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
 
 export default function CertificatesBanner() {
+  const navigate = useNavigate();
   const certifications = [
     {
       label: 'GMP Certified',
       image: '/img/certifications/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview (1).png',
       alt: 'GMP Certified',
-      width: 100,
-      height: 36
+      width: 120,
+      height: 48
     },
     {
       label: 'HEMA & TPO Free',
       image: '/viber_image_2025-11-12_13-54-58-003.png',
       alt: 'HEMA & TPO Free Logo',
-      width: 100,
-      height: 96
+      width: 120,
+      height: 120
     },
     {
       label: 'Leaping Bunny Approved',
       image: '/viber_image_2025-11-12_13-55-24-523 copy copy.png',
       alt: 'Leaping Bunny Approved Cruelty Free Certification',
-      width: 100,
-      height: 96
+      width: 120,
+      height: 120
+    },
+    {
+      label: 'CPNP Registered',
+      image: '/img/certifications/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview (1).png',
+      alt: 'CPNP Registered',
+      width: 120,
+      height: 48
     },
   ];
 
@@ -47,12 +56,12 @@ export default function CertificatesBanner() {
             </div>
 
             <div className="space-y-4 sm:space-y-6">
-              {/* Responsive certification grid - scales from 3 columns to stacked on very small screens */}
-              <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+              {/* Responsive certification grid - scales from 4 columns to 2 on smaller screens */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                 {certifications.map((cert, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-center justify-center p-2 sm:p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-600 hover:shadow-md transition-all duration-300"
+                    className="flex flex-col items-center justify-center p-3 sm:p-4 md:p-5 bg-white border-2 border-gray-200 rounded-lg hover:border-blue-600 hover:shadow-md transition-all duration-300"
                   >
                     {/* Certification badges are small and above-fold on homepage, so eager load them */}
                     <OptimizedImage
@@ -61,20 +70,18 @@ export default function CertificatesBanner() {
                       width={cert.width}
                       height={cert.height}
                       lazy={index > 0}
-                      className={cert.label === 'GMP Certified'
-                        ? 'max-h-[24px] sm:max-h-[28px] md:max-h-[36px] w-auto object-contain mb-1 sm:mb-2'
-                        : 'w-full h-16 sm:h-20 md:h-24 object-contain mb-1 sm:mb-2'}
+                      className={cert.label.includes('GMP') || cert.label.includes('CPNP')
+                        ? 'max-h-[36px] sm:max-h-[42px] md:max-h-[48px] w-auto object-contain mb-2 sm:mb-3'
+                        : 'w-full h-20 sm:h-24 md:h-28 object-contain mb-2 sm:mb-3'}
                     />
-                    <span className="text-[10px] sm:text-xs font-medium text-gray-700 text-center leading-tight">{cert.label}</span>
+                    <span className="text-xs sm:text-sm font-semibold text-gray-800 text-center leading-tight">{cert.label}</span>
                   </div>
                 ))}
               </div>
 
               {/* Full width button on mobile */}
               <button
-                onClick={() => {
-                  window.location.href = '/certificates-and-compliance';
-                }}
+                onClick={() => navigate('/certificates-and-compliance')}
                 className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-blue-800 text-white rounded-md font-semibold hover:bg-blue-900 transition-all duration-300 shadow-sm hover:shadow-md w-full lg:w-auto min-h-[44px]"
               >
                 <span>View Certificates</span>
