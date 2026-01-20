@@ -112,8 +112,76 @@
       ]
     }
     </script>
+    
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      
+      // Initialize Meta Pixel with consent check
+      function initializeMetaPixel() {
+        if (!window.fbq) return;
+        
+        // Get the pixel ID from environment variable (injected by Vite)
+        var pixelId = '__VITE_META_PIXEL_ID__';
+        
+        // Only initialize if we have a valid pixel ID (not empty or placeholder)
+        if (pixelId && pixelId !== '__VITE_META_PIXEL_ID__' && pixelId.trim() !== '') {
+          fbq('init', pixelId);
+          fbq('track', 'PageView');
+        }
+      }
+      
+      // Check for cookie consent before initializing
+      function checkConsentAndInit() {
+        // Get consent cookie
+        var consentMatch = document.cookie
+          .split(';')
+          .map(function(c) { return c.trim(); })
+          .find(function(c) { return c.startsWith('lkp_cookie_consent='); });
+        
+        if (consentMatch) {
+          try {
+            var consentValue = JSON.parse(decodeURIComponent(consentMatch.split('=')[1]));
+            // Only initialize if user accepted all cookies
+            if (consentValue.choice === 'all') {
+              initializeMetaPixel();
+            }
+          } catch (e) {
+            // Silently fail if cookie parsing fails
+          }
+        }
+      }
+      
+      // Check consent on page load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkConsentAndInit);
+      } else {
+        checkConsentAndInit();
+      }
+      
+      // Listen for consent changes
+      window.addEventListener('cookieConsentChanged', function(event) {
+        if (event.detail && event.detail.choice === 'all') {
+          initializeMetaPixel();
+        }
+      });
+    </script>
+    <!-- End Meta Pixel Code -->
   </head>
   <body>
+    <!-- Meta Pixel Noscript -->
+    <noscript>
+      <img height="1" width="1" style="display:none"
+           src="https://www.facebook.com/tr?id=__VITE_META_PIXEL_ID__&amp;ev=PageView&amp;noscript=1"/>
+    </noscript>
+    <!-- End Meta Pixel Noscript -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
