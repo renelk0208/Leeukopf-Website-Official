@@ -15,155 +15,77 @@ interface FAQItem {
 
 const faqItems: FAQItem[] = [
   {
-    question: 'Where do I start if I want my own gel polish brand?',
+    question: 'How do I start my own gel polish brand?',
     answers: [
-      'Decide between private label (ready-made, you add branding) or custom formulation.',
-      'Private label is usually faster and more cost-effective for beginners.',
-      'Start by choosing your core product range (colours, base, top, builders).'
+      'Choose colours, packaging, and quantities',
+      'We handle formulation, compliance, and production',
+      'You launch under your own brand',
+      'Full guidance from start to launch'
     ]
   },
   {
-    question: 'What products do I need for a basic launch?',
+    question: 'Do I need experience in cosmetics?',
     answers: [
-      'Gel polish colours (a focused starter range).',
-      'Base coat.',
-      'Top coat (gloss and/or matte).',
-      'Optional: a few builder gels for structure or extensions.',
-      'Many brands start with 20–40 shades, not hundreds.'
+      'No prior experience required',
+      'We guide you through every step',
+      'Ideal for salons, educators, and distributors'
     ]
   },
   {
-    question: 'What is the MOQ (minimum order quantity)?',
+    question: 'Are your gel polishes HEMA-free?',
     answers: [
-      'MOQ depends on packaging type and product family.',
-      'Private label MOQs are kept as low as practical so you can test the market.',
-      'Higher volumes unlock better pricing per unit.'
+      'HEMA-free and ultra-clean options available',
+      '21-free, cruelty-free systems',
+      'EU-formulated and produced',
+      'Fully compliant for sale'
     ]
   },
   {
-    question: 'Do I need my own special formula?',
+    question: 'Can I create custom colours?',
     answers: [
-      'No — you can use our existing EU-compliant formulations.',
-      'They are already tested, stable and safety-assessed.',
-      'Custom formulas are possible but take more time and budget.'
+      'Bespoke shades engineered to exact specification',
+      'Pantone, reference sample, or trend-led development',
+      'Suitable for hero shades or full collections'
     ]
   },
   {
-    question: 'Can I have my logo and design on the bottles?',
+    question: 'What are your minimum order quantities?',
     answers: [
-      'Yes, we offer silk screen, hot stamp and label options.',
-      'You choose bottle style, cap, colour and printing method.',
-      'We guide you based on your budget and quantities.'
+      'Flexible MOQs by product type',
+      'Suitable for startups and established distributors',
+      'Volume pricing available'
     ]
   },
   {
-    question: 'What is a PIF and why do I need it?',
+    question: 'How long does production take?',
     answers: [
-      'PIF = Product Information File, legally required in the EU.',
-      'Includes safety report, formula, raw-material documents, stability data and labels.',
-      "Must always be available at the Responsible Person's address.",
-      'We arrange PIF preparation for the products you take.'
+      'Clear timelines agreed upfront',
+      'Reliable EU production schedules',
+      'Transparent planning with no surprises'
     ]
   },
   {
-    question: 'What is the CPNP and who handles it?',
+    question: 'Do you provide packaging and labels?',
     answers: [
-      'CPNP = EU Cosmetic Product Notification Portal.',
-      'All EU cosmetics must be notified there before sale.',
-      "It's a notification system, not a 'certificate' or approval.",
-      'We handle CPNP notification once PIF and labels are final.'
+      'Bottles, jars, brushes, and labels available',
+      'Luxury-grade packaging options',
+      'Fully brand-ready solutions'
     ]
   },
   {
-    question: 'What is a Responsible Person (RP) and do I need one?',
+    question: 'Is EU compliance included?',
     answers: [
-      'Every cosmetic in the EU needs an EU-based Responsible Person.',
-      'The RP holds the PIF and manages compliance and safety.',
-      'If you are not EU-based (or prefer not to act as RP), we can provide this service.'
+      'Full EU cosmetic compliance included',
+      'Safety assessments and documentation handled',
+      'Ready for legal sale'
     ]
   },
   {
-    question: 'How long does it take to launch a new brand?',
+    question: 'What support do you provide?',
     answers: [
-      'Private label with existing formulas is the fastest route.',
-      'Packaging choice and artwork: 2–4 weeks.',
-      'PIF and safety work: 2–6 weeks, depending on scope.',
-      'CPNP notification: a few days once everything is ready.',
-      'Timing depends on how quickly artwork and key decisions are finalised.'
-    ]
-  },
-  {
-    question: 'Can I test the products before placing a big order?',
-    answers: [
-      'Yes, you can order samples of colours, bases, tops and builders.',
-      'Test application, curing and wear with your own nail techs.',
-      'We recommend testing with a 48W multi-wave LED lamp.'
-    ]
-  },
-  {
-    question: 'What documentation do I receive with my order?',
-    answers: [
-      'Commercial invoice with HS codes.',
-      'Packing list and carton details.',
-      'Certificate of Origin (if required for your country).',
-      'SDS/MSDS for all relevant products.',
-      'Compliance certificates (EU Regulation 1223/2009, GMP).',
-      'CPNP confirmation (for EU-placed products, where applicable).'
-    ]
-  },
-  {
-    question: 'Are your products cruelty-free and compliant?',
-    answers: [
-      'Produced under EU Cosmetic Regulation (EC) 1223/2009.',
-      'Manufactured under GMP standards.',
-      {
-        text: 'Approved by Cruelty Free International — covering global cruelty-free standards.',
-        link: {
-          url: 'https://crueltyfreeinternational.org/',
-          label: 'Cruelty Free International'
-        }
-      },
-      'Formulas are regularly updated for new regulatory changes.'
-    ]
-  },
-  {
-    question: 'Do you offer HEMA-free and TPO-free products?',
-    answers: [
-      'Yes — all formulations are 100 percent HEMA-free and TPO-free.',
-      'This aligns with current and upcoming EU regulations.',
-      'Applies to every product family: colours, bases, tops and builders.'
-    ]
-  },
-  {
-    question: 'Can I have exclusive colours or collections?',
-    answers: [
-      'Yes, we can create exclusive shades and seasonal collections.',
-      'We can colour-match using spectrophotometer data or physical samples.',
-      'Collections can be based on themes, trends or specific palettes.'
-    ]
-  },
-  {
-    question: "How do I reorder once I'm happy with the products?",
-    answers: [
-      'Reorder using product codes / shade codes and required quantities.',
-      'Once packaging and formulas are set, repeat orders are straightforward.',
-      'We can discuss volume-based pricing as your brand grows.'
-    ]
-  },
-  {
-    question: 'What curing lamps do you recommend for your gels?',
-    answers: [
-      'We recommend 48W multi-wave LED lamps (approx. 365–405 nm).',
-      'Our formulas are optimised for modern LED technology.',
-      'This ensures proper curing, gloss and durability.'
-    ]
-  },
-  {
-    question: 'What support do you offer after launch?',
-    answers: [
-      'Ongoing regulatory and compliance support.',
-      'New shade and collection development.',
-      'Guidance on scaling orders and entering distribution.'
+      'Real, responsive human support',
+      'Product training and troubleshooting',
+      'Long-term partnership approach'
     ]
   }
 ];
@@ -184,8 +106,8 @@ export default function FaqStartBrandPage() {
       {/* FAQ Introduction */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base max-w-4xl">
-          This FAQ is for people who are completely new to launching their own gel polish brand. 
-          Questions are bold and answers are in short bullet points for quick reading.
+          Everything you need to know about starting your own gel polish brand. 
+          Clear answers to the most common questions from aspiring brand owners.
         </p>
       </div>
 
@@ -234,17 +156,17 @@ export default function FaqStartBrandPage() {
         <div className="card p-6 sm:p-8 md:p-10 section-gradient-primary">
           <div className="text-center max-w-2xl mx-auto">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Still have questions?
+              Ready to start your gel polish brand?
             </h3>
             <p className="text-gray-600 font-light mb-6 text-sm sm:text-base">
-              Our team is here to help you navigate the journey of creating your own gel polish brand. 
-              Whether you're just starting or ready to scale, we're committed to your success.
+              Request a private label consultation and begin your journey to launching 
+              your own professional gel polish brand.
             </p>
             <a
               href="/contact"
               className="btn-primary inline-block px-6 sm:px-8 py-3 min-h-[44px]"
             >
-              Contact Our Team
+              Request a Private Label Consultation
             </a>
           </div>
         </div>
