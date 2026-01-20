@@ -9,6 +9,7 @@
  * Features:
  * - Domain validation (only fires on canonical domain leeukopf.com)
  * - Lead event tracking for form submissions
+ * - Deduplication to prevent duplicate Lead events per form per session
  * - Standard and custom event tracking
  * - Development mode logging
  */
@@ -23,6 +24,10 @@ declare global {
 
 // Canonical domain for Meta Pixel tracking
 const CANONICAL_DOMAIN = 'leeukopf.com';
+
+// Track which forms have already fired a Lead event in this session
+// This prevents duplicate Lead events if the user submits the same form multiple times
+const trackedLeadForms = new Set<string>();
 
 /**
  * Check if the current domain is the canonical domain
@@ -128,19 +133,26 @@ export function trackCustomEvent(eventName: string, params?: Record<string, unkn
  * Track a Lead event
  * 
  * @param params - Optional event parameters
- * @param params.content_name - Name of the form or lead source
+ * @param params.content_name - Name of the form or lead source (optional, but HIGHLY RECOMMENDED for deduplication)
  * @param params.content_category - Category of the lead (e.g., 'form_submission', 'registration')
  * @param params.value - Optional monetary value of the lead
  * @param params.currency - Optional currency (default: 'USD')
  * 
  * This function tracks a standard Meta Pixel "Lead" event for form submissions.
+ * It includes deduplication logic to prevent the same form from firing multiple
+ * Lead events within the same browser session.
+ * 
+ * IMPORTANT: Always provide a unique content_name for each form to enable
+ * proper deduplication. Without content_name, the event will fire every time
+ * this function is called (no deduplication).
+ * 
  * It's prepared for future Meta Conversions API (CAPI) integration where
  * lead events can be mirrored server-side for improved tracking accuracy.
  * 
  * Usage:
  * ```typescript
  * trackLead({
- *   content_name: 'Client Registration Form',
+ *   content_name: 'Client Registration Form',  // REQUIRED for deduplication
  *   content_category: 'registration',
  *   value: 1,
  *   currency: 'USD'
@@ -163,6 +175,14 @@ export function trackLead(params?: {
     return;
   }
 
+  // Guard: Deduplication check
+  // Only deduplicate if content_name is provided
+  const formKey = params?.content_name;
+  if (formKey && trackedLeadForms.has(formKey)) {
+    log(`[Meta Pixel] Lead event already tracked for "${formKey}" in this session, skipping duplicate`);
+    return;
+  }
+
   try {
     // Track Lead event with Meta Pixel
     if (params) {
@@ -171,6 +191,11 @@ export function trackLead(params?: {
     } else {
       window.fbq('track', 'Lead');
       log('[Meta Pixel] Lead event tracked');
+    }
+    
+    // Mark this form as tracked after successful tracking
+    if (formKey) {
+      trackedLeadForms.add(formKey);
     }
 
     // Future: Mirror event to Meta Conversions API
