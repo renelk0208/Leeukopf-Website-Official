@@ -7,10 +7,10 @@ export default function CertificatesBanner() {
   const certifications = [
     {
       label: 'GMP Certified',
-      image: '/img/certifications/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview (1).png',
+      image: '/img/certifications/gmp-icon.png',
       alt: 'GMP Certified',
       width: 120,
-      height: 48
+      height: 120
     },
     {
       label: 'HEMA & TPO Free',
@@ -21,17 +21,17 @@ export default function CertificatesBanner() {
     },
     {
       label: 'Leaping Bunny Approved',
-      image: '/viber_image_2025-11-12_13-55-24-523 copy copy.png',
+      image: '/img/certifications/leaping-bunny-icon.png',
       alt: 'Leaping Bunny Approved Cruelty Free Certification',
       width: 120,
       height: 120
     },
     {
       label: 'CPNP Registered',
-      image: '/img/certifications/png-transparent-gmp-logo-good-manufacturing-practice-logo-certification-good-manufacturing-practice-text-monochrome-quality-removebg-preview (1).png',
-      alt: 'CPNP Registered',
+      image: '/img/certifications/iso-9001-icon.png',
+      alt: 'CPNP Registered - EU Cosmetic Product Notification Portal',
       width: 120,
-      height: 48
+      height: 120
     },
   ];
 
@@ -70,9 +70,7 @@ export default function CertificatesBanner() {
                       width={cert.width}
                       height={cert.height}
                       lazy={index > 0}
-                      className={cert.label.includes('GMP') || cert.label.includes('CPNP')
-                        ? 'max-h-[36px] sm:max-h-[42px] md:max-h-[48px] w-auto object-contain mb-2 sm:mb-3'
-                        : 'w-full h-20 sm:h-24 md:h-28 object-contain mb-2 sm:mb-3'}
+                      className='w-full h-20 sm:h-24 md:h-28 object-contain mb-2 sm:mb-3'
                     />
                     <span className="text-xs sm:text-sm font-semibold text-gray-800 text-center leading-tight">{cert.label}</span>
                   </div>
