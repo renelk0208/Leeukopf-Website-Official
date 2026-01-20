@@ -54,7 +54,7 @@ export default function PageTemplate({
     } else if (ctaLink) {
       window.location.href = ctaLink;
     } else {
-      window.location.href = '/contact';
+      window.location.href = '/client-registration';
     }
   };
 

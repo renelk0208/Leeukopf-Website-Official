@@ -51,7 +51,7 @@ export default function Hero() {
           {/* Responsive button group with full-width on mobile */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center pt-4 sm:pt-6 px-4 sm:px-0">
             <button
-              onClick={() => navigate('/contact')}
+              onClick={() => navigate('/client-registration')}
               className="btn-primary w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px]"
             >
               Book Free Consultation

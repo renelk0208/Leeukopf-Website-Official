@@ -139,16 +139,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/certificates-and-compliance" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Certificates
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
                 <Link to="/faq-starting-a-gel-polish-brand" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   FAQ – Start Your Brand
                 </Link>

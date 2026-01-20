@@ -106,13 +106,13 @@ export default function PrivateLabelPage() {
       {/* Hero CTA Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10 sm:mb-12 md:mb-16">
         <Link
-          to="/contact"
+          to="/client-registration"
           className="btn-primary px-6 py-3 rounded-lg font-semibold text-center"
         >
           Start a private label project
         </Link>
         <Link
-          to="/contact"
+          to="/client-registration"
           className="btn-secondary px-6 py-3 rounded-lg font-semibold text-center"
         >
           Request more information
@@ -314,13 +314,13 @@ export default function PrivateLabelPage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            to="/contact"
+            to="/client-registration"
             className="btn-primary px-6 py-3 rounded-lg font-semibold"
           >
             Send us your project details
           </Link>
           <Link
-            to="/contact"
+            to="/client-registration"
             className="btn-secondary px-6 py-3 rounded-lg font-semibold"
           >
             Book an online meeting

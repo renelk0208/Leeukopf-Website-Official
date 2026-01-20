@@ -321,7 +321,7 @@ export default function ProductsPage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            to="/contact"
+            to="/client-registration"
             className="btn-primary px-6 py-3 rounded-lg font-semibold"
           >
             Discuss product selection
