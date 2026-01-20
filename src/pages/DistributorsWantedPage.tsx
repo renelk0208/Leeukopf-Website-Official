@@ -4,6 +4,7 @@ import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 import { Gift, UserCheck, CheckCircle } from 'lucide-react';
 import { ComponentType } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface FeatureBlock {
   title: string;
@@ -58,6 +59,8 @@ const requirements = [
 ];
 
 export default function DistributorsWantedPage() {
+  const navigate = useNavigate();
+
   return (
     <PageTemplate
       title="Distributors Wanted"
@@ -125,6 +128,14 @@ export default function DistributorsWantedPage() {
                 </p>
               </li>
             </ul>
+            <div className="mt-6 sm:mt-8 text-center">
+              <button
+                onClick={() => navigate('/client-registration')}
+                className="btn-primary px-6 sm:px-8 py-3 sm:py-4"
+              >
+                Apply to Distribute
+              </button>
+            </div>
           </div>
         </div>
       </section>
