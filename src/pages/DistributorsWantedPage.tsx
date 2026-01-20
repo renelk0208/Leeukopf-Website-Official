@@ -2,7 +2,7 @@ import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
-import { Handshake, Gift, UserCheck, CheckCircle } from 'lucide-react';
+import { Gift, UserCheck, CheckCircle } from 'lucide-react';
 import { ComponentType } from 'react';
 
 interface FeatureBlock {
@@ -12,16 +12,6 @@ interface FeatureBlock {
 }
 
 const featureBlocks: FeatureBlock[] = [
-  {
-    title: 'Why Partner With Us',
-    bullets: [
-      'Premium gel polish systems and professional nail care products',
-      'GMP-certified manufacturing with EU compliance',
-      'Comprehensive support to help you succeed',
-      'Close collaboration for mutual growth in your territory'
-    ],
-    icon: Handshake
-  },
   {
     title: 'What You Gain',
     bullets: [
@@ -83,6 +73,62 @@ export default function DistributorsWantedPage() {
       {/* Start Your Brand Banner */}
       <StartHereBanner />
 
+      {/* Apply to Distribute Section */}
+      <section className="mb-10 sm:mb-12 md:mb-16">
+        <div className="card p-6 sm:p-8 md:p-10">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 tracking-tight">
+              Apply to Distribute
+            </h2>
+            <p className="text-base sm:text-lg text-gray-700 mb-6 leading-relaxed">
+              We partner with established beauty distributors committed to premium brands and long-term growth.
+            </p>
+            <ul className="space-y-3 sm:space-y-4">
+              <li className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  Active presence in beauty or professional nail care
+                </p>
+              </li>
+              <li className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  Strong local retail or distribution network
+                </p>
+              </li>
+              <li className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  Commitment to premium brand standards
+                </p>
+              </li>
+              <li className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  Capacity to meet minimum volumes and manage stock
+                </p>
+              </li>
+              <li className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  Collaborative, growth-focused approach
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* Responsive intro section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 mb-10 sm:mb-12 md:mb-16">
         <div>
@@ -122,8 +168,8 @@ export default function DistributorsWantedPage() {
             </p>
           </div>
 
-          {/* Horizontally scrollable on mobile, 3-column grid on desktop */}
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0 scrollbar-hide">
+          {/* Horizontally scrollable on mobile, 2-column grid on desktop */}
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 scrollbar-hide">
             {featureBlocks.map((block, index) => {
               const IconComponent = block.icon;
               return (
