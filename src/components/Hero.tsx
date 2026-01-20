@@ -40,7 +40,7 @@ export default function Hero() {
 
           {/* H1 - Main keyword-rich heading for SEO */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 max-w-4xl mx-auto leading-tight px-2 bg-white/90 rounded-lg py-4 inline-block">
-            Launch Your Gel Polish Brand in 6-8 Weeks
+            Launch Your Gel Polish Brand<br />in 6-8 Weeks
           </h1>
 
           {/* Responsive typography with clamp-like approach */}
