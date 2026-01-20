@@ -9,6 +9,7 @@
  * Features:
  * - Domain validation (only fires on canonical domain leeukopf.com)
  * - Lead event tracking for form submissions
+ * - Deduplication to prevent duplicate Lead events per form per session
  * - Standard and custom event tracking
  * - Development mode logging
  */
@@ -23,6 +24,10 @@ declare global {
 
 // Canonical domain for Meta Pixel tracking
 const CANONICAL_DOMAIN = 'leeukopf.com';
+
+// Track which forms have already fired a Lead event in this session
+// This prevents duplicate Lead events if the user submits the same form multiple times
+const trackedLeadForms = new Set<string>();
 
 /**
  * Check if the current domain is the canonical domain
@@ -128,12 +133,18 @@ export function trackCustomEvent(eventName: string, params?: Record<string, unkn
  * Track a Lead event
  * 
  * @param params - Optional event parameters
- * @param params.content_name - Name of the form or lead source
+ * @param params.content_name - Name of the form or lead source (required for deduplication)
  * @param params.content_category - Category of the lead (e.g., 'form_submission', 'registration')
  * @param params.value - Optional monetary value of the lead
  * @param params.currency - Optional currency (default: 'USD')
  * 
  * This function tracks a standard Meta Pixel "Lead" event for form submissions.
+ * It includes deduplication logic to prevent the same form from firing multiple
+ * Lead events within the same browser session.
+ * 
+ * IMPORTANT: Always provide a unique content_name for each form to enable
+ * proper deduplication. Without content_name, deduplication is disabled.
+ * 
  * It's prepared for future Meta Conversions API (CAPI) integration where
  * lead events can be mirrored server-side for improved tracking accuracy.
  * 
@@ -161,6 +172,18 @@ export function trackLead(params?: {
   if (!window.fbq) {
     log('[Meta Pixel] fbq not available, skipping Lead tracking');
     return;
+  }
+
+  // Guard: Deduplication check
+  // Only deduplicate if content_name is provided
+  if (params?.content_name) {
+    const formKey = params.content_name;
+    if (trackedLeadForms.has(formKey)) {
+      log(`[Meta Pixel] Lead event already tracked for "${formKey}" in this session, skipping duplicate`);
+      return;
+    }
+    // Mark this form as tracked
+    trackedLeadForms.add(formKey);
   }
 
   try {
