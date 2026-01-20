@@ -28,7 +28,7 @@ export default function CertificatesBanner() {
     },
     {
       label: 'CPNP Registered',
-      image: '/img/certifications/iso-9001-icon.png',
+      image: '/img/certifications/tuv-austria-icon.png',
       alt: 'CPNP Registered - EU Cosmetic Product Notification Portal',
       width: 120,
       height: 120
