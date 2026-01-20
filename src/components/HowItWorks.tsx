@@ -1,6 +1,8 @@
 import { MessageCircle, Palette, Factory, TrendingUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HowItWorks() {
+  const navigate = useNavigate();
   const steps = [
     {
       icon: MessageCircle,
@@ -97,7 +99,7 @@ export default function HowItWorks() {
         {/* CTA */}
         <div className="text-center mt-10 sm:mt-12">
           <button
-            onClick={() => (window.location.href = '/contact')}
+            onClick={() => navigate('/contact')}
             className="btn-primary px-8 py-4 min-h-[44px] text-base sm:text-lg"
           >
             Start Your Brand Journey

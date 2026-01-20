@@ -21,7 +21,7 @@ export default function SocialProof() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
-            Trusted by Brands in 6+ Countries
+            Trusted by Brands in 14+ Countries
           </h2>
           <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 text-sm sm:text-base md:text-lg text-gray-600 font-light">
             {countries.map((country, index) => (

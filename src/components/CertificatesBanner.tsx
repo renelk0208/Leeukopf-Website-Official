@@ -1,7 +1,9 @@
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
 
 export default function CertificatesBanner() {
+  const navigate = useNavigate();
   const certifications = [
     {
       label: 'GMP Certified',
@@ -79,9 +81,7 @@ export default function CertificatesBanner() {
 
               {/* Full width button on mobile */}
               <button
-                onClick={() => {
-                  window.location.href = '/certificates-and-compliance';
-                }}
+                onClick={() => navigate('/certificates-and-compliance')}
                 className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-blue-800 text-white rounded-md font-semibold hover:bg-blue-900 transition-all duration-300 shadow-sm hover:shadow-md w-full lg:w-auto min-h-[44px]"
               >
                 <span>View Certificates</span>
