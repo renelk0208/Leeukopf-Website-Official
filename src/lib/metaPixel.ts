@@ -27,11 +27,23 @@ const CANONICAL_DOMAIN = 'leeukopf.com';
 /**
  * Check if the current domain is the canonical domain
  * Only fires events on the canonical domain to avoid duplicate tracking
+ * In development, allows localhost for testing
  */
 function isCanonicalDomain(): boolean {
   if (typeof window === 'undefined') return false;
   const hostname = window.location.hostname;
-  return hostname === CANONICAL_DOMAIN || hostname === `www.${CANONICAL_DOMAIN}`;
+  
+  // Production domains
+  if (hostname === CANONICAL_DOMAIN || hostname === `www.${CANONICAL_DOMAIN}`) {
+    return true;
+  }
+  
+  // Development environment - allow localhost for testing
+  if (!import.meta.env.PROD && (hostname === 'localhost' || hostname.includes('127.0.0.1'))) {
+    return true;
+  }
+  
+  return false;
 }
 
 /**
