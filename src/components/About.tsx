@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function About() {
   return (
     <section id="about" className="py-12 sm:py-16 md:py-20 bg-white/80 backdrop-blur-sm">
@@ -48,6 +46,45 @@ export default function About() {
           </div>
         </div>
 
+        {/* Science & Manufacturing Excellence */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-12 shadow-sm mb-8 sm:mb-12">
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-4 sm:mb-6">
+              Science & Manufacturing Excellence
+            </h3>
+            <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+              Our state-of-the-art facilities combine advanced manufacturing processes with rigorous quality control. 
+              Every product is crafted with precision, backed by certified safety standards and scientific innovation.
+            </p>
+          </div>
+        </div>
+
+        {/* Shade Innovation & Luxury Branding */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-12 shadow-sm mb-8 sm:mb-12">
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-4 sm:mb-6">
+              Shade Innovation & Luxury Branding
+            </h3>
+            <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+              We offer an extensive palette of over 500 unique shades, designed to elevate your brand identity. 
+              From timeless classics to trending colors, our formulations deliver vibrant, long-lasting results that define luxury.
+            </p>
+          </div>
+        </div>
+
+        {/* Partnership & Reliability */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-12 shadow-sm mb-8 sm:mb-12">
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-4 sm:mb-6">
+              Partnership & Reliability
+            </h3>
+            <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+              We're more than a supplier — we're your trusted partner in building a successful brand. 
+              With transparent communication, consistent quality, and on-time delivery, we ensure your business thrives.
+            </p>
+          </div>
+        </div>
+
         {/* Certifications Section */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 md:p-12 shadow-sm mb-8 sm:mb-12">
           <div className="text-center">
@@ -58,12 +95,14 @@ export default function About() {
               Recognized for our commitment to quality and excellence.
             </p>
             {/* Certification icons grid */}
-            <div className="flex flex-wrap justify-center items-center gap-4">
-              <img src="/img/certifications/gmp-logo.png" alt="GMP Certified" className="w-20 h-20" />
-              <img src="/img/certifications/new-certification-icon1.png" alt="Certification 1" className="w-20 h-20" />
-              <img src="/img/certifications/new-certification-icon2.png" alt="Certification 2" className="w-20 h-20" />
-              <img src="/img/certifications/new-certification-icon3.png" alt="Certification 3" className="w-20 h-20" />
-              {/* Add more icons here as needed */}
+            <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6">
+              <img src="/img/certifications/gmp-icon.png" alt="GMP Certified - Good Manufacturing Practice" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+              <img src="/img/certifications/iso-9001-icon.png" alt="ISO 9001 Certified - Quality Management System" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+              <img src="/img/certifications/fda-registered-icon.png" alt="FDA Registered - U.S. Food and Drug Administration" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+              <img src="/img/certifications/sfda-icon.png" alt="SFDA Approved - Saudi Food and Drug Authority" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+              <img src="/img/certifications/tuv-austria-icon.png" alt="TÜV Austria Certified - Technical Inspection Association" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+              <img src="/img/certifications/bnae-icon.png" alt="BNAE Certified - Bulgarian National Association of Exporters" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+              <img src="/img/certifications/bulgarian-chamber-industry-commerce-icon.png" alt="Bulgarian Chamber of Commerce and Industry Member" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
             </div>
           </div>
         </div>
