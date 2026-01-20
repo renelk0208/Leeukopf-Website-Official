@@ -20,6 +20,7 @@ interface FormData {
   vatEori: string;
   billingAddress: string;
   shippingAddress: string;
+  sameAsBilling: boolean;
   requestSampleBox: boolean;
   street: string;
   district: string;
@@ -119,6 +120,7 @@ export default function ClientRegistrationPage() {
     vatEori: '',
     billingAddress: '',
     shippingAddress: '',
+    sameAsBilling: false,
     requestSampleBox: false,
     street: '',
     district: '',
@@ -195,6 +197,20 @@ export default function ClientRegistrationPage() {
           country: value
         }));
       }
+    } else if (name === 'sameAsBilling' && type === 'checkbox') {
+      // Handle "Same as billing" checkbox
+      setFormData(prev => ({
+        ...prev,
+        sameAsBilling: checked,
+        shippingAddress: checked ? prev.billingAddress : prev.shippingAddress
+      }));
+    } else if (name === 'billingAddress') {
+      // Update billing address and sync to shipping if checkbox is checked
+      setFormData(prev => ({
+        ...prev,
+        billingAddress: value,
+        shippingAddress: prev.sameAsBilling ? value : prev.shippingAddress
+      }));
     } else {
       setFormData(prev => ({
         ...prev,
@@ -336,6 +352,7 @@ export default function ClientRegistrationPage() {
         vatEori: '',
         billingAddress: '',
         shippingAddress: '',
+        sameAsBilling: false,
         requestSampleBox: false,
         street: '',
         district: '',
@@ -768,9 +785,26 @@ export default function ClientRegistrationPage() {
                   value={formData.shippingAddress}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  disabled={formData.sameAsBilling}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
+                    formData.sameAsBilling ? 'bg-gray-100 cursor-not-allowed' : 'border-gray-300'
+                  }`}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                <input
+                  type="checkbox"
+                  id="sameAsBilling"
+                  name="sameAsBilling"
+                  checked={formData.sameAsBilling}
+                  onChange={handleInputChange}
+                  className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                />
+                <span className="text-sm text-gray-900">Shipping address is the same as billing address</span>
+              </label>
             </div>
 
             <div>
