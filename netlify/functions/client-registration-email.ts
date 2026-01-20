@@ -221,7 +221,7 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   // Format data in exact column order matching the header:
   // Timestamp, Source, Page, Company, Contact, Role, Email, Phone, Country, Country Other, 
   // District, Postal Code, Street, Billing Address, Shipping Address, Website, Instagram, 
-  // Business Type, Interests, Monthly Volume, VAT/EORI, Interest: Distribution, 
+  // Business Type, Interests, Monthly Volume, VAT Registration, Interest: Distribution, 
   // Interest: Private Label, Request Sample Box, Notes, GDPR Consent, Honeypot
   const interestsStr = Array.isArray(formData.interests) ? formData.interests.join(", ") : "";
 
