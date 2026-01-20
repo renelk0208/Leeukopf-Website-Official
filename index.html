@@ -132,7 +132,8 @@
         var pixelId = '__VITE_META_PIXEL_ID__';
         
         // Only initialize if we have a valid pixel ID (not empty or placeholder)
-        if (pixelId && pixelId !== '__VITE_META_PIXEL_ID__' && pixelId.trim() !== '') {
+        // Check if it's not the placeholder string by comparing length and checking it's all digits
+        if (pixelId && pixelId.length > 10 && /^\d+$/.test(pixelId)) {
           fbq('init', pixelId);
           fbq('track', 'PageView');
         }
