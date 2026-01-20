@@ -155,7 +155,7 @@ export default function DistributorsWantedPage() {
         </div>
       </div>
 
-      {/* Premium 3-Card Benefits Section - Swipeable on mobile, 3-column on desktop */}
+      {/* Premium 2-Card Benefits Section - Swipeable on mobile, 2-column on desktop */}
       <section className="py-6 sm:py-8 md:py-10 mb-8 sm:mb-10 md:mb-12">
         <div className="max-w-6xl mx-auto">
           {/* Section heading */}
