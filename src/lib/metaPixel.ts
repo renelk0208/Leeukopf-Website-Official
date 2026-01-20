@@ -133,7 +133,7 @@ export function trackCustomEvent(eventName: string, params?: Record<string, unkn
  * Track a Lead event
  * 
  * @param params - Optional event parameters
- * @param params.content_name - Name of the form or lead source (required for deduplication)
+ * @param params.content_name - Name of the form or lead source (optional, but HIGHLY RECOMMENDED for deduplication)
  * @param params.content_category - Category of the lead (e.g., 'form_submission', 'registration')
  * @param params.value - Optional monetary value of the lead
  * @param params.currency - Optional currency (default: 'USD')
@@ -143,7 +143,8 @@ export function trackCustomEvent(eventName: string, params?: Record<string, unkn
  * Lead events within the same browser session.
  * 
  * IMPORTANT: Always provide a unique content_name for each form to enable
- * proper deduplication. Without content_name, deduplication is disabled.
+ * proper deduplication. Without content_name, the event will fire every time
+ * this function is called (no deduplication).
  * 
  * It's prepared for future Meta Conversions API (CAPI) integration where
  * lead events can be mirrored server-side for improved tracking accuracy.
@@ -151,7 +152,7 @@ export function trackCustomEvent(eventName: string, params?: Record<string, unkn
  * Usage:
  * ```typescript
  * trackLead({
- *   content_name: 'Client Registration Form',
+ *   content_name: 'Client Registration Form',  // REQUIRED for deduplication
  *   content_category: 'registration',
  *   value: 1,
  *   currency: 'USD'
@@ -176,14 +177,10 @@ export function trackLead(params?: {
 
   // Guard: Deduplication check
   // Only deduplicate if content_name is provided
-  if (params?.content_name) {
-    const formKey = params.content_name;
-    if (trackedLeadForms.has(formKey)) {
-      log(`[Meta Pixel] Lead event already tracked for "${formKey}" in this session, skipping duplicate`);
-      return;
-    }
-    // Mark this form as tracked
-    trackedLeadForms.add(formKey);
+  const formKey = params?.content_name;
+  if (formKey && trackedLeadForms.has(formKey)) {
+    log(`[Meta Pixel] Lead event already tracked for "${formKey}" in this session, skipping duplicate`);
+    return;
   }
 
   try {
@@ -194,6 +191,11 @@ export function trackLead(params?: {
     } else {
       window.fbq('track', 'Lead');
       log('[Meta Pixel] Lead event tracked');
+    }
+    
+    // Mark this form as tracked after successful tracking
+    if (formKey) {
+      trackedLeadForms.add(formKey);
     }
 
     // Future: Mirror event to Meta Conversions API
