@@ -19,17 +19,18 @@ This document describes the installation of the **Leeukopf Website Pixel** (Meta
 
 ### Implementation
 
-The pixel is installed via environment variable configuration:
+The pixel is hardcoded directly in the HTML:
 
-1. **Environment Variable**: `VITE_META_PIXEL_ID`
-2. **Value**: `25315890148110700`
-3. **Configuration Location**: Netlify Dashboard → Site Settings → Environment Variables
+1. **Pixel ID**: `25315890148110700` (hardcoded in `index.html`)
+2. **No Environment Variable Required**: The pixel ID is directly embedded in the code
+3. **Configuration**: No additional configuration needed
 
 ### How It Works
 
-1. **Build Time Injection**:
-   - The placeholder `__VITE_META_PIXEL_ID__` in `index.html` is replaced with the actual pixel ID during the Vite build process
-   - This happens automatically via the custom Vite plugin in `vite.config.ts`
+1. **Direct Installation**:
+   - The pixel ID `25315890148110700` is hardcoded in `index.html`
+   - No build-time replacement needed
+   - Pixel is ready to fire immediately after build
 
 2. **Initialization**:
    - Pixel initializes ONCE when user accepts cookies
@@ -37,7 +38,7 @@ The pixel is installed via environment variable configuration:
    - Only fires after cookie consent is granted
 
 3. **PageView Tracking**:
-   - **Initial PageView**: Fires once on page load after pixel initialization (line 137 in index.html)
+   - **Initial PageView**: Fires once on page load after pixel initialization (line 134 in index.html)
    - **Route Changes**: Fires once per route change via `MetaPixelTracker.tsx` component
    - **Deduplication**: Initial mount is skipped to prevent duplicate PageView events
 
@@ -61,8 +62,8 @@ The pixel is installed via environment variable configuration:
    - Check `dist/index.html`
    - Search for `25315890148110700`
    - Should appear in 2 places:
-     - Line ~136: `fbq('init', '25315890148110700');`
-     - Line ~182: `<img ... src="...id=25315890148110700..."/>`
+     - Line ~134: `fbq('init', pixelId);` where `pixelId = '25315890148110700'`
+     - Line ~179: `<img ... src="...id=25315890148110700..."/>`
 
 3. **Use Meta Pixel Helper**:
    - Install [Meta Pixel Helper Chrome Extension](https://chrome.google.com/webstore/detail/meta-pixel-helper/)
@@ -92,13 +93,12 @@ The pixel is installed via environment variable configuration:
 
 ## Files Modified
 
-- **`.env.example`**: Updated to document the new pixel ID
-- **`LEEUKOPF_WEBSITE_PIXEL.md`**: This documentation file (new)
-
-## Files Unchanged (Already Correct)
-
-- **`index.html`**: Already uses `__VITE_META_PIXEL_ID__` placeholder (no changes needed)
-- **`vite.config.ts`**: Already has replacement logic (no changes needed)
+- **`index.html`**: Hardcoded Meta Pixel ID `25315890148110700` directly in the script
+- **`vite.config.ts`**: Removed the html-transform plugin (no longer needed)
+- **`.env.example`**: Updated to document the new pixel ID (for reference only)
+- **`LEEUKOPF_WEBSITE_PIXEL.md`**: This documentation file (updated)
+- **`META_PIXEL_SINGLE_INSTALLATION.md`**: Updated to reflect new pixel ID
+- **`SECURITY_SUMMARY_META_PIXEL.md`**: Updated to reflect new pixel ID
 - **`src/components/MetaPixelTracker.tsx`**: Already tracks route changes correctly (no changes needed)
 - **`src/lib/metaPixel.ts`**: Lead event tracking with deduplication (no changes needed)
 
@@ -106,13 +106,10 @@ The pixel is installed via environment variable configuration:
 
 ### For Netlify
 
-1. Go to Netlify Dashboard
-2. Select the leeukopf.com site
-3. Navigate to: Site Settings → Environment Variables
-4. Add or update:
-   - **Key**: `VITE_META_PIXEL_ID`
-   - **Value**: `25315890148110700`
-5. Redeploy the site
+No environment variable configuration is needed. The pixel ID is hardcoded in the HTML.
+
+1. Deploy the site to Netlify
+2. The pixel will work immediately after deployment
 
 ### Verification After Deployment
 
