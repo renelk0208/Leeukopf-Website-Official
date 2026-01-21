@@ -135,9 +135,6 @@
           return;
         }
         
-        // Guard: Check if fbq is available
-        if (!window.fbq) return;
-        
         // Mark as initialized BEFORE calling fbq to prevent race conditions
         window.__leeukopfPixelInit = true;
         
