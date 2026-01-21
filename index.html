@@ -128,10 +128,9 @@
       function initializeMetaPixel() {
         if (!window.fbq) return;
         
-        // Leeukopf Laboratories Meta Pixel ID
-        var pixelId = '25315890148110700';
-        
-        fbq('init', pixelId);
+        // Leeukopf Laboratories Meta Pixel ID: 25315890148110700
+        // IMPORTANT: Hardcoded directly to avoid any placeholder issues
+        fbq('init', '25315890148110700');
         fbq('track', 'PageView');
       }
       
