@@ -124,13 +124,24 @@
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
       
+      // Leeukopf Laboratories Meta Pixel ID
+      var pixelId = '25315890148110700';
+      
       // Initialize Meta Pixel with consent check
+      // Guard to ensure pixel is initialized only ONCE
       function initializeMetaPixel() {
+        // Guard: Check if already initialized
+        if (window.__leeukopfPixelInit) {
+          return;
+        }
+        
+        // Guard: Check if fbq is available
         if (!window.fbq) return;
         
-        // Leeukopf Laboratories Meta Pixel ID
-        var pixelId = '25315890148110700';
+        // Mark as initialized BEFORE calling fbq to prevent race conditions
+        window.__leeukopfPixelInit = true;
         
+        // Initialize pixel with ONE pixel ID
         fbq('init', pixelId);
         fbq('track', 'PageView');
       }
