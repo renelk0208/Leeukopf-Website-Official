@@ -128,15 +128,11 @@
       function initializeMetaPixel() {
         if (!window.fbq) return;
         
-        // Get the pixel ID from environment variable (injected by Vite)
-        var pixelId = '__VITE_META_PIXEL_ID__';
+        // Leeukopf Laboratories Meta Pixel ID
+        var pixelId = '25315890148110700';
         
-        // Only initialize if we have a valid pixel ID (not empty or placeholder)
-        // Check if it's not the placeholder string by comparing length and checking it's all digits
-        if (pixelId && pixelId.length > 10 && /^\d+$/.test(pixelId)) {
-          fbq('init', pixelId);
-          fbq('track', 'PageView');
-        }
+        fbq('init', pixelId);
+        fbq('track', 'PageView');
       }
       
       // Check for cookie consent before initializing
@@ -180,7 +176,7 @@
     <!-- Meta Pixel Noscript -->
     <noscript>
       <img height="1" width="1" style="display:none"
-           src="https://www.facebook.com/tr?id=__VITE_META_PIXEL_ID__&amp;ev=PageView&amp;noscript=1"/>
+           src="https://www.facebook.com/tr?id=25315890148110700&amp;ev=PageView&amp;noscript=1"/>
     </noscript>
     <!-- End Meta Pixel Noscript -->
     <div id="root"></div>

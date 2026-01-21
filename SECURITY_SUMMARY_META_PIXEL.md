@@ -158,7 +158,7 @@ function checkConsentAndInit() {
 ## Recommendations
 
 ### Deployment Checklist
-- [ ] Verify `VITE_META_PIXEL_ID=1162895852036709` is set in Netlify
+- [ ] Verify `VITE_META_PIXEL_ID=25315890148110700` is set in Netlify
 - [ ] Test with Meta Pixel Helper after deployment
 - [ ] Verify cookie consent flow still works
 - [ ] Monitor PageView event counts for duplicates

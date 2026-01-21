@@ -134,7 +134,7 @@ trackLead({
 1. **Local Development:** `.env` file (not committed to git)
 2. **Netlify Production:** Environment Variables in Netlify dashboard
 
-**Expected Value:** `1162895852036709`
+**Expected Value:** `25315890148110700`
 
 ### Build-Time Injection
 
@@ -181,9 +181,9 @@ The Vite build process replaces the placeholder `__VITE_META_PIXEL_ID__` with th
 - Console: No Meta Pixel messages
 
 **2. After Accepting All Cookies:**
-- Meta Pixel Helper: 1 Pixel detected (ID: 1162895852036709)
+- Meta Pixel Helper: 1 Pixel detected (ID: 25315890148110700)
 - Meta Pixel Helper: 1 PageView event
-- Console: `[Meta Pixel] Initialized successfully with ID: 1162895852036709`
+- Console: `[Meta Pixel] Initialized successfully with ID: 25315890148110700`
 - Console: `[Meta Pixel] Initial PageView tracked`
 
 **3. After Route Change (e.g., navigating to /about):**
@@ -210,7 +210,7 @@ The Vite build process replaces the placeholder `__VITE_META_PIXEL_ID__` with th
 3. Browser blocking third-party scripts
 
 **Solution:**
-1. Verify environment variable is set to `1162895852036709`
+1. Verify environment variable is set to `25315890148110700`
 2. Check cookie consent status
 3. Test in different browser/incognito mode
 
@@ -263,6 +263,6 @@ If you need to add Meta Pixel tracking:
 
 ---
 
-**Last Updated:** 2026-01-20
-**Pixel ID:** 1162895852036709
+**Last Updated:** 2026-01-21
+**Pixel ID:** 25315890148110700
 **Implementation:** Single installation, cookie consent gated, production-only
