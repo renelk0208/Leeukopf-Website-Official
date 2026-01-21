@@ -28,12 +28,12 @@ The Meta Pixel is loaded **only once** in the HTML head section with the followi
 // Initialization with cookie consent gating
 function initializeMetaPixel() {
   if (!window.fbq) return;
-  var pixelId = '__VITE_META_PIXEL_ID__'; // Replaced at build time
   
-  if (pixelId && pixelId !== '__VITE_META_PIXEL_ID__' && pixelId.trim() !== '') {
-    fbq('init', pixelId); // ONLY initialization point
-    fbq('track', 'PageView'); // ONLY initial PageView
-  }
+  // Leeukopf Laboratories Meta Pixel ID
+  var pixelId = '25315890148110700';
+  
+  fbq('init', pixelId); // ONLY initialization point
+  fbq('track', 'PageView'); // ONLY initial PageView
 }
 
 // Cookie consent check
@@ -126,28 +126,25 @@ trackLead({
 
 ## Pixel ID Configuration
 
-### Environment Variable
+### Hardcoded Pixel ID
 
-**Name:** `VITE_META_PIXEL_ID`
+**Pixel ID:** `25315890148110700`
 
-**Where to Set:**
-1. **Local Development:** `.env` file (not committed to git)
-2. **Netlify Production:** Environment Variables in Netlify dashboard
+**Implementation:**
+- Hardcoded directly in `index.html` (line 132)
+- No environment variable needed
+- No build-time replacement required
 
-**Expected Value:** `25315890148110700`
-
-### Build-Time Injection
-
-The Vite build process replaces the placeholder `__VITE_META_PIXEL_ID__` with the actual value:
-
-```typescript
-// vite.config.ts
-{
-  name: 'html-transform',
-  transformIndexHtml(html) {
-    const pixelId = process.env.VITE_META_PIXEL_ID || '';
-    return html.replace(/__VITE_META_PIXEL_ID__/g, pixelId);
-  }
+```javascript
+// index.html
+function initializeMetaPixel() {
+  if (!window.fbq) return;
+  
+  // Leeukopf Laboratories Meta Pixel ID
+  var pixelId = '25315890148110700';
+  
+  fbq('init', pixelId);
+  fbq('track', 'PageView');
 }
 ```
 
@@ -205,21 +202,21 @@ The Vite build process replaces the placeholder `__VITE_META_PIXEL_ID__` with th
 ### Issue: Pixel Not Initializing
 
 **Possible Causes:**
-1. `VITE_META_PIXEL_ID` not set in Netlify environment variables
-2. User hasn't accepted cookies
-3. Browser blocking third-party scripts
+1. User hasn't accepted cookies
+2. Browser blocking third-party scripts
+3. JavaScript errors in console
 
 **Solution:**
-1. Verify environment variable is set to `25315890148110700`
-2. Check cookie consent status
-3. Test in different browser/incognito mode
+1. Check cookie consent status - pixel only fires after user accepts all cookies
+2. Test in different browser/incognito mode
+3. Check browser console for errors
 
 ### Issue: Duplicate Pixel IDs
 
 **Prevention:** 
-- Only set `VITE_META_PIXEL_ID` in ONE place (Netlify environment variables)
-- Never hardcode Pixel IDs in the code
-- The placeholder `__VITE_META_PIXEL_ID__` should only appear in index.html
+- Only ONE pixel ID should exist in the codebase: `25315890148110700`
+- Pixel ID is hardcoded in `index.html` (line 132)
+- Never add additional Meta Pixel installations
 
 ## File Locations
 

@@ -99,7 +99,6 @@ The pixel is hardcoded directly in the HTML:
 - **`LEEUKOPF_WEBSITE_PIXEL.md`**: This documentation file (updated)
 - **`META_PIXEL_SINGLE_INSTALLATION.md`**: Updated to reflect new pixel ID
 - **`SECURITY_SUMMARY_META_PIXEL.md`**: Updated to reflect new pixel ID
-- **`vite.config.ts`**: Already has replacement logic (no changes needed)
 - **`src/components/MetaPixelTracker.tsx`**: Already tracks route changes correctly (no changes needed)
 - **`src/lib/metaPixel.ts`**: Lead event tracking with deduplication (no changes needed)
 
@@ -107,13 +106,10 @@ The pixel is hardcoded directly in the HTML:
 
 ### For Netlify
 
-1. Go to Netlify Dashboard
-2. Select the leeukopf.com site
-3. Navigate to: Site Settings → Environment Variables
-4. Add or update:
-   - **Key**: `VITE_META_PIXEL_ID`
-   - **Value**: `25315890148110700`
-5. Redeploy the site
+No environment variable configuration is needed. The pixel ID is hardcoded in the HTML.
+
+1. Deploy the site to Netlify
+2. The pixel will work immediately after deployment
 
 ### Verification After Deployment
 
