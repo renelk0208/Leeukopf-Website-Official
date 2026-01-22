@@ -3,6 +3,10 @@ name: Create CPNP Compliance Landing Page
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   create-cpnp-page:
     runs-on: ubuntu-latest
