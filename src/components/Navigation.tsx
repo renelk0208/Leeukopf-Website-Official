@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
+import CalendlyButton from './CalendlyButton';
 
 const SocialLinks = () => {
   const socialMedia = [
@@ -111,6 +112,7 @@ export default function Navigation() {
 
           <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
             <div className="hidden xl:flex items-center space-x-2">
+              <CalendlyButton size="sm" className="mr-2" />
               <SocialLinks />
             </div>
             <div className="xl:hidden">
@@ -147,6 +149,9 @@ export default function Navigation() {
             ))}
 
             <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
+              <div className="px-3 mb-3">
+                <CalendlyButton size="md" className="w-full" />
+              </div>
               <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Follow us
               </div>
