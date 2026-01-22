@@ -402,7 +402,7 @@ export default function CpnpComplianceSupportPage() {
 
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-primary-600 text-white font-bold py-4 px-6 rounded-lg transition-all hover:shadow-lg"
+              className="w-full bg-primary hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-lg transition-all hover:shadow-lg"
             >
               Submit Consultation Request
             </button>
