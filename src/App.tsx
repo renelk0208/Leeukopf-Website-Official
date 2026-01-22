@@ -4,6 +4,7 @@ import AboutPage from './pages/AboutPage';
 import ProductsPage from './pages/ProductsPage';
 
 import CertificatesPage from './pages/CertificatesPage';
+import CpnpComplianceSupportPage from './pages/CpnpComplianceSupportPage';
 import PrivateLabelPage from './pages/PrivateLabelPage';
 import PrivateLabelBottlesPage from './pages/PrivateLabelBottlesPage';
 import PrivateLabelBulkPage from './pages/PrivateLabelBulkPage';
@@ -75,6 +76,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
+        <Route path="/cpnp-compliance-support" element={<CpnpComplianceSupportPage />} />
         <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
         <Route path="/client-registration" element={<ClientRegistrationPage />} />
         <Route path="/season-trends" element={<SeasonTrendsPage />} />
