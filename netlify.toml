@@ -40,11 +40,6 @@
 
 # Static HTML page redirects
 [[redirects]]
-  from = "/cpnp-compliance-support"
-  to = "/cpnp-compliance-support.html"
-  status = 200
-
-[[redirects]]
   from = "/thank-you-compliance-consultation"
   to = "/thank-you-compliance-consultation.html"
   status = 200
