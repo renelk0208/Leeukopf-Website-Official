@@ -38,6 +38,17 @@
   to = "/.netlify/functions/test-email"
   status = 200
 
+# Static HTML page redirects
+[[redirects]]
+  from = "/cpnp-compliance-support"
+  to = "/cpnp-compliance-support.html"
+  status = 200
+
+[[redirects]]
+  from = "/thank-you-compliance-consultation"
+  to = "/thank-you-compliance-consultation.html"
+  status = 200
+
 # SPA redirect - serve index.html for all other routes
 # This must be LAST so explicit redirects and functions take precedence
 [[redirects]]
