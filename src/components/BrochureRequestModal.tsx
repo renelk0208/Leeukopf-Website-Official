@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, Mail, User, Building2, Globe, Phone, Loader2, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { trackLead } from '../lib/metaPixel';
 
 interface BrochureRequestModalProps {
   isOpen: boolean;
@@ -122,6 +123,15 @@ export default function BrochureRequestModal({
       }
 
       setIsSuccess(true);
+      
+      // Track Lead event with Meta Pixel
+      trackLead({
+        content_name: 'Brochure Request Form',
+        content_category: 'brochure_request',
+        value: 1,
+        currency: 'USD'
+      });
+      
       setTimeout(() => {
         onClose();
         setFormData({

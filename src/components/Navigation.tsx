@@ -64,7 +64,6 @@ export default function Navigation() {
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
     { label: 'FAQ', path: '/faq-starting-a-gel-polish-brand' },
     { label: 'Client Registration', path: '/client-registration' },
-    { label: 'Contact', path: '/contact' },
   ];
 
   const isActive = (path: string) => {

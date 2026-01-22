@@ -6,7 +6,6 @@ import InstagramFeed from '../components/InstagramFeed';
 import StartHereBanner from '../components/StartHereBanner';
 import CertificatesBanner from '../components/CertificatesBanner';
 import About from '../components/About';
-import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
 
@@ -22,7 +21,6 @@ export default function HomePage() {
       <StartHereBanner />
       <CertificatesBanner />
       <About />
-      <Contact />
       <Footer />
     </>
   );

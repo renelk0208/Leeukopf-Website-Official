@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
+import { trackLead } from '../lib/metaPixel';
 
 interface FormData {
   company: string;
@@ -20,6 +21,7 @@ interface FormData {
   vatEori: string;
   billingAddress: string;
   shippingAddress: string;
+  sameAsBilling: boolean;
   requestSampleBox: boolean;
   street: string;
   district: string;
@@ -119,6 +121,7 @@ export default function ClientRegistrationPage() {
     vatEori: '',
     billingAddress: '',
     shippingAddress: '',
+    sameAsBilling: false,
     requestSampleBox: false,
     street: '',
     district: '',
@@ -195,6 +198,20 @@ export default function ClientRegistrationPage() {
           country: value
         }));
       }
+    } else if (name === 'sameAsBilling' && type === 'checkbox') {
+      // Handle "Same as billing" checkbox
+      setFormData(prev => ({
+        ...prev,
+        sameAsBilling: checked,
+        shippingAddress: checked ? prev.billingAddress : prev.shippingAddress
+      }));
+    } else if (name === 'billingAddress') {
+      // Update billing address and sync to shipping if checkbox is checked
+      setFormData(prev => ({
+        ...prev,
+        billingAddress: value,
+        shippingAddress: prev.sameAsBilling ? value : prev.shippingAddress
+      }));
     } else {
       setFormData(prev => ({
         ...prev,
@@ -235,6 +252,11 @@ export default function ClientRegistrationPage() {
     // Business Interest validation: at least one must be selected
     if (!formData.interestPrivateLabel && !formData.interestDistribution) {
       newErrors.businessInterest = 'Please select Private Label or Distribution.';
+    }
+
+    // Product Interests validation: at least one must be selected
+    if (formData.interests.length === 0) {
+      newErrors.productInterests = 'Please select at least one product interest.';
     }
 
     // Country "Other" validation
@@ -313,6 +335,15 @@ export default function ClientRegistrationPage() {
       }
 
       setSubmitSuccess(true);
+      
+      // Track Lead event with Meta Pixel
+      trackLead({
+        content_name: 'Client Registration Form',
+        content_category: 'registration',
+        value: 1,
+        currency: 'USD'
+      });
+      
       setFormData({
         company: '',
         contact: '',
@@ -331,6 +362,7 @@ export default function ClientRegistrationPage() {
         vatEori: '',
         billingAddress: '',
         shippingAddress: '',
+        sameAsBilling: false,
         requestSampleBox: false,
         street: '',
         district: '',
@@ -364,6 +396,7 @@ export default function ClientRegistrationPage() {
                       validateEmail(formData.email) && formData.country &&
                       formData.businessType && formData.gdprConsent && formData.privacyPolicyAccepted &&
                       (formData.interestPrivateLabel || formData.interestDistribution) &&
+                      formData.interests.length > 0 &&
                       (formData.country !== 'Other' || formData.countryOther.trim()) &&
                       (!formData.requestSampleBox || (
                         formData.street.trim() && formData.district.trim() && 
@@ -681,7 +714,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-3">
-                Product Interests
+                Product Interests <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {productInterests.map(interest => (
@@ -699,6 +732,11 @@ export default function ClientRegistrationPage() {
                   </label>
                 ))}
               </div>
+              {errors.productInterests && (
+                <p className="mt-2 text-sm text-red-600" role="alert">
+                  {errors.productInterests}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -719,7 +757,7 @@ export default function ClientRegistrationPage() {
 
               <div>
                 <label htmlFor="vatEori" className="block text-sm font-medium text-gray-900 mb-2">
-                  VAT / EORI Number
+                  VAT Registration number
                 </label>
                 <input
                   type="text"
@@ -757,9 +795,26 @@ export default function ClientRegistrationPage() {
                   value={formData.shippingAddress}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  disabled={formData.sameAsBilling}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
+                    formData.sameAsBilling ? 'bg-gray-100 cursor-not-allowed' : 'border-gray-300'
+                  }`}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                <input
+                  type="checkbox"
+                  id="sameAsBilling"
+                  name="sameAsBilling"
+                  checked={formData.sameAsBilling}
+                  onChange={handleInputChange}
+                  className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                />
+                <span className="text-sm text-gray-900">Shipping address is the same as billing address</span>
+              </label>
             </div>
 
             <div>

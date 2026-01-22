@@ -182,7 +182,7 @@ export default function GelItUpPage() {
           Contact us today to learn more about becoming a GEL.IT.UP distributor or to place your order.
         </p>
         <a
-          href="/contact"
+          href="/client-registration"
           className="inline-flex items-center px-8 py-4 bg-white text-blue-700 rounded-md font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
         >
           <ExternalLink size={20} className="mr-2" />

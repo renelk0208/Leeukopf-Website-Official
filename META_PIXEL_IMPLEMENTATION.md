@@ -1,48 +1,156 @@
 # Meta Pixel Implementation Summary
 
-This document summarizes the Meta Pixel (Facebook Pixel) integration for the Leeukopf website.
+This document summarizes the Meta Pixel (Facebook Pixel) integration for the Leeukopf website with cookie consent, domain validation, and Lead event tracking.
 
 ## Overview
 
-Meta Pixel has been successfully integrated into the website to track page views and user interactions. The implementation follows best practices and respects user privacy through cookie consent:
+Meta Pixel has been successfully integrated into the website to track page views, form submissions, and user interactions. The implementation follows best practices and respects user privacy through cookie consent:
 
 - ✅ Only runs in production builds
 - ✅ Respects cookie consent - only loads when analytics cookies are accepted
+- ✅ Only fires on canonical domain (leeukopf.com)
 - ✅ Prevents double initialization
-- ✅ Tracks initial page load
-- ✅ Tracks route changes in SPA
-- ✅ Provides event tracking API for forms and buttons
+- ✅ Tracks initial page load and route changes
+- ✅ Tracks Lead events on form submissions
+- ✅ Development mode logging (silent in production)
+- ✅ Prepared for Meta Conversions API integration
 - ✅ Type-safe with TypeScript
 - ✅ Passes ESLint checks
-- ✅ Build verified successfully
+
+## Key Features
+
+### 1. Cookie Consent Integration
+
+**Important:** Meta Pixel only loads and tracks when users accept marketing/analytics cookies.
+
+#### How It Works
+
+1. **On page load:**
+   - `MetaPixelTracker` checks the `lkp_cookie_consent` cookie
+   - If `choice === "all"`, the pixel loads and initializes
+   - If `choice === "necessary"` or no choice, the pixel does not load
+
+2. **When user changes consent:**
+   - `MetaPixelTracker` listens to the `cookieConsentChanged` custom event
+   - If user accepts all cookies, the pixel loads and initializes immediately
+   - Initial PageView is tracked automatically
+   - If user declines analytics, the pixel remains unloaded
+
+3. **Privacy Compliance:**
+   - ✅ No Meta Pixel script loaded until consent granted
+   - ✅ No `fbq` calls made until consent granted
+   - ✅ Respects user privacy preferences
+   - ✅ GDPR compliant implementation
+
+### 2. Domain Validation
+
+**Important:** Meta Pixel only fires events on the canonical domain (leeukopf.com).
+
+- Prevents duplicate tracking across multiple domains
+- Only `leeukopf.com` and `www.leeukopf.com` will track events
+- Other domains are silently ignored
+- Ensures clean, accurate tracking data
+
+### 3. Lead Event Tracking
+
+**Standard Meta Pixel "Lead" Event** - Tracks successful form submissions.
+
+- Fires ONLY after successful form submission (not on page load)
+- Currently integrated with ClientRegistrationPage
+- Passes structured data: content_name, content_category, value, currency
+- Prepared for future Meta Conversions API (CAPI) server-side mirroring
+
+**Example Lead Event:**
+```typescript
+trackLead({
+  content_name: 'Client Registration Form',
+  content_category: 'registration',
+  value: 1,
+  currency: 'USD'
+});
+```
+
+### 4. Development Mode Logging
+
+**Console Logging Strategy:**
+
+- **Development Mode** (`npm run dev`):
+  - All tracking events log to console
+  - Shows initialization status
+  - Shows when consent is granted/denied
+  - Shows when events fire (PageView, Lead, etc.)
+  - Helps debugging during development
+
+- **Production Mode** (`npm run build`):
+  - Standard logs are silent (no console spam)
+  - Only errors log to console
+  - Clean production experience
+
+**Example Development Logs:**
+```
+[Meta Pixel] Script loaded successfully
+[Meta Pixel] Initialized successfully with ID: 123456789
+[Meta Pixel] Initial PageView tracked
+[Meta Pixel] PageView tracked
+[Meta Pixel] Lead event tracked { content_name: 'Client Registration Form', ... }
+```
+
+### 5. Meta Conversions API Preparation
+
+The codebase is structured to support future server-side event mirroring via Meta Conversions API (CAPI):
+
+- Event structure follows CAPI requirements
+- Detailed implementation notes in `trackLead()` function
+- Ready for event deduplication using event_id
+- Prepared for PII hashing (email, phone)
+
+**Future CAPI Integration:**
+- Create server endpoint (e.g., `/api/meta-conversions-api`)
+- Forward events with hashed user data
+- Use event_id to deduplicate browser + server events
+- Improve tracking resilience against ad blockers
 
 ## Files Created/Modified
 
-### New Files
+### Modified Files
 
 1. **`src/lib/metaPixel.ts`** - Core Meta Pixel utility functions
-   - `loadMetaPixelScript()` - Loads the Meta Pixel script from CDN
-   - `initMetaPixel(pixelId: string)` - Initializes Meta Pixel with the provided ID
-   - `trackPageView()` - Tracks page view events
-   - `trackEvent(name: string, params?)` - Tracks standard Meta Pixel events
-   - `trackCustomEvent(name: string, params?)` - Tracks custom events
-   - `isMetaPixelInitialized()` - Check initialization status
-   - TypeScript global declarations for `fbq`
+   - Added `isCanonicalDomain()` - Domain validation function
+   - Added `log()` - Development-only logging helper
+   - Updated `loadMetaPixelScript()` - Added domain validation
+   - Updated `initMetaPixel()` - Added domain validation and improved logging
+   - Updated `trackPageView()` - Added domain validation
+   - Updated `trackEvent()` - Added domain validation
+   - Updated `trackCustomEvent()` - Added domain validation
+   - **NEW** `trackLead()` - Lead event tracking with CAPI preparation
+   - All functions now respect domain and use centralized logging
 
 2. **`src/components/MetaPixelTracker.tsx`** - React component for tracking
+   - Updated all console logs to respect development mode
+   - Logs visible only in development (`npm run dev`)
+   - Silent in production (`npm run build`)
    - Initializes pixel on mount (production only, with consent check)
    - Listens to `cookieConsentChanged` events
    - Tracks route changes using `useLocation` hook
-   - Automatically tracks pathname and search parameter changes
 
-### Modified Files
+3. **`src/pages/ClientRegistrationPage.tsx`** - Registration form
+   - Added `trackLead` import
+   - Calls `trackLead()` after successful form submission
+   - Passes structured event data (content_name, content_category, value, currency)
 
-1. **`src/main.tsx`** - Added MetaPixelTracker component
-   - Mounted inside `<BrowserRouter>` for access to routing context
-   - Placed after `ScrollToTopOnRouteChange` component
+4. **`META_PIXEL_IMPLEMENTATION.md`** - This documentation file
+   - Comprehensive update with all new features
+   - Testing instructions
+   - CAPI preparation notes
 
-2. **`.env.example`** - Added environment variable documentation
-   - Added `VITE_META_PIXEL_ID` with placeholder value
+### Environment Variables
+
+**Required:**
+- `VITE_META_PIXEL_ID` - Your Meta Pixel ID (e.g., `123456789012345`)
+
+Set in Netlify Dashboard → Site Settings → Environment Variables
+
+**Important:** After adding the environment variable, trigger a new deployment.
 
 ## Cookie Consent Integration
 
@@ -175,64 +283,96 @@ if (isInitialized) {
 
 ## Testing
 
-### Local Testing (Development)
+### Local Testing (Development Mode)
 
-In development mode, you'll see console logs indicating the pixel is skipped:
+In development mode (`npm run dev`), you'll see console logs:
 
 ```
 [Meta Pixel] Development mode detected, skipping initialization
 ```
 
+The pixel doesn't actually load in development to avoid polluting Meta's analytics with dev data.
+
 ### Production Testing
 
-After deployment to Netlify:
+After deployment to Netlify with `VITE_META_PIXEL_ID` environment variable set:
 
-1. **Test without accepting cookies:**
-   - Open browser DevTools → Console
-   - Navigate to your site
-   - Cookie consent banner appears
-   - Click "Only necessary"
-   - You should see:
-     ```
-     [Meta Pixel] Analytics cookies not accepted, skipping initialization
-     ```
-   - No Meta Pixel script loaded
+#### 1. Test Cookie Consent Flow
 
-2. **Test with accepting all cookies:**
-   - Open site (or clear cookies)
-   - Cookie consent banner appears
-   - Click "Accept all"
-   - You should see:
-     ```
-     [Meta Pixel] Script loaded successfully
-     [Meta Pixel] Initialized successfully with ID: YOUR_PIXEL_ID
-     [Meta Pixel] PageView tracked
-     ```
-   - Navigate to another page
-   - You should see:
-     ```
-     [Meta Pixel] PageView tracked
-     ```
+**Reject Cookies:**
+1. Open browser DevTools → Console
+2. Navigate to the site
+3. Cookie consent banner appears
+4. Click "Reject non-essential"
+5. In dev console: `[Meta Pixel] Analytics cookies not accepted, skipping initialization`
+6. Verify: No Meta Pixel script loaded (check Network tab)
 
-3. **Test changing consent after page load:**
-   - Start with "Only necessary" cookies
-   - Open cookie settings from footer
-   - Change to "Allow all cookies"
-   - You should see:
-     ```
-     [Meta Pixel] Cookie consent changed: all
-     [Meta Pixel] Script loaded successfully
-     [Meta Pixel] Initialized successfully with ID: YOUR_PIXEL_ID
-     [Meta Pixel] PageView tracked
-     ```
+**Accept Cookies:**
+1. Clear cookies and refresh
+2. Cookie consent banner appears
+3. Click "Accept all"
+4. In dev console (if dev mode):
+   ```
+   [Meta Pixel] Script loaded successfully
+   [Meta Pixel] Initialized successfully with ID: YOUR_PIXEL_ID
+   [Meta Pixel] Initial PageView tracked
+   ```
+5. Navigate to another page
+6. In dev console: `[Meta Pixel] PageView tracked`
 
-### Verify in Meta Events Manager
+#### 2. Test Domain Validation
 
-1. Go to Meta Events Manager (https://business.facebook.com/events_manager2)
+- Test on `leeukopf.com` → Events fire ✅
+- Test on `www.leeukopf.com` → Events fire ✅
+- Test on any other domain → Events don't fire ❌
+
+#### 3. Test Lead Event
+
+1. Accept all cookies
+2. Navigate to Client Registration page
+3. Fill out and submit the form successfully
+4. Wait for success message
+5. In dev console: `[Meta Pixel] Lead event tracked { content_name: 'Client Registration Form', ... }`
+6. Verify in Meta Events Manager
+
+#### 4. Meta Pixel Helper Extension
+
+1. Install [Meta Pixel Helper](https://chrome.google.com/webstore/detail/meta-pixel-helper/) browser extension
+2. Visit site after accepting cookies
+3. Click the extension icon
+4. Verify:
+   - Pixel ID is detected
+   - Pixel status shows "Active"
+   - PageView event shows in the list
+5. Navigate to another page → New PageView event appears
+6. Submit registration form → Lead event appears
+
+#### 5. Meta Events Manager
+
+1. Go to [Meta Events Manager](https://business.facebook.com/events_manager2)
 2. Select your pixel
-3. View "Test Events" or "Events" tab
-4. You should see PageView events coming from your domain
-5. Events should only appear when users accept analytics cookies
+3. View "Test Events" tab (for real-time testing)
+4. View "Events" tab (for production events)
+5. Verify:
+   - PageView events appear when navigating
+   - Lead events appear when forms are submitted
+   - Events only come from leeukopf.com domain
+   - Events only appear when cookies are accepted
+
+### Verification Checklist
+
+- [ ] Pixel doesn't load when cookies are rejected
+- [ ] Pixel loads and initializes when cookies are accepted
+- [ ] Initial PageView fires on first load after consent
+- [ ] PageView fires on every route change
+- [ ] Lead event fires after successful form submission
+- [ ] Lead event does NOT fire on page load
+- [ ] Pixel is detected by Meta Pixel Helper
+- [ ] Events appear in Meta Events Manager
+- [ ] Events only fire on leeukopf.com domain
+- [ ] No duplicate pixel installations detected
+- [ ] Development logs work in dev mode
+- [ ] Production logs are silent
 
 ## Usage Examples
 
