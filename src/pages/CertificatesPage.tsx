@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 
 export default function CertificatesPage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -128,6 +129,34 @@ export default function CertificatesPage() {
       ]}
       heroImage="/img/hero/certifications-compliance-hero.jpg"
     >
+      {/* CPNP Compliance Support Banner */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <Link
+          to="/cpnp-compliance-support"
+          className="block card p-6 sm:p-8 bg-gradient-to-r from-primary-50 to-fuchsiaTint border-2 border-primary hover:border-primary-700 transition-all hover:shadow-xl group"
+        >
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-primary rounded-lg flex items-center justify-center group-hover:bg-primary-700 transition-colors">
+              <FileText className="text-white" size={28} />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                EU CPNP Compliance Support for Private Label
+              </h3>
+              <p className="text-sm sm:text-base text-gray-700 mb-3">
+                Looking to launch your gel polish brand in the EU? We provide full CPNP compliance support including safety assessments (CPSR), Product Information Files (PIF), and complete documentation packages.
+              </p>
+              <span className="inline-flex items-center text-primary font-semibold group-hover:text-primary-700 transition-colors">
+                Learn more about our CPNP compliance services
+                <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </div>
+          </div>
+        </Link>
+      </div>
+
       {/* Responsive certificates grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
         {certificates.map((cert, index) => (
