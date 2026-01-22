@@ -17,12 +17,14 @@ export default function CalendlyButton({
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     // Check if Calendly is loaded
-    if (typeof window !== 'undefined' && window.Calendly) {
-      window.Calendly.initPopupWidget({ url: 'https://calendly.com/leeukopf-info' });
-    } else {
-      console.error('Calendly widget not loaded');
-      // Fallback: open in new tab
-      window.open('https://calendly.com/leeukopf-info', '_blank', 'noopener,noreferrer');
+    if (typeof window !== 'undefined') {
+      if (window.Calendly) {
+        window.Calendly.initPopupWidget({ url: 'https://calendly.com/leeukopf-info' });
+      } else {
+        console.error('Calendly widget script failed to load, falling back to direct link');
+        // Fallback: open in new tab
+        window.open('https://calendly.com/leeukopf-info', '_blank', 'noopener,noreferrer');
+      }
     }
   };
 
