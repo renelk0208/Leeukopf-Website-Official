@@ -9,6 +9,13 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Non-www to www redirect - MUST be first
+[[redirects]]
+  from = "https://leeukopf.com/*"
+  to = "https://www.leeukopf.com/:splat"
+  status = 301
+  force = true
+
 # Explicit redirects for API endpoints to Netlify Functions
 # These MUST come before the SPA wildcard redirect
 [[redirects]]
