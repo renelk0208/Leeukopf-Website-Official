@@ -119,7 +119,6 @@ export default function HomePage() {
 ### 4. Products Page Optimization (Task 4)
 
 **Status:** 
-- Installed `react-window` library for future use
 - Investigated product pages - found that they don't actually have 2000+ products as stated in requirements
 - Largest product collection has ~34 images (jars-and-tubes)
 - Most product pages have 10-20 images
@@ -129,7 +128,7 @@ export default function HomePage() {
 - ProductCategoryCard3D already has `loading="lazy"` and async decoding
 - Images are already optimized with proper lazy loading attributes
 
-**Note:** Virtual scrolling (react-window) was not implemented as it's not needed for the actual number of products (10-40 per page vs. the 2000+ mentioned in requirements).
+**Note:** Virtual scrolling (react-window) was not implemented as it's not needed for the actual number of products (10-40 per page vs. the 2000+ mentioned in requirements). The library was initially added per requirements but removed after investigation showed it wasn't necessary.
 
 ## Results (After Optimization)
 

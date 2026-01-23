@@ -12,6 +12,9 @@ const StartHereBanner = lazy(() => import('../components/StartHereBanner'));
 const CertificatesBanner = lazy(() => import('../components/CertificatesBanner'));
 const About = lazy(() => import('../components/About'));
 
+// Minimal fallback for below-the-fold sections
+const BelowFoldFallback = () => <div className="min-h-[200px]" />;
+
 export default function HomePage() {
   return (
     <>
@@ -19,7 +22,7 @@ export default function HomePage() {
       <Navigation />
       <Hero />
       <SocialProof />
-      <Suspense fallback={<div className="min-h-[200px]" />}>
+      <Suspense fallback={<BelowFoldFallback />}>
         <HowItWorks />
         <InstagramFeed />
         <StartHereBanner />
