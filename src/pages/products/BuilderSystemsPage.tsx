@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import { FileText } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate';
-import BrochureRequestModal from '../../components/BrochureRequestModal';
 import { categoryHero } from '../../config/imageMap';
 
 export default function BuilderSystemsPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const systems = [
     {
@@ -51,11 +49,11 @@ export default function BuilderSystemsPage() {
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 p-8 md:p-12 text-center">
             <div className="max-w-3xl mx-auto">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
-                <FileText size={32} className="text-blue-800" aria-hidden="true" />
+                <ArrowRight size={32} className="text-blue-800" aria-hidden="true" />
               </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Complete Builder Systems Catalogue</h2>
               <p className="text-lg text-gray-600 mb-8 font-light leading-relaxed">
-                Discover our professional range of builder systems. Request our comprehensive brochure for detailed technical specifications, application guides, and product comparisons.
+                Discover our professional range of builder systems with detailed technical specifications, application guides, and product comparisons.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -67,16 +65,16 @@ export default function BuilderSystemsPage() {
                 ))}
               </div>
 
-              <button
-                onClick={() => setIsModalOpen(true)}
+              <Link
+                to="/products"
                 className="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                <FileText size={20} className="mr-2" aria-hidden="true" />
-                Request Complete Brochure
-              </button>
+                See Our Products
+                <ArrowRight size={20} className="ml-2" aria-hidden="true" />
+              </Link>
 
               <p className="text-sm text-gray-500 mt-6">
-                Our brochure includes technical specifications, application techniques, and system comparisons
+                View our complete product catalog with technical specifications, application techniques, and system comparisons
               </p>
             </div>
           </div>
@@ -150,13 +148,6 @@ export default function BuilderSystemsPage() {
           </ul>
         </div>
       </PageTemplate>
-
-      <BrochureRequestModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        categoryName="Builder Systems"
-        categorySlug="builder-systems"
-      />
     </>
   );
 }
