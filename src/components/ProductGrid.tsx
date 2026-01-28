@@ -14,11 +14,19 @@ interface ProductGridProps {
 }
 
 /**
- * Extract product number from filename
+ * Extract product number or label from filename
  * E.g., "premium-builder-gel (10).jpg" -> "10"
+ * E.g., "premium-builder-gel-clear.jpg" -> "Clear"
  */
 function extractProductNumber(src: string): string | null {
   const filename = src.split('/').pop() || '';
+  
+  // Check if it's the clear variant
+  if (filename.toLowerCase().includes('clear')) {
+    return 'Clear';
+  }
+  
+  // Extract number from pattern like "(10)" or "(2)"
   const match = filename.match(/\((\d+)\)/);
   return match ? match[1] : null;
 }
@@ -247,7 +255,7 @@ export default function ProductGrid({ title, description, images, showProductNum
               {productNumber && (
                 <div className="text-center mt-2">
                   <span className="text-sm font-medium text-gray-700">
-                    No. {productNumber}
+                    {productNumber === 'Clear' ? productNumber : `No. ${productNumber}`}
                   </span>
                 </div>
               )}
