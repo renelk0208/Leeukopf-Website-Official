@@ -17,6 +17,26 @@ interface BuilderGelImageOptions {
 }
 
 /**
+ * Extract number from filename for sorting (e.g., "gel (10).jpg" -> 10)
+ * Returns 0 for "clear" to place it first, Infinity for others
+ */
+function extractSortNumber(filename: string): number {
+  // Check if it's the clear variant (should be first)
+  if (filename.toLowerCase().includes('clear')) {
+    return 0;
+  }
+  
+  // Extract number from pattern like "(10)" or "(2)"
+  const match = filename.match(/\((\d+)\)/);
+  if (match) {
+    return parseInt(match[1], 10);
+  }
+  
+  // If no number found, place at end
+  return Infinity;
+}
+
+/**
  * Load builder gel product images using Vite's import.meta.glob
  * @param imageModules - The result of import.meta.glob
  * @param options - Configuration options for filtering and labeling images
@@ -59,8 +79,12 @@ export function loadBuilderGelImages(
     });
   });
 
-  // Sort images by path for consistent ordering
-  productImages.sort((a, b) => a.src.localeCompare(b.src));
+  // Sort images by extracted number for proper ordering
+  productImages.sort((a, b) => {
+    const numA = extractSortNumber(a.src);
+    const numB = extractSortNumber(b.src);
+    return numA - numB;
+  });
 
   return productImages;
 }

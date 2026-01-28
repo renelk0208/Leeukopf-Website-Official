@@ -15,8 +15,20 @@ const BUILDER_SUBCATEGORIES = [
   { 
     id: 'premiumFiberGlass', 
     folder: 'Premium Builder Gels', 
-    title: 'Premium Fiber Glass Builder Gels',
+    title: 'Fibreglass Builder Gels',
     description: 'Reinforced flexibility and superior strength'
+  },
+  { 
+    id: 'noHeatSpikeBuilderGel', 
+    folder: 'No Heat Spike Builder Gel', 
+    title: 'No Heat Spike Builder Gel',
+    description: 'No heat spike, comfortable application'
+  },
+  { 
+    id: 'brushOnBuilder', 
+    folder: 'brush-on-builder', 
+    title: 'Brush-On Builder',
+    description: 'Convenient brush-on building system'
   },
 ];
 

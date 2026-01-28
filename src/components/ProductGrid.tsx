@@ -10,6 +10,25 @@ interface ProductGridProps {
   title?: string;
   description?: string;
   images: ProductImage[];
+  showProductNumbers?: boolean; // New prop to enable/disable product number display
+}
+
+/**
+ * Extract product number or label from filename
+ * E.g., "premium-builder-gel (10).jpg" -> "10"
+ * E.g., "premium-builder-gel-clear.jpg" -> "Clear"
+ */
+function extractProductNumber(src: string): string | null {
+  const filename = src.split('/').pop() || '';
+  
+  // Check if it's the clear variant
+  if (filename.toLowerCase().includes('clear')) {
+    return 'Clear';
+  }
+  
+  // Extract number from pattern like "(10)" or "(2)"
+  const match = filename.match(/\((\d+)\)/);
+  return match ? match[1] : null;
 }
 
 /** Lightweight gallery modal component */
@@ -169,7 +188,7 @@ function GalleryModal({
 }
 
 /** Main component: displays product images in a responsive grid */
-export default function ProductGrid({ title, description, images }: ProductGridProps) {
+export default function ProductGrid({ title, description, images, showProductNumbers = false }: ProductGridProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
@@ -208,29 +227,41 @@ export default function ProductGrid({ title, description, images }: ProductGridP
 
       {/* Product images grid - responsive layout */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {images.map((image, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => handleImageClick(index)}
-            aria-label={`View ${image.alt}`}
-            className="relative aspect-square rounded-lg overflow-hidden bg-white border border-gray-200 hover:shadow-lg transition-all cursor-pointer group"
-          >
-            {imageErrors.has(index) ? (
-              <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                <span className="text-xs text-gray-400">Image unavailable</span>
-              </div>
-            ) : (
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-                onError={() => handleImageError(index)}
-              />
-            )}
-          </button>
-        ))}
+        {images.map((image, index) => {
+          const productNumber = showProductNumbers ? extractProductNumber(image.src) : null;
+          
+          return (
+            <div key={index} className="flex flex-col">
+              <button
+                type="button"
+                onClick={() => handleImageClick(index)}
+                aria-label={`View ${image.alt}`}
+                className="relative aspect-square rounded-lg overflow-hidden bg-white border border-gray-200 hover:shadow-lg transition-all cursor-pointer group"
+              >
+                {imageErrors.has(index) ? (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    <span className="text-xs text-gray-400">Image unavailable</span>
+                  </div>
+                ) : (
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                    onError={() => handleImageError(index)}
+                  />
+                )}
+              </button>
+              {productNumber && (
+                <div className="text-center mt-2">
+                  <span className="text-sm font-medium text-gray-700">
+                    {productNumber === 'Clear' ? productNumber : `No. ${productNumber}`}
+                  </span>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Gallery modal */}
