@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import OptimizedImage from '../components/OptimizedImage';
@@ -343,12 +344,12 @@ export default function PrivateLabelBottlesPage() {
         {/* Responsive CTA section */}
         <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8 border border-gray-200">
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-4 sm:mb-6">
-            <button className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors min-h-[44px] text-sm sm:text-base">
-              Request Bottle Specs (PDF)
-            </button>
-            <button className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-white border-2 border-blue-800 text-blue-800 font-semibold rounded-lg hover:bg-blue-50 transition-colors min-h-[44px] text-sm sm:text-base">
+            <Link
+              to="/client-registration"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors min-h-[44px] text-sm sm:text-base text-center"
+            >
               Get Pricing
-            </button>
+            </Link>
           </div>
           <p className="text-center text-xs sm:text-sm text-gray-600 font-light">
             Available options: Caps (black/white/silver) • Brush types • Finish (glossy/matte)

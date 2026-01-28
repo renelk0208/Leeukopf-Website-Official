@@ -17,6 +17,8 @@ interface FormData {
   interests: string[];
   interestPrivateLabel: boolean;
   interestDistribution: boolean;
+  bottleSizes: string[];
+  jarSizes: string[];
   monthlyVolume: string;
   vatEori: string;
   billingAddress: string;
@@ -80,6 +82,9 @@ const productInterests = [
   'Packaging'
 ];
 
+const bottleSizeOptions = ['7ml', '10ml', '15ml'];
+const jarSizeOptions = ['10g', '20g', '50g'];
+
 const languages = [
   { code: 'EN', name: 'English' },
   { code: 'EL', name: 'Greek' },
@@ -117,6 +122,8 @@ export default function ClientRegistrationPage() {
     interests: [],
     interestPrivateLabel: false,
     interestDistribution: false,
+    bottleSizes: [],
+    jarSizes: [],
     monthlyVolume: '',
     vatEori: '',
     billingAddress: '',
@@ -232,6 +239,24 @@ export default function ClientRegistrationPage() {
       interests: prev.interests.includes(interest)
         ? prev.interests.filter(i => i !== interest)
         : [...prev.interests, interest]
+    }));
+  };
+
+  const handleBottleSizeChange = (size: string) => {
+    setFormData(prev => ({
+      ...prev,
+      bottleSizes: prev.bottleSizes.includes(size)
+        ? prev.bottleSizes.filter(s => s !== size)
+        : [...prev.bottleSizes, size]
+    }));
+  };
+
+  const handleJarSizeChange = (size: string) => {
+    setFormData(prev => ({
+      ...prev,
+      jarSizes: prev.jarSizes.includes(size)
+        ? prev.jarSizes.filter(s => s !== size)
+        : [...prev.jarSizes, size]
     }));
   };
 
@@ -738,6 +763,55 @@ export default function ClientRegistrationPage() {
                 </p>
               )}
             </div>
+
+            {/* Bottle and Jar Options - Only visible when Private Label is checked */}
+            {formData.interestPrivateLabel && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-3">
+                    Bottle Sizes (Optional)
+                  </label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {bottleSizeOptions.map(size => (
+                      <label
+                        key={size}
+                        className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.bottleSizes.includes(size)}
+                          onChange={() => handleBottleSizeChange(size)}
+                          className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                        />
+                        <span className="text-sm text-gray-900">{size}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-3">
+                    Jar Sizes (Optional)
+                  </label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {jarSizeOptions.map(size => (
+                      <label
+                        key={size}
+                        className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.jarSizes.includes(size)}
+                          onChange={() => handleJarSizeChange(size)}
+                          className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                        />
+                        <span className="text-sm text-gray-900">{size}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
