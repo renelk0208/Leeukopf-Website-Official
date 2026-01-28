@@ -43,7 +43,7 @@ export default function PremiumFiberGlassPage() {
         {/* Description */}
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed mb-4">
-            Our fibre glass builder gel system incorporates fine glass fibres for enhanced strength 
+            Our fibreglass builder gel system incorporates fine glass fibres for enhanced strength 
             and flexibility. Designed for technicians who work with clients needing extra reinforcement or who 
             want to create thin, natural-looking extensions with superior durability.
           </p>
@@ -59,7 +59,7 @@ export default function PremiumFiberGlassPage() {
       {PRODUCT_IMAGES.length > 0 && (
         <ProductGrid
           title="Available Products"
-          description="Browse our fibre glass builder gel range"
+          description="Browse our fibreglass builder gel range"
           images={PRODUCT_IMAGES}
           showProductNumbers={true}
         />
