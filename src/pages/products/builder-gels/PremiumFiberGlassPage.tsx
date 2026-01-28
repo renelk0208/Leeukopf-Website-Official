@@ -13,19 +13,19 @@ const imageModules = import.meta.glob<{ default: string }>(
 
 const PRODUCT_IMAGES = loadBuilderGelImages(imageModules, {
   globPattern: '/public/img/products/builder-systems/Premium Builder Gels/**/*.jpg',
-  altPrefix: 'Premium Fiber Glass Builder Gel',
+  altPrefix: 'Fibreglass Builder Gel',
 });
 
 export default function PremiumFiberGlassPage() {
   return (
     <PageTemplate
-      title="Premium Fiber Glass Builder Gels"
+      title="Fibreglass Builder Gels"
       subtitle="Reinforced flexibility and superior strength in a premium formula that stays fully HEMA-free and TPO-free."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
         { label: 'Builder & Structure Gels', path: '/products/builder-and-structure-gels' },
-        { label: 'Premium Fiber Glass' }
+        { label: 'Fibreglass Builder Gels' }
       ]}
     >
       {/* Hero Image */}
@@ -33,7 +33,7 @@ export default function PremiumFiberGlassPage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src="/img/products/builder-systems/Premium Builder Gels/premium-builder-gels-category.jpg"
-            alt="Premium Fiber Glass Builder Gels"
+            alt="Fibreglass Builder Gels"
             width="1600"
             height="400"
             className="category-hero"
@@ -43,7 +43,7 @@ export default function PremiumFiberGlassPage() {
         {/* Description */}
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed mb-4">
-            Our premium fibre glass builder gel system incorporates fine glass fibres for enhanced strength 
+            Our fibre glass builder gel system incorporates fine glass fibres for enhanced strength 
             and flexibility. Designed for technicians who work with clients needing extra reinforcement or who 
             want to create thin, natural-looking extensions with superior durability.
           </p>
@@ -59,8 +59,9 @@ export default function PremiumFiberGlassPage() {
       {PRODUCT_IMAGES.length > 0 && (
         <ProductGrid
           title="Available Products"
-          description="Browse our premium fiber glass builder gel range"
+          description="Browse our fibre glass builder gel range"
           images={PRODUCT_IMAGES}
+          showProductNumbers={true}
         />
       )}
 
@@ -87,7 +88,7 @@ export default function PremiumFiberGlassPage() {
           </li>
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
-            <span>HEMA-free and TPO-free premium formulation</span>
+            <span>HEMA-free and TPO-free formulation</span>
           </li>
           <li className="flex items-start">
             <span className="text-primary mr-2">•</span>
