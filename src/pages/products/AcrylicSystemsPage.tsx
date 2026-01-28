@@ -7,7 +7,7 @@ import ProductGrid from '../../components/ProductGrid';
  * Use Vite's import.meta.glob to dynamically load all acrylic system product images
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/builder-systems/{Acrylic,Acrylic Images}/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
+  '/public/img/products/builder-systems/Acrylic/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
 
@@ -75,7 +75,6 @@ export default function AcrylicSystemsPage() {
           title="Product Gallery"
           description="Browse our complete range of acrylic system products"
           images={ACRYLIC_IMAGES}
-          showProductNumbers={true}
         />
       )}
 
