@@ -23,7 +23,7 @@ export default function BuilderAndStructureGelsPage() {
     },
     {
       key: 'premiumFiberGlass',
-      title: 'Premium Fiber Glass Builder Gels',
+      title: 'Fibreglass Builder Gels',
       path: '/products/builder-and-structure-gels/premium-fiber-glass',
       description: 'Reinforced flexibility and superior strength in a premium formula that stays fully HEMA-free and TPO-free.',
       image: categoryHero['premium-builder-gels'],
