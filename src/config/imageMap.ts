@@ -60,7 +60,7 @@ export const categoryHero: Record<string, string> = {
   'effects-top-coats': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category-card.jpg',
   'superior-base-coat': '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
   'classic-base': '/img/products/tops-and-bases/Bases/base-coat-category-card-image.png',
-  'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-category-card-image.png',
+  'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card.jpg',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
   'biab-builder-in-a-bottle': '/img/products/builder-systems/BIAB builder-in-a-bottle/biab-builder-in-a-bottle-category-card.jpg',
   

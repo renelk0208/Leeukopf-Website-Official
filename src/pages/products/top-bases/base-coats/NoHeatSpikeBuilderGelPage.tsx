@@ -20,8 +20,8 @@ function buildNoHeatSpikeImages(): { src: string; alt: string }[] {
 
     const filename = path.split('/').pop() || '';
     
-    // Skip category images except for the specific category card
-    if (filename.toLowerCase().includes('category') && filename.toLowerCase() !== 'no-heat-spike-builder-gel-category-card.jpg') return;
+    // Skip all category images from the product gallery
+    if (filename.toLowerCase().includes('category')) return;
 
     // Convert the public path to a URL path (remove /public prefix)
     const imageSrc = path.replace('/public', '');
@@ -59,6 +59,19 @@ export default function NoHeatSpikeBuilderGelPage() {
         { label: 'No Heat Spike Builder Gel' }
       ]}
     >
+      {/* Hero Image Section */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
+          <img
+            src="/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card.jpg"
+            alt="No Heat Spike Builder Gel"
+            width="1600"
+            height="400"
+            className="category-hero"
+          />
+        </div>
+      </div>
+
       {/* Hero Description */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
