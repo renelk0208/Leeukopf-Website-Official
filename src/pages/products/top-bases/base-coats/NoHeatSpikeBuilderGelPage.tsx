@@ -10,6 +10,9 @@ const imageModules = import.meta.glob<{ default: string }>(
   { eager: true }
 );
 
+/** The category card image that should be displayed */
+const ALLOWED_CATEGORY_IMAGE = 'no-heat-spike-builder-gel-category-card.jpg';
+
 /** Build gallery images from the glob results */
 function buildNoHeatSpikeImages(): { src: string; alt: string }[] {
   const images: { src: string; alt: string }[] = [];
@@ -20,8 +23,8 @@ function buildNoHeatSpikeImages(): { src: string; alt: string }[] {
 
     const filename = path.split('/').pop() || '';
     
-    // Skip category images
-    if (filename.toLowerCase().includes('category')) return;
+    // Skip category images except for the specific category card
+    if (filename.toLowerCase().includes('category') && filename.toLowerCase() !== ALLOWED_CATEGORY_IMAGE.toLowerCase()) return;
 
     // Convert the public path to a URL path (remove /public prefix)
     const imageSrc = path.replace('/public', '');
