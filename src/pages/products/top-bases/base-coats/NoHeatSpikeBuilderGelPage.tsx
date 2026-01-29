@@ -39,8 +39,18 @@ function buildNoHeatSpikeImages(): { src: string; alt: string }[] {
     });
   });
 
-  // Sort images by filename for consistent ordering
-  images.sort((a, b) => a.src.localeCompare(b.src));
+  // Sort images - prioritize category card image first, then alphabetically
+  images.sort((a, b) => {
+    const aIsCategory = a.src.toLowerCase().includes('category-card');
+    const bIsCategory = b.src.toLowerCase().includes('category-card');
+    
+    // If one is a category card and the other isn't, category card comes first
+    if (aIsCategory && !bIsCategory) return -1;
+    if (!aIsCategory && bIsCategory) return 1;
+    
+    // Otherwise, sort alphabetically
+    return a.src.localeCompare(b.src);
+  });
 
   return images;
 }

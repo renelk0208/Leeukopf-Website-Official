@@ -66,9 +66,6 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
     const category = BUILDER_SUBCATEGORIES.find((cat) => cat.folder === folderName);
     if (!category) return;
 
-    // Skip category images within the folders
-    if (filename.toLowerCase().includes('category')) return;
-
     // Convert the public path to a URL path (remove /public prefix)
     const imageSrc = path.replace('/public', '');
 
@@ -85,9 +82,19 @@ function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
     });
   });
 
-  // Sort images within each category by filename for consistent ordering
+  // Sort images within each category - prioritize category card images first, then alphabetically
   Object.keys(categoryImages).forEach((key) => {
-    categoryImages[key].sort((a, b) => a.src.localeCompare(b.src));
+    categoryImages[key].sort((a, b) => {
+      const aIsCategory = a.src.toLowerCase().includes('category-card');
+      const bIsCategory = b.src.toLowerCase().includes('category-card');
+      
+      // If one is a category card and the other isn't, category card comes first
+      if (aIsCategory && !bIsCategory) return -1;
+      if (!aIsCategory && bIsCategory) return 1;
+      
+      // Otherwise, sort alphabetically
+      return a.src.localeCompare(b.src);
+    });
   });
 
   return categoryImages;
