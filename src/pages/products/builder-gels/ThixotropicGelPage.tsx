@@ -5,15 +5,15 @@ import { loadBuilderGelImages } from '../../../lib/imageLoaders';
 
 /**
  * Use Vite's import.meta.glob to dynamically load thixotropic gel images
- * These are in the "Builder Gels" folder and have "thixotropic" in the filename
+ * These are in the "thixotropic-gel" folder
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/builder-systems/Builder Gels/**/*.jpg',
+  '/public/img/products/builder-systems/thixotropic-gel/**/*.{jpg,png}',
   { eager: true }
 );
 
 const PRODUCT_IMAGES = loadBuilderGelImages(imageModules, {
-  globPattern: '/public/img/products/builder-systems/Builder Gels/**/*.jpg',
+  globPattern: '/public/img/products/builder-systems/thixotropic-gel/**/*.{jpg,png}',
   filterPattern: 'thixotropic',
   altPrefix: 'Thixotropic Gel',
 });
@@ -34,7 +34,7 @@ export default function ThixotropicGelPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/builder-systems/Thixotropic-Gel/thixotropic-gel-category.jpg"
+            src="/img/products/builder-systems/thixotropic-gel/thixotropic-gel-category-image.png"
             alt="Thixotropic Gel"
             width="1600"
             height="400"
