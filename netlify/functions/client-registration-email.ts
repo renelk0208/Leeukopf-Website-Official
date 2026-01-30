@@ -27,10 +27,13 @@ interface FormData {
   countryOther?: string;
   website?: string;
   instagram?: string;
+  facebook?: string;
+  tiktok?: string;
   businessType: string;
   interests: string[];
   interestPrivateLabel?: boolean;
   interestDistribution?: boolean;
+  interestInfluencer?: boolean;
   monthlyVolume?: string;
   vatEori?: string;
   billingAddress?: string;
@@ -82,12 +85,15 @@ ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
 <p><strong>Country:</strong> ${formData.country}${formData.country === 'Other' && formData.countryOther ? ` (${formData.countryOther})` : ''}</p>
 ${formData.website ? `<p><strong>Website:</strong> ${formData.website}</p>` : ''}
 ${formData.instagram ? `<p><strong>Instagram:</strong> ${formData.instagram}</p>` : ''}
+${formData.facebook ? `<p><strong>Facebook:</strong> ${formData.facebook}</p>` : ''}
+${formData.tiktok ? `<p><strong>TikTok:</strong> ${formData.tiktok}</p>` : ''}
 
 <h3>Business Details</h3>
 <p><strong>Business Type:</strong> ${formData.businessType}</p>
 <p><strong>Business Interest:</strong> ${[
   formData.interestPrivateLabel ? 'Private Label' : '',
-  formData.interestDistribution ? 'Distribution' : ''
+  formData.interestDistribution ? 'Distribution' : '',
+  formData.interestInfluencer ? 'Influencer' : ''
 ].filter(Boolean).join(', ')}</p>
 <p><strong>Product Interests:</strong> ${formData.interests.length > 0 ? formData.interests.join(', ') : 'None specified'}</p>
 ${formData.monthlyVolume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.monthlyVolume}</p>` : ''}
