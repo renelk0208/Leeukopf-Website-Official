@@ -693,6 +693,8 @@ export default function ClientRegistrationPage() {
                     }`}
                     placeholder="@yourhandle"
                     aria-required="true"
+                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
+                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
                   />
                 </div>
 
@@ -711,6 +713,8 @@ export default function ClientRegistrationPage() {
                     }`}
                     placeholder="@yourhandle"
                     aria-required="true"
+                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
+                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
                   />
                 </div>
 
@@ -729,9 +733,11 @@ export default function ClientRegistrationPage() {
                     }`}
                     placeholder="@yourhandle"
                     aria-required="true"
+                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
+                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
                   />
                   {errors.socialMedia && (
-                    <p className="mt-1 text-sm text-red-600" role="alert">
+                    <p id="socialMedia-error" className="mt-1 text-sm text-red-600" role="alert">
                       {errors.socialMedia}
                     </p>
                   )}
