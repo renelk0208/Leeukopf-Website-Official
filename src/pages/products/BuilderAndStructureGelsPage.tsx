@@ -56,6 +56,13 @@ export default function BuilderAndStructureGelsPage() {
       description: 'Convenient brush-on building system for quick overlays and natural nail reinforcement — HEMA-free and TPO-free.',
       image: categoryHero['biab-builder-in-a-bottle'],
     },
+    {
+      key: 'thixotropicGel',
+      title: 'Thixotropic Gel',
+      path: '/products/builder-and-structure-gels/thixotropic-gel',
+      description: 'Advanced thixotropic formula for maximum control and effortless application — HEMA-free and TPO-free.',
+      image: categoryHero['thixotropic-gel'],
+    },
   ].filter(sub => isSubcategoryEnabled('builderGels', sub.key));
 
   return (
