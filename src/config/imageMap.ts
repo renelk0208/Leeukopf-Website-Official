@@ -63,7 +63,7 @@ export const categoryHero: Record<string, string> = {
   'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card.jpg',
   'brush-on-builder': '/img/products/tops-and-bases/brush-on-builder/brush-on-builder-category-card-image.jpg',
   'biab-builder-in-a-bottle': '/img/products/builder-systems/BIAB builder-in-a-bottle/biab-builder-in-a-bottle-category-card.jpg',
-  'thixotropic-gel': '/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg',
+  'thixotropic-gel': '/img/products/builder-systems/Thixotropic-Gel/thixotropic-gel-category.jpg',
   
   // Primers & Liquids
   'primers-liquids': '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',
