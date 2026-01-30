@@ -396,10 +396,15 @@ export default function ClientRegistrationPage() {
         countryOther: '',
         website: '',
         instagram: '',
+        facebook: '',
+        tiktok: '',
         businessType: '',
         interests: [],
         interestPrivateLabel: false,
         interestDistribution: false,
+        interestInfluencer: false,
+        bottleSizes: [],
+        jarSizes: [],
         monthlyVolume: '',
         vatEori: '',
         billingAddress: '',
@@ -671,64 +676,68 @@ export default function ClientRegistrationPage() {
               />
             </div>
 
-            <div>
-              <label htmlFor="instagram" className="block text-sm font-medium text-gray-900 mb-2">
-                Instagram Handle{formData.interestInfluencer && <span className="text-red-500"> *</span>}
-              </label>
-              <input
-                type="text"
-                id="instagram"
-                name="instagram"
-                value={formData.instagram}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                  errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="@yourhandle"
-                aria-required={formData.interestInfluencer}
-              />
-            </div>
+            {formData.interestInfluencer && (
+              <>
+                <div>
+                  <label htmlFor="instagram" className="block text-sm font-medium text-gray-900 mb-2">
+                    Instagram Handle<span className="text-red-500"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="instagram"
+                    name="instagram"
+                    value={formData.instagram}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="@yourhandle"
+                    aria-required="true"
+                  />
+                </div>
 
-            <div>
-              <label htmlFor="facebook" className="block text-sm font-medium text-gray-900 mb-2">
-                Facebook Handle{formData.interestInfluencer && <span className="text-red-500"> *</span>}
-              </label>
-              <input
-                type="text"
-                id="facebook"
-                name="facebook"
-                value={formData.facebook}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                  errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="@yourhandle"
-                aria-required={formData.interestInfluencer}
-              />
-            </div>
+                <div>
+                  <label htmlFor="facebook" className="block text-sm font-medium text-gray-900 mb-2">
+                    Facebook Handle<span className="text-red-500"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="facebook"
+                    name="facebook"
+                    value={formData.facebook}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="@yourhandle"
+                    aria-required="true"
+                  />
+                </div>
 
-            <div>
-              <label htmlFor="tiktok" className="block text-sm font-medium text-gray-900 mb-2">
-                TikTok Handle{formData.interestInfluencer && <span className="text-red-500"> *</span>}
-              </label>
-              <input
-                type="text"
-                id="tiktok"
-                name="tiktok"
-                value={formData.tiktok}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                  errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="@yourhandle"
-                aria-required={formData.interestInfluencer}
-              />
-              {errors.socialMedia && (
-                <p className="mt-1 text-sm text-red-600" role="alert">
-                  {errors.socialMedia}
-                </p>
-              )}
-            </div>
+                <div>
+                  <label htmlFor="tiktok" className="block text-sm font-medium text-gray-900 mb-2">
+                    TikTok Handle<span className="text-red-500"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="tiktok"
+                    name="tiktok"
+                    value={formData.tiktok}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="@yourhandle"
+                    aria-required="true"
+                  />
+                  {errors.socialMedia && (
+                    <p className="mt-1 text-sm text-red-600" role="alert">
+                      {errors.socialMedia}
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
