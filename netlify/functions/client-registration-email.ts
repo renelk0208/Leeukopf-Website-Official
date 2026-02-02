@@ -49,6 +49,19 @@ interface FormData {
   source?: string;
   page?: string;
   gdprConsent?: boolean;
+  client_type?: string;
+  // Distributors fields
+  countries_covered?: string;
+  distribution_channels?: string;
+  estimated_monthly_volume?: string;
+  // Private Label fields
+  brand_name?: string;
+  product_interest?: string;
+  target_moq?: string;
+  target_launch_date?: string;
+  // Influencers fields
+  country_audience?: string;
+  avg_views?: string;
 }
 
 // Get allowed origins for CORS
@@ -89,6 +102,7 @@ ${formData.facebook ? `<p><strong>Facebook:</strong> ${formData.facebook}</p>` :
 ${formData.tiktok ? `<p><strong>TikTok:</strong> ${formData.tiktok}</p>` : ''}
 
 <h3>Business Details</h3>
+<p><strong>Client Type:</strong> ${formData.client_type || 'Not specified'}</p>
 <p><strong>Business Type:</strong> ${formData.businessType}</p>
 <p><strong>Business Interest:</strong> ${[
   formData.interestPrivateLabel ? 'Private Label' : '',
@@ -98,7 +112,33 @@ ${formData.tiktok ? `<p><strong>TikTok:</strong> ${formData.tiktok}</p>` : ''}
 <p><strong>Product Interests:</strong> ${formData.interests.length > 0 ? formData.interests.join(', ') : 'None specified'}</p>
 ${formData.monthlyVolume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.monthlyVolume}</p>` : ''}
 ${formData.vatEori ? `<p><strong>VAT Registration number:</strong> ${formData.vatEori}</p>` : ''}
+`;
 
+  // Add client type specific information
+  if (formData.client_type === 'Distributors') {
+    body += `
+<h3>Distribution Information</h3>
+${formData.countries_covered ? `<p><strong>Countries Covered:</strong> ${formData.countries_covered}</p>` : ''}
+${formData.distribution_channels ? `<p><strong>Distribution Channels:</strong><br>${formData.distribution_channels.replace(/\n/g, '<br>')}</p>` : ''}
+${formData.estimated_monthly_volume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.estimated_monthly_volume}</p>` : ''}
+`;
+  } else if (formData.client_type === 'PrivateLabel') {
+    body += `
+<h3>Private Label Information</h3>
+${formData.brand_name ? `<p><strong>Brand Name:</strong> ${formData.brand_name}</p>` : ''}
+${formData.product_interest ? `<p><strong>Product Interest:</strong> ${formData.product_interest}</p>` : ''}
+${formData.target_moq ? `<p><strong>Target MOQ:</strong> ${formData.target_moq}</p>` : ''}
+${formData.target_launch_date ? `<p><strong>Target Launch Date:</strong> ${formData.target_launch_date}</p>` : ''}
+`;
+  } else if (formData.client_type === 'Influencers') {
+    body += `
+<h3>Influencer Information</h3>
+${formData.country_audience ? `<p><strong>Country Audience:</strong> ${formData.country_audience}</p>` : ''}
+${formData.avg_views ? `<p><strong>Average Views/Engagement:</strong> ${formData.avg_views}</p>` : ''}
+`;
+  }
+
+  body += `
 <h3>Addresses</h3>
 ${formData.billingAddress ? `<p><strong>Billing Address:</strong><br>${formData.billingAddress.replace(/\n/g, '<br>')}</p>` : ''}
 ${formData.shippingAddress ? `<p><strong>Shipping Address:</strong><br>${formData.shippingAddress.replace(/\n/g, '<br>')}</p>` : ''}
@@ -228,7 +268,10 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   // Timestamp, Source, Page, Company, Contact, Role, Email, Phone, Country, Country Other, 
   // District, Postal Code, Street, Billing Address, Shipping Address, Website, Instagram, 
   // Business Type, Interests, Monthly Volume, VAT Registration, Interest: Distribution, 
-  // Interest: Private Label, Request Sample Box, Notes, GDPR Consent, Honeypot
+  // Interest: Private Label, Request Sample Box, Notes, GDPR Consent, Honeypot, Client Type,
+  // Countries Covered, Distribution Channels, Estimated Monthly Volume,
+  // Brand Name, Product Interest, Target MOQ, Target Launch Date,
+  // Country Audience, Avg Views
   const interestsStr = Array.isArray(formData.interests) ? formData.interests.join(", ") : "";
 
   const row = [
@@ -259,6 +302,19 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
     formData.notes || "",
     formData.gdprConsent ? "Yes" : "No",
     formData.honeypot || "",
+    formData.client_type || "",
+    // Distributors fields
+    formData.countries_covered || "",
+    formData.distribution_channels || "",
+    formData.estimated_monthly_volume || "",
+    // Private Label fields
+    formData.brand_name || "",
+    formData.product_interest || "",
+    formData.target_moq || "",
+    formData.target_launch_date || "",
+    // Influencers fields
+    formData.country_audience || "",
+    formData.avg_views || "",
   ];
 
   try {
