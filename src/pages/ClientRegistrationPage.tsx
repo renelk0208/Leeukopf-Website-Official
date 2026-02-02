@@ -37,6 +37,19 @@ interface FormData {
   privacyPolicyAccepted: boolean;
   marketingConsent: boolean;
   honeypot: string;
+  client_type: string;
+  // Distributors fields
+  countries_covered: string;
+  distribution_channels: string;
+  estimated_monthly_volume: string;
+  // Private Label fields
+  brand_name: string;
+  product_interest: string;
+  target_moq: string;
+  target_launch_date: string;
+  // Influencers fields
+  country_audience: string;
+  avg_views: string;
 }
 
 interface FormErrors {
@@ -144,13 +157,27 @@ export default function ClientRegistrationPage() {
     gdprConsent: false,
     privacyPolicyAccepted: false,
     marketingConsent: false,
-    honeypot: ''
+    honeypot: '',
+    client_type: 'Distributors',
+    // Distributors fields
+    countries_covered: '',
+    distribution_channels: '',
+    estimated_monthly_volume: '',
+    // Private Label fields
+    brand_name: '',
+    product_interest: '',
+    target_moq: '',
+    target_launch_date: '',
+    // Influencers fields
+    country_audience: '',
+    avg_views: ''
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [activeTab, setActiveTab] = useState<'Distributors' | 'PrivateLabel' | 'Influencers'>('Distributors');
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -266,6 +293,42 @@ export default function ClientRegistrationPage() {
     }));
   };
 
+  const handleSetActiveTab = (tabKey: 'Distributors' | 'PrivateLabel' | 'Influencers') => {
+    setActiveTab(tabKey);
+    
+    // Update client_type in formData
+    setFormData(prev => ({
+      ...prev,
+      client_type: tabKey
+    }));
+    
+    // Clear fields from other tabs to prevent stale data
+    if (tabKey !== 'Distributors') {
+      setFormData(prev => ({
+        ...prev,
+        countries_covered: '',
+        distribution_channels: '',
+        estimated_monthly_volume: ''
+      }));
+    }
+    if (tabKey !== 'PrivateLabel') {
+      setFormData(prev => ({
+        ...prev,
+        brand_name: '',
+        product_interest: '',
+        target_moq: '',
+        target_launch_date: ''
+      }));
+    }
+    if (tabKey !== 'Influencers') {
+      setFormData(prev => ({
+        ...prev,
+        country_audience: '',
+        avg_views: ''
+      }));
+    }
+  };
+
 
 
   const validateForm = (): boolean => {
@@ -286,13 +349,12 @@ export default function ClientRegistrationPage() {
     }
 
     // Conditional validation for Influencer: at least one social media handle is required
-    if (formData.interestInfluencer) {
+    if (activeTab === 'Influencers') {
       const hasInstagram = formData.instagram.trim().length > 0;
-      const hasFacebook = formData.facebook.trim().length > 0;
       const hasTiktok = formData.tiktok.trim().length > 0;
 
-      if (!hasInstagram && !hasFacebook && !hasTiktok) {
-        newErrors.socialMedia = 'When Influencer is selected, at least one social media handle (Instagram, Facebook, or TikTok) is required.';
+      if (!hasInstagram && !hasTiktok) {
+        newErrors.socialMedia = 'At least one social media handle (Instagram or TikTok) is required for influencers.';
       }
     }
 
@@ -419,7 +481,20 @@ export default function ClientRegistrationPage() {
         gdprConsent: false,
         privacyPolicyAccepted: false,
         marketingConsent: false,
-        honeypot: ''
+        honeypot: '',
+        client_type: 'Distributors',
+        // Distributors fields
+        countries_covered: '',
+        distribution_channels: '',
+        estimated_monthly_volume: '',
+        // Private Label fields
+        brand_name: '',
+        product_interest: '',
+        target_moq: '',
+        target_launch_date: '',
+        // Influencers fields
+        country_audience: '',
+        avg_views: ''
       });
       setErrors({});
 
@@ -757,76 +832,6 @@ export default function ClientRegistrationPage() {
               )}
             </div>
 
-            {/* Social Media Handles - Only visible when Influencer is checked */}
-            {formData.interestInfluencer && (
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="instagram" className="block text-sm font-medium text-gray-900 mb-2">
-                    Instagram Handle<span className="text-red-500"> *</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="instagram"
-                    name="instagram"
-                    value={formData.instagram}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="@yourhandle"
-                    aria-required="true"
-                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
-                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="facebook" className="block text-sm font-medium text-gray-900 mb-2">
-                    Facebook Handle<span className="text-red-500"> *</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="facebook"
-                    name="facebook"
-                    value={formData.facebook}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="@yourhandle"
-                    aria-required="true"
-                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
-                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="tiktok" className="block text-sm font-medium text-gray-900 mb-2">
-                    TikTok Handle<span className="text-red-500"> *</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="tiktok"
-                    name="tiktok"
-                    value={formData.tiktok}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="@yourhandle"
-                    aria-required="true"
-                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
-                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
-                  />
-                  {errors.socialMedia && (
-                    <p id="socialMedia-error" className="mt-1 text-sm text-red-600" role="alert">
-                      {errors.socialMedia}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-3">
                 Product Interests <span className="text-red-500">*</span>
@@ -853,55 +858,6 @@ export default function ClientRegistrationPage() {
                 </p>
               )}
             </div>
-
-            {/* Bottle and Jar Options - Only visible when Private Label is checked */}
-            {formData.interestPrivateLabel && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-3">
-                    Bottle Sizes (Optional)
-                  </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {bottleSizeOptions.map(size => (
-                      <label
-                        key={size}
-                        className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={formData.bottleSizes.includes(size)}
-                          onChange={() => handleBottleSizeChange(size)}
-                          className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                        />
-                        <span className="text-sm text-gray-900">{size}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-3">
-                    Jar Sizes (Optional)
-                  </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {jarSizeOptions.map(size => (
-                      <label
-                        key={size}
-                        className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={formData.jarSizes.includes(size)}
-                          onChange={() => handleJarSizeChange(size)}
-                          className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                        />
-                        <span className="text-sm text-gray-900">{size}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
@@ -1094,6 +1050,298 @@ export default function ClientRegistrationPage() {
               </select>
             </div>
           </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="bg-white rounded-lg border border-gray-200 p-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Select Your Client Type</h2>
+          <div className="flex border-b border-gray-200" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'Distributors'}
+              onClick={() => handleSetActiveTab('Distributors')}
+              className={`flex-1 px-6 py-3 text-center font-medium transition-colors border-b-2 ${
+                activeTab === 'Distributors'
+                  ? 'border-primary text-primary bg-primary/5'
+                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+              }`}
+            >
+              Distributors
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'PrivateLabel'}
+              onClick={() => handleSetActiveTab('PrivateLabel')}
+              className={`flex-1 px-6 py-3 text-center font-medium transition-colors border-b-2 ${
+                activeTab === 'PrivateLabel'
+                  ? 'border-primary text-primary bg-primary/5'
+                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+              }`}
+            >
+              Private Label
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'Influencers'}
+              onClick={() => handleSetActiveTab('Influencers')}
+              className={`flex-1 px-6 py-3 text-center font-medium transition-colors border-b-2 ${
+                activeTab === 'Influencers'
+                  ? 'border-primary text-primary bg-primary/5'
+                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+              }`}
+            >
+              Influencers
+            </button>
+          </div>
+
+          {/* Hidden input for client_type */}
+          <input type="hidden" name="client_type" value={formData.client_type} />
+
+          {/* Distributors specific fields */}
+          {activeTab === 'Distributors' && (
+            <div className="mt-6 space-y-6" role="tabpanel">
+              <h3 className="text-lg font-semibold text-gray-900">Distribution Information</h3>
+              <div>
+                <label htmlFor="countries_covered" className="block text-sm font-medium text-gray-900 mb-2">
+                  Countries Covered
+                </label>
+                <input
+                  type="text"
+                  id="countries_covered"
+                  name="countries_covered"
+                  value={formData.countries_covered}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., Greece, Cyprus, Bulgaria"
+                />
+              </div>
+              <div>
+                <label htmlFor="distribution_channels" className="block text-sm font-medium text-gray-900 mb-2">
+                  Distribution Channels
+                </label>
+                <textarea
+                  id="distribution_channels"
+                  name="distribution_channels"
+                  value={formData.distribution_channels}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  placeholder="e.g., Retail stores, Online platforms, Salons"
+                />
+              </div>
+              <div>
+                <label htmlFor="estimated_monthly_volume" className="block text-sm font-medium text-gray-900 mb-2">
+                  Estimated Monthly Volume
+                </label>
+                <input
+                  type="text"
+                  id="estimated_monthly_volume"
+                  name="estimated_monthly_volume"
+                  value={formData.estimated_monthly_volume}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., 500-1000 units"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Private Label specific fields */}
+          {activeTab === 'PrivateLabel' && (
+            <div className="mt-6 space-y-6" role="tabpanel">
+              <h3 className="text-lg font-semibold text-gray-900">Private Label Information</h3>
+              <div>
+                <label htmlFor="brand_name" className="block text-sm font-medium text-gray-900 mb-2">
+                  Brand Name
+                </label>
+                <input
+                  type="text"
+                  id="brand_name"
+                  name="brand_name"
+                  value={formData.brand_name}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Your brand name"
+                />
+              </div>
+              <div>
+                <label htmlFor="product_interest" className="block text-sm font-medium text-gray-900 mb-2">
+                  Product Interest
+                </label>
+                <input
+                  type="text"
+                  id="product_interest"
+                  name="product_interest"
+                  value={formData.product_interest}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., Gel polish, Base coat, Top coat"
+                />
+              </div>
+              
+              {/* Bottle and Jar Sizes */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-3">
+                  Bottle Sizes (Optional)
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {bottleSizeOptions.map(size => (
+                    <label
+                      key={size}
+                      className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.bottleSizes.includes(size)}
+                        onChange={() => handleBottleSizeChange(size)}
+                        className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <span className="text-sm text-gray-900">{size}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-3">
+                  Jar Sizes (Optional)
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {jarSizeOptions.map(size => (
+                    <label
+                      key={size}
+                      className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.jarSizes.includes(size)}
+                        onChange={() => handleJarSizeChange(size)}
+                        className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <span className="text-sm text-gray-900">{size}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="target_moq" className="block text-sm font-medium text-gray-900 mb-2">
+                  Target MOQ (Minimum Order Quantity)
+                </label>
+                <input
+                  type="text"
+                  id="target_moq"
+                  name="target_moq"
+                  value={formData.target_moq}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., 500 bottles"
+                />
+              </div>
+              <div>
+                <label htmlFor="target_launch_date" className="block text-sm font-medium text-gray-900 mb-2">
+                  Target Launch Date
+                </label>
+                <input
+                  type="text"
+                  id="target_launch_date"
+                  name="target_launch_date"
+                  value={formData.target_launch_date}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., Q2 2026, March 2026"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Influencers specific fields */}
+          {activeTab === 'Influencers' && (
+            <div className="mt-6 space-y-6" role="tabpanel">
+              <h3 className="text-lg font-semibold text-gray-900">Influencer Information</h3>
+              
+              {/* Social Media Handles */}
+              <div className="space-y-4">
+                <h4 className="text-base font-medium text-gray-900">Social Media Handles <span className="text-red-500">*</span></h4>
+                <p className="text-sm text-gray-600">At least one social media handle is required for influencers</p>
+                
+                <div>
+                  <label htmlFor="instagram" className="block text-sm font-medium text-gray-900 mb-2">
+                    Instagram Handle
+                  </label>
+                  <input
+                    type="text"
+                    id="instagram"
+                    name="instagram"
+                    value={formData.instagram}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="@yourhandle"
+                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
+                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="tiktok" className="block text-sm font-medium text-gray-900 mb-2">
+                    TikTok Handle
+                  </label>
+                  <input
+                    type="text"
+                    id="tiktok"
+                    name="tiktok"
+                    value={formData.tiktok}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="@yourhandle"
+                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
+                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
+                  />
+                  {errors.socialMedia && (
+                    <p id="socialMedia-error" className="mt-1 text-sm text-red-600" role="alert">
+                      {errors.socialMedia}
+                    </p>
+                  )}
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="country_audience" className="block text-sm font-medium text-gray-900 mb-2">
+                  Country Audience
+                </label>
+                <input
+                  type="text"
+                  id="country_audience"
+                  name="country_audience"
+                  value={formData.country_audience}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., United States, United Kingdom"
+                />
+              </div>
+              <div>
+                <label htmlFor="avg_views" className="block text-sm font-medium text-gray-900 mb-2">
+                  Average Views/Engagement
+                </label>
+                <input
+                  type="text"
+                  id="avg_views"
+                  name="avg_views"
+                  value={formData.avg_views}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., 50k views per post, 10k followers"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 p-8">
