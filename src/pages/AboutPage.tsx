@@ -6,21 +6,12 @@ import VideoGallery from '../components/VideoGallery';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function AboutPage() {
-  // Pigment mixing videos - all converted to optimized MP4 for web
-  // Optimized from 24-42 MB MOV files to 0.5-2.4 MB MP4 files
+  // Pigment mixing videos - updated with new optimized MP4 files
+  // High-quality videos optimized for web streaming (4-7 MB MP4 files)
   const pigmentMixingVideos = [
-    { src: '/videos/pigment-mixing/candy-pink-pigment-mixing.MP4', title: 'Candy Pink Pigment Mixing' },
-    { src: '/videos/pigment-mixing/chocolate-pink-pigment-mixing.mp4', title: 'Chocolate Pink Pigment Mixing' },
-    { src: '/videos/pigment-mixing/electric-blue-pigment-mixing.mp4', title: 'Electric Blue Pigment Mixing' },
-    { src: '/videos/pigment-mixing/fuchsia-pigment-mixing.mp4', title: 'Fuchsia Pigment Mixing' },
-    { src: '/videos/pigment-mixing/lime-green-pigment-mixing.mp4', title: 'Lime Green Pigment Mixing' },
-    { src: '/videos/pigment-mixing/orange-pigment-mixing.mp4', title: 'Orange Pigment Mixing' },
-    { src: '/videos/pigment-mixing/peach-pigment-mixing.mp4', title: 'Peach Pigment Mixing' },
-    { src: '/videos/pigment-mixing/purple-pigment-mixing.mp4', title: 'Purple Pigment Mixing' },
-    { src: '/videos/pigment-mixing/red-black-pigment-mixing.MP4', title: 'Red Black Pigment Mixing' },
-    { src: '/videos/pigment-mixing/red-yellow-orange-pigment-mixing.MP4', title: 'Red Yellow Orange Pigment Mixing' },
-    { src: '/videos/pigment-mixing/royal-purple-pigment-mixing.mp4', title: 'Royal Purple Pigment Mixing' },
-    { src: '/videos/pigment-mixing/white-pigment-mixing.mp4', title: 'White Pigment Mixing' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (1).MP4', title: 'Pigment Mixing Process' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (2).MP4', title: 'Custom Color Creation' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (3).mp4', title: 'Professional Mixing Techniques' },
   ];
 
   return (
