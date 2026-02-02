@@ -676,74 +676,7 @@ export default function ClientRegistrationPage() {
               />
             </div>
 
-            {formData.interestInfluencer && (
-              <>
-                <div>
-                  <label htmlFor="instagram" className="block text-sm font-medium text-gray-900 mb-2">
-                    Instagram Handle<span className="text-red-500"> *</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="instagram"
-                    name="instagram"
-                    value={formData.instagram}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="@yourhandle"
-                    aria-required="true"
-                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
-                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
-                  />
-                </div>
 
-                <div>
-                  <label htmlFor="facebook" className="block text-sm font-medium text-gray-900 mb-2">
-                    Facebook Handle<span className="text-red-500"> *</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="facebook"
-                    name="facebook"
-                    value={formData.facebook}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="@yourhandle"
-                    aria-required="true"
-                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
-                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="tiktok" className="block text-sm font-medium text-gray-900 mb-2">
-                    TikTok Handle<span className="text-red-500"> *</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="tiktok"
-                    name="tiktok"
-                    value={formData.tiktok}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="@yourhandle"
-                    aria-required="true"
-                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
-                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
-                  />
-                  {errors.socialMedia && (
-                    <p id="socialMedia-error" className="mt-1 text-sm text-red-600" role="alert">
-                      {errors.socialMedia}
-                    </p>
-                  )}
-                </div>
-              </>
-            )}
           </div>
         </div>
 
@@ -823,6 +756,76 @@ export default function ClientRegistrationPage() {
                 </p>
               )}
             </div>
+
+            {/* Social Media Handles - Only visible when Influencer is checked */}
+            {formData.interestInfluencer && (
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="instagram" className="block text-sm font-medium text-gray-900 mb-2">
+                    Instagram Handle<span className="text-red-500"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="instagram"
+                    name="instagram"
+                    value={formData.instagram}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="@yourhandle"
+                    aria-required="true"
+                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
+                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="facebook" className="block text-sm font-medium text-gray-900 mb-2">
+                    Facebook Handle<span className="text-red-500"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="facebook"
+                    name="facebook"
+                    value={formData.facebook}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="@yourhandle"
+                    aria-required="true"
+                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
+                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="tiktok" className="block text-sm font-medium text-gray-900 mb-2">
+                    TikTok Handle<span className="text-red-500"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="tiktok"
+                    name="tiktok"
+                    value={formData.tiktok}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.socialMedia ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="@yourhandle"
+                    aria-required="true"
+                    aria-invalid={errors.socialMedia ? 'true' : 'false'}
+                    aria-describedby={errors.socialMedia ? 'socialMedia-error' : undefined}
+                  />
+                  {errors.socialMedia && (
+                    <p id="socialMedia-error" className="mt-1 text-sm text-red-600" role="alert">
+                      {errors.socialMedia}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-3">
@@ -978,19 +981,19 @@ export default function ClientRegistrationPage() {
               </label>
             </div>
 
-            <div>
-              <label className="flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+            <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+              <label className="flex items-center space-x-3 cursor-pointer">
                 <input
                   type="checkbox"
                   id="requestSampleBox"
                   name="requestSampleBox"
                   checked={formData.requestSampleBox}
                   onChange={handleInputChange}
-                  className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
                 />
-                <span className="text-sm text-gray-900">Request a sample box</span>
+                <span className="text-base font-semibold text-gray-900">Request a sample box</span>
               </label>
-              <p className="mt-2 ml-7 text-xs text-gray-500">
+              <p className="mt-2 ml-8 text-sm text-gray-700">
                 Sample boxes are subject to a minimum charge plus shipping costs.
               </p>
             </div>
