@@ -12,14 +12,12 @@ export default function BottleVideoCarousel() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const videos: Video[] = [
-    { src: '/videos/bottles/rotating-bottles (1).MP4', alt: 'Rotating gel polish bottle showcase' },
     { src: '/videos/bottles/rotating-bottles (2).MP4', alt: 'Premium bottle presentation' },
     { src: '/videos/bottles/rotating-bottles (3).MP4', alt: 'Professional bottle display' },
     { src: '/videos/bottles/rotating-bottles (4).MP4', alt: 'Elegant bottle rotation' },
     { src: '/videos/bottles/rotating-bottles (5).MP4', alt: 'Quality bottle showcase' },
     { src: '/videos/bottles/rotating-bottles (6).MP4', alt: 'Custom branded bottle' },
     { src: '/videos/bottles/rotating-bottles (7).MP4', alt: 'Professional packaging solution' },
-    { src: '/videos/bottles/rotating-bottles (8).MP4', alt: 'Premium gel polish bottle' },
     { src: '/videos/bottles/rotating-bottles (9).MP4', alt: 'Branded bottle presentation' },
     { src: '/videos/bottles/rotating-bottles (10).MP4', alt: 'Rotating bottle display' },
     { src: '/videos/bottles/rotating-bottles (11).MP4', alt: 'Quality packaging showcase' },
