@@ -72,8 +72,8 @@ export default function BottleVideoCarousel() {
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
-        {/* Responsive aspect ratio for carousel */}
-        <div className="relative aspect-[4/3] sm:aspect-video overflow-hidden rounded-lg bg-gray-900">
+        {/* 9:16 vertical aspect ratio for mobile-friendly display */}
+        <div className="relative aspect-[9/16] overflow-hidden rounded-lg bg-gray-900">
           <div
             className="flex transition-all duration-500 ease-in-out h-full"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -87,7 +87,7 @@ export default function BottleVideoCarousel() {
                   loop
                   playsInline
                   preload="metadata"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   aria-label={video.alt}
                 >
                   <source src={video.src} type="video/mp4" />
