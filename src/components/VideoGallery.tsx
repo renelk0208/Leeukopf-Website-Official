@@ -51,7 +51,7 @@ export default function VideoGallery({ videos, title, subtitle }: VideoGalleryPr
         {videos.map((video, index) => (
           <div
             key={index}
-            className="relative aspect-video bg-gray-900 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+            className="relative aspect-[9/16] bg-gray-900 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
           >
             <video
               ref={(el) => (videoRefs.current[index] = el)}
@@ -61,7 +61,7 @@ export default function VideoGallery({ videos, title, subtitle }: VideoGalleryPr
               playsInline
               preload="metadata"
               poster={video.thumbnail}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
               aria-label={video.title}
             >
               <source src={video.src} type="video/mp4" />
