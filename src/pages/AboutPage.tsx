@@ -7,7 +7,7 @@ import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function AboutPage() {
   // Pigment mixing videos - all available videos from the factory
-  // Full collection of pigment mixing process videos
+  // Full collection of pigment mixing process videos - 16 videos total
   const pigmentMixingVideos = [
     { src: '/videos/pigment-mixing/pigment-mixing-videos (1).MP4', title: 'Pigment Mixing Process' },
     { src: '/videos/pigment-mixing/pigment-mixing-videos (2).MP4', title: 'Custom Color Creation' },
@@ -19,6 +19,12 @@ export default function AboutPage() {
     { src: '/videos/pigment-mixing/pigment-mixing-videos (8).mp4', title: 'Professional Color Formulation' },
     { src: '/videos/pigment-mixing/pigment-mixing-videos (9).mp4', title: 'Color Blending Technique' },
     { src: '/videos/pigment-mixing/pigment-mixing-videos (10).mp4', title: 'Pigment Quality Control' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (11).mp4', title: 'Color Consistency Testing' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (12).mp4', title: 'Specialized Pigment Mixing' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (13).mp4', title: 'Professional Color Matching' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (14).mp4', title: 'Advanced Formulation Process' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (15).mp4', title: 'Laboratory Color Development' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (16).mp4', title: 'Final Quality Verification' },
   ];
 
   return (

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
+import BottleVideoCarousel from '../components/BottleVideoCarousel';
 import { Beaker, Settings, ShieldCheck, Handshake, Users, Building2, GraduationCap, CheckCircle } from 'lucide-react';
 
 export default function PrivateLabelPage() {
@@ -128,6 +129,14 @@ export default function PrivateLabelPage() {
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base max-w-3xl">
           Launching or expanding a professional nail brand requires more than nice packaging. You need reliable formulas, clear documentation and a manufacturing partner who understands your market. That is where we come in.
         </p>
+      </div>
+
+      {/* Bottle Video Carousel Section */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
+          Our premium bottle solutions
+        </h2>
+        <BottleVideoCarousel />
       </div>
 
       {/* Private Label Categories Section */}
