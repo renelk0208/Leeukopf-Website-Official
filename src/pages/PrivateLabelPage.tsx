@@ -7,14 +7,12 @@ import { Beaker, Settings, ShieldCheck, Handshake, Users, Building2, GraduationC
 export default function PrivateLabelPage() {
   // Bottle videos for the gallery
   const bottleVideos = [
-    { src: '/videos/bottles/rotating-bottles (1).MP4', title: 'Rotating gel polish bottle showcase' },
     { src: '/videos/bottles/rotating-bottles (2).MP4', title: 'Premium bottle presentation' },
     { src: '/videos/bottles/rotating-bottles (3).MP4', title: 'Professional bottle display' },
     { src: '/videos/bottles/rotating-bottles (4).MP4', title: 'Elegant bottle rotation' },
     { src: '/videos/bottles/rotating-bottles (5).MP4', title: 'Quality bottle showcase' },
     { src: '/videos/bottles/rotating-bottles (6).MP4', title: 'Custom branded bottle' },
     { src: '/videos/bottles/rotating-bottles (7).MP4', title: 'Professional packaging solution' },
-    { src: '/videos/bottles/rotating-bottles (8).MP4', title: 'Premium gel polish bottle' },
     { src: '/videos/bottles/rotating-bottles (9).MP4', title: 'Branded bottle presentation' },
     { src: '/videos/bottles/rotating-bottles (10).MP4', title: 'Rotating bottle display' },
     { src: '/videos/bottles/rotating-bottles (11).MP4', title: 'Quality packaging showcase' },
