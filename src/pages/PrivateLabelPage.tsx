@@ -1,10 +1,28 @@
 import { Link } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
-import BottleVideoCarousel from '../components/BottleVideoCarousel';
+import VideoGallery from '../components/VideoGallery';
 import { Beaker, Settings, ShieldCheck, Handshake, Users, Building2, GraduationCap, CheckCircle } from 'lucide-react';
 
 export default function PrivateLabelPage() {
+  // Bottle videos for the gallery
+  const bottleVideos = [
+    { src: '/videos/bottles/rotating-bottles (1).MP4', title: 'Rotating gel polish bottle showcase' },
+    { src: '/videos/bottles/rotating-bottles (2).MP4', title: 'Premium bottle presentation' },
+    { src: '/videos/bottles/rotating-bottles (3).MP4', title: 'Professional bottle display' },
+    { src: '/videos/bottles/rotating-bottles (4).MP4', title: 'Elegant bottle rotation' },
+    { src: '/videos/bottles/rotating-bottles (5).MP4', title: 'Quality bottle showcase' },
+    { src: '/videos/bottles/rotating-bottles (6).MP4', title: 'Custom branded bottle' },
+    { src: '/videos/bottles/rotating-bottles (7).MP4', title: 'Professional packaging solution' },
+    { src: '/videos/bottles/rotating-bottles (8).MP4', title: 'Premium gel polish bottle' },
+    { src: '/videos/bottles/rotating-bottles (9).MP4', title: 'Branded bottle presentation' },
+    { src: '/videos/bottles/rotating-bottles (10).MP4', title: 'Rotating bottle display' },
+    { src: '/videos/bottles/rotating-bottles (11).MP4', title: 'Quality packaging showcase' },
+    { src: '/videos/bottles/rotating-bottles (12).MP4', title: 'Professional bottle solution' },
+    { src: '/videos/bottles/rotating-bottles (13).MP4', title: 'Premium bottle display' },
+    { src: '/videos/bottles/rotating-bottles (14).MP4', title: 'Custom bottle presentation' },
+  ];
+
   // Benefits items with icons and English content
   const benefitItems = [
     { 
@@ -131,12 +149,13 @@ export default function PrivateLabelPage() {
         </p>
       </div>
 
-      {/* Bottle Video Carousel Section */}
+      {/* Bottle Video Gallery Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-          Our premium bottle solutions
-        </h2>
-        <BottleVideoCarousel />
+        <VideoGallery
+          videos={bottleVideos}
+          title="Our premium bottle solutions"
+          subtitle="Premium bottles available for custom branding"
+        />
       </div>
 
       {/* Private Label Categories Section */}
