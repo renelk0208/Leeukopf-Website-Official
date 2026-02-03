@@ -259,6 +259,15 @@ export default function ClientRegistrationPage() {
       }));
     }
 
+    // Handle business interest checkbox changes - auto-switch to appropriate tab
+    if (name === 'interestDistribution' && type === 'checkbox' && checked) {
+      setActiveTab('Distributors');
+    } else if (name === 'interestPrivateLabel' && type === 'checkbox' && checked) {
+      setActiveTab('PrivateLabel');
+    } else if (name === 'interestInfluencer' && type === 'checkbox' && checked) {
+      setActiveTab('Influencers');
+    }
+
     const error = validateField(name, type === 'checkbox' ? checked : value);
     setErrors(prev => ({
       ...prev,
@@ -1052,10 +1061,14 @@ export default function ClientRegistrationPage() {
           </div>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation - Only show when at least one business interest is selected */}
+        {(formData.interestDistribution || formData.interestPrivateLabel || formData.interestInfluencer) && (
         <div className="bg-white rounded-lg border border-gray-200 p-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Select Your Client Type</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Complete Your Information</h2>
+          {/* Only show tabs if multiple interests are selected */}
+          {((formData.interestDistribution ? 1 : 0) + (formData.interestPrivateLabel ? 1 : 0) + (formData.interestInfluencer ? 1 : 0)) > 1 && (
           <div className="flex border-b border-gray-200" role="tablist">
+            {formData.interestDistribution && (
             <button
               type="button"
               role="tab"
@@ -1069,6 +1082,8 @@ export default function ClientRegistrationPage() {
             >
               Distributors
             </button>
+            )}
+            {formData.interestPrivateLabel && (
             <button
               type="button"
               role="tab"
@@ -1082,6 +1097,8 @@ export default function ClientRegistrationPage() {
             >
               Private Label
             </button>
+            )}
+            {formData.interestInfluencer && (
             <button
               type="button"
               role="tab"
@@ -1095,13 +1112,15 @@ export default function ClientRegistrationPage() {
             >
               Influencers
             </button>
+            )}
           </div>
+          )}
 
           {/* Hidden input for client_type */}
           <input type="hidden" name="client_type" value={formData.client_type} />
 
           {/* Distributors specific fields */}
-          {activeTab === 'Distributors' && (
+          {activeTab === 'Distributors' && formData.interestDistribution && (
             <div className="mt-6 space-y-6" role="tabpanel">
               <h3 className="text-lg font-semibold text-gray-900">Distribution Information</h3>
               <div>
@@ -1150,7 +1169,7 @@ export default function ClientRegistrationPage() {
           )}
 
           {/* Private Label specific fields */}
-          {activeTab === 'PrivateLabel' && (
+          {activeTab === 'PrivateLabel' && formData.interestPrivateLabel && (
             <div className="mt-6 space-y-6" role="tabpanel">
               <h3 className="text-lg font-semibold text-gray-900">Private Label Information</h3>
               <div>
@@ -1259,7 +1278,7 @@ export default function ClientRegistrationPage() {
           )}
 
           {/* Influencers specific fields */}
-          {activeTab === 'Influencers' && (
+          {activeTab === 'Influencers' && formData.interestInfluencer && (
             <div className="mt-6 space-y-6" role="tabpanel">
               <h3 className="text-lg font-semibold text-gray-900">Influencer Information</h3>
               
@@ -1343,6 +1362,7 @@ export default function ClientRegistrationPage() {
             </div>
           )}
         </div>
+        )}
 
         <div className="bg-white rounded-lg border border-gray-200 p-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">Additional Information</h2>
