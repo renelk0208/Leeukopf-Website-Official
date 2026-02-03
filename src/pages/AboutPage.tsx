@@ -6,12 +6,19 @@ import VideoGallery from '../components/VideoGallery';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 export default function AboutPage() {
-  // Pigment mixing videos - updated with new optimized MP4 files
-  // High-quality videos optimized for web streaming (4-7 MB MP4 files)
+  // Pigment mixing videos - all available videos from the factory
+  // Full collection of pigment mixing process videos
   const pigmentMixingVideos = [
     { src: '/videos/pigment-mixing/pigment-mixing-videos (1).MP4', title: 'Pigment Mixing Process' },
     { src: '/videos/pigment-mixing/pigment-mixing-videos (2).MP4', title: 'Custom Color Creation' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (3).mp4', title: 'Professional Mixing Techniques' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (3).mp4', title: 'Advanced Mixing Techniques' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (4).mp4', title: 'Color Blending Method' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (5).mp4', title: 'Precision Pigment Control' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (6).mp4', title: 'Custom Shade Development' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (7).mp4', title: 'Expert Color Mixing' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (8).mp4', title: 'Professional Color Formulation' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (9).mp4', title: 'Color Blending Technique' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (10).mp4', title: 'Pigment Quality Control' },
   ];
 
   return (
