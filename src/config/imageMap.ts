@@ -25,7 +25,7 @@ export interface ImageMap {
  */
 export const categoryHero: Record<string, string> = {
   // Gel Polish
-  'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg',
+  'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpeg',
   'cat-eye-collection': '/img/products/gel_polishes/Cat Eye Collection/cat-eye_categoty_card-image.png',
   'cream-collection': '/img/products/gel_polishes/Cream Collection/solid-cream-category-card-image.jpg',
   'glitters-collection': '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp',
@@ -335,7 +335,7 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
  * Used as fallback when specific product image is not available
  */
 export const productPlaceholder: Record<string, string> = {
-  'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpg',
+  'gel-polish': '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpeg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'tops-and-bases': '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
   'primers-liquids': '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',
