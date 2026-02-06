@@ -21,6 +21,7 @@ const pages = [
   { url: '/distributors-wanted', priority: '0.8', changefreq: 'monthly' },
   { url: '/client-registration', priority: '0.8', changefreq: 'monthly' },
   { url: '/season-trends', priority: '0.7', changefreq: 'weekly' },
+  { url: '/valentines', priority: '0.8', changefreq: 'yearly' },
   { url: '/live-feed', priority: '0.7', changefreq: 'daily' },
   { url: '/faq-starting-a-gel-polish-brand', priority: '0.8', changefreq: 'monthly' },
   
