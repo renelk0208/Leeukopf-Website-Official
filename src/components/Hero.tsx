@@ -57,7 +57,7 @@ export default function Hero() {
               Book Free Consultation
             </button>
             <button
-              onClick={() => navigate('/products/gel-polish')}
+              onClick={() => navigate('/products/gel-polish#solid-colour-collection')}
               className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] bg-white/80 rounded-md font-semibold transition-all duration-300 border-2 text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
             >
               View Our Colors

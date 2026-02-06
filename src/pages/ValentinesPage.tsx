@@ -204,7 +204,7 @@ export default function ValentinesPage() {
           <p className="hero-subtitle">Discover our exclusive Valentine's collection featuring romantic shades & lustrous finishes</p>
           <div className="hero-buttons">
             <a href="#top-picks" className="btn btn-primary">Shop Valentine's Picks</a>
-            <Link to="/products/gel-polish" className="btn btn-secondary">View All Colors</Link>
+            <a href="/products/gel-polish#solid-colour-collection" className="btn btn-secondary">View All Colors</a>
           </div>
         </div>
       </section>
@@ -214,10 +214,13 @@ export default function ValentinesPage() {
         <div className="container">
           <h2 className="section-title">Valentine's Top Picks</h2>
           <p className="section-subtitle">Our most romantic shades, perfect for celebrating love</p>
+          <p className="text-center text-sm sm:text-base text-gray-600 italic mb-6">
+            Glossy vs Matt - Each shade showcases both glossy and matte finishes
+          </p>
 
           <div className="picks-grid">
             {picks.map((pick, index) => (
-              <Link key={index} to="/products/gel-polish" className="pick-card">
+              <a key={index} href="/products/gel-polish#solid-colour-collection" className="pick-card">
                 <img
                   src={pick.src}
                   alt={pick.alt}
@@ -229,7 +232,7 @@ export default function ValentinesPage() {
                   }}
                 />
                 <div className="pick-card-caption">{pick.caption}</div>
-              </Link>
+              </a>
             ))}
           </div>
         </div>
@@ -257,7 +260,7 @@ export default function ValentinesPage() {
               <div className="mood-content">
                 <h3 className="mood-title">Bold & Passionate</h3>
                 <p className="mood-text">Deep reds and rich burgundies for dramatic statements</p>
-                <Link to="/products/gel-polish" className="mood-link">Explore Bold Shades →</Link>
+                <a href="/products/gel-polish#solid-colour-collection" className="mood-link">Explore Bold Shades →</a>
               </div>
             </div>
 
@@ -276,7 +279,7 @@ export default function ValentinesPage() {
               <div className="mood-content">
                 <h3 className="mood-title">Soft & Romantic</h3>
                 <p className="mood-text">Delicate pinks and nudes for understated elegance</p>
-                <Link to="/products/gel-polish" className="mood-link">Explore Soft Shades →</Link>
+                <a href="/products/gel-polish#solid-colour-collection" className="mood-link">Explore Soft Shades →</a>
               </div>
             </div>
           </div>
