@@ -44,6 +44,17 @@
   to = "/thank-you-compliance-consultation.html"
   status = 200
 
+# Seasonal Valentine's page redirect
+[[redirects]]
+  from = "/seasonal/valentines"
+  to = "/seasonal/valentines/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/seasonal/valentines/"
+  to = "/seasonal/valentines/index.html"
+  status = 200
+
 # SPA redirect - serve index.html for all other routes
 # This must be LAST so explicit redirects and functions take precedence
 [[redirects]]
@@ -68,3 +79,15 @@
   for = "/img/instagram/*"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
+
+# Cache headers for seasonal Valentine's assets
+[[headers]]
+  for = "/seasonal/valentines/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Cache headers for seasonal styles
+[[headers]]
+  for = "/styles/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
