@@ -1,2 +1,0 @@
-This is a placeholder for hero.mp4
-Add a background video in MP4 format (recommended: 1920x1080, under 5MB)
