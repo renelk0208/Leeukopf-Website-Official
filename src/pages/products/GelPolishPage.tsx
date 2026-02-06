@@ -1,5 +1,4 @@
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate';
 import ProductCarousel from '../../components/ProductCarousel';
 import GelPolishCategoryGallery from '../../components/GelPolishCategoryGallery';
