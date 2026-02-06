@@ -55,13 +55,13 @@ export default function GelPolishPage() {
                 Explore our comprehensive range of gel polish products and discover our full collection of colors, finishes, and formulations.
               </p>
 
-              <Link
-                to="/products"
+              <a
+                href="/products/gel-polish#solid-colour-collection"
                 className="inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white rounded-md font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[44px] text-sm sm:text-base"
               >
                 See Our Products
                 <ArrowRight size={18} className="ml-2" aria-hidden="true" />
-              </Link>
+              </a>
 
               <p className="text-xs sm:text-sm text-gray-500 mt-4 sm:mt-6">
                 View our complete product catalog with detailed color charts, specifications, and application guidelines
