@@ -28,14 +28,14 @@ const textureVideos: TextureVideo[] = [
 ];
 
 const picks: Pick[] = [
-  { src: '/seasonal/valentines/picks/pink-promise-1.png', alt: 'Romantic Rose gel polish', caption: 'Romantic Rose', fallbackGradient: 'linear-gradient(135deg, #D81B60, #F06292)' },
-  { src: '/seasonal/valentines/picks/red-heart-2.png', alt: 'Passionate Pink gel polish', caption: 'Passionate Pink', fallbackGradient: 'linear-gradient(135deg, #EC407A, #F8BBD0)' },
-  { src: '/seasonal/valentines/picks/love-letter-3.png', alt: 'Love Potion gel polish', caption: 'Love Potion', fallbackGradient: 'linear-gradient(135deg, #C2185B, #E91E63)' },
-  { src: '/seasonal/valentines/picks/scarlet-desire-2.png', alt: 'Berry Blush gel polish', caption: 'Berry Blush', fallbackGradient: 'linear-gradient(135deg, #AD1457, #EC407A)' },
-  { src: '/seasonal/valentines/picks/powdered-rose-5.png', alt: 'Sweet Heart gel polish', caption: 'Sweet Heart', fallbackGradient: 'linear-gradient(135deg, #F48FB1, #FCE4EC)' },
+  { src: '/seasonal/valentines/picks/red-heart-1.png', alt: 'Romantic Rose gel polish', caption: 'Romantic Rose', fallbackGradient: 'linear-gradient(135deg, #D81B60, #F06292)' },
+  { src: '/seasonal/valentines/picks/passionate-pin-1.png', alt: 'Passionate Pink gel polish', caption: 'Passionate Pink', fallbackGradient: 'linear-gradient(135deg, #EC407A, #F8BBD0)' },
+  { src: '/seasonal/valentines/picks/love-potion-1.png', alt: 'Love Potion gel polish', caption: 'Love Potion', fallbackGradient: 'linear-gradient(135deg, #C2185B, #E91E63)' },
+  { src: '/seasonal/valentines/picks/berry-blush.png', alt: 'Berry Blush gel polish', caption: 'Berry Blush', fallbackGradient: 'linear-gradient(135deg, #AD1457, #EC407A)' },
+  { src: '/seasonal/valentines/picks/sweet-heart-1.png', alt: 'Sweet Heart gel polish', caption: 'Sweet Heart', fallbackGradient: 'linear-gradient(135deg, #F48FB1, #FCE4EC)' },
   { src: '/seasonal/valentines/picks/petal-crush-7.png', alt: 'Ruby Romance gel polish', caption: 'Ruby Romance', fallbackGradient: 'linear-gradient(135deg, #880E4F, #D81B60)' },
-  { src: '/seasonal/valentines/picks/cupids-glow-9.png', alt: 'Champagne Kiss gel polish', caption: 'Champagne Kiss', fallbackGradient: 'linear-gradient(135deg, #F8BBD0, #FFFFFF)' },
-  { src: '/seasonal/valentines/picks/blush-whisper-11.png', alt: 'Velvet Valentine gel polish', caption: 'Velvet Valentine', fallbackGradient: 'linear-gradient(135deg, #C51162, #F50057)' },
+  { src: '/seasonal/valentines/picks/champaigne-kiss-1.png', alt: 'Champagne Kiss gel polish', caption: 'Champagne Kiss', fallbackGradient: 'linear-gradient(135deg, #F8BBD0, #FFFFFF)' },
+  { src: '/seasonal/valentines/picks/velvet-valentine-1.png', alt: 'Velvet Valentine gel polish', caption: 'Velvet Valentine', fallbackGradient: 'linear-gradient(135deg, #C51162, #F50057)' },
 ];
 
 export default function ValentinesPage() {
@@ -248,7 +248,7 @@ export default function ValentinesPage() {
             {/* Mood Block 1: Bold & Passionate */}
             <div className="mood-block">
               <img
-                src="/seasonal/valentines/picks/scarlet-desire-2.png"
+                src="/seasonal/valentines/picks/velvet-valentine-1.png"
                 alt="Bold and passionate Valentine's looks"
                 className="mood-image"
                 loading="lazy"
@@ -267,7 +267,7 @@ export default function ValentinesPage() {
             {/* Mood Block 2: Soft & Romantic */}
             <div className="mood-block">
               <img
-                src="/seasonal/valentines/picks/pink-promise-1.png"
+                src="/seasonal/valentines/picks/sweet-heart-1.png"
                 alt="Soft and romantic Valentine's looks"
                 className="mood-image"
                 loading="lazy"
