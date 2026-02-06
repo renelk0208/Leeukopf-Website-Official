@@ -208,13 +208,13 @@ function GalleryModal({
 }
 
 /** Main component: displays category cards that open a gallery modal */
-export default function GelPolishCategoryGallery({ initialCategory }: { initialCategory?: string } = {}) {
+export default function GelPolishCategoryGallery({ initialCategory }: { initialCategory?: string }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory || null);
 
   // Handle URL hash to open specific category
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
-    if (hash && GEL_POLISH_CATEGORIES.find(c => c.id === hash || c.key === hash)) {
+    if (hash) {
       const category = GEL_POLISH_CATEGORIES.find(c => c.id === hash || c.key === hash);
       if (category) {
         setSelectedCategory(category.id);

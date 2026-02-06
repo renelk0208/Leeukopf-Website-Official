@@ -215,7 +215,7 @@ export default function ValentinesPage() {
           <h2 className="section-title">Valentine's Top Picks</h2>
           <p className="section-subtitle">Our most romantic shades, perfect for celebrating love</p>
           <p className="text-center text-sm sm:text-base text-gray-600 italic mb-6">
-            Glossy vs Matt - Each shade showcases both glossy and matte finishes
+            Glossy vs Matte - Each shade showcases both glossy and matte finishes
           </p>
 
           <div className="picks-grid">
