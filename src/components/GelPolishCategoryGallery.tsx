@@ -208,8 +208,19 @@ function GalleryModal({
 }
 
 /** Main component: displays category cards that open a gallery modal */
-export default function GelPolishCategoryGallery() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+export default function GelPolishCategoryGallery({ initialCategory }: { initialCategory?: string }) {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory || null);
+
+  // Handle URL hash to open specific category
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const category = GEL_POLISH_CATEGORIES.find(c => c.id === hash || c.key === hash);
+      if (category) {
+        setSelectedCategory(category.id);
+      }
+    }
+  }, []);
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategory(categoryId);
@@ -217,6 +228,10 @@ export default function GelPolishCategoryGallery() {
 
   const handleCloseModal = () => {
     setSelectedCategory(null);
+    // Clear hash when closing modal
+    if (window.location.hash) {
+      window.history.pushState('', document.title, window.location.pathname + window.location.search);
+    }
   };
 
   const selectedCategoryData = selectedCategory
