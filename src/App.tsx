@@ -19,6 +19,7 @@ const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const CookiesPolicyPage = lazy(() => import('./pages/CookiesPolicyPage'));
 const PrivacyNoticeDistributorsPage = lazy(() => import('./pages/PrivacyNoticeDistributorsPage'));
 const SeasonTrendsPage = lazy(() => import('./pages/SeasonTrendsPage'));
+const ValentinesPage = lazy(() => import('./pages/ValentinesPage'));
 const LiveFeedPage = lazy(() => import('./pages/LiveFeedPage'));
 const FaqStartBrandPage = lazy(() => import('./pages/FaqStartBrandPage'));
 
@@ -85,6 +86,7 @@ function App() {
           <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
           <Route path="/client-registration" element={<ClientRegistrationPage />} />
           <Route path="/season-trends" element={<SeasonTrendsPage />} />
+          <Route path="/valentines" element={<ValentinesPage />} />
           <Route path="/live-feed" element={<LiveFeedPage />} />
           <Route path="/faq-starting-a-gel-polish-brand" element={<FaqStartBrandPage />} />
 
