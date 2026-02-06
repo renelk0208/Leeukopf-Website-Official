@@ -135,7 +135,7 @@ export default function ProductsPage() {
             <ProductCategoryCard3D
               title="Gel Polish"
               subtitle="High-pigment, self-levelling UV/LED gel polishes with HEMA-free and TPO-free options"
-              imageSrc="/img/products/gel_polishes/gel_polish_category_category-card-image-1.png"
+              imageSrc="/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpeg"
               href="/products/gel-polish"
               alt="Gel Polish"
             />
