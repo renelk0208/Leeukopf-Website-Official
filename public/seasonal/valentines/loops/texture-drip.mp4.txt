@@ -1,2 +1,0 @@
-This is a placeholder for texture-drip.mp4
-Add a short video loop showing gel polish texture/drip effect (MP4, under 2MB)
