@@ -57,6 +57,7 @@ export default function Navigation() {
 
   const navItems = [
     { label: 'Home', path: '/' },
+    { label: "Valentine's", path: '/valentines' },
     { label: 'About Us', path: '/about' },
     { label: 'Our Products', path: '/products' },
     { label: 'Private Label', path: '/private-label' },
