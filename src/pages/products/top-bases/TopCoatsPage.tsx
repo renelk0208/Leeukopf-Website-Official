@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
-import TopCoatComparisonChart from '../../../components/TopCoatComparisonChart';
 import { isSubcategoryEnabled } from '../../../config/productCategories';
 import { categoryHero } from '../../../config/imageMap';
 
@@ -77,9 +76,6 @@ export default function TopCoatsPage() {
           ))}
         </div>
       </div>
-
-      {/* Top Coat Comparison Chart */}
-      <TopCoatComparisonChart />
 
       {/* Application & Curing */}
       <ApplicationCuring type="top-coats" />
