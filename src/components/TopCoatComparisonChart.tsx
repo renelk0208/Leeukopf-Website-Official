@@ -150,7 +150,7 @@ const comparisonData: ComparisonRow[] = [
     TC003: <StarRating count={4} />,
     TC004: <StarRating count={1} />,
     'VTC001/VTC002': <StarRating count={1} />,
-    VTC003: 'no',
+    VTC003: 'No',
   },
   // Product Usage Performance
   {
@@ -176,9 +176,6 @@ const comparisonData: ComparisonRow[] = [
 ];
 
 export default function TopCoatComparisonChart() {
-  const standardProducts = products.filter(p => p.type === 'Standard');
-  const effectsProducts = products.filter(p => p.type === 'Effects');
-
   const renderCellValue = (value: string | JSX.Element) => {
     if (typeof value === 'string') {
       if (value === '-') {
