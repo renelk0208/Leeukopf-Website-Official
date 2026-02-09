@@ -24,7 +24,7 @@ export default function ApplicationCuring({ type }: ApplicationCuringProps) {
       title: 'Application & Curing',
       items: [
         { label: 'Non-wipe finish', value: 'Allow 10 seconds cooling before touching' },
-        { label: 'Wipe-off finish', value: 'Cleanse with solution after full cure' },
+        { label: 'Wipe-off finish', value: 'Cleanse with solution after full cure (60-90 seconds in a 48W UV/LED Lamp for TPO-Free products)' },
       ],
     },
     'base-coats': {
