@@ -13,23 +13,24 @@ export default function ApplicationCuring({ type }: ApplicationCuringProps) {
     'gel-polish': {
       title: 'Application & Curing',
       items: [
-        { label: 'Application', value: 'Apply thin, even layers' },
-        { label: 'LED Cure Time', value: '30–60 seconds' },
-        { label: 'UV Cure Time', value: '120 seconds' },
+        { label: 'Application', value: 'Apply thin, even layers', primary: false },
+        { label: 'Cure in 48W UV/LED Lamp', value: '30–60 seconds', primary: true },
+        { label: 'Note', value: '(Different lamps will result in different curing times)', primary: false },
       ],
     },
     'builder-gels': {
       title: 'Application & Curing',
       items: [
-        { label: 'Application', value: 'Apply medium layers for optimal strength' },
-        { label: 'LED Cure Time', value: '60–90 seconds' },
-        { label: 'UV Cure Time', value: '120 seconds' },
+        { label: 'Application', value: 'Apply medium layers for optimal strength', primary: false },
+        { label: 'Cure in 48W UV/LED Lamp', value: '60–90 seconds', primary: true },
+        { label: 'Note', value: '(Different lamps will result in different curing times)', primary: false },
       ],
     },
     'top-coats': {
       title: 'Application & Curing',
       items: [
-        { label: 'Cure Time (TPO-Free)', value: '60-90 seconds in a 48W UV/LED Lamp', primary: true },
+        { label: 'Cure in 48W UV/LED Lamp', value: '60-90 seconds (TPO-Free)', primary: true },
+        { label: 'Note', value: '(Different lamps will result in different curing times)', primary: false },
         { label: 'Non-wipe finish', value: 'Allow 10 seconds cooling before touching', primary: false },
         { label: 'Wipe-off finish', value: 'Cleanse with solution after full cure', primary: false },
       ],
@@ -37,40 +38,43 @@ export default function ApplicationCuring({ type }: ApplicationCuringProps) {
     'base-coats': {
       title: 'Application & Curing',
       items: [
-        { label: 'Application', value: 'Apply thin, even layer to prepared nail' },
-        { label: 'LED Cure Time', value: '30–60 seconds' },
+        { label: 'Application', value: 'Apply thin, even layer to prepared nail', primary: false },
+        { label: 'Cure in 48W UV/LED Lamp', value: '30–60 seconds', primary: true },
+        { label: 'Note', value: '(Different lamps will result in different curing times)', primary: false },
       ],
     },
     'polygel-acrygel': {
       title: 'Application & Curing',
       items: [
-        { label: 'Application', value: 'Sculpt with slip solution for easy shaping' },
-        { label: 'LED Cure Time', value: '60–90 seconds' },
-        { label: 'Flash cure', value: 'Allowed for building layers' },
+        { label: 'Application', value: 'Sculpt with slip solution for easy shaping', primary: false },
+        { label: 'Cure in 48W UV/LED Lamp', value: '60–90 seconds', primary: true },
+        { label: 'Note', value: '(Different lamps will result in different curing times)', primary: false },
+        { label: 'Flash cure', value: 'Allowed for building layers', primary: false },
       ],
     },
     'liquid-polygel': {
       title: 'Application & Curing',
       items: [
-        { label: 'Application', value: 'Brush on with slip solution for smooth application' },
-        { label: 'LED Cure Time', value: '60–90 seconds' },
-        { label: 'Flash cure', value: 'Allowed for building layers' },
+        { label: 'Application', value: 'Brush on with slip solution for smooth application', primary: false },
+        { label: 'Cure in 48W UV/LED Lamp', value: '60–90 seconds', primary: true },
+        { label: 'Note', value: '(Different lamps will result in different curing times)', primary: false },
+        { label: 'Flash cure', value: 'Allowed for building layers', primary: false },
       ],
     },
     'acrylic-systems': {
       title: 'Application & Curing',
       items: [
-        { label: 'Important', value: 'Do not cure by lamp — acrylics cure by air' },
-        { label: 'Standard-set', value: '3–5 minutes air dry' },
-        { label: 'Fast-set', value: '2–3 minutes air dry' },
+        { label: 'Important', value: 'Do not cure by lamp — acrylics cure by air', primary: false },
+        { label: 'Standard-set', value: '3–5 minutes air dry', primary: false },
+        { label: 'Fast-set', value: '2–3 minutes air dry', primary: false },
       ],
     },
     'liquids': {
       title: 'Usage Instructions',
       items: [
-        { label: 'Application', value: 'Follow product-specific instructions' },
-        { label: 'Safety', value: 'Use in well-ventilated area' },
-        { label: 'Storage', value: 'Keep tightly closed when not in use' },
+        { label: 'Application', value: 'Follow product-specific instructions', primary: false },
+        { label: 'Safety', value: 'Use in well-ventilated area', primary: false },
+        { label: 'Storage', value: 'Keep tightly closed when not in use', primary: false },
       ],
     },
   };
