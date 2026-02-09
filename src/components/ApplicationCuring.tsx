@@ -30,8 +30,8 @@ export default function ApplicationCuring({ type }: ApplicationCuringProps) {
       title: 'Application & Curing',
       items: [
         { label: 'Cure Time (TPO-Free)', value: '60-90 seconds in a 48W UV/LED Lamp', primary: true },
-        { label: 'Non-wipe finish', value: 'Allow 10 seconds cooling before touching' },
-        { label: 'Wipe-off finish', value: 'Cleanse with solution after full cure' },
+        { label: 'Non-wipe finish', value: 'Allow 10 seconds cooling before touching', primary: false },
+        { label: 'Wipe-off finish', value: 'Cleanse with solution after full cure', primary: false },
       ],
     },
     'base-coats': {
