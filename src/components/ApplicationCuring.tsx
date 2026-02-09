@@ -23,7 +23,6 @@ export default function ApplicationCuring({ type }: ApplicationCuringProps) {
     'top-coats': {
       title: 'Application & Curing',
       items: [
-        { label: 'LED Cure Time', value: '30–60 seconds' },
         { label: 'Non-wipe finish', value: 'Allow 10 seconds cooling before touching' },
         { label: 'Wipe-off finish', value: 'Cleanse with solution after full cure' },
       ],
