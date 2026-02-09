@@ -85,10 +85,10 @@ export default function ApplicationCuring({ type }: ApplicationCuringProps) {
       <div className="space-y-3">
         {data.items.map((item, index) => (
           <div key={index} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
-            <span className={`text-sm min-w-[140px] ${item.primary ? 'font-bold text-gray-900' : 'font-semibold text-gray-900'}`}>
+            <span className={`text-sm text-gray-900 min-w-[140px] ${item.primary ? 'font-bold' : 'font-semibold'}`}>
               {item.label}:
             </span>
-            <span className={`text-sm ${item.primary ? 'font-semibold text-gray-900' : 'text-gray-600 font-light'}`}>
+            <span className={`text-sm ${item.primary ? 'font-semibold text-gray-900' : 'font-light text-gray-600'}`}>
               {item.value}
             </span>
           </div>
