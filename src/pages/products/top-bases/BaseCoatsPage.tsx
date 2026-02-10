@@ -14,18 +14,18 @@ export default function BaseCoatsPage() {
       image: categoryHero['classic-base'],
     },
     {
-      key: 'standardRubberBase',
-      title: 'Standard Rubber Base',
-      path: '/products/top-and-bases/base-coats/rubber-base',
-      description: 'Flexible, self-levelling bases ideal for natural nail reinforcement, free from HEMA and TPO.',
-      image: categoryHero['standard-rubber-base'],
-    },
-    {
       key: 'effectsRubberBase',
       title: 'Effects Rubber Base',
       path: '/products/top-and-bases/base-coats/rubber-base',
       description: 'Flexible rubber bases with stunning visual effects, all HEMA-free and TPO-free.',
       image: categoryHero['effects-rubber-base'],
+    },
+    {
+      key: 'standardRubberBase',
+      title: 'Standard Rubber Base',
+      path: '/products/top-and-bases/base-coats/rubber-base',
+      description: 'Flexible, self-levelling bases ideal for natural nail reinforcement, free from HEMA and TPO.',
+      image: categoryHero['standard-rubber-base'],
     },
     {
       key: 'superiorBase',
