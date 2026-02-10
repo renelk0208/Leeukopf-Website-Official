@@ -20,6 +20,20 @@ export default function GelPolishPage() {
     };
   });
 
+  const springSummerImages = getSubcategoryImages('gel-polish', 'spring-summer-26').map((src) => {
+    // Extract descriptive name from filename for alt text
+    const filename = src.split('/').pop() || '';
+    const altText = filename
+      .replace(/2026_spring_summer_collection_/gi, '')
+      .replace(/_/g, ' ')
+      .replace(/\.jpg$/i, '')
+      .trim();
+    return {
+      src,
+      alt: `Spring Summer 26 gel polish ${altText} collection`
+    };
+  });
+
   return (
     <>
       <PageTemplate
@@ -71,6 +85,27 @@ export default function GelPolishPage() {
 
         {/* Gel Polish Categories Gallery - directly under Complete Gel Polish Catalogue */}
         <GelPolishCategoryGallery />
+
+        {/* Spring Summer '26 Subcategory - responsive */}
+        <div className="mb-10 sm:mb-12 md:mb-16">
+          <div className="text-center mb-6 sm:mb-8">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">Spring Summer '26</h3>
+            <p className="text-base sm:text-lg text-gray-600 font-light max-w-2xl mx-auto px-2">
+              Embrace the vibrant energy of the new season with our fresh Spring Summer collection. 
+              Featuring bright florals, soft pastels, and bold neons perfect for warm weather looks.
+            </p>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            <ProductCarousel images={springSummerImages} autoPlay={true} autoPlayInterval={4000} />
+          </div>
+
+          <div className="text-center mt-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 italic">
+              Featuring bright colors, pastels, neons, and floral designs
+            </p>
+          </div>
+        </div>
 
         {/* Autumn Winter '25/26 Subcategory - responsive */}
         <div className="mb-10 sm:mb-12 md:mb-16">
