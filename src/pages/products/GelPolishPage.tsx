@@ -100,7 +100,7 @@ export default function GelPolishPage() {
             <ProductCarousel images={springSummerImages} autoPlay={true} autoPlayInterval={4000} />
           </div>
 
-          <div className="text-center mt-6 sm:mb-8">
+          <div className="text-center mt-6 sm:mt-8">
             <p className="text-xs sm:text-sm text-gray-500 italic">
               Featuring bright colors, pastels, neons, and floral designs
             </p>
