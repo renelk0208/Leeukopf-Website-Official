@@ -17,7 +17,14 @@ export type ProductCategory = {
  * All product categories organized by group
  */
 export const productCategories: ProductCategory[] = [
-  // Gel Polish Categories
+  // Gel Polish Categories - Alphabetically sorted
+  {
+    id: 'autumn-winter-25-26',
+    key: 'autumn-winter-25-26',
+    displayName: 'Autumn Winter 25/26',
+    imagePath: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
+    group: 'Gel Polish',
+  },
   {
     id: 'cat-eye-collection',
     key: 'cat-eye-collection',
@@ -33,20 +40,6 @@ export const productCategories: ProductCategory[] = [
     group: 'Gel Polish',
   },
   {
-    id: 'glitters-collection',
-    key: 'glitters-collection',
-    displayName: 'Glitters Collection',
-    imagePath: '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp',
-    group: 'Gel Polish',
-  },
-  {
-    id: 'solid-colour-collection',
-    key: 'solid-colour-collection',
-    displayName: 'Solid Colour Collection',
-    imagePath: '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-category card image.jpg',
-    group: 'Gel Polish',
-  },
-  {
     id: 'french-collection',
     key: 'french-collection',
     displayName: 'French Collection',
@@ -54,10 +47,10 @@ export const productCategories: ProductCategory[] = [
     group: 'Gel Polish',
   },
   {
-    id: 'autumn-winter-25-26',
-    key: 'autumn-winter-25-26',
-    displayName: 'Autumn Winter 25/26',
-    imagePath: '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
+    id: 'glitters-collection',
+    key: 'glitters-collection',
+    displayName: 'Glitters Collection',
+    imagePath: '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp',
     group: 'Gel Polish',
   },
   {
@@ -72,6 +65,20 @@ export const productCategories: ProductCategory[] = [
     key: 'platinum-gel-polish',
     displayName: 'Platinum Gel Polish',
     imagePath: '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.webp',
+    group: 'Gel Polish',
+  },
+  {
+    id: 'solid-colour-collection',
+    key: 'solid-colour-collection',
+    displayName: 'Solid Colour Collection',
+    imagePath: '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-category card image.jpg',
+    group: 'Gel Polish',
+  },
+  {
+    id: 'spring-summer-26',
+    key: 'spring-summer-26',
+    displayName: 'Spring Summer 26',
+    imagePath: '/img/products/gel_polishes/spring_summer_26/2026_spring_summer_collection_cover.jpg',
     group: 'Gel Polish',
   },
   {

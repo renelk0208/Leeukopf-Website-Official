@@ -1,22 +1,25 @@
 import { useState, useCallback, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { subcategoryImages, categoryHero } from '../config/imageMap';
+import { subcategoryImages, categoryHero, getSubcategoryImages } from '../config/imageMap';
 import ProductCategoryCard3D from './products/ProductCategoryCard3D';
+import ProductCarousel from './ProductCarousel';
 
 /** 
  * Configuration for gel polish categories with their folder paths and English titles.
+ * Categories are sorted alphabetically by title for consistent display.
  */
 const GEL_POLISH_CATEGORIES = [
   { id: 'autumnWinter2526', key: 'autumn-winter-25-26', folder: 'autumn_winter_25_26', title: 'Autumn Winter 25/26', description: 'Seasonal collection with warm colors and festive effects' },
   { id: 'catEyeCollection', key: 'cat-eye-collection', folder: 'Cat Eye Collection', title: 'Cat Eye Collection', description: 'Magnetic cat eye gel polishes with mesmerizing effects' },
   { id: 'creamCollection', key: 'cream-collection', folder: 'Cream Collection', title: 'Cream Collection', description: 'Creamy, opaque gel polishes with smooth coverage' },
+  { id: 'frenchCollection', key: 'french-collection', folder: 'French Collection', title: 'French Collection', description: 'Elegant French manicure gel polishes for classic nail art' },
   { id: 'glittersCollection', key: 'glitters-collection', folder: 'Glitters Collection', title: 'Glitters Collection', description: 'Sparkling glitter gel polishes with stunning effects' },
   { id: 'glowInTheDark', key: 'glow-in-the-dark', folder: 'Glow In the Dark', title: 'Glow In the Dark', description: 'Luminescent gel polishes that glow in the dark' },
   { id: 'platinumGelPolish', key: 'platinum-gel-polish', folder: 'Platinum Gel Polish', title: 'Platinum Gel Polish', description: 'Premium platinum flash gel polishes with luxurious shimmer' },
   { id: 'solidColourCollection', key: 'solid-colour-collection', folder: 'Solid Colour Collection', title: 'Solid Colour Collection', description: 'Bold and vibrant pure color gel polishes' },
+  { id: 'springSummer26', key: 'spring-summer-26', folder: 'spring_summer_26', title: 'Spring Summer 26', description: 'Fresh seasonal collection featuring bright florals, soft pastels, and bold neons' },
   { id: 'thermoMoodChanging', key: 'thermo-mood-changing', folder: 'Thermo Mood Changing', title: 'Thermo Mood Changing', description: 'Temperature-reactive gel polishes that change color' },
-  { id: 'frenchCollection', key: 'french-collection', folder: 'French Collection', title: 'French Collection', description: 'Elegant French manicure gel polishes for classic nail art' },
-];
+].sort((a, b) => a.title.localeCompare(b.title));
 
 /** Build category images from the imageMap data */
 function buildCategoryImages(): Record<string, { src: string; alt: string }[]> {
@@ -211,6 +214,20 @@ function GalleryModal({
 export default function GelPolishCategoryGallery({ initialCategory }: { initialCategory?: string }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory || null);
 
+  // Prepare Spring Summer '26 images for the featured carousel
+  const springSummerImages = getSubcategoryImages('gel-polish', 'spring-summer-26').map((src) => {
+    const filename = src.split('/').pop() || '';
+    const altText = filename
+      .replace(/2026_spring_summer_collection_/gi, '')
+      .replace(/_/g, ' ')
+      .replace(/\.jpg$/i, '')
+      .trim();
+    return {
+      src,
+      alt: `Spring Summer 26 gel polish ${altText} collection`
+    };
+  });
+
   // Handle URL hash to open specific category
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
@@ -242,6 +259,30 @@ export default function GelPolishCategoryGallery({ initialCategory }: { initialC
 
   return (
     <div className="mb-10 sm:mb-12 md:mb-16">
+      {/* Featured Spring Summer '26 Carousel */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <div className="text-center mb-6 sm:mb-8">
+          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
+            ✨ Spring Summer '26 Collection ✨
+          </h3>
+          <p className="text-base sm:text-lg text-gray-600 font-light max-w-2xl mx-auto px-2">
+            Embrace the vibrant energy of the new season with our fresh Spring Summer collection. 
+            Featuring bright florals, soft pastels, and bold neons perfect for warm weather looks.
+          </p>
+        </div>
+
+        <div className="max-w-5xl mx-auto">
+          <ProductCarousel images={springSummerImages} autoPlay={true} autoPlayInterval={4000} />
+        </div>
+
+        <div className="text-center mt-6 sm:mt-8">
+          <p className="text-xs sm:text-sm text-gray-500 italic">
+            Featuring bright colors, pastels, neons, and floral designs
+          </p>
+        </div>
+      </div>
+
+      {/* Category Grid Section */}
       <div className="text-center mb-6 sm:mb-8">
         <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
           Explore Our Gel Polish Categories
