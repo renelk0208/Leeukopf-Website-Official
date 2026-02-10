@@ -32,6 +32,7 @@ export const categoryHero: Record<string, string> = {
   'solid-colour-collection': '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-category card image.jpg',
   'french-collection': '/img/products/gel_polishes/French Collection/french-collection-category-card-image.png',
   'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
+  'spring-summer-26': '/img/products/gel_polishes/spring_summer_26/2026_spring_summer_collection_cover.jpg',
   'glow-in-the-dark': '/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polish-category-card-image.png',
   'platinum-gel-polish': '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.webp',
   'thermo-mood-changing': '/img/products/gel_polishes/Thermo Mood Changing/thermo-mood-changing-gel-polish-category-image.png',
@@ -101,6 +102,13 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_gold_leaf.jpg',
       '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_laser_glitters.jpg',
       '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_xmas_glitters.jpg',
+    ],
+    'spring-summer-26': [
+      '/img/products/gel_polishes/spring_summer_26/2026_spring_summer_collection_cover.jpg',
+      '/img/products/gel_polishes/spring_summer_26/2026_spring_summer_collection_bright_colors.jpg',
+      '/img/products/gel_polishes/spring_summer_26/2026_spring_summer_collection_pastels.jpg',
+      '/img/products/gel_polishes/spring_summer_26/2026_spring_summer_collection_neon.jpg',
+      '/img/products/gel_polishes/spring_summer_26/2026_spring_summer_collection_florals.jpg',
     ],
     'cat-eye-collection': [
       '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg',

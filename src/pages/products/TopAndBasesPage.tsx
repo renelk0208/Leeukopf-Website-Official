@@ -6,18 +6,18 @@ import { categoryHero } from '../../config/imageMap';
 export default function TopAndBasesPage() {
   const subcategories = [
     {
-      key: 'topCoats',
-      title: 'Top Coats',
-      path: '/products/top-and-bases/top-coats',
-      description: 'Smooth, durable finishes that protect colour — all HEMA-free and TPO-free.',
-      image: '/img/products/tops-and-bases/tops-catergory-card-image.jpg'
-    },
-    {
       key: 'baseCoats',
       title: 'Base Coats',
       path: '/products/top-and-bases/base-coats',
       description: 'Essential foundation systems for optimal adhesion and wear.',
       image: '/img/products/tops-and-bases/base-coat-category-card-image.png'
+    },
+    {
+      key: 'topCoats',
+      title: 'Top Coats',
+      path: '/products/top-and-bases/top-coats',
+      description: 'Smooth, durable finishes that protect colour — all HEMA-free and TPO-free.',
+      image: '/img/products/tops-and-bases/tops-catergory-card-image.jpg'
     },
   ];
 
