@@ -78,7 +78,7 @@ export const productCategories: ProductCategory[] = [
     id: 'spring-summer-26',
     key: 'spring-summer-26',
     displayName: 'Spring Summer 26',
-    imagePath: '/img/products/gel_polishes/spring_summer_26/2026_spring_summer_collection_cover.jpg',
+    imagePath: '/img/products/gel_polishes/spring-summer-26/spring-summer-26 category.jpg',
     group: 'Gel Polish',
   },
   {

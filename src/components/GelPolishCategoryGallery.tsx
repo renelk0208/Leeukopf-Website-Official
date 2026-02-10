@@ -17,7 +17,7 @@ const GEL_POLISH_CATEGORIES = [
   { id: 'glowInTheDark', key: 'glow-in-the-dark', folder: 'Glow In the Dark', title: 'Glow In the Dark', description: 'Luminescent gel polishes that glow in the dark' },
   { id: 'platinumGelPolish', key: 'platinum-gel-polish', folder: 'Platinum Gel Polish', title: 'Platinum Gel Polish', description: 'Premium platinum flash gel polishes with luxurious shimmer' },
   { id: 'solidColourCollection', key: 'solid-colour-collection', folder: 'Solid Colour Collection', title: 'Solid Colour Collection', description: 'Bold and vibrant pure color gel polishes' },
-  { id: 'springSummer26', key: 'spring-summer-26', folder: 'spring_summer_26', title: 'Spring Summer 26', description: 'Fresh seasonal collection featuring bright florals, soft pastels, and bold neons' },
+  { id: 'springSummer26', key: 'spring-summer-26', folder: 'spring-summer-26', title: 'Spring Summer 26', description: 'Fresh seasonal collection featuring bright florals, soft pastels, and bold neons' },
   { id: 'thermoMoodChanging', key: 'thermo-mood-changing', folder: 'Thermo Mood Changing', title: 'Thermo Mood Changing', description: 'Temperature-reactive gel polishes that change color' },
 ].sort((a, b) => a.title.localeCompare(b.title));
 
