@@ -8,13 +8,6 @@ import { categoryHero } from '../../config/imageMap';
 export default function BuilderAndStructureGelsPage() {
   const subcategories = [
     {
-      key: 'threePhase',
-      title: '3-Phase Builder Gels',
-      path: '/products/builder-and-structure-gels/3-phase',
-      description: 'A classic three-step system for controlled strength and precision, made without HEMA or TPO.',
-      image: categoryHero['three-phase-builder'],
-    },
-    {
       key: 'threeInOne',
       title: '3-in-1 Builder Gels',
       path: '/products/builder-and-structure-gels/3-in-1',
@@ -22,18 +15,25 @@ export default function BuilderAndStructureGelsPage() {
       image: categoryHero['three-in-one-builder'],
     },
     {
+      key: 'threePhase',
+      title: '3-Phase Builder Gels',
+      path: '/products/builder-and-structure-gels/3-phase',
+      description: 'A classic three-step system for controlled strength and precision, made without HEMA or TPO.',
+      image: categoryHero['three-phase-builder'],
+    },
+    {
+      key: 'biabBuilderInABottle',
+      title: 'BIAB (Builder in a Bottle)',
+      path: '/products/builder-and-structure-gels/biab-builder-in-a-bottle',
+      description: 'Convenient brush-on building system for quick overlays and natural nail reinforcement — HEMA-free and TPO-free.',
+      image: categoryHero['biab-builder-in-a-bottle'],
+    },
+    {
       key: 'premiumFiberGlass',
       title: 'Fibreglass Builder Gels',
       path: '/products/builder-and-structure-gels/premium-fiber-glass',
       description: 'Reinforced flexibility and superior strength in a premium formula that stays fully HEMA-free and TPO-free.',
       image: categoryHero['premium-builder-gels'],
-    },
-    {
-      key: 'polygelAcrygel',
-      title: 'Polygel / AcryGel',
-      path: '/products/polygel-acrygel',
-      description: 'Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free.',
-      image: categoryHero['polygel-acrygel'],
     },
     {
       key: 'liquidPolygel',
@@ -50,11 +50,11 @@ export default function BuilderAndStructureGelsPage() {
       image: categoryHero['no-heat-spike-builder-gel'],
     },
     {
-      key: 'biabBuilderInABottle',
-      title: 'BIAB (Builder in a Bottle)',
-      path: '/products/builder-and-structure-gels/biab-builder-in-a-bottle',
-      description: 'Convenient brush-on building system for quick overlays and natural nail reinforcement — HEMA-free and TPO-free.',
-      image: categoryHero['biab-builder-in-a-bottle'],
+      key: 'polygelAcrygel',
+      title: 'Polygel / AcryGel',
+      path: '/products/polygel-acrygel',
+      description: 'Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free.',
+      image: categoryHero['polygel-acrygel'],
     },
     {
       key: 'thixotropicGel',

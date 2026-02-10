@@ -8,18 +8,18 @@ import { categoryHero } from '../../../config/imageMap';
 export default function TopCoatsPage() {
   const subcategories = [
     {
-      key: 'standard',
-      title: 'Standard',
-      path: '/products/top-and-bases/top-coats/standard',
-      description: 'Classic high-shine finishes that seal and protect — fully HEMA-free and TPO-free.',
-      image: categoryHero['standard-top-coats'],
-    },
-    {
       key: 'effects',
       title: 'Effects',
       path: '/products/top-and-bases/top-coats/effects',
       description: 'Finishes with texture, shimmer or visual accents, formulated without HEMA and TPO.',
       image: categoryHero['effects-top-coats'],
+    },
+    {
+      key: 'standard',
+      title: 'Standard',
+      path: '/products/top-and-bases/top-coats/standard',
+      description: 'Classic high-shine finishes that seal and protect — fully HEMA-free and TPO-free.',
+      image: categoryHero['standard-top-coats'],
     },
   ].filter(sub => isSubcategoryEnabled('topCoats', sub.key));
 
