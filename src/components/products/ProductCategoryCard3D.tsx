@@ -152,6 +152,8 @@ export default function ProductCategoryCard3D({
         ref={imgRef}
         src={imageSrc}
         alt={alt || title}
+        width={400}
+        height={192}
         className="w-full h-48 object-cover block rounded-2xl pointer-events-none"
         style={{ transform: 'translateZ(0)', transition: 'transform 420ms cubic-bezier(.2,.9,.2,1)', backfaceVisibility: 'hidden' }}
         loading="lazy"
