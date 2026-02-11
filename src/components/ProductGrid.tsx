@@ -136,8 +136,11 @@ function GalleryModal({
           <img
             src={images[currentIndex].src}
             alt={images[currentIndex].alt}
+            width={1280}
+            height={1280}
             className="max-w-full max-h-[70vh] object-contain"
-            loading="lazy"
+            loading="eager"
+            decoding="async"
             onError={() => handleImageError(currentIndex)}
           />
         )}
@@ -166,8 +169,11 @@ function GalleryModal({
                   <img
                     src={image.src}
                     alt=""
+                    width={64}
+                    height={64}
                     className="w-full h-full object-cover"
                     loading="lazy"
+                    decoding="async"
                     onError={() => handleImageError(index)}
                   />
                 )}
@@ -246,8 +252,12 @@ export default function ProductGrid({ title, description, images, showProductNum
                   <img
                     src={image.src}
                     alt={image.alt}
+                    width={320}
+                    height={320}
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
+                    decoding="async"
                     onError={() => handleImageError(index)}
                   />
                 )}
