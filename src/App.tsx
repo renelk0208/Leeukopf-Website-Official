@@ -22,6 +22,7 @@ const SeasonTrendsPage = lazy(() => import('./pages/SeasonTrendsPage'));
 const ValentinesPage = lazy(() => import('./pages/ValentinesPage'));
 const LiveFeedPage = lazy(() => import('./pages/LiveFeedPage'));
 const FaqStartBrandPage = lazy(() => import('./pages/FaqStartBrandPage'));
+const OrderFormPage = lazy(() => import('./pages/OrderFormPage'));
 
 // Product Pages
 const GelPolishPage = lazy(() => import('./pages/products/GelPolishPage'));
@@ -89,6 +90,7 @@ function App() {
           <Route path="/valentines" element={<ValentinesPage />} />
           <Route path="/live-feed" element={<LiveFeedPage />} />
           <Route path="/faq-starting-a-gel-polish-brand" element={<FaqStartBrandPage />} />
+          <Route path="/order-form" element={<OrderFormPage />} />
 
           {/* Products */}
           <Route path="/products" element={<ProductsPage />} />
