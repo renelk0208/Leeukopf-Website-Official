@@ -133,16 +133,19 @@ function GalleryModal({
             <p className="text-sm text-gray-400 mt-2">{images[currentIndex]?.alt}</p>
           </div>
         ) : (
-          <img
-            src={images[currentIndex].src}
-            alt={images[currentIndex].alt}
-            width={1280}
-            height={1280}
-            className="max-w-full max-h-[70vh] object-contain"
-            loading="eager"
-            decoding="async"
-            onError={() => handleImageError(currentIndex)}
-          />
+          <>
+            {/* Product images are typically 1280x1280 square format */}
+            <img
+              src={images[currentIndex].src}
+              alt={images[currentIndex].alt}
+              width={1280}
+              height={1280}
+              className="max-w-full max-h-[70vh] object-contain"
+              loading="eager"
+              decoding="async"
+              onError={() => handleImageError(currentIndex)}
+            />
+          </>
         )}
       </div>
 
@@ -166,6 +169,7 @@ function GalleryModal({
                     <span className="text-xs text-gray-400">N/A</span>
                   </div>
                 ) : (
+                  // Thumbnails rendered as squares, width/height prevent CLS during load
                   <img
                     src={image.src}
                     alt=""
@@ -249,6 +253,7 @@ export default function ProductGrid({ title, description, images, showProductNum
                     <span className="text-xs text-gray-400">Image unavailable</span>
                   </div>
                 ) : (
+                  // Grid images: width/height attributes prevent CLS, sizes attribute optimizes responsive loading
                   <img
                     src={image.src}
                     alt={image.alt}
