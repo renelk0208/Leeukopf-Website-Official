@@ -5,12 +5,9 @@ import { webcrypto } from 'crypto';
 
 // Polyfill global crypto for jose on Netlify
 if (!globalThis.crypto) {
-  // @ts-ignore
-  globalThis.crypto = webcrypto as any;
+  // @ts-expect-error - Polyfill required for Netlify environment compatibility
+  globalThis.crypto = webcrypto as Crypto;
 }
-
-// Force deployment version marker
-const __force = 'prod-force-upload-2025-12-17-1016';
 
 // Configure the function path
 export const config = {

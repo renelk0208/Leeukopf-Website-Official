@@ -2,12 +2,6 @@ interface ApplicationCuringProps {
   type: 'gel-polish' | 'builder-gels' | 'top-coats' | 'base-coats' | 'polygel-acrygel' | 'liquid-polygel' | 'acrylic-systems' | 'liquids';
 }
 
-interface CuringItem {
-  label: string;
-  value: string;
-  primary?: boolean;
-}
-
 export default function ApplicationCuring({ type }: ApplicationCuringProps) {
   const content = {
     'gel-polish': {
