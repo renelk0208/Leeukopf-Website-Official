@@ -1,4 +1,4 @@
-import { Check, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 // Mapping for star ratings to visual representation
 const StarRating = ({ count }: { count: number }) => {

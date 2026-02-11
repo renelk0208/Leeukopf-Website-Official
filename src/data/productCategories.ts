@@ -152,7 +152,7 @@ export const productCategories: ProductCategory[] = [
     id: 'brush-on-builder',
     key: 'brush-on-builder',
     displayName: 'Brush-On Builder',
-    imagePath: '/img/products/builder-systems/brush-on-builder/brush-on-builder-category-card-image.jpg',
+    imagePath: '/img/products/builder-systems/BIAB builder-in-a-bottle/brush-on-builder-category-card-image.jpg',
     group: 'Tops & Bases',
   },
 
