@@ -230,7 +230,10 @@ function MediaModal({ post, onClose, brandName }: MediaModalProps) {
             <img
               src={post.imageUrl}
               alt={post.caption || `Instagram post from ${brandName}`}
+              width={800}
+              height={800}
               className="w-full h-full object-contain"
+              decoding="async"
             />
           )}
         </div>
@@ -294,8 +297,11 @@ function PostTile({ post, onSelect, brandName }: PostTileProps) {
         <img
           src={post.imageUrl}
           alt={post.caption || `Instagram post from ${brandName}`}
+          width={400}
+          height={400}
           className="w-full h-full object-contain bg-gray-50"
           loading="lazy"
+          decoding="async"
           onError={() => setImageError(true)}
         />
       ) : (
@@ -464,8 +470,11 @@ export default function InstagramFeed({ brand = 'leeukopf', limit = 4 }: Instagr
                       <img
                         src={imageSrc}
                         alt={`Sample content ${index + 1}`}
+                        width={300}
+                        height={300}
                         className="w-full h-full object-cover"
                         loading="lazy"
+                        decoding="async"
                       />
                       {/* Hover overlay */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />

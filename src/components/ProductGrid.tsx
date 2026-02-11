@@ -133,13 +133,19 @@ function GalleryModal({
             <p className="text-sm text-gray-400 mt-2">{images[currentIndex]?.alt}</p>
           </div>
         ) : (
-          <img
-            src={images[currentIndex].src}
-            alt={images[currentIndex].alt}
-            className="max-w-full max-h-[70vh] object-contain"
-            loading="lazy"
-            onError={() => handleImageError(currentIndex)}
-          />
+          <>
+            {/* Product images are typically 1280x1280 square format */}
+            <img
+              src={images[currentIndex].src}
+              alt={images[currentIndex].alt}
+              width={1280}
+              height={1280}
+              className="max-w-full max-h-[70vh] object-contain"
+              loading="eager"
+              decoding="async"
+              onError={() => handleImageError(currentIndex)}
+            />
+          </>
         )}
       </div>
 
@@ -163,11 +169,15 @@ function GalleryModal({
                     <span className="text-xs text-gray-400">N/A</span>
                   </div>
                 ) : (
+                  // Thumbnails rendered as squares, width/height prevent CLS during load
                   <img
                     src={image.src}
                     alt=""
+                    width={64}
+                    height={64}
                     className="w-full h-full object-cover"
                     loading="lazy"
+                    decoding="async"
                     onError={() => handleImageError(index)}
                   />
                 )}
@@ -243,11 +253,16 @@ export default function ProductGrid({ title, description, images, showProductNum
                     <span className="text-xs text-gray-400">Image unavailable</span>
                   </div>
                 ) : (
+                  // Grid images: width/height attributes prevent CLS, sizes attribute optimizes responsive loading
                   <img
                     src={image.src}
                     alt={image.alt}
+                    width={320}
+                    height={320}
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
+                    decoding="async"
                     onError={() => handleImageError(index)}
                   />
                 )}

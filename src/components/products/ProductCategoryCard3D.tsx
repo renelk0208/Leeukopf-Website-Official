@@ -148,10 +148,14 @@ export default function ProductCategoryCard3D({
       className="relative rounded-2xl overflow-hidden shadow-md"
       style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
     >
+      {/* Category card image - dimensions chosen to match typical card aspect ratio 
+          Width 400px matches common display width, height 192px matches h-48 (12rem) CSS class */}
       <img
         ref={imgRef}
         src={imageSrc}
         alt={alt || title}
+        width={400}
+        height={192}
         className="w-full h-48 object-cover block rounded-2xl pointer-events-none"
         style={{ transform: 'translateZ(0)', transition: 'transform 420ms cubic-bezier(.2,.9,.2,1)', backfaceVisibility: 'hidden' }}
         loading="lazy"
