@@ -118,17 +118,27 @@ export default function OrderFormPage() {
   };
 
   const handleClearOrder = () => {
-    if (confirm('Are you sure you want to clear your entire order?')) {
-      setOrderItems(new Map());
-    }
+    // Simple clear - the OrderSummary component shows a "no items" message
+    // User can re-add items if they clear accidentally
+    setOrderItems(new Map());
   };
 
   const handleExportCSV = () => {
     const items = Array.from(orderItems.values());
     if (items.length === 0) {
-      alert('No items in order to export');
-      return;
+      return; // Don't show alert, user will see empty state
     }
+
+    // Helper function to properly escape CSV cells
+    const escapeCsvCell = (cell: string): string => {
+      // If cell contains comma, newline, or quotes, it needs to be quoted
+      if (cell.includes(',') || cell.includes('\n') || cell.includes('"')) {
+        // Escape quotes by doubling them
+        const escaped = cell.replace(/"/g, '""');
+        return `"${escaped}"`;
+      }
+      return cell;
+    };
 
     // Create CSV content
     const headers = ['Code', 'Product Name', 'Size', 'Unit', 'Quantity', 'MOQ', 'Notes'];
@@ -143,10 +153,8 @@ export default function OrderFormPage() {
     ]);
 
     const csvContent = [
-      headers.join(','),
-      ...rows.map((row) =>
-        row.map((cell) => (cell.includes(',') ? `"${cell}"` : cell)).join(',')
-      ),
+      headers.map(escapeCsvCell).join(','),
+      ...rows.map((row) => row.map(escapeCsvCell).join(',')),
     ].join('\n');
 
     // Download
@@ -174,9 +182,9 @@ export default function OrderFormPage() {
   const validateOrder = (): boolean => {
     const errors: Partial<Record<keyof CustomerDetails, string>> = {};
 
-    // Check items
+    // Check items - show error inline instead of alert
     if (orderItems.size === 0) {
-      alert('Please add at least one item to your order');
+      setSubmitError('Please add at least one item to your order');
       return false;
     }
 

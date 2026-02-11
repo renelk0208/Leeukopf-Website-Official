@@ -43,8 +43,8 @@ function parseCSVLine(line: string): string[] {
  */
 export async function loadProducts(): Promise<Product[]> {
   try {
-    // Fetch the CSV file
-    const response = await fetch('/src/data/products.csv');
+    // Fetch the CSV file from public directory
+    const response = await fetch('/products.csv');
     if (!response.ok) {
       throw new Error(`Failed to load products: ${response.statusText}`);
     }

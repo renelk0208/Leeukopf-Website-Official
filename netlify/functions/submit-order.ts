@@ -1,5 +1,5 @@
 import type { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
-import { randomBytes } from 'crypto';
+import { randomBytes } from 'node:crypto';
 
 interface OrderLine {
   code: string;
