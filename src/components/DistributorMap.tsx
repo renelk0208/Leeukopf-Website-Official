@@ -124,7 +124,7 @@ export default function DistributorMap() {
               <Map
                 defaultCenter={{ lat: 45, lng: 15 }}
                 defaultZoom={3}
-                mapId="distributor-map"
+                mapId="distributor-map" // Note: This Map ID must be created in Google Cloud Console
                 disableDefaultUI={false}
                 gestureHandling="greedy"
                 style={{ width: '100%', height: '100%' }}
