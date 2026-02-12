@@ -51,40 +51,41 @@ export default function DistributorMap() {
   const [selectedCountry, setSelectedCountry] = useState<Distributor | null>(null);
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-  // If no API key, show a fallback message
-  if (!apiKey) {
+  // If no API key or invalid key, show a fallback message
+  if (!apiKey || apiKey === 'test_key_placeholder') {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <div className="flex items-center space-x-3 mb-4">
+      <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
+        <div className="flex items-center space-x-3 mb-4 sm:mb-6">
           <MapPin className="w-6 h-6 text-primary" />
-          <h3 className="text-lg font-semibold text-gray-900">
-            Our Distributor Network
+          <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">
+            Our Global Distributor Network
           </h3>
         </div>
-        <p className="text-sm text-gray-600 mb-4">
-          We're proud to work with distributors across multiple countries.
+        <p className="text-sm sm:text-base text-gray-600 mb-6 leading-relaxed">
+          We're proud to partner with professional distributors across multiple countries, bringing premium GEL.IT.UP products to markets worldwide.
         </p>
         
         {/* Country list */}
-        <div>
-          <h4 className="text-sm font-semibold text-gray-900 mb-3">Distributor Countries</h4>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div className="mb-6">
+          <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Current Distributor Locations</h4>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {distributorCountries.map((distributor) => (
               <div
                 key={distributor.country}
-                className="flex items-center space-x-2 p-2 bg-gray-50 rounded-lg border border-gray-200"
+                className="flex items-center space-x-2 p-3 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors"
               >
-                <MapPin className="w-3 h-3 text-primary flex-shrink-0" />
-                <span className="text-xs text-gray-900">{distributor.country}</span>
+                <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
+                <span className="text-sm font-medium text-gray-900">{distributor.country}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm text-gray-700">
-            <span className="font-medium">Looking to become a distributor?</span> Contact us to discuss 
-            partnership opportunities in your region.
+        <div className="p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-lg">
+          <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+            <span className="font-semibold text-gray-900">Interested in becoming a distributor?</span> 
+            <br className="sm:hidden" />
+            <span className="inline sm:ml-1">Contact us to discuss partnership opportunities in your region and join our growing global network.</span>
           </p>
         </div>
       </div>
@@ -176,25 +177,26 @@ export default function DistributorMap() {
 
           {/* Country list below the map */}
           <div className="mt-6">
-            <h4 className="text-sm font-semibold text-gray-900 mb-3">Distributor Countries</h4>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+            <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Distributor Locations</h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {distributorCountries.map((distributor) => (
                 <button
                   key={distributor.country}
                   onClick={() => setSelectedCountry(distributor)}
-                  className="flex items-center space-x-2 p-2 bg-gray-50 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors text-left"
+                  className="flex items-center space-x-2 p-3 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg border border-primary/20 hover:border-primary hover:bg-primary/10 transition-colors text-left"
                 >
-                  <MapPin className="w-3 h-3 text-primary flex-shrink-0" />
-                  <span className="text-xs text-gray-900">{distributor.country}</span>
+                  <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span className="text-sm font-medium text-gray-900">{distributor.country}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-gray-700">
-              <span className="font-medium">Looking to become a distributor?</span> Contact us to discuss 
-              partnership opportunities in your region.
+          <div className="mt-6 p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-lg">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+              <span className="font-semibold text-gray-900">Interested in becoming a distributor?</span> 
+              <br className="sm:hidden" />
+              <span className="inline sm:ml-1">Contact us to discuss partnership opportunities in your region and join our growing global network.</span>
             </p>
           </div>
         </div>
