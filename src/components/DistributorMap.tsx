@@ -2,13 +2,18 @@ import { useState } from 'react';
 import { MapPin, ChevronDown, ChevronUp } from 'lucide-react';
 import { APIProvider, Map, AdvancedMarker, InfoWindow } from '@vis.gl/react-google-maps';
 
+interface DistributorLocation {
+  name: string;
+  address: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+}
+
 interface Distributor {
   country: string;
-  contactName?: string;
-  email?: string;
-  phone?: string;
-  address?: string;
   coordinates: { lat: number; lng: number }; // Google Maps coordinates
+  locations?: DistributorLocation[]; // Multiple distributor locations per country
 }
 
 // Countries with geocoded coordinates (in alphabetical order)
@@ -17,7 +22,26 @@ const distributorCountries: Distributor[] = [
   { country: 'Bulgaria', coordinates: { lat: 42.6977, lng: 23.3219 } },
   { country: 'Cyprus', coordinates: { lat: 35.1264, lng: 33.4299 } },
   { country: 'France', coordinates: { lat: 48.8566, lng: 2.3522 } },
-  { country: 'Greece', coordinates: { lat: 37.9838, lng: 23.7275 } },
+  { 
+    country: 'Greece', 
+    coordinates: { lat: 37.9838, lng: 23.7275 },
+    locations: [
+      {
+        name: 'GEL.IT.UP Corinth',
+        address: 'Sikyōnos 1, Kiato, 20200',
+        phone: '+30 2742 402617',
+        email: 'info@nailtalesacademy.gr',
+        website: 'https://nailtalesacademy.gr/'
+      },
+      {
+        name: 'GEL.IT.UP Greece',
+        address: '4 Kalamon, Peristeri, 12131',
+        phone: '+302102914373',
+        email: 'orders@gelitup.gr',
+        website: 'https://gelitup.gr'
+      }
+    ]
+  },
   { country: 'Kingdom of Saudi Arabia', coordinates: { lat: 24.7136, lng: 46.6753 } },
   { country: 'Qatar', coordinates: { lat: 25.2854, lng: 51.5310 } },
   { country: 'United States', coordinates: { lat: 40.7128, lng: -74.0060 } }
@@ -146,22 +170,40 @@ export default function DistributorMap() {
                     position={selectedCountry.coordinates}
                     onCloseClick={() => setSelectedCountry(null)}
                   >
-                    <div className="p-2">
+                    <div className="p-2 max-w-xs">
                       <h4 className="text-sm font-semibold text-gray-900 mb-2">
                         {selectedCountry.country}
                       </h4>
-                      {selectedCountry.contactName ? (
-                        <div className="space-y-1 text-xs">
-                          <p className="text-gray-600">{selectedCountry.contactName}</p>
-                          {selectedCountry.email && (
-                            <p className="text-gray-600">{selectedCountry.email}</p>
-                          )}
-                          {selectedCountry.phone && (
-                            <p className="text-gray-600">{selectedCountry.phone}</p>
-                          )}
-                          {selectedCountry.address && (
-                            <p className="text-gray-500 mt-2">{selectedCountry.address}</p>
-                          )}
+                      {selectedCountry.locations && selectedCountry.locations.length > 0 ? (
+                        <div className="space-y-3">
+                          {selectedCountry.locations.map((location, index) => (
+                            <div key={index} className="text-xs border-b border-gray-200 last:border-0 pb-2 last:pb-0">
+                              <p className="font-semibold text-gray-900 mb-1">{location.name}</p>
+                              <p className="text-gray-600 mb-1">{location.address}</p>
+                              {location.phone && (
+                                <p className="text-gray-600">Tel: {location.phone}</p>
+                              )}
+                              {location.email && (
+                                <p className="text-gray-600">
+                                  <a href={`mailto:${location.email}`} className="hover:text-primary">
+                                    {location.email}
+                                  </a>
+                                </p>
+                              )}
+                              {location.website && (
+                                <p className="text-gray-600">
+                                  <a 
+                                    href={location.website} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="hover:text-primary underline"
+                                  >
+                                    Website
+                                  </a>
+                                </p>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       ) : (
                         <p className="text-xs text-gray-500 italic">
