@@ -1199,9 +1199,7 @@ export default function ClientRegistrationPage() {
                 <div className="space-y-2">
                   <p className="text-sm text-gray-700 font-medium">Social Media Contents</p>
                   <p className="text-sm text-gray-600 leading-relaxed">
-                    We invest significantly in producing premium, high-impact content designed to engage, educate, 
-                    and build meaningful connections with your audience. This content doesn't just support revenue 
-                    growth — it also helps accelerate your social media presence and expand your follower base organically.
+                    We create premium content that engages, educates, and converts — driving revenue while rapidly growing your social media presence.
                   </p>
                 </div>
               </div>

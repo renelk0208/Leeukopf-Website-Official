@@ -41,7 +41,13 @@ export default function GelitupDistributionPage() {
           <div className="flex flex-col justify-center order-2">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">GEL.IT.UP by GIUP®</h2>
             <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base md:text-lg">
-              Founded in 2011, GEL.IT.UP by GIUP® is rooted in the philosophy of "Superior Innovation." We deliver top-class nail products while strictly adhering to EU regulations and global GMP (good manufacturing practices). From the start, we've been dedicated to cruelty-free practices, with Leaping Bunny certification representing the gold standard. Professionals are at the heart of our brand—our products are exclusively distributed to industry experts to maintain nail industry standards. We emphasize personalized 1-on-1 customer service, keeping our rapidly growing global distributor network like a family. We actively promote environmental responsibility through our Waste Management Program, encouraging recycling of gel polish bottles from any brand. Inclusivity is a core value—we welcome everyone regardless of age, race, or gender. Our vision is for a healthier planet, sustainable beauty, and respect for diversity.
+              Founded in 2011, GEL.IT.UP by GIUP® stands for Superior Innovation — delivering professional-grade nail products that meet strict EU regulations and global GMP standards.
+            </p>
+            <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base md:text-lg mt-4">
+              We are proudly cruelty-free (Leaping Bunny certified) and distribute exclusively to industry professionals to uphold the highest standards.
+            </p>
+            <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base md:text-lg mt-4">
+              With personal 1-on-1 support, a growing global distributor family, and a strong commitment to sustainability and inclusivity, we believe in responsible beauty for a healthier, more respectful world.
             </p>
             <div className="mt-4 sm:mt-6">
               <a
