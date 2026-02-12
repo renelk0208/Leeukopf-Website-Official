@@ -58,8 +58,89 @@ export default function GelitupDistributionPage() {
           </div>
         </div>
 
+        {/* Key Features Section */}
+        <section className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg border border-primary/20 p-6 sm:p-8 md:p-10">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">
+              Why Partner with GEL.IT.UP?
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                    180+ BEST-SELLING SKU's
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    The shades professionals reorder again and again.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                    FAST DISPATCH - JUST 1 WEEK
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    Because your shelves shouldn't wait
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                    HEMA &amp; TPO FREE
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    Formulated for today's regulatory landscape.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 mt-0.5">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                    FULLY COMPLIANT
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    CPNP registered | SFDA Ready | ISO 9001 | ISO 22716
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Distributor Map Section */}
         <DistributorMap />
+
+        {/* Call to Action Banner */}
+        <section className="bg-primary text-white rounded-lg p-6 sm:p-8 md:p-10 text-center">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
+              Built for professionals. Trusted by Distributors.
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-white/90">
+              Join our growing global network of distributors
+            </p>
+            <button
+              onClick={() => navigate('/client-registration')}
+              className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-colors duration-200 inline-flex items-center justify-center min-h-[48px]"
+            >
+              Apply Now
+            </button>
+          </div>
+        </section>
 
         {/* Apply to Distribute Section */}
         <section>
