@@ -22,6 +22,24 @@ export default function GelitupDistributionPage() {
       heroImage="/img/hero/our-brand-hero.jpg"
     >
       <div className="grid grid-cols-1 gap-8 sm:gap-10 md:gap-12">
+        {/* Call to Action Banner - Moved to top */}
+        <section className="bg-primary text-white rounded-lg p-6 sm:p-8 md:p-10 text-center">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
+              Built for professionals. Trusted by Distributors.
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-white/90">
+              Join our growing global network of distributors
+            </p>
+            <button
+              onClick={() => navigate('/client-registration')}
+              className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-colors duration-200 inline-flex items-center justify-center min-h-[48px]"
+            >
+              Apply Now
+            </button>
+          </div>
+        </section>
+
         {/* GEL.IT.UP Brand Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 p-4 sm:p-6 md:p-8 bg-white rounded-lg border border-gray-200">
           <div className="order-1">
@@ -123,88 +141,6 @@ export default function GelitupDistributionPage() {
 
         {/* Distributor Map Section */}
         <DistributorMap />
-
-        {/* Call to Action Banner */}
-        <section className="bg-primary text-white rounded-lg p-6 sm:p-8 md:p-10 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-              Built for professionals. Trusted by Distributors.
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-white/90">
-              Join our growing global network of distributors
-            </p>
-            <button
-              onClick={() => navigate('/client-registration')}
-              className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-colors duration-200 inline-flex items-center justify-center min-h-[48px]"
-            >
-              Apply Now
-            </button>
-          </div>
-        </section>
-
-        {/* Apply to Distribute Section */}
-        <section>
-          <div className="card p-6 sm:p-8 md:p-10">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 tracking-tight">
-                Apply to Distribute
-              </h2>
-              <p className="text-base sm:text-lg text-gray-700 mb-6 leading-relaxed">
-                We partner with established beauty distributors committed to premium brands and long-term growth.
-              </p>
-              <ul className="space-y-3 sm:space-y-4">
-                <li className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex-shrink-0 mt-0.5">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                  </div>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Active presence in beauty or professional nail care
-                  </p>
-                </li>
-                <li className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex-shrink-0 mt-0.5">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                  </div>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Strong local retail or distribution network
-                  </p>
-                </li>
-                <li className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex-shrink-0 mt-0.5">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                  </div>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Commitment to premium brand standards
-                  </p>
-                </li>
-                <li className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex-shrink-0 mt-0.5">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                  </div>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Capacity to meet minimum volumes and manage stock
-                  </p>
-                </li>
-                <li className="flex items-start gap-3 sm:gap-4">
-                  <div className="flex-shrink-0 mt-0.5">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                  </div>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Collaborative, growth-focused approach
-                  </p>
-                </li>
-              </ul>
-              <div className="mt-6 sm:mt-8 text-center">
-                <button
-                  onClick={() => navigate('/client-registration')}
-                  className="btn-primary px-6 sm:px-8 py-3 sm:py-4"
-                >
-                  Apply to Distribute
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Instagram Feed Section */}
         <div className="mt-4 sm:mt-6 md:mt-8">
