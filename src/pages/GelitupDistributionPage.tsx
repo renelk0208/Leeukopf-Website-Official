@@ -71,7 +71,7 @@ export default function GelitupDistributionPage() {
                 </div>
                 <div>
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
-                    180+ BEST-SELLING SKU's
+                    180+ BEST-SELLING SKUs
                   </h3>
                   <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                     The shades professionals reorder again and again.
@@ -87,7 +87,7 @@ export default function GelitupDistributionPage() {
                     FAST DISPATCH - JUST 1 WEEK
                   </h3>
                   <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Because your shelves shouldn't wait
+                    Because your shelves shouldn't wait.
                   </p>
                 </div>
               </div>
