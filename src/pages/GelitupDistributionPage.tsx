@@ -1,7 +1,6 @@
 import PageTemplate from '../components/PageTemplate';
 import OptimizedImage from '../components/OptimizedImage';
 import InstagramFeed from '../components/InstagramFeed';
-import StartHereBanner from '../components/StartHereBanner';
 import DistributorMap from '../components/DistributorMap';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 import { CheckCircle } from 'lucide-react';
@@ -22,9 +21,6 @@ export default function GelitupDistributionPage() {
       ctaText="Become a Distributor"
       heroImage="/img/hero/our-brand-hero.jpg"
     >
-      {/* Start Your Brand Banner */}
-      <StartHereBanner />
-
       <div className="grid grid-cols-1 gap-8 sm:gap-10 md:gap-12">
         {/* GEL.IT.UP Brand Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 p-4 sm:p-6 md:p-8 bg-white rounded-lg border border-gray-200">
