@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoadingFallback from './components/LoadingFallback';
 
@@ -11,8 +11,7 @@ const CpnpComplianceSupportPage = lazy(() => import('./pages/CpnpComplianceSuppo
 const PrivateLabelPage = lazy(() => import('./pages/PrivateLabelPage'));
 const PrivateLabelBottlesPage = lazy(() => import('./pages/PrivateLabelBottlesPage'));
 const PrivateLabelBulkPage = lazy(() => import('./pages/PrivateLabelBulkPage'));
-const OurBrandsPage = lazy(() => import('./pages/OurBrandsPage'));
-const DistributorsWantedPage = lazy(() => import('./pages/DistributorsWantedPage'));
+const GelitupDistributionPage = lazy(() => import('./pages/GelitupDistributionPage'));
 const ClientRegistrationPage = lazy(() => import('./pages/ClientRegistrationPage'));
 const TermsOfUsePage = lazy(() => import('./pages/TermsOfUsePage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
@@ -84,7 +83,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
           <Route path="/cpnp-compliance-support" element={<CpnpComplianceSupportPage />} />
-          <Route path="/distributors-wanted" element={<DistributorsWantedPage />} />
+          <Route path="/distributors-wanted" element={<Navigate to="/our-brands" replace />} />
           <Route path="/client-registration" element={<ClientRegistrationPage />} />
           <Route path="/season-trends" element={<SeasonTrendsPage />} />
           <Route path="/valentines" element={<ValentinesPage />} />
@@ -144,7 +143,7 @@ function App() {
           <Route path="/private-label/bulk" element={<PrivateLabelBulkPage />} />
 
           {/* Brands */}
-          <Route path="/our-brands" element={<OurBrandsPage />} />
+          <Route path="/our-brands" element={<GelitupDistributionPage />} />
           <Route path="/our-brands/gel-it-up" element={<GelItUpPage />} />
 
           {/* Legal Pages */}

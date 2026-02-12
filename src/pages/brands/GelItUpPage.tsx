@@ -40,7 +40,7 @@ export default function GelItUpPage() {
       subtitle="Premium gel polish system with exceptional durability and shine. Professional quality for salon and home use."
       breadcrumbs={[
         { label: 'Home', path: '/' },
-        { label: 'Our Brands', path: '/our-brands' },
+        { label: 'Gelitup Distribution', path: '/our-brands' },
         { label: 'GEL.IT.UP' }
       ]}
     >
