@@ -31,7 +31,7 @@ const distributorCountries: Distributor[] = [
 ];
 
 export default function DistributorMap() {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState<Distributor | null>(null);
 
   return (
