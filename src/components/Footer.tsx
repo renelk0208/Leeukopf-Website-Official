@@ -120,17 +120,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/our-brands" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Our Brands
+                  Gelitup Distribution
                 </Link>
               </li>
               <li>
                 <Link to="/private-label" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Private Label
-                </Link>
-              </li>
-              <li>
-                <Link to="/distributors-wanted" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
-                  Become a Distributor
                 </Link>
               </li>
               <li>
