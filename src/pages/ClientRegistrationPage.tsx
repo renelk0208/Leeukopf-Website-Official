@@ -2,6 +2,7 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import { trackLead } from '../lib/metaPixel';
+import DistributorMap from '../components/DistributorMap';
 
 interface FormData {
   company: string;
@@ -42,6 +43,7 @@ interface FormData {
   countries_covered: string;
   distribution_channels: string;
   estimated_monthly_volume: string;
+  years_in_business: string;
   // Private Label fields
   brand_name: string;
   product_interest: string;
@@ -163,6 +165,7 @@ export default function ClientRegistrationPage() {
     countries_covered: '',
     distribution_channels: '',
     estimated_monthly_volume: '',
+    years_in_business: '',
     // Private Label fields
     brand_name: '',
     product_interest: '',
@@ -317,7 +320,8 @@ export default function ClientRegistrationPage() {
         ...prev,
         countries_covered: '',
         distribution_channels: '',
-        estimated_monthly_volume: ''
+        estimated_monthly_volume: '',
+        years_in_business: ''
       }));
     }
     if (tabKey !== 'PrivateLabel') {
@@ -496,6 +500,7 @@ export default function ClientRegistrationPage() {
         countries_covered: '',
         distribution_channels: '',
         estimated_monthly_volume: '',
+        years_in_business: '',
         // Private Label fields
         brand_name: '',
         product_interest: '',
@@ -1165,6 +1170,41 @@ export default function ClientRegistrationPage() {
                   placeholder="e.g., 500-1000 units"
                 />
               </div>
+              
+              {/* Years in Business */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-3">
+                  How long have you been in business?
+                </label>
+                <div className="space-y-2">
+                  {['<1 year', '1–3 years', '3–5 years', '5+ years'].map((option) => (
+                    <label key={option} className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="years_in_business"
+                        value={option}
+                        checked={formData.years_in_business === option}
+                        onChange={handleInputChange}
+                        className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
+                      />
+                      <span className="text-sm text-gray-700">{option}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sales Content Section */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">WE PROVIDE SALES CONTENT</h4>
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-700 font-medium">Social Media Contents</p>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We invest significantly in producing premium, high-impact content designed to engage, educate, 
+                    and build meaningful connections with your audience. This content doesn't just support revenue 
+                    growth — it also helps accelerate your social media presence and expand your follower base organically.
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
@@ -1481,6 +1521,11 @@ export default function ClientRegistrationPage() {
           </div>
         </div>
       </form>
+
+      {/* Distributor Network Map */}
+      <div className="mt-8">
+        <DistributorMap />
+      </div>
     </PageTemplate>
   );
 }

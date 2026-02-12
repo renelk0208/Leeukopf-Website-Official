@@ -51,6 +51,7 @@ interface FormData {
   countries_covered?: string;
   distribution_channels?: string;
   estimated_monthly_volume?: string;
+  years_in_business?: string;
   // Private Label fields
   brand_name?: string;
   product_interest?: string;
@@ -118,6 +119,7 @@ ${formData.vatEori ? `<p><strong>VAT Registration number:</strong> ${formData.va
 ${formData.countries_covered ? `<p><strong>Countries Covered:</strong> ${formData.countries_covered}</p>` : ''}
 ${formData.distribution_channels ? `<p><strong>Distribution Channels:</strong><br>${formData.distribution_channels.replace(/\n/g, '<br>')}</p>` : ''}
 ${formData.estimated_monthly_volume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.estimated_monthly_volume}</p>` : ''}
+${formData.years_in_business ? `<p><strong>Years in Business:</strong> ${formData.years_in_business}</p>` : ''}
 `;
   } else if (formData.client_type === 'PrivateLabel') {
     body += `
@@ -266,7 +268,7 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   // District, Postal Code, Street, Billing Address, Shipping Address, Website, Instagram, 
   // Business Type, Interests, Monthly Volume, VAT Registration, Interest: Distribution, 
   // Interest: Private Label, Request Sample Box, Notes, GDPR Consent, Honeypot, Client Type,
-  // Countries Covered, Distribution Channels, Estimated Monthly Volume,
+  // Countries Covered, Distribution Channels, Estimated Monthly Volume, Years in Business,
   // Brand Name, Product Interest, Target MOQ, Target Launch Date,
   // Country Audience, Avg Views
   const interestsStr = Array.isArray(formData.interests) ? formData.interests.join(", ") : "";
@@ -304,6 +306,7 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
     formData.countries_covered || "",
     formData.distribution_channels || "",
     formData.estimated_monthly_volume || "",
+    formData.years_in_business || "",
     // Private Label fields
     formData.brand_name || "",
     formData.product_interest || "",
