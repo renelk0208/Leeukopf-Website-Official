@@ -36,7 +36,7 @@ const distributorCountries: Distributor[] = [
       {
         name: 'GEL.IT.UP Greece',
         address: '4 Kalamon, Peristeri, 12131',
-        phone: '+302102914373',
+        phone: '+30 210 291 4373',
         email: 'orders@gelitup.gr',
         website: 'https://gelitup.gr'
       }
