@@ -78,7 +78,7 @@ export default function PremiumFiberGlassPage() {
             </p>
           </div>
           <a
-            href="/docs/technical-specs/Premium Fibreglass Builder Gel Specifications.xlsx"
+            href="/docs/technical-specs/Premium-Fibreglass-Builder-Gel-Specifications.xlsx"
             download
             className="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
           >
