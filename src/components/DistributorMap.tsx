@@ -37,7 +37,7 @@ const distributorCountries: Distributor[] = [
         name: 'GEL.IT.UP Bulgaria and GEL.IT.UP Nails School',
         address: 'INFINITY NAILS Ltd., Midia Enos No. 3, Entrance 1, Floor 9, Ruse, UIC (Company ID): 203055670, Bulgaria',
         phone: '+359876850055',
-        email: 'gelitup_prorofessional@abv.bg',
+        email: 'gelitup_professional@abv.bg',
         website: 'https://gelitup.bg'
       }
     ]
@@ -102,7 +102,7 @@ const distributorCountries: Distributor[] = [
         name: 'Centrecare',
         address: 'P.P GERMANOU 14, Thessaloniki, 54622, Greece',
         phone: '+30 2310 265200',
-        email: 'Centercare@centercare.gr'
+        email: 'Centrecare@centercare.gr'
       },
       {
         name: 'Nails Services Institute Elena Chiou',
