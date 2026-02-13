@@ -200,6 +200,8 @@ export default function ClientRegistrationPage() {
         return typeof value === 'string' && value === '' ? 'Country is required' : '';
       case 'businessType':
         return typeof value === 'string' && value === '' ? 'Business type is required' : '';
+      case 'vatEori':
+        return typeof value === 'string' && value.trim() === '' ? 'VAT Registration number is required' : '';
       case 'gdprConsent':
         return typeof value === 'boolean' && !value ? 'You must agree to the data processing terms' : '';
       case 'privacyPolicyAccepted':
@@ -355,6 +357,12 @@ export default function ClientRegistrationPage() {
     newErrors.businessType = validateField('businessType', formData.businessType);
     newErrors.gdprConsent = validateField('gdprConsent', formData.gdprConsent);
     newErrors.privacyPolicyAccepted = validateField('privacyPolicyAccepted', formData.privacyPolicyAccepted);
+
+    // VAT number is required for Distributors, Salon Supply, and Brand Owners
+    const businessTypesRequiringVAT = ['Distributor', 'Salon Supply', 'Brand Owner'];
+    if (businessTypesRequiringVAT.includes(formData.businessType)) {
+      newErrors.vatEori = validateField('vatEori', formData.vatEori);
+    }
 
     // Business Interest validation: at least one must be selected
     if (!formData.interestPrivateLabel && !formData.interestDistribution && !formData.interestInfluencer) {
@@ -914,6 +922,9 @@ export default function ClientRegistrationPage() {
               <div>
                 <label htmlFor="vatEori" className="block text-sm font-medium text-gray-900 mb-2">
                   VAT Registration number
+                  {['Distributor', 'Salon Supply', 'Brand Owner'].includes(formData.businessType) && (
+                    <span className="text-red-500"> *</span>
+                  )}
                 </label>
                 <input
                   type="text"
@@ -921,8 +932,18 @@ export default function ClientRegistrationPage() {
                   name="vatEori"
                   value={formData.vatEori}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                    errors.vatEori ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  aria-required={['Distributor', 'Salon Supply', 'Brand Owner'].includes(formData.businessType)}
+                  aria-invalid={!!errors.vatEori}
+                  aria-describedby={errors.vatEori ? 'vatEori-error' : undefined}
                 />
+                {errors.vatEori && (
+                  <p id="vatEori-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {errors.vatEori}
+                  </p>
+                )}
               </div>
             </div>
 
