@@ -31,13 +31,13 @@ const distributorCountries: Distributor[] = [
   },
   { 
     country: 'Bulgaria',
-    coordinates: '42.6977,23.3219', // Sofia
+    coordinates: '43.8563,25.9568', // Ruse
     locations: [
       {
-        name: 'GEL.IT.UP Bulgaria',
-        address: 'Bulgaria',
+        name: 'GEL.IT.UP Bulgaria and GEL.IT.UP Nails School',
+        address: 'INFINITY NAILS Ltd., Midia Enos No. 3, Entrance 1, Floor 9, Ruse, UIC (Company ID): 203055670, Bulgaria',
         phone: '+359876850055',
-        email: 'sales@gelitup.bg',
+        email: 'gelitup_prorofessional@abv.bg',
         website: 'https://gelitup.bg'
       }
     ]
@@ -71,7 +71,7 @@ const distributorCountries: Distributor[] = [
         website: 'https://nailtalesacademy.gr/'
       },
       {
-        name: 'GEL.IT.UP Greece',
+        name: 'GEL.IT.UP Greece / GEL.IT.UP Nail College',
         address: '4 Kalamon, Peristeri, 12131',
         phone: '+30 210 291 4373',
         email: 'orders@gelitup.gr',
@@ -97,6 +97,28 @@ const distributorCountries: Distributor[] = [
         phone: '+30 2311824834',
         email: 'info@beautycompany.gr',
         website: 'https://beautycompany.gr'
+      },
+      {
+        name: 'Centrecare',
+        address: 'P.P GERMANOU 14, Thessaloniki, 54622, Greece',
+        phone: '+30 2310 265200',
+        email: 'Centercare@centercare.gr'
+      },
+      {
+        name: 'Nails Services Institute Elena Chiou',
+        address: 'Greece',
+        phone: '+30 2241300919, +30 2241112572',
+        email: 'nsinailsgr@gmail.com'
+      },
+      {
+        name: 'Master Educator Nails Artist and Podology Trade and Training Center',
+        address: 'Karpathoy 17, RHODES, 85100, Greece'
+      },
+      {
+        name: 'HairMod - Vrettakos Panagiotis',
+        address: 'Ippodamou 8 Patra, Patra, 26442, Greece',
+        phone: '+30 2614008088',
+        email: 'info@hairmod.gr'
       }
     ]
   },
