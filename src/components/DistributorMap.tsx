@@ -1,7 +1,6 @@
+import { useState } from 'react';
 import { MapPin } from 'lucide-react';
-
-// Temporary placeholder map URL - will be replaced with final distributor map
-const MAP_IFRAME_SRC = "https://www.google.com/maps?q=Greece&output=embed";
+import { useNavigate } from 'react-router-dom';
 
 interface DistributorLocation {
   name: string;
@@ -13,17 +12,56 @@ interface DistributorLocation {
 
 interface Distributor {
   country: string;
+  coordinates: string; // For Google Maps embed
   locations?: DistributorLocation[];
 }
 
 // Countries with distributor information (in alphabetical order)
 const distributorCountries: Distributor[] = [
-  { country: 'Belgium' },
-  { country: 'Bulgaria' },
-  { country: 'Cyprus' },
-  { country: 'France' },
+  { 
+    country: 'Belgium',
+    coordinates: '50.8503,4.3517', // Brussels
+    locations: [
+      {
+        name: 'GEL.IT.UP Belgium',
+        address: 'Gentsesteenweg 200, 9800 Deinze, Belgium',
+        phone: '+32 484963975'
+      }
+    ]
+  },
+  { 
+    country: 'Bulgaria',
+    coordinates: '43.8563,25.9568', // Ruse
+    locations: [
+      {
+        name: 'GEL.IT.UP Bulgaria and GEL.IT.UP Nails School',
+        address: 'INFINITY NAILS Ltd., Midia Enos No. 3, Entrance 1, Floor 9, Ruse, UIC (Company ID): 203055670, Bulgaria',
+        phone: '+359876850055',
+        email: 'gelitup_professional@abv.bg',
+        website: 'https://gelitup.bg'
+      }
+    ]
+  },
+  { 
+    country: 'Cyprus',
+    coordinates: '35.1264,33.4299' // Nicosia
+  },
+  { 
+    country: 'France',
+    coordinates: '48.8566,2.3522', // Paris
+    locations: [
+      {
+        name: 'GEL.IT.UP France',
+        address: '7 Rue du Chemin Blanc, 63800 Cournon d\'Auvergne, France',
+        phone: '(+33) 0473845460',
+        email: 'info@gelitup.fr',
+        website: 'https://gelitup.fr/'
+      }
+    ]
+  },
   { 
     country: 'Greece',
+    coordinates: '37.9838,23.7275', // Athens
     locations: [
       {
         name: 'GEL.IT.UP Corinth',
@@ -33,20 +71,126 @@ const distributorCountries: Distributor[] = [
         website: 'https://nailtalesacademy.gr/'
       },
       {
-        name: 'GEL.IT.UP Greece',
+        name: 'GEL.IT.UP Greece / GEL.IT.UP Nail College',
         address: '4 Kalamon, Peristeri, 12131',
         phone: '+30 210 291 4373',
         email: 'orders@gelitup.gr',
         website: 'https://gelitup.gr'
+      },
+      {
+        name: 'Comoprof',
+        address: '5 Pyrsinella Vasileiou Street, Ioannina 453 32, Greece',
+        phone: '+30 2651 039850',
+        email: 'info@comoprof.gr',
+        website: 'https://www.comoprof.gr/'
+      },
+      {
+        name: 'Sonothing',
+        address: '3 Thanou Mikroutsikou Street (134 Knossou Avenue), Heraklion, Crete',
+        phone: '+30 2810324235',
+        email: 'info@sonothing.gr',
+        website: 'https://www.sonothing.gr/'
+      },
+      {
+        name: 'Bagatouris',
+        address: '48 Vasilissis Olgas Avenue, Thessaloniki 546 42, Greece',
+        phone: '+30 2311824834',
+        email: 'info@beautycompany.gr',
+        website: 'https://beautycompany.gr'
+      },
+      {
+        name: 'Centrecare',
+        address: 'P.P GERMANOU 14, Thessaloniki, 54622, Greece',
+        phone: '+30 2310 265200',
+        email: 'Centrecare@centercare.gr'
+      },
+      {
+        name: 'Nails Services Institute Elena Chiou',
+        address: 'Greece',
+        phone: '+30 2241300919, +30 2241112572',
+        email: 'nsinailsgr@gmail.com'
+      },
+      {
+        name: 'Master Educator Nails Artist and Podology Trade and Training Center',
+        address: 'Karpathoy 17, RHODES, 85100, Greece'
+      },
+      {
+        name: 'HairMod - Vrettakos Panagiotis',
+        address: 'Ippodamou 8 Patra, Patra, 26442, Greece',
+        phone: '+30 2614008088',
+        email: 'info@hairmod.gr'
       }
     ]
   },
-  { country: 'Kingdom of Saudi Arabia' },
-  { country: 'Qatar' },
-  { country: 'United States' }
+  { 
+    country: 'Kingdom of Saudi Arabia',
+    coordinates: '21.5433,39.1728', // Jeddah
+    locations: [
+      {
+        name: 'GEL.IT.UP Saudi Arabia - BEAUTY ADDRESS TRADING CO.LTD',
+        address: 'AL KHAYAT CENTER, AL TAHLIA STREET ROLEX BOUTIQUE, 2ND FLOOR # 405, Jeddah, 23322, Kingdom of Saudi Arabia',
+        phone: '+966 55 337 4320'
+      }
+    ]
+  },
+  { 
+    country: 'Qatar',
+    coordinates: '25.4052,51.4892', // Lusail City
+    locations: [
+      {
+        name: 'GEL.IT.UP Qatar',
+        address: 'Burj Marina Tower, 11th Floor, Bldg. No-108 Street-303, Zone-69, PO Box-5774 Lusail City Doha, Qatar',
+        phone: '+974 4418 0270'
+      }
+    ]
+  },
+  { 
+    country: 'United States',
+    coordinates: '25.7907,-80.1300', // Miami Beach, FL
+    locations: [
+      {
+        name: 'GEL.IT.UP USA',
+        address: '400 Alton Rd Ste 105, Miami Beach, FL 33139',
+        phone: '(+1) 786 395-8506, (+1) 786 200-2062',
+        email: 'usagelitup@gmail.com',
+        website: 'www.gelitup.us.com'
+      }
+    ]
+  }
 ];
 
 export default function DistributorMap() {
+  const navigate = useNavigate();
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+
+  // Get the selected distributor data
+  const selectedDistributor = selectedCountry 
+    ? distributorCountries.find(d => d.country === selectedCountry)
+    : null;
+
+  // Generate map URL based on selected country or specific address
+  const getMapUrl = () => {
+    if (selectedAddress) {
+      // Show specific address with higher zoom
+      return `https://www.google.com/maps?q=${encodeURIComponent(selectedAddress)}&output=embed&z=15`;
+    }
+    if (selectedDistributor && selectedDistributor.coordinates) {
+      return `https://www.google.com/maps?q=${selectedDistributor.coordinates}&output=embed&z=6`;
+    }
+    // Default world view centered on Europe
+    return "https://www.google.com/maps?q=Europe&output=embed&z=3";
+  };
+
+  const handleCountryClick = (country: string) => {
+    setSelectedCountry(country === selectedCountry ? null : country);
+    setSelectedAddress(null); // Reset selected address when changing country
+  };
+
+  const handleAddressClick = (address: string) => {
+    setSelectedAddress(address);
+  };
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
       <div className="flex items-center space-x-3 mb-4 sm:mb-6">
@@ -63,7 +207,8 @@ export default function DistributorMap() {
       <div className="mb-6">
         <div className="relative w-full overflow-hidden" style={{ borderRadius: '16px' }}>
           <iframe
-            src={MAP_IFRAME_SRC}
+            key={getMapUrl()} // Force re-render when URL changes
+            src={getMapUrl()}
             width="100%"
             height="520"
             style={{ border: 0, borderRadius: '16px' }}
@@ -76,61 +221,97 @@ export default function DistributorMap() {
 
       {/* Country list */}
       <div className="mb-6">
-        <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Current Distributor Locations</h4>
+        <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
+          Current Distributor Locations - Click to View Details
+        </h4>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {distributorCountries.map((distributor) => (
-            <div
+            <button
               key={distributor.country}
-              className="flex items-center space-x-2 p-3 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors"
+              onClick={() => handleCountryClick(distributor.country)}
+              className={`flex items-center space-x-2 p-3 rounded-lg border transition-all ${
+                selectedCountry === distributor.country
+                  ? 'bg-primary text-white border-primary shadow-lg scale-105'
+                  : 'bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 hover:border-primary/40 text-gray-900'
+              }`}
             >
-              <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-              <span className="text-sm font-medium text-gray-900">{distributor.country}</span>
-            </div>
+              <MapPin className={`w-4 h-4 flex-shrink-0 ${
+                selectedCountry === distributor.country ? 'text-white' : 'text-primary'
+              }`} />
+              <span className="text-sm font-medium text-left">{distributor.country}</span>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Greece distributor details */}
-      {distributorCountries.find(d => d.country === 'Greece')?.locations && (
-        <div className="mb-6 p-4 sm:p-6 bg-gray-50 rounded-lg border border-gray-200">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Greece Distributors</h4>
-          <div className="space-y-4">
-            {distributorCountries.find(d => d.country === 'Greece')?.locations?.map((location, index) => (
-              <div key={index} className="pb-4 last:pb-0 border-b border-gray-200 last:border-0">
-                <p className="font-semibold text-gray-900 mb-2">{location.name}</p>
-                <p className="text-sm text-gray-600 mb-1">{location.address}</p>
-                {location.phone && (
-                  <p className="text-sm text-gray-600">Tel: {location.phone}</p>
-                )}
-                {location.email && (
-                  <p className="text-sm text-gray-600">
-                    Email: <a href={`mailto:${location.email}`} className="text-primary hover:underline">{location.email}</a>
-                  </p>
-                )}
-                {location.website && (
-                  <p className="text-sm text-gray-600">
-                    Website: <a 
-                      href={location.website} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline"
-                    >
-                      {location.website.replace('https://', '')}
-                    </a>
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
+      {/* Selected country distributor details */}
+      {selectedDistributor && (
+        <div className="mb-6 p-4 sm:p-6 bg-gray-50 rounded-lg border border-gray-200 animate-fadeIn">
+          <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+            {selectedDistributor.country} Distributors
+          </h4>
+          {selectedDistributor.coordinates && (
+            <p className="text-sm text-gray-600 mb-4">
+              📍 Coordinates: {selectedDistributor.coordinates}
+            </p>
+          )}
+          {selectedDistributor.locations && selectedDistributor.locations.length > 0 ? (
+            <div className="space-y-4">
+              {selectedDistributor.locations.map((location, index) => (
+                <div key={index} className="pb-4 last:pb-0 border-b border-gray-200 last:border-0">
+                  <p className="font-semibold text-gray-900 mb-2">{location.name}</p>
+                  <button
+                    onClick={() => handleAddressClick(location.address)}
+                    className="text-sm text-primary hover:text-primary/80 hover:underline mb-1 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded block w-full"
+                    title="Click to view on map"
+                  >
+                    📍 {location.address}
+                  </button>
+                  {location.phone && (
+                    <p className="text-sm text-gray-600">Tel: {location.phone}</p>
+                  )}
+                  {location.email && (
+                    <p className="text-sm text-gray-600">
+                      Email: <a href={`mailto:${location.email}`} className="text-primary hover:underline">{location.email}</a>
+                    </p>
+                  )}
+                  {location.website && (
+                    <p className="text-sm text-gray-600">
+                      Website: <a 
+                        href={location.website.startsWith('http') ? location.website : `https://${location.website}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {location.website.replace(/^(https?:\/\/)?(www\.)?/, '')}
+                      </a>
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-600 italic">
+              No detailed distributor information available for this location yet.
+            </p>
+          )}
         </div>
       )}
 
-      <div className="p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-lg">
-        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-          <span className="font-semibold text-gray-900">Interested in becoming a distributor?</span> 
-          <br className="sm:hidden" />
-          <span className="inline sm:ml-1">Contact us to discuss partnership opportunities in your region and join our growing global network.</span>
+      {/* Call to action - pink/primary themed with centered layout */}
+      <div className="p-6 sm:p-8 bg-gradient-to-br from-primary to-primary/90 text-white rounded-lg text-center">
+        <h4 className="text-lg sm:text-xl font-bold mb-3">
+          Interested in becoming a distributor?
+        </h4>
+        <p className="text-sm sm:text-base mb-6 leading-relaxed text-white/90">
+          Contact us to discuss partnership opportunities in your region and join our growing global network.
         </p>
+        <button
+          onClick={() => navigate('/client-registration')}
+          className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 py-3 rounded-lg text-base transition-colors duration-200 inline-flex items-center justify-center min-h-[48px]"
+        >
+          Apply Now
+        </button>
       </div>
     </div>
   );
