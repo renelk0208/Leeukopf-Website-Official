@@ -1,7 +1,6 @@
+import { useState } from 'react';
 import { MapPin } from 'lucide-react';
-
-// Temporary placeholder map URL - will be replaced with final distributor map
-const MAP_IFRAME_SRC = "https://www.google.com/maps?q=Greece&output=embed";
+import { useNavigate } from 'react-router-dom';
 
 interface DistributorLocation {
   name: string;
@@ -13,17 +12,56 @@ interface DistributorLocation {
 
 interface Distributor {
   country: string;
+  coordinates: string; // For Google Maps embed
   locations?: DistributorLocation[];
 }
 
 // Countries with distributor information (in alphabetical order)
 const distributorCountries: Distributor[] = [
-  { country: 'Belgium' },
-  { country: 'Bulgaria' },
-  { country: 'Cyprus' },
-  { country: 'France' },
+  { 
+    country: 'Belgium',
+    coordinates: '50.8503,4.3517', // Brussels
+    locations: [
+      {
+        name: 'GEL.IT.UP Belgium',
+        address: 'Gentsesteenweg 200, 9800 Deinze, Belgium',
+        phone: '+32 484963975'
+      }
+    ]
+  },
+  { 
+    country: 'Bulgaria',
+    coordinates: '42.6977,23.3219', // Sofia
+    locations: [
+      {
+        name: 'GEL.IT.UP Bulgaria',
+        address: 'Bulgaria',
+        phone: '+359876850055',
+        email: 'sales@gelitup.bg',
+        website: 'https://gelitup.bg'
+      }
+    ]
+  },
+  { 
+    country: 'Cyprus',
+    coordinates: '35.1264,33.4299' // Nicosia
+  },
+  { 
+    country: 'France',
+    coordinates: '48.8566,2.3522', // Paris
+    locations: [
+      {
+        name: 'GEL.IT.UP France',
+        address: '7 Rue du Chemin Blanc, 63800 Cournon d\'Auvergne, France',
+        phone: '(+33) 0473845460',
+        email: 'info@gelitup.fr',
+        website: 'https://gelitup.fr/'
+      }
+    ]
+  },
   { 
     country: 'Greece',
+    coordinates: '37.9838,23.7275', // Athens
     locations: [
       {
         name: 'GEL.IT.UP Corinth',
@@ -38,15 +76,66 @@ const distributorCountries: Distributor[] = [
         phone: '+30 210 291 4373',
         email: 'orders@gelitup.gr',
         website: 'https://gelitup.gr'
+      },
+      {
+        name: 'Comoprof',
+        address: '5 Pyrsinella Vasileiou Street, Ioannina 453 32, Greece',
+        phone: '+30 2651 039850',
+        email: 'info@comoprof.gr',
+        website: 'https://www.comoprof.gr/'
+      },
+      {
+        name: 'Sonothing',
+        address: '3 Thanou Mikroutsikou Street (134 Knossou Avenue), Heraklion, Crete',
+        phone: '+30 2810324235',
+        email: 'info@sonothing.gr',
+        website: 'https://www.sonothing.gr/'
+      },
+      {
+        name: 'Bagatouris',
+        address: '48 Vasilissis Olgas Avenue, Thessaloniki 546 42, Greece',
+        phone: '+30 2311824834',
+        email: 'info@beautycompany.gr',
+        website: 'https://beautycompany.gr'
       }
     ]
   },
-  { country: 'Kingdom of Saudi Arabia' },
-  { country: 'Qatar' },
-  { country: 'United States' }
+  { 
+    country: 'Kingdom of Saudi Arabia',
+    coordinates: '24.7136,46.6753' // Riyadh
+  },
+  { 
+    country: 'Qatar',
+    coordinates: '25.2854,51.5310' // Doha
+  },
+  { 
+    country: 'United States',
+    coordinates: '40.7128,-74.0060' // New York
+  }
 ];
 
 export default function DistributorMap() {
+  const navigate = useNavigate();
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+
+  // Get the selected distributor data
+  const selectedDistributor = selectedCountry 
+    ? distributorCountries.find(d => d.country === selectedCountry)
+    : null;
+
+  // Generate map URL based on selected country
+  const getMapUrl = () => {
+    if (selectedDistributor && selectedDistributor.coordinates) {
+      return `https://www.google.com/maps?q=${selectedDistributor.coordinates}&output=embed&z=6`;
+    }
+    // Default world view centered on Europe
+    return "https://www.google.com/maps?q=Europe&output=embed&z=3";
+  };
+
+  const handleCountryClick = (country: string) => {
+    setSelectedCountry(country === selectedCountry ? null : country);
+  };
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
       <div className="flex items-center space-x-3 mb-4 sm:mb-6">
@@ -63,7 +152,8 @@ export default function DistributorMap() {
       <div className="mb-6">
         <div className="relative w-full overflow-hidden" style={{ borderRadius: '16px' }}>
           <iframe
-            src={MAP_IFRAME_SRC}
+            key={getMapUrl()} // Force re-render when URL changes
+            src={getMapUrl()}
             width="100%"
             height="520"
             style={{ border: 0, borderRadius: '16px' }}
@@ -76,26 +166,37 @@ export default function DistributorMap() {
 
       {/* Country list */}
       <div className="mb-6">
-        <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Current Distributor Locations</h4>
+        <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
+          Current Distributor Locations - Click to View Details
+        </h4>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {distributorCountries.map((distributor) => (
-            <div
+            <button
               key={distributor.country}
-              className="flex items-center space-x-2 p-3 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors"
+              onClick={() => handleCountryClick(distributor.country)}
+              className={`flex items-center space-x-2 p-3 rounded-lg border transition-all ${
+                selectedCountry === distributor.country
+                  ? 'bg-primary text-white border-primary shadow-lg scale-105'
+                  : 'bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 hover:border-primary/40 text-gray-900'
+              }`}
             >
-              <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-              <span className="text-sm font-medium text-gray-900">{distributor.country}</span>
-            </div>
+              <MapPin className={`w-4 h-4 flex-shrink-0 ${
+                selectedCountry === distributor.country ? 'text-white' : 'text-primary'
+              }`} />
+              <span className="text-sm font-medium text-left">{distributor.country}</span>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Greece distributor details */}
-      {distributorCountries.find(d => d.country === 'Greece')?.locations && (
-        <div className="mb-6 p-4 sm:p-6 bg-gray-50 rounded-lg border border-gray-200">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Greece Distributors</h4>
+      {/* Selected country distributor details */}
+      {selectedDistributor?.locations && selectedDistributor.locations.length > 0 && (
+        <div className="mb-6 p-4 sm:p-6 bg-gray-50 rounded-lg border border-gray-200 animate-fadeIn">
+          <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
+            {selectedDistributor.country} Distributors
+          </h4>
           <div className="space-y-4">
-            {distributorCountries.find(d => d.country === 'Greece')?.locations?.map((location, index) => (
+            {selectedDistributor.locations.map((location, index) => (
               <div key={index} className="pb-4 last:pb-0 border-b border-gray-200 last:border-0">
                 <p className="font-semibold text-gray-900 mb-2">{location.name}</p>
                 <p className="text-sm text-gray-600 mb-1">{location.address}</p>
@@ -115,7 +216,7 @@ export default function DistributorMap() {
                       rel="noopener noreferrer"
                       className="text-primary hover:underline"
                     >
-                      {location.website.replace('https://', '')}
+                      {location.website.replace('https://', '').replace('www.', '')}
                     </a>
                   </p>
                 )}
@@ -125,12 +226,20 @@ export default function DistributorMap() {
         </div>
       )}
 
-      <div className="p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-lg">
-        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-          <span className="font-semibold text-gray-900">Interested in becoming a distributor?</span> 
-          <br className="sm:hidden" />
-          <span className="inline sm:ml-1">Contact us to discuss partnership opportunities in your region and join our growing global network.</span>
+      {/* Call to action - pink/primary themed with centered layout */}
+      <div className="p-6 sm:p-8 bg-gradient-to-br from-primary to-primary/90 text-white rounded-lg text-center">
+        <h4 className="text-lg sm:text-xl font-bold mb-3">
+          Interested in becoming a distributor?
+        </h4>
+        <p className="text-sm sm:text-base mb-6 leading-relaxed text-white/90">
+          Contact us to discuss partnership opportunities in your region and join our growing global network.
         </p>
+        <button
+          onClick={() => navigate('/client-registration')}
+          className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 py-3 rounded-lg text-base transition-colors duration-200 inline-flex items-center justify-center min-h-[48px]"
+        >
+          Apply Now
+        </button>
       </div>
     </div>
   );
