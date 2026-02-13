@@ -75,7 +75,7 @@ export default function PolygelCarousel({
                 </div>
                 
                 {/* Product Name Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent pt-16 pb-4 sm:pb-6">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-20 pb-12 sm:pb-16">
                   <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold text-center drop-shadow-lg">
                     {image.name}
                   </h3>
