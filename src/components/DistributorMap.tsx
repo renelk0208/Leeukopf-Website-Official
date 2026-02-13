@@ -209,45 +209,56 @@ export default function DistributorMap() {
       </div>
 
       {/* Selected country distributor details */}
-      {selectedDistributor?.locations && selectedDistributor.locations.length > 0 && (
+      {selectedDistributor && (
         <div className="mb-6 p-4 sm:p-6 bg-gray-50 rounded-lg border border-gray-200 animate-fadeIn">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
+          <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
             {selectedDistributor.country} Distributors
           </h4>
-          <div className="space-y-4">
-            {selectedDistributor.locations.map((location, index) => (
-              <div key={index} className="pb-4 last:pb-0 border-b border-gray-200 last:border-0">
-                <p className="font-semibold text-gray-900 mb-2">{location.name}</p>
-                <button
-                  onClick={() => handleAddressClick(location.address)}
-                  className="text-sm text-primary hover:text-primary/80 hover:underline mb-1 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded block w-full"
-                  title="Click to view on map"
-                >
-                  📍 {location.address}
-                </button>
-                {location.phone && (
-                  <p className="text-sm text-gray-600">Tel: {location.phone}</p>
-                )}
-                {location.email && (
-                  <p className="text-sm text-gray-600">
-                    Email: <a href={`mailto:${location.email}`} className="text-primary hover:underline">{location.email}</a>
-                  </p>
-                )}
-                {location.website && (
-                  <p className="text-sm text-gray-600">
-                    Website: <a 
-                      href={location.website.startsWith('http') ? location.website : `https://${location.website}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline"
-                    >
-                      {location.website.replace(/^(https?:\/\/)?(www\.)?/, '')}
-                    </a>
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
+          {selectedDistributor.coordinates && (
+            <p className="text-sm text-gray-600 mb-4">
+              📍 Coordinates: {selectedDistributor.coordinates}
+            </p>
+          )}
+          {selectedDistributor.locations && selectedDistributor.locations.length > 0 ? (
+            <div className="space-y-4">
+              {selectedDistributor.locations.map((location, index) => (
+                <div key={index} className="pb-4 last:pb-0 border-b border-gray-200 last:border-0">
+                  <p className="font-semibold text-gray-900 mb-2">{location.name}</p>
+                  <button
+                    onClick={() => handleAddressClick(location.address)}
+                    className="text-sm text-primary hover:text-primary/80 hover:underline mb-1 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded block w-full"
+                    title="Click to view on map"
+                  >
+                    📍 {location.address}
+                  </button>
+                  {location.phone && (
+                    <p className="text-sm text-gray-600">Tel: {location.phone}</p>
+                  )}
+                  {location.email && (
+                    <p className="text-sm text-gray-600">
+                      Email: <a href={`mailto:${location.email}`} className="text-primary hover:underline">{location.email}</a>
+                    </p>
+                  )}
+                  {location.website && (
+                    <p className="text-sm text-gray-600">
+                      Website: <a 
+                        href={location.website.startsWith('http') ? location.website : `https://${location.website}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {location.website.replace(/^(https?:\/\/)?(www\.)?/, '')}
+                      </a>
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-600 italic">
+              No detailed distributor information available for this location yet.
+            </p>
+          )}
         </div>
       )}
 
