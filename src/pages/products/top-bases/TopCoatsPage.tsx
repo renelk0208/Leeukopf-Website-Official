@@ -90,7 +90,7 @@ export default function TopCoatsPage() {
             </p>
           </div>
           <a
-            href="/docs/technical-specs/Leeukopf TopCcoat detail.xlsx"
+            href="/docs/technical-specs/Leeukopf TopCoat detail.xlsx"
             download
             className="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
           >
@@ -411,7 +411,7 @@ export default function TopCoatsPage() {
 
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
             <p className="text-sm text-gray-600 font-light leading-relaxed">
-              <span className="font-medium text-gray-900">Note:</span> Superior abrasion resistance with longest lasting wear time rating among velvet finishes.
+              <span className="font-medium text-gray-900">Note:</span> Superior abrasion resistance with longest-lasting wear time rating among velvet finishes.
             </p>
           </div>
         </div>
