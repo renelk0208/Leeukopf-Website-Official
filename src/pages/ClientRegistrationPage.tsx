@@ -89,6 +89,8 @@ const businessTypes = [
   'Other'
 ];
 
+const businessTypesRequiringVAT = ['Distributor', 'Salon Supply', 'Brand Owner'];
+
 const productInterests = [
   'Gel Polish',
   'Tops',
@@ -359,7 +361,6 @@ export default function ClientRegistrationPage() {
     newErrors.privacyPolicyAccepted = validateField('privacyPolicyAccepted', formData.privacyPolicyAccepted);
 
     // VAT number is required for Distributors, Salon Supply, and Brand Owners
-    const businessTypesRequiringVAT = ['Distributor', 'Salon Supply', 'Brand Owner'];
     if (businessTypesRequiringVAT.includes(formData.businessType)) {
       newErrors.vatEori = validateField('vatEori', formData.vatEori);
     }
@@ -922,7 +923,7 @@ export default function ClientRegistrationPage() {
               <div>
                 <label htmlFor="vatEori" className="block text-sm font-medium text-gray-900 mb-2">
                   VAT Registration number
-                  {['Distributor', 'Salon Supply', 'Brand Owner'].includes(formData.businessType) && (
+                  {businessTypesRequiringVAT.includes(formData.businessType) && (
                     <span className="text-red-500"> *</span>
                   )}
                 </label>
@@ -935,7 +936,7 @@ export default function ClientRegistrationPage() {
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                     errors.vatEori ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  aria-required={['Distributor', 'Salon Supply', 'Brand Owner'].includes(formData.businessType)}
+                  aria-required={businessTypesRequiringVAT.includes(formData.businessType)}
                   aria-invalid={!!errors.vatEori}
                   aria-describedby={errors.vatEori ? 'vatEori-error' : undefined}
                 />
