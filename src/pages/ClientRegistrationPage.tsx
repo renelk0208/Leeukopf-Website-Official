@@ -800,6 +800,28 @@ export default function ClientRegistrationPage() {
               )}
             </div>
 
+            {/* Years in Business */}
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-3">
+                How long have you been in business?
+              </label>
+              <div className="space-y-2">
+                {['<1 year', '1–3 years', '3–5 years', '5+ years'].map((option) => (
+                  <label key={option} className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="years_in_business"
+                      value={option}
+                      checked={formData.years_in_business === option}
+                      onChange={handleInputChange}
+                      className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
+                    />
+                    <span className="text-sm text-gray-700">{option}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-3">
                 Business Interest <span className="text-red-500">*</span>
@@ -1169,39 +1191,6 @@ export default function ClientRegistrationPage() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="e.g., 500-1000 units"
                 />
-              </div>
-              
-              {/* Years in Business */}
-              <div>
-                <label className="block text-sm font-medium text-gray-900 mb-3">
-                  How long have you been in business?
-                </label>
-                <div className="space-y-2">
-                  {['<1 year', '1–3 years', '3–5 years', '5+ years'].map((option) => (
-                    <label key={option} className="flex items-center space-x-3 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="years_in_business"
-                        value={option}
-                        checked={formData.years_in_business === option}
-                        onChange={handleInputChange}
-                        className="w-4 h-4 text-primary border-gray-300 focus:ring-primary"
-                      />
-                      <span className="text-sm text-gray-700">{option}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Sales Content Section */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h4 className="text-lg font-semibold text-gray-900 mb-3">WE PROVIDE SALES CONTENT</h4>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-700 font-medium">Social Media Contents</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    We create premium content that engages, educates, and converts — driving revenue while rapidly growing your social media presence.
-                  </p>
-                </div>
               </div>
             </div>
           )}
