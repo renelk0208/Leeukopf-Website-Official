@@ -185,15 +185,6 @@ export default function PolygelAcrygelPage() {
         </div>
       </div>
 
-      {/* Product Gallery */}
-      {POLYGEL_IMAGES.length > 0 && (
-        <ProductGrid
-          title="Product Gallery"
-          description="Browse our complete range of polygel and acrygel products"
-          images={POLYGEL_IMAGES}
-        />
-      )}
-
       {/* Available Shades Carousel */}
       {POLYGEL_CAROUSEL_IMAGES.length > 0 && (
         <div className="mb-10 sm:mb-12 md:mb-16">
@@ -230,6 +221,15 @@ export default function PolygelAcrygelPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Product Gallery */}
+      {POLYGEL_IMAGES.length > 0 && (
+        <ProductGrid
+          title="Product Gallery"
+          description="Browse our complete range of polygel and acrygel products"
+          images={POLYGEL_IMAGES}
+        />
       )}
 
       {/* Application & Curing */}

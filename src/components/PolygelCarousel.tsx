@@ -50,16 +50,16 @@ export default function PolygelCarousel({
   }, [currentIndex, isAutoPlaying, autoPlayInterval, goToNext]);
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-4xl mx-auto">
       <div
         className="relative w-full bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-lg border border-gray-200"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(autoPlay)}
       >
         {/* Responsive aspect ratio */}
-        <div className="relative aspect-square sm:aspect-[4/3] overflow-hidden">
+        <div className="relative aspect-[16/9] sm:aspect-[16/10] md:aspect-[2/1] overflow-hidden">
           <div
-            className="flex transition-all duration-500 ease-in-out h-full"
+            className="flex transition-transform duration-700 ease-in-out h-full"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
             {images.map((image, index) => (
@@ -75,8 +75,8 @@ export default function PolygelCarousel({
                 </div>
                 
                 {/* Product Name Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-20 pb-12 sm:pb-16">
-                  <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold text-center drop-shadow-lg">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent pt-16 pb-8 sm:pb-10 transition-opacity duration-500">
+                  <h3 className="text-white text-lg sm:text-xl md:text-2xl font-bold text-center drop-shadow-lg">
                     {image.name}
                   </h3>
                 </div>
@@ -90,7 +90,7 @@ export default function PolygelCarousel({
             {/* Navigation buttons - accessible tap targets */}
             <button
               onClick={goToPrevious}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center z-10"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-300 ease-in-out hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center z-10"
               aria-label="Previous image"
             >
               <ChevronLeft size={20} className="sm:w-6 sm:h-6" aria-hidden="true" />
@@ -98,7 +98,7 @@ export default function PolygelCarousel({
 
             <button
               onClick={goToNext}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center z-10"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-all duration-300 ease-in-out hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center z-10"
               aria-label="Next image"
             >
               <ChevronRight size={20} className="sm:w-6 sm:h-6" aria-hidden="true" />
@@ -110,7 +110,7 @@ export default function PolygelCarousel({
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`h-2 rounded-full transition-all duration-300 min-w-[8px] ${
+                  className={`h-2 rounded-full transition-all duration-500 ease-in-out min-w-[8px] ${
                     index === currentIndex
                       ? 'bg-white w-6 sm:w-8 shadow-md'
                       : 'bg-white/60 hover:bg-white/80 w-2'
