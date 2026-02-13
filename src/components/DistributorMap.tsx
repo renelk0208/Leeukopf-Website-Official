@@ -110,21 +110,35 @@ const distributorCountries: Distributor[] = [
   },
   { 
     country: 'United States',
-    coordinates: '40.7128,-74.0060' // New York
+    coordinates: '25.7907,-80.1300', // Miami Beach, FL
+    locations: [
+      {
+        name: 'GEL.IT.UP USA',
+        address: '400 Alton Rd Ste 105, Miami Beach, FL 33139',
+        phone: '(+1) 786 395-8506, (+1) 786 200-2062',
+        email: 'usagelitup@gmail.com',
+        website: 'www.gelitup.us.com'
+      }
+    ]
   }
 ];
 
 export default function DistributorMap() {
   const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
 
   // Get the selected distributor data
   const selectedDistributor = selectedCountry 
     ? distributorCountries.find(d => d.country === selectedCountry)
     : null;
 
-  // Generate map URL based on selected country
+  // Generate map URL based on selected country or specific address
   const getMapUrl = () => {
+    if (selectedAddress) {
+      // Show specific address with higher zoom
+      return `https://www.google.com/maps?q=${encodeURIComponent(selectedAddress)}&output=embed&z=15`;
+    }
     if (selectedDistributor && selectedDistributor.coordinates) {
       return `https://www.google.com/maps?q=${selectedDistributor.coordinates}&output=embed&z=6`;
     }
@@ -134,6 +148,11 @@ export default function DistributorMap() {
 
   const handleCountryClick = (country: string) => {
     setSelectedCountry(country === selectedCountry ? null : country);
+    setSelectedAddress(null); // Reset selected address when changing country
+  };
+
+  const handleAddressClick = (address: string) => {
+    setSelectedAddress(address);
   };
 
   return (
@@ -199,7 +218,13 @@ export default function DistributorMap() {
             {selectedDistributor.locations.map((location, index) => (
               <div key={index} className="pb-4 last:pb-0 border-b border-gray-200 last:border-0">
                 <p className="font-semibold text-gray-900 mb-2">{location.name}</p>
-                <p className="text-sm text-gray-600 mb-1">{location.address}</p>
+                <button
+                  onClick={() => handleAddressClick(location.address)}
+                  className="text-sm text-primary hover:text-primary/80 hover:underline mb-1 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded"
+                  title="Click to view on map"
+                >
+                  📍 {location.address}
+                </button>
                 {location.phone && (
                   <p className="text-sm text-gray-600">Tel: {location.phone}</p>
                 )}
@@ -211,12 +236,12 @@ export default function DistributorMap() {
                 {location.website && (
                   <p className="text-sm text-gray-600">
                     Website: <a 
-                      href={location.website} 
+                      href={location.website.startsWith('http') ? location.website : `https://${location.website}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-primary hover:underline"
                     >
-                      {location.website.replace('https://', '').replace('www.', '')}
+                      {location.website.replace('https://', '').replace('http://', '').replace('www.', '')}
                     </a>
                   </p>
                 )}
