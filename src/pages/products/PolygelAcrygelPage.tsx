@@ -2,6 +2,7 @@ import PageTemplate from '../../components/PageTemplate';
 import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
 import ProductGrid from '../../components/ProductGrid';
+import PolygelCarousel from '../../components/PolygelCarousel';
 import { categoryHero } from '../../config/imageMap';
 
 /**
@@ -9,6 +10,14 @@ import { categoryHero } from '../../config/imageMap';
  */
 const imageModules = import.meta.glob<{ default: string }>(
   '/public/img/products/{builder-systems/Acrygel-Polygel,Liquid Polygel}/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
+  { eager: true }
+);
+
+/**
+ * Load carousel images from the polygel-carousel folder
+ */
+const carouselImageModules = import.meta.glob<{ default: string }>(
+  '/public/img/products/builder-systems/Acrygel-Polygel/polygel-carousel/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
   { eager: true }
 );
 
@@ -51,6 +60,55 @@ function buildPolygelImages(): { src: string; alt: string }[] {
 }
 
 const POLYGEL_IMAGES = buildPolygelImages();
+
+/** Build carousel images with product names from the polygel-carousel folder */
+function buildPolygelCarouselImages(): { src: string; alt: string; name: string }[] {
+  const images: { src: string; alt: string; name: string }[] = [];
+
+  Object.keys(carouselImageModules).forEach((path) => {
+    // Skip if not an image file
+    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
+
+    const filename = path.split('/').pop() || '';
+    
+    // Convert the public path to a URL path (remove /public prefix)
+    const imageSrc = path.replace('/public', '');
+
+    // Extract product name from filename
+    // e.g., "polygel_black_color.jpg" -> "Black"
+    // e.g., "polygel_glitters_gold.jpg" -> "Glitters Gold"
+    let productName = filename
+      .replace(/^polygel_/i, '') // Remove "polygel_" prefix
+      .replace(/_color\.(jpg|jpeg|png)$/i, '') // Remove "_color.jpg" suffix
+      .replace(/\.(jpg|jpeg|png)$/i, '') // Remove file extension
+      .replace(/_/g, ' ') // Replace underscores with spaces
+      .trim();
+
+    // Capitalize each word properly
+    productName = productName
+      .split(' ')
+      .map(word => {
+        // Special case for "II" suffix
+        if (word.toUpperCase() === 'II') return 'II';
+        // Capitalize first letter, lowercase the rest
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(' ');
+
+    images.push({
+      src: imageSrc,
+      alt: `Polygel ${productName}`,
+      name: productName,
+    });
+  });
+
+  // Sort images by name for consistent ordering
+  images.sort((a, b) => a.name.localeCompare(b.name));
+
+  return images;
+}
+
+const POLYGEL_CAROUSEL_IMAGES = buildPolygelCarouselImages();
 
 export default function PolygelAcrygelPage() {
   return (
@@ -133,34 +191,43 @@ export default function PolygelAcrygelPage() {
         />
       )}
 
-      {/* Available Shades */}
-      <div className="mb-10 sm:mb-12 md:mb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-          Available Shades
-        </h2>
-        <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-3">Clear</h3>
-              <p className="text-sm text-gray-600 font-light">
-                Crystal clear formula for natural nail overlays and French manicure applications
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-3">Natural Cover Tones</h3>
-              <p className="text-sm text-gray-600 font-light">
-                Soft pinks and beiges that mimic natural nail bed color for seamless enhancements
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-3">Builder Shades</h3>
-              <p className="text-sm text-gray-600 font-light">
-                Opaque shades for full coverage extensions and creative nail art applications
-              </p>
+      {/* Available Shades Carousel */}
+      {POLYGEL_CAROUSEL_IMAGES.length > 0 && (
+        <div className="mb-10 sm:mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
+            Available Shades
+          </h2>
+          <div className="mb-8">
+            <PolygelCarousel 
+              images={POLYGEL_CAROUSEL_IMAGES}
+              autoPlay={true}
+              autoPlayInterval={5000}
+            />
+          </div>
+          <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Clear</h3>
+                <p className="text-sm text-gray-600 font-light">
+                  Crystal clear formula for natural nail overlays and French manicure applications
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Natural Cover Tones</h3>
+                <p className="text-sm text-gray-600 font-light">
+                  Soft pinks and beiges that mimic natural nail bed color for seamless enhancements
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Builder Shades</h3>
+                <p className="text-sm text-gray-600 font-light">
+                  Opaque shades for full coverage extensions and creative nail art applications
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Application & Curing */}
       <ApplicationCuring type="polygel-acrygel" />
