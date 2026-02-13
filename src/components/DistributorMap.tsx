@@ -220,7 +220,7 @@ export default function DistributorMap() {
                 <p className="font-semibold text-gray-900 mb-2">{location.name}</p>
                 <button
                   onClick={() => handleAddressClick(location.address)}
-                  className="text-sm text-primary hover:text-primary/80 hover:underline mb-1 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded"
+                  className="text-sm text-primary hover:text-primary/80 hover:underline mb-1 text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded block w-full"
                   title="Click to view on map"
                 >
                   📍 {location.address}
@@ -241,7 +241,7 @@ export default function DistributorMap() {
                       rel="noopener noreferrer"
                       className="text-primary hover:underline"
                     >
-                      {location.website.replace('https://', '').replace('http://', '').replace('www.', '')}
+                      {location.website.replace(/^(https?:\/\/)?(www\.)?/, '')}
                     </a>
                   </p>
                 )}
