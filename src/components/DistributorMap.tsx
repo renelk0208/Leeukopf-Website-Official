@@ -102,11 +102,25 @@ const distributorCountries: Distributor[] = [
   },
   { 
     country: 'Kingdom of Saudi Arabia',
-    coordinates: '24.7136,46.6753' // Riyadh
+    coordinates: '21.5433,39.1728', // Jeddah
+    locations: [
+      {
+        name: 'GEL.IT.UP Saudi Arabia - BEAUTY ADDRESS TRADING CO.LTD',
+        address: 'AL KHAYAT CENTER, AL TAHLIA STREET ROLEX BOUTIQUE, 2ND FLOOR # 405, Jeddah, 23322, Kingdom of Saudi Arabia',
+        phone: '+966 55 337 4320'
+      }
+    ]
   },
   { 
     country: 'Qatar',
-    coordinates: '25.2854,51.5310' // Doha
+    coordinates: '25.4052,51.4892', // Lusail City
+    locations: [
+      {
+        name: 'GEL.IT.UP Qatar',
+        address: 'Burj Marina Tower, 11th Floor, Bldg. No-108 Street-303, Zone-69, PO Box-5774 Lusail City Doha, Qatar',
+        phone: '+974 4418 0270'
+      }
+    ]
   },
   { 
     country: 'United States',
