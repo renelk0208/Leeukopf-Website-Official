@@ -66,6 +66,30 @@ export default function PremiumFiberGlassPage() {
         </div>
       )}
 
+      {/* Technical Specifications Download */}
+      <div className="mb-10 sm:mb-12 md:mb-16 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg sm:rounded-xl border border-primary/20 p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex-1">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+              Complete Technical Specifications
+            </h3>
+            <p className="text-sm sm:text-base text-gray-600 font-light">
+              Download our comprehensive technical data sheet with detailed performance metrics, structural properties, and application instructions for all Premium Fibreglass Builder Gel ranges.
+            </p>
+          </div>
+          <a
+            href="/docs/technical-specs/Premium-Fibreglass-Builder-Gel-Specifications.xlsx"
+            download
+            className="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download Excel
+          </a>
+        </div>
+      </div>
+
       {/* TRANSPARENT SERIES */}
       <div className="mb-10 sm:mb-12 md:mb-16 bg-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
         <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-6 sm:mb-8 border-b border-gray-200 pb-4">
