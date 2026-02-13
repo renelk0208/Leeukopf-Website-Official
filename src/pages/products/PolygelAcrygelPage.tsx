@@ -35,6 +35,9 @@ function buildPolygelImages(): { src: string; alt: string }[] {
     // Exclude Liquid Polygel images (only show Acrygel-Polygel)
     if (path.match(/liquid[\s-]*polygel/i)) return;
 
+    // Exclude carousel images from the gallery
+    if (path.includes('polygel-carousel')) return;
+
     const filename = path.split('/').pop() || '';
     
     // Convert the public path to a URL path (remove /public prefix)
@@ -195,7 +198,7 @@ export default function PolygelAcrygelPage() {
       {POLYGEL_CAROUSEL_IMAGES.length > 0 && (
         <div className="mb-10 sm:mb-12 md:mb-16">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-            Available Shades
+            OUR TOP PICKS FOR POLYGEL
           </h2>
           <div className="mb-8">
             <PolygelCarousel 
