@@ -17,7 +17,8 @@
     "apply:image-fixes": "node scripts/apply-image-fixes.js",
     "audit:images": "node scripts/audit-images.js",
     "generate:sitemap": "node scripts/generate-sitemap.cjs",
-    "report:images": "node scripts/report-large-images.cjs"
+    "report:images": "node scripts/report-large-images.cjs",
+    "generate:pwa-icons": "node scripts/generate-pwa-icons.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
@@ -42,6 +43,7 @@
     "glob": "^13.0.0",
     "globals": "^15.9.0",
     "postcss": "^8.4.35",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
