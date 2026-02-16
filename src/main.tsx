@@ -5,7 +5,6 @@ import App from './App.tsx';
 import AdminLogin from './pages/AdminLogin.tsx';
 import AdminDashboard from './pages/AdminDashboard.tsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.tsx';
-import { CartProvider } from './contexts/CartContext.tsx';
 import ScrollToTopOnRouteChange from './components/ScrollToTopOnRouteChange.tsx';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
 import MetaPixelTracker from './components/MetaPixelTracker.tsx';
@@ -36,20 +35,18 @@ createRoot(document.getElementById('root')!).render(
         <GoogleAnalytics />
         <CanonicalTag />
         <AuthProvider>
-          <CartProvider>
-            <Routes>
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/*" element={<App />} />
-            </Routes>
-          </CartProvider>
+          <Routes>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/*" element={<App />} />
+          </Routes>
         </AuthProvider>
       </BrowserRouter>
     </ErrorBoundary>
