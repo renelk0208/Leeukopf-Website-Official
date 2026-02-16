@@ -22,6 +22,9 @@ const ValentinesPage = lazy(() => import('./pages/ValentinesPage'));
 const LiveFeedPage = lazy(() => import('./pages/LiveFeedPage'));
 const FaqStartBrandPage = lazy(() => import('./pages/FaqStartBrandPage'));
 const OrderFormPage = lazy(() => import('./pages/OrderFormPage'));
+const CatalogTest = lazy(() => import("./pages/CatalogTest"));
+const CartTest = lazy(() => import("./pages/CartTest"));
+const BuilderGelOrderTest = lazy(() => import("./pages/BuilderGelOrderTest"));
 
 // Product Pages
 const GelPolishPage = lazy(() => import('./pages/products/GelPolishPage'));
@@ -34,7 +37,6 @@ const NailArtPage = lazy(() => import('./pages/products/NailArtPage'));
 const AccessoriesPage = lazy(() => import('./pages/products/AccessoriesPage'));
 const JarsAndTubesPage = lazy(() => import('./pages/products/JarsAndTubesPage'));
 const CategoryGridTestPage = lazy(() => import('./pages/products/CategoryGridTestPage'));
-const CatalogTest = lazy(() => import('./pages/CatalogTest'));
 
 // Builder Gels Subcategories
 const ThreePhasePage = lazy(() => import('./pages/products/builder-gels/ThreePhasePage'));
@@ -97,7 +99,9 @@ function App() {
           <Route path="/products/gel-polish" element={<GelPolishPage />} />
           <Route path="/products/category-grid-test" element={<CategoryGridTestPage />} />
           <Route path="/catalog-test" element={<CatalogTest />} />
-          
+          <Route path="/cart-test" element={<CartTest />} />
+          <Route path="/builder-gel-order-test" element={<BuilderGelOrderTest />} />
+
           {/* Builder & Structure Gels */}
           <Route path="/products/builder-and-structure-gels" element={<BuilderAndStructureGelsPage />} />
           <Route path="/products/builder-and-structure-gels/3-phase" element={<ThreePhasePage />} />
@@ -160,4 +164,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
