@@ -34,14 +34,14 @@ export async function getBuilderGelCatalog(): Promise<CatalogEntry[]> {
 }
 
 /**
- * Retrieves a specific catalog entry by its group code
+ * Retrieves a specific catalog entry by its group code (case-insensitive)
  * 
  * @param groupCode The unique identifier for the product group
  * @returns Promise<CatalogEntry | undefined> The matching catalog entry or undefined if not found
  */
 export async function getCatalogEntry(groupCode: string): Promise<CatalogEntry | undefined> {
   const catalog = await getBuilderGelCatalog();
-  return catalog.find(entry => entry.groupCode === groupCode);
+  return catalog.find(entry => entry.groupCode.toLowerCase() === groupCode.toLowerCase());
 }
 
 /**
