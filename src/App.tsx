@@ -34,6 +34,7 @@ const NailArtPage = lazy(() => import('./pages/products/NailArtPage'));
 const AccessoriesPage = lazy(() => import('./pages/products/AccessoriesPage'));
 const JarsAndTubesPage = lazy(() => import('./pages/products/JarsAndTubesPage'));
 const CategoryGridTestPage = lazy(() => import('./pages/products/CategoryGridTestPage'));
+const CatalogTest = lazy(() => import('./pages/CatalogTest'));
 
 // Builder Gels Subcategories
 const ThreePhasePage = lazy(() => import('./pages/products/builder-gels/ThreePhasePage'));
@@ -95,6 +96,7 @@ function App() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/gel-polish" element={<GelPolishPage />} />
           <Route path="/products/category-grid-test" element={<CategoryGridTestPage />} />
+          <Route path="/catalog-test" element={<CatalogTest />} />
           
           {/* Builder & Structure Gels */}
           <Route path="/products/builder-and-structure-gels" element={<BuilderAndStructureGelsPage />} />
