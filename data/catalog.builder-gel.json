@@ -1,0 +1,44 @@
+[
+  {
+    "groupCode": "UGI-LM",
+    "productName": "GLOWING BUILDER GEL",
+    "allowedPackSizes": ["15g", "30g", "50g"],
+    "moq": 25,
+    "shades": ["01", "02", "03", "04", "05"]
+  },
+  {
+    "groupCode": "3IN1-BUILDER",
+    "productName": "3-IN-1 BUILDER GEL",
+    "allowedPackSizes": ["15g", "30g", "50g"],
+    "moq": 25,
+    "shades": ["Clear", "Pink", "Natural", "Cover", "White"]
+  },
+  {
+    "groupCode": "3PHASE-BUILDER",
+    "productName": "3-PHASE BUILDER GEL",
+    "allowedPackSizes": ["15g", "30g", "50g"],
+    "moq": 25,
+    "shades": ["Base", "Builder", "Top"]
+  },
+  {
+    "groupCode": "BIAB-BUILDER",
+    "productName": "BIAB BUILDER IN A BOTTLE",
+    "allowedPackSizes": ["15g", "30g"],
+    "moq": 25,
+    "shades": ["Clear", "Pink", "Nude", "Cover"]
+  },
+  {
+    "groupCode": "FIBER-BUILDER",
+    "productName": "PREMIUM FIBERGLASS BUILDER GEL",
+    "allowedPackSizes": ["15g", "30g", "50g"],
+    "moq": 25,
+    "shades": ["Clear", "Pink", "Natural", "Cover"]
+  },
+  {
+    "groupCode": "THIXO-BUILDER",
+    "productName": "THIXOTROPIC BUILDER GEL",
+    "allowedPackSizes": ["15g", "30g", "50g"],
+    "moq": 25,
+    "shades": ["Clear", "Pink", "Natural", "Cover", "White"]
+  }
+]
