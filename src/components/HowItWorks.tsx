@@ -7,25 +7,25 @@ export default function HowItWorks() {
     {
       icon: MessageCircle,
       number: '1',
-      title: 'Consult',
+      title: 'Consult & feasibility check',
       description: 'Book a free consultation with our experts to discuss your brand vision and requirements.',
     },
     {
       icon: Palette,
       number: '2',
-      title: 'Choose Colors',
+      title: 'Choose shades (2000+ options)',
       description: 'Select from our 2000+ premium gel polish colors or create custom shades for your brand.',
     },
     {
       icon: Factory,
       number: '3',
-      title: 'We Manufacture',
+      title: 'We manufacture + QC release',
       description: 'Our GMP-certified facility produces your products with EU compliance and HEMA-free formulations.',
     },
     {
       icon: TrendingUp,
       number: '4',
-      title: 'You Sell',
+      title: 'You launch & sell',
       description: 'Launch your branded gel polish line and grow your beauty business with confidence.',
     },
   ];

@@ -40,12 +40,12 @@ export default function Hero() {
 
           {/* H1 - Main keyword-rich heading for SEO */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 max-w-4xl mx-auto leading-tight px-2 bg-white/90 rounded-lg py-4 inline-block">
-            Launch Your Gel Polish Brand<br />in 6-8 Weeks
+            GMP-Compliant Private Label Gel Polish Manufacturing in the EU
           </h1>
 
           {/* Responsive typography with clamp-like approach */}
           <p className="text-lg sm:text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto leading-relaxed font-medium px-2 bg-white/90 rounded-lg py-3 inline-block">
-            2000+ Colors • HEMA-Free • EU Certified • GMP Manufacturing
+            In-house formulations from our GMP-certified facility in Bulgaria (EU). Full QC traceability, consultative support, 2000+ colors. HEMA & TPO-free. Small enough to care, big enough to deliver.
           </p>
 
           {/* Responsive button group with full-width on mobile */}

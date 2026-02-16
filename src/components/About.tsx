@@ -66,7 +66,7 @@ export default function About() {
               Shade Innovation & Luxury Branding
             </h3>
             <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
-              We offer an extensive palette of over 500 unique shades, designed to elevate your brand identity. 
+              We offer an extensive palette of over 2000 unique shades, designed to elevate your brand identity. 
               From timeless classics to trending colors, our formulations deliver vibrant, long-lasting results that define luxury.
             </p>
           </div>
@@ -95,7 +95,7 @@ export default function About() {
               Recognized for our commitment to quality and excellence.
             </p>
             {/* Certification icons grid */}
-            <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6">
+            <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 mb-6">
               <img src="/img/certifications/gmp-icon.png" alt="GMP Certified - Good Manufacturing Practice" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
               <img src="/img/certifications/iso-9001-icon.png" alt="ISO 9001 Certified - Quality Management System" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
               <img src="/img/certifications/fda-registered-icon.png" alt="FDA Registered - U.S. Food and Drug Administration" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
@@ -104,6 +104,10 @@ export default function About() {
               <img src="/img/certifications/bnae-icon.png" alt="BNAE Certified - Bulgarian National Association of Exporters" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
               <img src="/img/certifications/bulgarian-chamber-industry-commerce-icon.png" alt="Bulgarian Chamber of Commerce and Industry Member" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
             </div>
+            {/* Compliance microcopy */}
+            <p className="text-gray-600 text-sm sm:text-base font-light max-w-3xl mx-auto leading-relaxed">
+              We support manufacturing documentation and EU readiness (CPNP pathway). Brand owners remain responsible for final labels, claims, and local Responsible Person requirements where applicable.
+            </p>
           </div>
         </div>
       </div>
