@@ -1,12 +1,5 @@
-import OrderTable from "../components/OrderTable";
+import { Navigate } from 'react-router-dom';
 
 export default function BuilderGelOrderTest() {
-  return (
-    <div style={{ padding: 24 }}>
-      <h1>Builder Gel Order Test</h1>
-
-      {/* Test with your groupCode from the JSON */}
-      <OrderTable groupCode="UGI-LM" />
-    </div>
-  );
+  return <Navigate to="/b2b-builder-gels" replace />;
 }

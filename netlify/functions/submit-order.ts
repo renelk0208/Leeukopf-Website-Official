@@ -1,5 +1,10 @@
-import type { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
+import type { Handler, HandlerEvent } from '@netlify/functions';
 import { randomBytes } from 'node:crypto';
+import { Resend } from 'resend';
+
+export const config = {
+  path: '/api/submit-order',
+};
 
 interface OrderLine {
   code: string;
@@ -28,6 +33,47 @@ interface OrderSubmission {
   order_date: string;
 }
 
+interface B2BCustomerDetails {
+  companyName: string;
+  vatNumber: string;
+  invoiceAddress: string;
+  invoicePostalCode: string;
+  invoiceCity: string;
+  invoiceRegion: string;
+  invoiceCountry: string;
+  shippingAddress: string;
+  shippingPostalCode: string;
+  shippingCity: string;
+  shippingRegion: string;
+  shippingCountry: string;
+  contactPerson: string;
+  contactEmail: string;
+  contactNumber: string;
+  orderDate: string;
+  signatureName: string;
+  notes: string;
+}
+
+interface B2BOrderSubmission {
+  customer: B2BCustomerDetails;
+  order: {
+    items: Array<{
+      groupCode: string;
+      shadeCode: string;
+      packSize: string;
+      qty: number;
+      moq: number;
+      productName?: string;
+    }>;
+    totals?: {
+      totalItems?: number;
+      totalUnits?: number;
+    };
+  };
+  createdAt?: string;
+  source?: string;
+}
+
 // Sanitize string input
 function sanitizeString(input: string, maxLength: number = 500): string {
   return input.trim().slice(0, maxLength);
@@ -43,6 +89,62 @@ function generateOrderId(): string {
   const timestamp = Date.now().toString(36);
   const random = randomBytes(4).toString('hex').toUpperCase();
   return `ORD-${timestamp}-${random}`;
+}
+
+function isB2BOrderSubmission(data: unknown): data is B2BOrderSubmission {
+  if (!data || typeof data !== 'object') return false;
+  const candidate = data as B2BOrderSubmission;
+  return Boolean(candidate.customer && candidate.order && Array.isArray(candidate.order.items));
+}
+
+function normalizeOrderSubmission(input: unknown): OrderSubmission {
+  if (isB2BOrderSubmission(input)) {
+    return {
+      customer: {
+        company_name: input.customer.companyName,
+        contact_name: input.customer.contactPerson,
+        email: input.customer.contactEmail,
+        phone: input.customer.contactNumber,
+        country: input.customer.shippingCountry || input.customer.invoiceCountry,
+        vat_number: input.customer.vatNumber,
+        shipping_address: [
+          input.customer.shippingAddress,
+          input.customer.shippingPostalCode,
+          input.customer.shippingCity,
+          input.customer.shippingRegion,
+          input.customer.shippingCountry,
+        ]
+          .filter(Boolean)
+          .join(', '),
+        additional_comments: [
+          input.customer.notes,
+          `Signature: ${input.customer.signatureName}`,
+          `Invoice: ${[
+            input.customer.invoiceAddress,
+            input.customer.invoicePostalCode,
+            input.customer.invoiceCity,
+            input.customer.invoiceRegion,
+            input.customer.invoiceCountry,
+          ]
+            .filter(Boolean)
+            .join(', ')}`,
+        ]
+          .filter(Boolean)
+          .join('\n'),
+      },
+      items: input.order.items.map((item) => ({
+        code: `${item.groupCode}-${item.shadeCode}`,
+        product_name: item.productName || item.groupCode,
+        size: item.packSize,
+        unit: 'pcs',
+        quantity: Number(item.qty) || 0,
+        moq: String(item.moq ?? ''),
+      })),
+      order_date: input.customer.orderDate || input.createdAt || new Date().toISOString(),
+    };
+  }
+
+  return input as OrderSubmission;
 }
 
 // Validate order submission
@@ -100,10 +202,79 @@ async function storeOrder(orderId: string, orderData: OrderSubmission): Promise<
   // 4. Send notification email to admin
 }
 
-export const handler: Handler = async (
-  event: HandlerEvent,
-  context: HandlerContext
-) => {
+function generateOrderEmailHtml(orderId: string, orderData: OrderSubmission): string {
+  const itemsHtml = orderData.items
+    .map(
+      (item) => `
+        <tr>
+          <td style="padding:8px;border:1px solid #e5e7eb;">${item.code}</td>
+          <td style="padding:8px;border:1px solid #e5e7eb;">${item.product_name}</td>
+          <td style="padding:8px;border:1px solid #e5e7eb;">${item.size}</td>
+          <td style="padding:8px;border:1px solid #e5e7eb;text-align:right;">${item.quantity}</td>
+          <td style="padding:8px;border:1px solid #e5e7eb;text-align:right;">${item.moq}</td>
+        </tr>
+      `
+    )
+    .join('');
+
+  const totalQty = orderData.items.reduce((sum, item) => sum + item.quantity, 0);
+
+  return `
+    <h2>New B2B Order</h2>
+    <p><strong>Order ID:</strong> ${orderId}</p>
+    <p><strong>Order Date:</strong> ${orderData.order_date}</p>
+    <h3>Customer</h3>
+    <p>
+      <strong>Company:</strong> ${orderData.customer.company_name}<br>
+      <strong>Contact:</strong> ${orderData.customer.contact_name}<br>
+      <strong>Email:</strong> ${orderData.customer.email}<br>
+      <strong>Phone:</strong> ${orderData.customer.phone}<br>
+      <strong>Country:</strong> ${orderData.customer.country}<br>
+      <strong>VAT:</strong> ${orderData.customer.vat_number ?? '-'}<br>
+      <strong>Shipping Address:</strong> ${orderData.customer.shipping_address}
+    </p>
+    <h3>Order Items</h3>
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="padding:8px;border:1px solid #e5e7eb;text-align:left;">Code</th>
+          <th style="padding:8px;border:1px solid #e5e7eb;text-align:left;">Product</th>
+          <th style="padding:8px;border:1px solid #e5e7eb;text-align:left;">Size</th>
+          <th style="padding:8px;border:1px solid #e5e7eb;text-align:right;">Qty</th>
+          <th style="padding:8px;border:1px solid #e5e7eb;text-align:right;">MOQ</th>
+        </tr>
+      </thead>
+      <tbody>${itemsHtml}</tbody>
+    </table>
+    <p style="margin-top:12px;"><strong>Total Quantity:</strong> ${totalQty}</p>
+    ${
+      orderData.customer.additional_comments
+        ? `<h3>Notes</h3><p>${orderData.customer.additional_comments.replace(/\n/g, '<br>')}</p>`
+        : ''
+    }
+  `;
+}
+
+async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Promise<void> {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    console.warn('RESEND_API_KEY is not set; skipping order email sending.');
+    return;
+  }
+
+  const toEmail = process.env.ORDER_NOTIFICATION_EMAIL || 'leeukopf@gmail.com';
+  const resend = new Resend(resendApiKey);
+
+  await resend.emails.send({
+    from: 'Leeukopf Orders <noreply@leeukopf.com>',
+    to: toEmail,
+    subject: `New B2B Order ${orderId}`,
+    html: generateOrderEmailHtml(orderId, orderData),
+    replyTo: orderData.customer.email,
+  });
+}
+
+export const handler: Handler = async (event: HandlerEvent) => {
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
@@ -142,7 +313,8 @@ export const handler: Handler = async (
       };
     }
 
-    const orderData: OrderSubmission = JSON.parse(body);
+    const rawOrderData = JSON.parse(body) as unknown;
+    const orderData = normalizeOrderSubmission(rawOrderData);
 
     // Validate order
     const validation = validateOrderSubmission(orderData);
@@ -190,6 +362,9 @@ export const handler: Handler = async (
 
     // Store order
     await storeOrder(orderId, sanitizedOrder);
+
+    // Send notification email
+    await sendOrderEmail(orderId, sanitizedOrder);
 
     // Return success response
     return {

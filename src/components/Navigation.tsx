@@ -60,6 +60,7 @@ export default function Navigation() {
     { label: "Valentine's", path: '/valentines' },
     { label: 'About Us', path: '/about' },
     { label: 'Our Products', path: '/products' },
+    { label: 'B2B Builder Gels', path: '/b2b-builder-gels' },
     { label: 'Private Label', path: '/private-label' },
     { label: 'Gelitup Distribution', path: '/our-brands' },
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },

@@ -38,6 +38,11 @@
   to = "/.netlify/functions/test-email"
   status = 200
 
+[[redirects]]
+  from = "/api/submit-order"
+  to = "/.netlify/functions/submit-order"
+  status = 200
+
 # Static HTML page redirects
 [[redirects]]
   from = "/thank-you-compliance-consultation"

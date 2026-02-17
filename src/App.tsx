@@ -24,7 +24,7 @@ const FaqStartBrandPage = lazy(() => import('./pages/FaqStartBrandPage'));
 const OrderFormPage = lazy(() => import('./pages/OrderFormPage'));
 const CatalogTest = lazy(() => import("./pages/CatalogTest"));
 const CartTest = lazy(() => import("./pages/CartTest"));
-const BuilderGelOrderTest = lazy(() => import("./pages/BuilderGelOrderTest"));
+const B2BBuilderGelsPage = lazy(() => import('./pages/B2BBuilderGelsPage'));
 
 // Product Pages
 const GelPolishPage = lazy(() => import('./pages/products/GelPolishPage'));
@@ -100,7 +100,8 @@ function App() {
           <Route path="/products/category-grid-test" element={<CategoryGridTestPage />} />
           <Route path="/catalog-test" element={<CatalogTest />} />
           <Route path="/cart-test" element={<CartTest />} />
-          <Route path="/builder-gel-order-test" element={<BuilderGelOrderTest />} />
+          <Route path="/b2b-builder-gels" element={<B2BBuilderGelsPage />} />
+          <Route path="/builder-gel-order-test" element={<Navigate to="/b2b-builder-gels" replace />} />
 
           {/* Builder & Structure Gels */}
           <Route path="/products/builder-and-structure-gels" element={<BuilderAndStructureGelsPage />} />
