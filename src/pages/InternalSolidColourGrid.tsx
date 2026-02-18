@@ -5,6 +5,8 @@ type Row = Record<string, string>;
 export default function InternalSolidColourGrid() {
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
+  const [imgStatus, setImgStatus] = useState<Record<string, "OK" | "MISSING">>({});
+  const [onlyMissing, setOnlyMissing] = useState(false);
 
   useEffect(() => {
     fetch("/data/solid-colour/pilot-80.json")
@@ -15,15 +17,27 @@ export default function InternalSolidColourGrid() {
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
-    if (!query) return rows;
+    let out = rows;
 
-    return rows.filter((r) => {
-      const sku = (r["Internal_SKU"] || "").toLowerCase();
-      const name = (r["Shade_Name"] || "").toLowerCase();
-      const code = (r["Shade_Code"] || "").toLowerCase();
-      return sku.includes(query) || name.includes(query) || code.includes(query);
-    });
-  }, [rows, q]);
+    if (query) {
+      out = out.filter((r) => {
+        const sku = (r["Internal_SKU"] || "").toLowerCase();
+        const name = (r["Shade_Name"] || "").toLowerCase();
+        const code = (r["Shade_Code"] || "").toLowerCase();
+        return sku.includes(query) || name.includes(query) || code.includes(query);
+      });
+    }
+
+    if (onlyMissing) {
+      out = out.filter((r, idx) => {
+        const sku = r["Internal_SKU"] || "";
+        const key = sku || `row-${idx}`;
+        return imgStatus[key] === "MISSING";
+      });
+    }
+
+    return out;
+  }, [rows, q, onlyMissing, imgStatus]);
 
   return (
     <div className="mx-auto max-w-6xl p-6">
@@ -39,6 +53,15 @@ export default function InternalSolidColourGrid() {
           placeholder="Search by SKU / code / name…"
           className="w-full rounded-xl border bg-white px-4 py-2 text-sm shadow-sm sm:w-80"
         />
+
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={onlyMissing}
+            onChange={(e) => setOnlyMissing(e.target.checked)}
+          />
+          Show missing only
+        </label>
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -46,16 +69,33 @@ export default function InternalSolidColourGrid() {
           const sku = r["Internal_SKU"] || "";
           const name = r["Shade_Name"] || "";
           const img = r["Swatch_Image"] || "";
+          const key = sku || `row-${idx}`;
+          const status = imgStatus[key];
           return (
-            <div key={`${sku}-${idx}`} className="rounded-2xl border bg-white p-3 shadow-sm">
-              <div className="aspect-square overflow-hidden rounded-xl bg-neutral-50">
+            <div key={key} className="rounded-2xl border bg-white p-3 shadow-sm">
+              <div className="aspect-square overflow-hidden rounded-xl bg-neutral-50 relative">
                 {img ? (
-                  <img
-                    src={img}
-                    alt={sku}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
-                  />
+                  <>
+                    <img
+                      src={img}
+                      alt={sku}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                      onLoad={() =>
+                        setImgStatus((prev) => (prev[key] === "OK" ? prev : { ...prev, [key]: "OK" }))
+                      }
+                      onError={() =>
+                        setImgStatus((prev) =>
+                          prev[key] === "MISSING" ? prev : { ...prev, [key]: "MISSING" }
+                        )
+                      }
+                    />
+
+                    {/* Status badge */}
+                    <div className="absolute top-2 left-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+                      {status ?? "…"}
+                    </div>
+                  </>
                 ) : (
                   <div className="flex h-full items-center justify-center text-xs text-neutral-500">
                     No image
