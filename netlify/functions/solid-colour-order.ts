@@ -6,6 +6,15 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 type ClientPayload = {
   companyName: string;
+  contactName: string;
+  contactNumber: string;
+  invoiceAddress: string;
+  invoiceRegion: string;
+  invoicePostalCode: string;
+  shippingAddress: string;
+  shippingRegion: string;
+  shippingPostalCode: string;
+  sameAddress?: boolean;
   vat?: string;
   country?: string;
   contactEmail: string;
@@ -98,15 +107,42 @@ export const handler: Handler = async (event) => {
     const payload = JSON.parse(event.body) as OrderPayload;
     const { client, lines, packaging } = payload;
 
-    if (!client?.companyName || !client?.contactEmail || !lines?.length) {
+    const missingClientFields: string[] = [];
+    if (!client?.companyName?.trim()) missingClientFields.push("client.companyName");
+    if (!client?.contactName?.trim()) missingClientFields.push("client.contactName");
+    if (!client?.contactNumber?.trim()) missingClientFields.push("client.contactNumber");
+    if (!client?.invoiceAddress?.trim()) missingClientFields.push("client.invoiceAddress");
+    if (!client?.invoiceRegion?.trim()) missingClientFields.push("client.invoiceRegion");
+    if (!client?.country?.trim()) missingClientFields.push("client.country");
+    if (!client?.invoicePostalCode?.trim()) missingClientFields.push("client.invoicePostalCode");
+    if (!client?.contactEmail?.trim()) missingClientFields.push("client.contactEmail");
+
+    const sameAddress = Boolean(client?.sameAddress);
+    if (!sameAddress) {
+      if (!client?.shippingAddress?.trim()) missingClientFields.push("client.shippingAddress");
+      if (!client?.shippingRegion?.trim()) missingClientFields.push("client.shippingRegion");
+      if (!client?.shippingPostalCode?.trim()) missingClientFields.push("client.shippingPostalCode");
+    }
+
+    if (missingClientFields.length > 0 || !lines?.length) {
+      const missingFields = !lines?.length
+        ? [...missingClientFields, "lines"]
+        : missingClientFields;
       return {
         statusCode: 400,
         headers: jsonHeaders,
-        body: JSON.stringify({ success: false, message: "Invalid order payload" }),
+        body: JSON.stringify({
+          success: false,
+          message: "Invalid order payload",
+          missingFields,
+        }),
       };
     }
 
     const orderId = `SC-${Date.now()}`;
+    const shippingAddress = sameAddress ? client.invoiceAddress : client.shippingAddress;
+    const shippingRegion = sameAddress ? client.invoiceRegion : client.shippingRegion;
+    const shippingPostalCode = sameAddress ? client.invoicePostalCode : client.shippingPostalCode;
 
     const packagingMode = packaging?.mode;
     const packagingSystem = packaging?.system;
@@ -225,6 +261,15 @@ export const handler: Handler = async (event) => {
       createdAt: new Date().toISOString().slice(0, 10),
       client: {
         company: client.companyName,
+        contactPerson: client.contactName,
+        contactPhone: client.contactNumber,
+        invoiceAddress: client.invoiceAddress,
+        invoiceRegion: client.invoiceRegion,
+        invoicePostalCode: client.invoicePostalCode,
+        shippingAddress,
+        shippingRegion,
+        shippingPostalCode,
+        sameAddress,
         vat: client.vat,
         country: client.country,
         contactEmail: client.contactEmail,
@@ -256,6 +301,14 @@ Solid Colour Order Submission
 
 Order ID: ${orderId}
 Company: ${client.companyName}
+Contact Name: ${client.contactName}
+Contact Number: ${client.contactNumber}
+Invoice Address: ${client.invoiceAddress}
+Invoice Region: ${client.invoiceRegion}
+Invoice Postal Code: ${client.invoicePostalCode}
+Shipping Address: ${shippingAddress}
+Shipping Region: ${shippingRegion}
+Shipping Postal Code: ${shippingPostalCode}
 VAT: ${client.vat || ""}
 Country: ${client.country || ""}
 Contact Email: ${client.contactEmail}
@@ -294,6 +347,14 @@ Thank you for your order request.
 
 Order ID: ${orderId}
 Company: ${client.companyName}
+Contact Name: ${client.contactName}
+Contact Number: ${client.contactNumber}
+Invoice Address: ${client.invoiceAddress}
+Invoice Region: ${client.invoiceRegion}
+Invoice Postal Code: ${client.invoicePostalCode}
+Shipping Address: ${shippingAddress}
+Shipping Region: ${shippingRegion}
+Shipping Postal Code: ${shippingPostalCode}
 Total Units: ${totalUnits}
     Packaging Choice: ${packagingChoiceLabel}
     Packaging System: ${packagingSystem}

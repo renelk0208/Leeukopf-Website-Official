@@ -23,6 +23,7 @@
     "solid:hex": "node scripts/hex-from-swatches.mjs"
   },
   "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
     "@supabase/supabase-js": "^2.57.4",
     "@vis.gl/react-google-maps": "^1.7.1",
     "googleapis": "^169.0.0",

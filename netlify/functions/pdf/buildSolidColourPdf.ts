@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import fontkit from "@pdf-lib/fontkit";
 import { PDFDocument, PDFPage, StandardFonts, rgb } from "pdf-lib";
 
 type Line = { code: string; name: string; qty: number };
@@ -9,11 +10,18 @@ type Payload = {
   createdAt: string;
   client: {
     company: string;
+    contactPerson: string;
+    contactPhone: string;
+    invoiceAddress: string;
+    invoiceRegion: string;
+    invoicePostalCode: string;
+    shippingAddress: string;
+    shippingRegion: string;
+    shippingPostalCode: string;
+    sameAddress: boolean;
     vat?: string;
     country?: string;
     contactEmail: string;
-    contactPerson?: string;
-    contactPhone?: string;
   };
   packaging: {
     mode: "standard" | "custom";
@@ -61,8 +69,20 @@ function wrapText(text: string, maxChars: number): string[] {
 
 export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
-  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  pdf.registerFontkit(fontkit);
+
+  let font = await pdf.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdf.embedFont(StandardFonts.HelveticaBold);
+
+  try {
+    const customFontPath = path.join(process.cwd(), "netlify/functions/assets/pf-futura-neu-book.ttf");
+    if (fs.existsSync(customFontPath)) {
+      const customFontBytes = fs.readFileSync(customFontPath);
+      font = await pdf.embedFont(customFontBytes);
+    }
+  } catch {
+    font = await pdf.embedFont(StandardFonts.Helvetica);
+  }
 
   let logoImage: Awaited<ReturnType<typeof pdf.embedPng>> | null = null;
   let logoDims: { width: number; height: number } | null = null;
@@ -137,6 +157,20 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
     const yStart = y;
 
     text(page, `Company: ${safe(data.client.company)}`, leftX, y, 10.5);
+    y -= 14;
+    text(page, `Invoice Address: ${safe(data.client.invoiceAddress)}`, leftX, y, 10.5);
+    y -= 14;
+    text(page, `Invoice Region: ${safe(data.client.invoiceRegion)}`, leftX, y, 10.5);
+    y -= 14;
+    text(page, `Invoice Postal Code: ${safe(data.client.invoicePostalCode)}`, leftX, y, 10.5);
+    y -= 14;
+    text(page, `Shipping Address: ${safe(data.client.shippingAddress)}`, leftX, y, 10.5);
+    y -= 14;
+    text(page, `Shipping Region: ${safe(data.client.shippingRegion)}`, leftX, y, 10.5);
+    y -= 14;
+    text(page, `Shipping Postal Code: ${safe(data.client.shippingPostalCode)}`, leftX, y, 10.5);
+    y -= 14;
+    text(page, `Same Address: ${data.client.sameAddress ? "Yes" : "No"}`, leftX, y, 10.5);
     y -= 14;
     text(page, `VAT: ${safe(data.client.vat)}`, leftX, y, 10.5);
     y -= 14;

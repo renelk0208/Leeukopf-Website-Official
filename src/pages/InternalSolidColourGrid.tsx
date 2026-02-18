@@ -8,6 +8,15 @@ type OrderLine = {
 };
 type ClientDetails = {
   companyName: string;
+  contactName: string;
+  contactNumber: string;
+  invoiceAddress: string;
+  invoiceRegion: string;
+  invoicePostalCode: string;
+  shippingAddress: string;
+  shippingRegion: string;
+  shippingPostalCode: string;
+  sameAddress: boolean;
   vat: string;
   country: string;
   email: string;
@@ -51,6 +60,15 @@ export default function InternalSolidColourGrid() {
   const [order, setOrder] = useState<Record<string, number>>({});
   const [client, setClient] = useState<ClientDetails>({
     companyName: "",
+    contactName: "",
+    contactNumber: "",
+    invoiceAddress: "",
+    invoiceRegion: "",
+    invoicePostalCode: "",
+    shippingAddress: "",
+    shippingRegion: "",
+    shippingPostalCode: "",
+    sameAddress: true,
     vat: "",
     country: "",
     email: "",
@@ -135,10 +153,29 @@ export default function InternalSolidColourGrid() {
     });
     const token = import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "";
 
-    if (!client.companyName || !client.email || exportData.length === 0) {
+    const missingClientFields: string[] = [];
+    if (!client.companyName.trim()) missingClientFields.push("Company Name or Client Name");
+    if (!client.invoiceAddress.trim()) missingClientFields.push("Invoice Address");
+    if (!client.invoiceRegion.trim()) missingClientFields.push("Invoice Region");
+    if (!client.country.trim()) missingClientFields.push("Country");
+    if (!client.invoicePostalCode.trim()) missingClientFields.push("Invoice Postal Code");
+    if (!client.email.trim()) missingClientFields.push("Email");
+    if (!client.contactNumber.trim()) missingClientFields.push("Contact Number");
+    if (!client.contactName.trim()) missingClientFields.push("Contact Name");
+
+    if (!client.sameAddress) {
+      if (!client.shippingAddress.trim()) missingClientFields.push("Shipping Address");
+      if (!client.shippingRegion.trim()) missingClientFields.push("Shipping Region");
+      if (!client.shippingPostalCode.trim()) missingClientFields.push("Shipping Postal Code");
+    }
+
+    if (missingClientFields.length > 0 || exportData.length === 0) {
+      const details = missingClientFields.length > 0
+        ? ` Missing: ${missingClientFields.join(", ")}.`
+        : "";
       setSubmitMessage({
         type: "error",
-        text: "Please add company/email and at least one shade before exporting.",
+        text: `Please complete all required client fields and add at least one shade before exporting.${details}`,
       });
       return;
     }
@@ -189,9 +226,22 @@ export default function InternalSolidColourGrid() {
       return;
     }
 
+    const shippingAddress = client.sameAddress ? client.invoiceAddress : client.shippingAddress;
+    const shippingRegion = client.sameAddress ? client.invoiceRegion : client.shippingRegion;
+    const shippingPostalCode = client.sameAddress ? client.invoicePostalCode : client.shippingPostalCode;
+
     const payload = {
       client: {
         companyName: client.companyName,
+        contactName: client.contactName,
+        contactNumber: client.contactNumber,
+        invoiceAddress: client.invoiceAddress,
+        invoiceRegion: client.invoiceRegion,
+        invoicePostalCode: client.invoicePostalCode,
+        shippingAddress,
+        shippingRegion,
+        shippingPostalCode,
+        sameAddress: client.sameAddress,
         vat: client.vat,
         country: client.country,
         contactEmail: client.email,
@@ -289,13 +339,103 @@ export default function InternalSolidColourGrid() {
           <input
             value={client.companyName}
             onChange={(e) => setClient((prev) => ({ ...prev, companyName: e.target.value }))}
-            placeholder="Company name"
+            placeholder="Company Name or Client Name"
             className="rounded-xl border bg-white px-3 py-2 text-sm"
           />
           <input
+            value={client.contactName}
+            onChange={(e) => setClient((prev) => ({ ...prev, contactName: e.target.value }))}
+            placeholder="Contact Name"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <input
+            value={client.contactNumber}
+            onChange={(e) => setClient((prev) => ({ ...prev, contactNumber: e.target.value }))}
+            placeholder="Contact Number"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <input
+            value={client.invoiceAddress}
+            onChange={(e) => {
+              const value = e.target.value;
+              setClient((prev) => ({
+                ...prev,
+                invoiceAddress: value,
+                shippingAddress: prev.sameAddress ? value : prev.shippingAddress,
+              }));
+            }}
+            placeholder="Invoice Address"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <input
+            value={client.invoiceRegion}
+            onChange={(e) => {
+              const value = e.target.value;
+              setClient((prev) => ({
+                ...prev,
+                invoiceRegion: value,
+                shippingRegion: prev.sameAddress ? value : prev.shippingRegion,
+              }));
+            }}
+            placeholder="Invoice Region"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <input
+            value={client.invoicePostalCode}
+            onChange={(e) => {
+              const value = e.target.value;
+              setClient((prev) => ({
+                ...prev,
+                invoicePostalCode: value,
+                shippingPostalCode: prev.sameAddress ? value : prev.shippingPostalCode,
+              }));
+            }}
+            placeholder="Invoice Postal Code"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <label className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2 text-sm sm:col-span-2">
+            <input
+              type="checkbox"
+              checked={client.sameAddress}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setClient((prev) => ({
+                  ...prev,
+                  sameAddress: checked,
+                  shippingAddress: checked ? prev.invoiceAddress : prev.shippingAddress,
+                  shippingRegion: checked ? prev.invoiceRegion : prev.shippingRegion,
+                  shippingPostalCode: checked ? prev.invoicePostalCode : prev.shippingPostalCode,
+                }));
+              }}
+            />
+            Same Address (copy Invoice Address to Shipping Address)
+          </label>
+          {!client.sameAddress && (
+            <>
+              <input
+                value={client.shippingAddress}
+                onChange={(e) => setClient((prev) => ({ ...prev, shippingAddress: e.target.value }))}
+                placeholder="Shipping Address"
+                className="rounded-xl border bg-white px-3 py-2 text-sm"
+              />
+              <input
+                value={client.shippingRegion}
+                onChange={(e) => setClient((prev) => ({ ...prev, shippingRegion: e.target.value }))}
+                placeholder="Shipping Region"
+                className="rounded-xl border bg-white px-3 py-2 text-sm"
+              />
+              <input
+                value={client.shippingPostalCode}
+                onChange={(e) => setClient((prev) => ({ ...prev, shippingPostalCode: e.target.value }))}
+                placeholder="Shipping Postal Code"
+                className="rounded-xl border bg-white px-3 py-2 text-sm"
+              />
+            </>
+          )}
+          <input
             value={client.vat}
             onChange={(e) => setClient((prev) => ({ ...prev, vat: e.target.value }))}
-            placeholder="VAT"
+            placeholder="VAT (optional)"
             className="rounded-xl border bg-white px-3 py-2 text-sm"
           />
           <input
