@@ -314,7 +314,7 @@ export default function PrivateLabelBottlesPage() {
       ]}
     >
       <div className="space-y-8 sm:space-y-10 md:space-y-12">
-        {/* Download Specification Section */}
+        {/* View Specification Section */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -325,15 +325,16 @@ export default function PrivateLabelBottlesPage() {
                 Available Bottles Specification
               </h2>
               <p className="text-sm text-gray-600 mb-3">
-                Download the complete list of bottles regularly available and included in our Private Label packages, with specifications and pricing information.
+                View the complete list of bottles regularly available and included in our Private Label packages, with specifications and pricing information.
               </p>
               <a
                 href="/docs/private-label/private-label-bottles-specification.pdf"
-                download
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors text-sm"
               >
                 <FileText size={18} aria-hidden="true" />
-                Download Specification Sheet
+                View Specification Sheet
               </a>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Private Label Bottles page now includes a download section where clients can access a specification sheet listing all bottles that are regularly available and included in Private Label packages.
+The Private Label Bottles page now includes a **viewable specification section** where clients can click to view a specification sheet listing all bottles that are regularly available and included in Private Label packages. The file opens in a new browser tab for easy viewing.
 
 ## Where to Place Your Specification File
 
@@ -19,9 +19,11 @@ public/docs/private-label/private-label-bottles-specification.pdf
 
 ## Supported File Formats
 
-- **PDF** (Recommended): `.pdf`
-- **Excel**: `.xlsx` or `.xls`
-- **Word**: `.docx`
+- **PDF** (Recommended): `.pdf` - Opens directly in browser
+- **Excel**: `.xlsx` or `.xls` - May prompt for download depending on browser
+- **Word**: `.docx` - May prompt for download depending on browser
+
+**Note**: PDF is strongly recommended as it opens inline in most browsers for immediate viewing.
 
 ## Step-by-Step Instructions
 
@@ -55,9 +57,9 @@ Users visiting `/private-label/bottles` will see:
 - A FileText icon on the left
 - Heading: "Available Bottles Specification"
 - Description text explaining what the document contains
-- A blue "Download Specification Sheet" button
+- A blue "View Specification Sheet" button
 
-When clicked, the file downloads directly to their device.
+When clicked, the file **opens in a new browser tab** for immediate viewing (not downloaded).
 
 ## Example File Content Structure
 
@@ -70,12 +72,12 @@ Your specification sheet should include:
 - Available customization options (cap colors, finishes, etc.)
 - Lead times or availability notes
 
-## Testing the Download
+## Testing the Viewing Feature
 
 1. Start the development server: `npm run dev`
 2. Navigate to: `http://localhost:5173/private-label/bottles`
-3. Click the "Download Specification Sheet" button
-4. Verify the file downloads correctly
+3. Click the "View Specification Sheet" button
+4. Verify the file opens in a new browser tab
 
 ## Notes
 
@@ -84,6 +86,7 @@ Your specification sheet should include:
 - Keep filenames simple without spaces (use hyphens instead)
 - Update the file whenever bottle availability or specifications change
 - The file is automatically included in production builds
+- **PDF format is recommended** for the best inline viewing experience
 
 ## Support
 
