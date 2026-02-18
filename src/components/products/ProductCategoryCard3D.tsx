@@ -68,8 +68,9 @@ export default function ProductCategoryCard3D({
   }, []);
 
   const handlePointerMove = useCallback(
-    (ev: PointerEvent) => {
+    (ev: Event) => {
       if (prefersReducedMotion) return;
+      const pointerEv = ev as PointerEvent;
       const card = cardRef.current;
       const inner = innerRef.current;
       const img = imgRef.current;
@@ -77,8 +78,8 @@ export default function ProductCategoryCard3D({
       if (!card || !inner || !img || !shine) return;
 
       const rect = card.getBoundingClientRect();
-      const px = (ev.clientX - rect.left) / rect.width; // 0..1
-      const py = (ev.clientY - rect.top) / rect.height; // 0..1
+      const px = (pointerEv.clientX - rect.left) / rect.width; // 0..1
+      const py = (pointerEv.clientY - rect.top) / rect.height; // 0..1
 
       // Map to rotation (-12..12 deg)
       const ry = (px - 0.5) * -12; // rotateY

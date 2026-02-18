@@ -13,4 +13,5 @@ export function getOurProductsVideoSrc(): string {
 }
 
 // Show snow during Christmas and winter seasons
-export const shouldShowSnow = CURRENT_SEASON === "christmas" || CURRENT_SEASON === "winter";
+const SNOW_SEASONS: Season[] = ["christmas", "winter"];
+export const shouldShowSnow = SNOW_SEASONS.includes(CURRENT_SEASON);

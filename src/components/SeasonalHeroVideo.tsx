@@ -1,6 +1,5 @@
 // src/components/SeasonalHeroVideo.tsx
 
-import React from "react";
 import { getOurProductsVideoSrc } from "../config/seasonal";
 
 type Props = {

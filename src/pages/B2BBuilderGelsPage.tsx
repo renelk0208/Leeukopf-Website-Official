@@ -132,7 +132,7 @@ export default function B2BCheckoutPage() {
 
       alert(`Order submitted successfully. Reference: ${result.order_id}`);
       clearCart();
-      navigate('/b2b-builder-gels');
+      navigate('/products');
     } catch (submitError) {
       console.error('B2B order submit failed:', submitError);
       alert('Order submission failed. Please try again or contact us directly.');

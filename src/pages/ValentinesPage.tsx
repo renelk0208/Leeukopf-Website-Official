@@ -107,6 +107,7 @@ export default function ValentinesPage() {
 
       const container = document.getElementById('hearts-container');
       if (!container) return;
+      const heartsContainer = container;
 
       let heartCount = 0;
 
@@ -137,7 +138,7 @@ export default function ValentinesPage() {
         const drift = -20 + Math.random() * 40; // -20 to 20px
         heart.style.setProperty('--drift', drift + 'px');
 
-        container.appendChild(heart);
+        heartsContainer.appendChild(heart);
         heartCount++;
 
         // Remove heart after animation completes
