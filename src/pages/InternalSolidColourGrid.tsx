@@ -101,11 +101,20 @@ export default function InternalSolidColourGrid() {
 
   const handleSubmitOrder = async () => {
     const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({ sku, qty }));
+    const requestToken = import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "";
 
     if (!client.companyName || !client.email || exportData.length === 0) {
       setSubmitMessage({
         type: "error",
         text: "Please add company/email and at least one shade before exporting.",
+      });
+      return;
+    }
+
+    if (!requestToken) {
+      setSubmitMessage({
+        type: "error",
+        text: "Missing VITE_SOLID_COLOUR_ORDER_TOKEN in environment.",
       });
       return;
     }
@@ -129,12 +138,18 @@ export default function InternalSolidColourGrid() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-solid-order-token": import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "",
+          "x-solid-order-token": requestToken,
         },
         body: JSON.stringify(payload),
       });
 
-      const data = await response.json().catch(() => ({}));
+      const responseText = await response.text();
+      let data: { orderId?: string; message?: string } = {};
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        data = { message: responseText || undefined };
+      }
 
       if (response.status === 200) {
         downloadOrderJson(payload);

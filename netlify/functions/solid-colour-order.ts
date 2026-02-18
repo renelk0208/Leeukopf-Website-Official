@@ -29,23 +29,39 @@ type OrderPayload = {
 export const handler: Handler = async (event) => {
   try {
     if (event.httpMethod !== "POST") {
-      return { statusCode: 405, body: "Method Not Allowed" };
+      return {
+        statusCode: 405,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ success: false, message: "Method Not Allowed" }),
+      };
     }
 
     const token = event.headers["x-solid-order-token"];
     if (token !== process.env.SOLID_COLOUR_ORDER_TOKEN) {
-      return { statusCode: 401, body: "Unauthorized" };
+      return {
+        statusCode: 401,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ success: false, message: "Unauthorized" }),
+      };
     }
 
     if (!event.body) {
-      return { statusCode: 400, body: "Missing body" };
+      return {
+        statusCode: 400,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ success: false, message: "Missing body" }),
+      };
     }
 
     const payload = JSON.parse(event.body) as OrderPayload;
     const { client, lines, packagingSelections } = payload;
 
     if (!client?.companyName || !client?.contactEmail || !lines?.length) {
-      return { statusCode: 400, body: "Invalid order payload" };
+      return {
+        statusCode: 400,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ success: false, message: "Invalid order payload" }),
+      };
     }
 
     const orderId = `SC-${Date.now()}`;
