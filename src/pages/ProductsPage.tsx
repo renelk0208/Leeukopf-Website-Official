@@ -1,13 +1,18 @@
-import { Link } from 'react-router-dom';
-import { CheckCircle } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { CheckCircle, Search, X } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
-import { isCategoryEnabled } from '../config/productCategories';
+import { enabledCategories, isCategoryEnabled } from '../config/productCategories';
 import ProductCategoryCard3D from '../components/products/ProductCategoryCard3D';
 import { getOurProductsVideoSrc } from '../config/seasonal';
 
 export default function ProductsPage() {
   const videoSrc = getOurProductsVideoSrc();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') ?? '';
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+
+  type EnabledCategoryKey = keyof typeof enabledCategories;
   
   // Product range sections with their English content
   const productRanges = [
@@ -62,6 +67,114 @@ export default function ProductsPage() {
       ]
     },
   ];
+
+  const productCategoryCards: Array<{
+    title: string;
+    subtitle: string;
+    imageSrc: string;
+    href: string;
+    alt: string;
+    enabledKey: EnabledCategoryKey;
+    searchTerms?: string[];
+  }> = [
+    {
+      title: 'Gel Polish',
+      subtitle: 'High-pigment, self-levelling UV/LED gel polishes with HEMA-free and TPO-free options',
+      imageSrc: '/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpeg',
+      href: '/products/gel-polish',
+      alt: 'Gel Polish',
+      enabledKey: 'gelPolish',
+      searchTerms: ['uv', 'led', 'colour', 'color', 'gel polish'],
+    },
+    {
+      title: 'Builder & Structure Gels',
+      subtitle: 'Strengthening systems for shaping, extending and reinforcing — HEMA-free and TPO-free',
+      imageSrc: '/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg',
+      href: '/products/builder-and-structure-gels',
+      alt: 'Builder & Structure Gels',
+      enabledKey: 'builderAndStructureGels',
+      searchTerms: ['builder gel', 'structure gel', 'biab', 'extension'],
+    },
+    {
+      title: 'Top & Bases',
+      subtitle: 'Essential prep and finishing formulas — all safely HEMA-free and TPO-free',
+      imageSrc: '/img/products/tops-and-bases/tops/tops-bases_category_1.jpg',
+      href: '/products/top-and-bases',
+      alt: 'Top & Bases',
+      enabledKey: 'topAndBases',
+      searchTerms: ['top coat', 'base coat', 'primer'],
+    },
+    {
+      title: 'Polygel / AcryGel',
+      subtitle: 'Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free',
+      imageSrc: '/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp',
+      href: '/products/polygel-acrygel',
+      alt: 'Polygel / AcryGel',
+      enabledKey: 'polygelAcrygel',
+      searchTerms: ['polygel', 'acrygel', 'hybrid gel'],
+    },
+    {
+      title: 'Acrylic Systems',
+      subtitle: 'High-performance powders and liquids — always free from HEMA and TPO',
+      imageSrc: '/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg',
+      href: '/products/acrylic-systems',
+      alt: 'Acrylic Systems',
+      enabledKey: 'acrylicSystems',
+      searchTerms: ['acrylic', 'powder', 'liquid'],
+    },
+    {
+      title: 'Liquids & Solutions',
+      subtitle: 'Professional prep and cleanse solutions',
+      imageSrc: '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',
+      href: '/products/liquids-and-solutions',
+      alt: 'Liquids & Solutions',
+      enabledKey: 'liquidsAndSolutions',
+      searchTerms: ['cleanser', 'prep', 'solution'],
+    },
+    {
+      title: 'Nail Art',
+      subtitle: 'Speciality products for nail art and advanced creative services',
+      imageSrc: '/img/products/nail-art/Nail Art/nail-art-category-card-imge.png',
+      href: '/products/nail-art',
+      alt: 'Nail Art',
+      enabledKey: 'nailArt',
+      searchTerms: ['art', 'effect', 'creative'],
+    },
+    {
+      title: 'UV & LED Lamps',
+      subtitle: 'Professional curing lamps for efficient gel polymerization',
+      imageSrc: '/img/products/Lamps/lamps_category_card-1.jpg',
+      href: '/products/lamps',
+      alt: 'UV & LED Lamps',
+      enabledKey: 'lamps',
+      searchTerms: ['lamp', 'uv', 'led', 'curing'],
+    },
+  ];
+
+  const enabledCards = productCategoryCards.filter((card) => isCategoryEnabled(card.enabledKey));
+  const filteredCategoryCards = !normalizedQuery
+    ? enabledCards
+    : enabledCards.filter((card) => {
+        const searchable = [card.title, card.subtitle, ...(card.searchTerms ?? [])].join(' ').toLowerCase();
+        return searchable.includes(normalizedQuery);
+      });
+
+  const filteredProductRanges = !normalizedQuery
+    ? productRanges
+    : productRanges.filter((range) => {
+        const searchable = [range.title, range.text, ...range.bullets].join(' ').toLowerCase();
+        return searchable.includes(normalizedQuery);
+      });
+
+  const updateSearchQuery = (value: string) => {
+    const trimmedValue = value.trim();
+    if (trimmedValue) {
+      setSearchParams({ search: trimmedValue }, { replace: true });
+      return;
+    }
+
+    setSearchParams({}, { replace: true });
+  };
 
   return (
     <PageTemplate
@@ -129,94 +242,43 @@ export default function ProductsPage() {
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
             Explore our product categories
           </h2>
+
+          <div className="mb-6 sm:mb-8 max-w-2xl mx-auto">
+            <label htmlFor="products-search" className="sr-only">Search products</label>
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" aria-hidden="true" />
+              <input
+                id="products-search"
+                type="text"
+                value={searchQuery}
+                onChange={(event) => updateSearchQuery(event.target.value)}
+                placeholder="Search product categories and ranges..."
+                className="w-full rounded-lg border border-gray-300 bg-white pl-11 pr-11 py-3 text-sm sm:text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => updateSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X className="w-5 h-5" aria-hidden="true" />
+                </button>
+              )}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {/* Gel Polish */}
-          {isCategoryEnabled('gelPolish') && (
+          {filteredCategoryCards.map((card) => (
             <ProductCategoryCard3D
-              title="Gel Polish"
-              subtitle="High-pigment, self-levelling UV/LED gel polishes with HEMA-free and TPO-free options"
-              imageSrc="/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpeg"
-              href="/products/gel-polish"
-              alt="Gel Polish"
+              key={card.href}
+              title={card.title}
+              subtitle={card.subtitle}
+              imageSrc={card.imageSrc}
+              href={card.href}
+              alt={card.alt}
             />
-          )}
-
-          {/* Builder & Structure Gels */}
-          {isCategoryEnabled('builderAndStructureGels') && (
-            <ProductCategoryCard3D
-              title="Builder & Structure Gels"
-              subtitle="Strengthening systems for shaping, extending and reinforcing — HEMA-free and TPO-free"
-              imageSrc="/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg"
-              href="/products/builder-and-structure-gels"
-              alt="Builder & Structure Gels"
-            />
-          )}
-
-          {/* Top & Bases */}
-          {isCategoryEnabled('topAndBases') && (
-            <ProductCategoryCard3D
-              title="Top & Bases"
-              subtitle="Essential prep and finishing formulas — all safely HEMA-free and TPO-free"
-              imageSrc="/img/products/tops-and-bases/tops/tops-bases_category_1.jpg"
-              href="/products/top-and-bases"
-              alt="Top & Bases"
-            />
-          )}
-
-          {/* Polygel / AcryGel */}
-          {isCategoryEnabled('polygelAcrygel') && (
-            <ProductCategoryCard3D
-              title="Polygel / AcryGel"
-              subtitle="Lightweight, flexible hybrid gels — fully HEMA-free and TPO-free"
-              imageSrc="/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp"
-              href="/products/polygel-acrygel"
-              alt="Polygel / AcryGel"
-            />
-          )}
-
-          {/* Acrylic Systems */}
-          {isCategoryEnabled('acrylicSystems') && (
-            <ProductCategoryCard3D
-              title="Acrylic Systems"
-              subtitle="High-performance powders and liquids — always free from HEMA and TPO"
-              imageSrc="/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg"
-              href="/products/acrylic-systems"
-              alt="Acrylic Systems"
-            />
-          )}
-
-          {/* Liquids & Solutions */}
-          {isCategoryEnabled('liquidsAndSolutions') && (
-            <ProductCategoryCard3D
-              title="Liquids & Solutions"
-              subtitle="Professional prep and cleanse solutions"
-              imageSrc="/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp"
-              href="/products/liquids-and-solutions"
-              alt="Liquids & Solutions"
-            />
-          )}
-
-          {/* Nail Art */}
-          {isCategoryEnabled('nailArt') && (
-            <ProductCategoryCard3D
-              title="Nail Art"
-              subtitle="Speciality products for nail art and advanced creative services"
-              imageSrc="/img/products/nail-art/Nail Art/nail-art-category-card-imge.png"
-              href="/products/nail-art"
-              alt="Nail Art"
-            />
-          )}
-
-          {/* Lamps */}
-          {isCategoryEnabled('lamps') && (
-            <ProductCategoryCard3D
-              title="UV & LED Lamps"
-              subtitle="Professional curing lamps for efficient gel polymerization"
-              imageSrc="/img/products/Lamps/lamps_category_card-1.jpg"
-              href="/products/lamps"
-              alt="UV & LED Lamps"
-            />
-          )}
+          ))}
 
           {/* Accessories */}
           {isCategoryEnabled('accessories') && (
@@ -243,6 +305,12 @@ export default function ProductsPage() {
             </Link>
           )}
         </div>
+
+        {normalizedQuery && filteredCategoryCards.length === 0 && (
+          <p className="text-center text-sm sm:text-base text-gray-500 mt-6">
+            No category matches for "{searchQuery.trim()}".
+          </p>
+        )}
       </div>
 
       {/* Product Ranges Section */}
@@ -251,7 +319,7 @@ export default function ProductsPage() {
           Our product ranges
         </h2>
         <div className="space-y-8">
-          {productRanges.map((range) => (
+          {filteredProductRanges.map((range) => (
             <div
               key={range.key}
               className="bg-white rounded-lg border border-gray-200 p-5 sm:p-6 hover:shadow-lg transition-shadow"
@@ -272,6 +340,12 @@ export default function ProductsPage() {
               </ul>
             </div>
           ))}
+
+          {normalizedQuery && filteredProductRanges.length === 0 && (
+            <p className="text-center text-sm sm:text-base text-gray-500">
+              No product range matches for "{searchQuery.trim()}".
+            </p>
+          )}
         </div>
       </div>
 

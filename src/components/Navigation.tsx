@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { type FormEvent, useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, Search, X } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 import CalendlyButton from './CalendlyButton';
 
@@ -53,7 +53,18 @@ const SocialLinks = () => {
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!location.pathname.startsWith('/products')) {
+      return;
+    }
+
+    const queryValue = new URLSearchParams(location.search).get('search') ?? '';
+    setSearchQuery(queryValue);
+  }, [location.pathname, location.search]);
 
   const navItems = [
     { label: 'Home', path: '/' },
@@ -70,6 +81,17 @@ export default function Navigation() {
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
     return location.pathname.startsWith(path);
+  };
+
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const trimmedQuery = searchQuery.trim();
+    const destination = trimmedQuery
+      ? `/products?search=${encodeURIComponent(trimmedQuery)}`
+      : '/products';
+
+    navigate(destination);
+    setIsOpen(false);
   };
 
   return (
@@ -111,6 +133,19 @@ export default function Navigation() {
           </nav>
 
           <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
+            <form onSubmit={handleSearchSubmit} className="hidden xl:flex items-center">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search products"
+                  aria-label="Search products"
+                  className="w-44 rounded-lg border border-gray-300 bg-white pl-9 pr-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                />
+              </div>
+            </form>
             <div className="hidden xl:flex items-center space-x-2">
               <CalendlyButton size="sm" className="mr-2" />
               <SocialLinks />
@@ -133,6 +168,20 @@ export default function Navigation() {
       {isOpen && (
         <div className="xl:hidden bg-white border-t border-gray-200 shadow-lg max-h-[calc(100vh-5rem)] overflow-y-auto">
           <div className="px-4 py-2 space-y-1">
+            <form onSubmit={handleSearchSubmit} className="px-1 pt-2 pb-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search products"
+                  aria-label="Search products"
+                  className="w-full rounded-lg border border-gray-300 bg-white pl-9 pr-3 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                />
+              </div>
+            </form>
+
             {navItems.map((item) => (
               <Link
                 key={item.path}
