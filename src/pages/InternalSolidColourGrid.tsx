@@ -41,6 +41,8 @@ const JAR_SIZE_OPTIONS = ["10ml", "15ml"];
 const JAR_COLOR_OPTIONS = ["white", "black"];
 const ENABLE_BRUSH_TYPE = true;
 
+const toDisplayLabel = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+
 export default function InternalSolidColourGrid() {
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
@@ -356,7 +358,7 @@ export default function InternalSolidColourGrid() {
                     setPackagingError(null);
                   }}
                 />
-                bottle
+                Bottle
               </label>
               <label className="flex items-center gap-1 text-sm">
                 <input
@@ -369,7 +371,7 @@ export default function InternalSolidColourGrid() {
                     setPackagingError(null);
                   }}
                 />
-                jar
+                Jar
               </label>
             </div>
           </div>
@@ -394,7 +396,7 @@ export default function InternalSolidColourGrid() {
                   >
                     <option value="">Select…</option>
                     {BOTTLE_SIZE_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{option}</option>
+                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
                     ))}
                   </select>
 
@@ -414,7 +416,7 @@ export default function InternalSolidColourGrid() {
                   >
                     <option value="">Select…</option>
                     {BOTTLE_COLOR_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{option}</option>
+                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
                     ))}
                   </select>
 
@@ -434,7 +436,7 @@ export default function InternalSolidColourGrid() {
                   >
                     <option value="">Select…</option>
                     {BRUSH_SHAPE_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{option}</option>
+                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
                     ))}
                   </select>
 
@@ -455,7 +457,7 @@ export default function InternalSolidColourGrid() {
                     >
                       <option value="">Select…</option>
                       {BRUSH_TYPE_OPTIONS.map((option) => (
-                        <option key={option} value={option}>{option}</option>
+                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
                       ))}
                     </select>
                   )}
@@ -478,7 +480,7 @@ export default function InternalSolidColourGrid() {
                   >
                     <option value="">Select…</option>
                     {JAR_SIZE_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{option}</option>
+                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
                     ))}
                   </select>
 
@@ -498,7 +500,7 @@ export default function InternalSolidColourGrid() {
                   >
                     <option value="">Select…</option>
                     {JAR_COLOR_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{option}</option>
+                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
                     ))}
                   </select>
                 </>
