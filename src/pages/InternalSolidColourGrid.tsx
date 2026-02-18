@@ -82,11 +82,20 @@ export default function InternalSolidColourGrid() {
 
         <button
           onClick={() => {
-            const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({
-              sku,
-              qty,
-            }));
-            console.log("ORDER EXPORT:", exportData);
+            const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({ sku, qty }));
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+              type: "application/json",
+            });
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `solid-colour-order-pilot80-${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
           }}
           className="mt-3 rounded-xl bg-black px-4 py-2 text-xs text-white"
         >
