@@ -52,9 +52,9 @@ ${linesText}
 `;
 
     await resend.emails.send({
-      from: "Leeukopf Orders <orders@leeukopf.com>",
+      from: `Leeukopf <${process.env.RESEND_FROM_EMAIL}>`,
       to: process.env.ORDERS_INBOX_EMAIL as string,
-      reply_to: client.contactEmail,
+      replyTo: client.contactEmail,
       subject,
       text,
       attachments: [
@@ -62,9 +62,7 @@ ${linesText}
           filename: `solid-colour-order-${new Date()
             .toISOString()
             .slice(0, 10)}.json`,
-          content: Buffer.from(JSON.stringify(payload, null, 2)).toString(
-            "base64"
-          ),
+          content: Buffer.from(JSON.stringify(payload, null, 2)).toString("base64"),
           contentType: "application/json",
         },
       ],
