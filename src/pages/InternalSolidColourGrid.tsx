@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Row = Record<string, string>;
+type OrderLine = {
+  sku: string;
+  qty: number;
+};
 
 export default function InternalSolidColourGrid() {
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
   const [imgStatus, setImgStatus] = useState<Record<string, "OK" | "MISSING">>({});
   const [onlyMissing, setOnlyMissing] = useState(false);
+  const [order, setOrder] = useState<Record<string, number>>({});
 
   useEffect(() => {
     fetch("/data/solid-colour/pilot-80.json")
@@ -39,6 +44,9 @@ export default function InternalSolidColourGrid() {
     return out;
   }, [rows, q, onlyMissing, imgStatus]);
 
+  const selectedItems = Object.entries(order).filter(([_, qty]) => qty > 0);
+  const totalUnits = selectedItems.reduce((sum, [_, qty]) => sum + qty, 0);
+
   return (
     <div className="mx-auto max-w-6xl p-6">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -64,10 +72,33 @@ export default function InternalSolidColourGrid() {
         </label>
       </div>
 
+      <div className="mb-6 rounded-xl border bg-white p-4 shadow-sm">
+        <div className="text-sm font-semibold">
+          Selected Shades: {selectedItems.length}
+        </div>
+        <div className="text-sm">
+          Total Units: {totalUnits}
+        </div>
+
+        <button
+          onClick={() => {
+            const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({
+              sku,
+              qty,
+            }));
+            console.log("ORDER EXPORT:", exportData);
+          }}
+          className="mt-3 rounded-xl bg-black px-4 py-2 text-xs text-white"
+        >
+          Export Order
+        </button>
+      </div>
+
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {filtered.map((r, idx) => {
           const sku = r["Internal_SKU"] || "";
           const name = r["Shade_Name"] || "";
+          const hex = r["Hex_Code"] || "";
           const img = r["Swatch_Image"] || "";
           const key = sku || `row-${idx}`;
           const status = imgStatus[key];
@@ -106,6 +137,27 @@ export default function InternalSolidColourGrid() {
               <div className="mt-2">
                 <div className="text-xs font-semibold">{sku}</div>
                 <div className="text-[11px] text-neutral-600 line-clamp-2">{name}</div>
+                <div className="text-[11px] text-neutral-600 mt-1">HEX: {hex || "—"}</div>
+
+                <div className="mt-3 flex items-center gap-2">
+                  <input
+                    type="number"
+                    min={0}
+                    placeholder="Qty"
+                    value={order[sku] || ""}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value || "0", 10);
+                      if (val === 0) {
+                        setOrder((prev) => ({ ...prev, [sku]: 0 }));
+                      } else if (val < 30) {
+                        setOrder((prev) => ({ ...prev, [sku]: 30 }));
+                      } else {
+                        setOrder((prev) => ({ ...prev, [sku]: val }));
+                      }
+                    }}
+                    className="w-16 rounded border px-2 py-1 text-xs"
+                  />
+                </div>
               </div>
             </div>
           );
