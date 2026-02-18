@@ -24,10 +24,17 @@ type BottlePackaging = {
   brushType?: string;
 };
 
+type JarPackaging = {
+  size?: string;
+  color?: string;
+};
+
 type PackagingPayload = {
+  mode?: "standard" | "custom";
   system?: string;
   bottle?: BottlePackaging | null;
-  jar?: Record<string, string> | null;
+  jar?: JarPackaging | null;
+  customDescription?: string;
   notes?: string;
 };
 
@@ -101,6 +108,60 @@ export const handler: Handler = async (event) => {
 
     const orderId = `SC-${Date.now()}`;
 
+    const packagingMode: "standard" | "custom" = packaging?.mode === "custom" ? "custom" : "standard";
+    const packagingSystem: "bottle" | "jar" = packaging?.system === "jar" ? "jar" : "bottle";
+    const requiresBrushType = true;
+
+    if (packagingMode === "standard") {
+      if (packagingSystem === "bottle") {
+        const missingFields: string[] = [];
+        if (!packaging?.bottle?.size) missingFields.push("bottle.size");
+        if (!packaging?.bottle?.color) missingFields.push("bottle.color");
+        if (!packaging?.bottle?.brushShape) missingFields.push("bottle.brushShape");
+        if (requiresBrushType && !packaging?.bottle?.brushType) missingFields.push("bottle.brushType");
+
+        if (missingFields.length > 0) {
+          return {
+            statusCode: 400,
+            headers: jsonHeaders,
+            body: JSON.stringify({
+              success: false,
+              message: `Invalid packaging for standard mode. Missing: ${missingFields.join(", ")}`,
+            }),
+          };
+        }
+      } else {
+        const missingFields: string[] = [];
+        if (!packaging?.jar?.size) missingFields.push("jar.size");
+        if (!packaging?.jar?.color) missingFields.push("jar.color");
+
+        if (missingFields.length > 0) {
+          return {
+            statusCode: 400,
+            headers: jsonHeaders,
+            body: JSON.stringify({
+              success: false,
+              message: `Invalid packaging for standard mode. Missing: ${missingFields.join(", ")}`,
+            }),
+          };
+        }
+      }
+    }
+
+    if (packagingMode === "custom") {
+      const customDescription = packaging?.customDescription?.trim() || "";
+      if (customDescription.length < 20) {
+        return {
+          statusCode: 400,
+          headers: jsonHeaders,
+          body: JSON.stringify({
+            success: false,
+            message: "Invalid packaging for custom mode. customDescription must be at least 20 characters.",
+          }),
+        };
+      }
+    }
+
     const totalUnits = lines.reduce(
       (sum, line) => sum + (Number(line.qty) || 0),
       0
@@ -109,9 +170,6 @@ export const handler: Handler = async (event) => {
     const linesText = lines
       .map((line) => `• ${line.code} (${line.name}) x ${line.qty}`)
       .join("\n");
-
-    const packagingSystem = packaging?.system === "jar" ? "jar" : "bottle";
-    const jarRecord = packaging?.jar ?? null;
 
     const pdfBytes = await buildSolidColourPdf({
       orderId,
@@ -123,14 +181,11 @@ export const handler: Handler = async (event) => {
         contactEmail: client.contactEmail,
       },
       packaging: {
+        mode: packagingMode,
         system: packagingSystem,
         bottle: packaging?.bottle || undefined,
-        jar: jarRecord
-          ? {
-              size: jarRecord.size || jarRecord.Size,
-              color: jarRecord.color || jarRecord.Color,
-            }
-          : undefined,
+        jar: packaging?.jar || undefined,
+        customDescription: packaging?.customDescription,
         notes: packaging?.notes,
       },
       lines,
@@ -140,6 +195,13 @@ export const handler: Handler = async (event) => {
 
     const subject = `Solid Colour Order — ${client.companyName} (${orderId})`;
 
+    const packagingChoiceLabel = packagingMode === "custom" ? "Custom" : "Standard";
+    const packagingDetailsText = packagingMode === "custom"
+      ? `Custom packaging requested: ${packaging?.customDescription || ""}`
+      : packagingSystem === "jar"
+        ? `Jar Size: ${packaging?.jar?.size || ""}\nJar Color: ${packaging?.jar?.color || ""}`
+        : `Bottle Size: ${packaging?.bottle?.size || ""}\nBottle Color: ${packaging?.bottle?.color || ""}\nBrush Shape: ${packaging?.bottle?.brushShape || ""}${requiresBrushType ? `\nBrush Type: ${packaging?.bottle?.brushType || ""}` : ""}`;
+
     const text = `
 Solid Colour Order Submission
 
@@ -148,11 +210,9 @@ Company: ${client.companyName}
 VAT: ${client.vat || ""}
 Country: ${client.country || ""}
 Contact Email: ${client.contactEmail}
-Packaging System: ${packaging?.system || ""}
-Bottle Size: ${packaging?.bottle?.size || ""}
-Bottle Color: ${packaging?.bottle?.color || ""}
-Brush Shape: ${packaging?.bottle?.brushShape || ""}
-Brush Type: ${packaging?.bottle?.brushType || ""}
+Packaging Choice: ${packagingChoiceLabel}
+Packaging System: ${packagingSystem}
+${packagingDetailsText}
 Packaging Notes: ${packaging?.notes || ""}
 
 Total Units: ${totalUnits}
@@ -186,6 +246,9 @@ Thank you for your order request.
 Order ID: ${orderId}
 Company: ${client.companyName}
 Total Units: ${totalUnits}
+    Packaging Choice: ${packagingChoiceLabel}
+    Packaging System: ${packagingSystem}
+    ${packagingMode === "custom" ? `Custom packaging requested: ${packaging?.customDescription || ""}` : "Standard packaging details received."}
 
 We received your request and our team will contact you shortly.
 `,

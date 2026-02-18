@@ -16,9 +16,11 @@ type Payload = {
     contactPhone?: string;
   };
   packaging: {
+    mode: "standard" | "custom";
     system: "bottle" | "jar";
     bottle?: { size?: string; color?: string; brushShape?: string; brushType?: string };
     jar?: { size?: string; color?: string };
+    customDescription?: string;
     notes?: string;
   };
   lines: Line[];
@@ -153,10 +155,21 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
     text(page, "Packaging (applies to all shades)", M, y, 12, true);
     y -= 16;
+    const packagingChoice = data.packaging.mode === "custom" ? "Custom" : "Standard";
+    text(page, `Packaging choice: ${packagingChoice}`, M, y, 10.5);
+    y -= 14;
     text(page, `System: ${safe(data.packaging.system)}`, M, y, 10.5);
     y -= 14;
 
-    if (data.packaging.system === "bottle") {
+    if (data.packaging.mode === "custom") {
+      const descriptionLines = wrapText(`Custom packaging requested: ${safe(data.packaging.customDescription)}`, 95);
+      text(page, descriptionLines[0], M, y);
+      y -= 14;
+      for (let index = 1; index < descriptionLines.length; index += 1) {
+        text(page, descriptionLines[index], M + 24, y);
+        y -= 14;
+      }
+    } else if (data.packaging.system === "bottle") {
       const bottle = data.packaging.bottle ?? {};
       text(page, `Bottle Size: ${safe(bottle.size)}`, M, y);
       y -= 14;
@@ -164,8 +177,10 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
       y -= 14;
       text(page, `Brush Shape: ${safe(bottle.brushShape)}`, M, y);
       y -= 14;
-      text(page, `Brush Type: ${safe(bottle.brushType)}`, M, y);
-      y -= 14;
+      if (bottle.brushType) {
+        text(page, `Brush Type: ${safe(bottle.brushType)}`, M, y);
+        y -= 14;
+      }
     } else {
       const jar = data.packaging.jar ?? {};
       text(page, `Jar Size: ${safe(jar.size)}`, M, y);
