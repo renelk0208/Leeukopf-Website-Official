@@ -3,7 +3,7 @@ import path from "path";
 import fontkit from "@pdf-lib/fontkit";
 import { PDFDocument, PDFPage, StandardFonts, rgb } from "pdf-lib";
 
-type Line = { code: string; name: string; qty: number };
+type Line = { code: string; name: string; qty: number; unit?: "pcs" | "kg" };
 
 type Payload = {
   orderId: string;
@@ -75,6 +75,10 @@ function wrapText(text: string, maxChars: number): string[] {
 }
 
 export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
+    const isBulkKg = data.lines.length > 0 && data.lines.every((line) => line.unit === "kg");
+    const qtyLabel = isBulkKg ? "QTY (kg)" : "QTY (pcs)";
+    const totalLabel = isBulkKg ? "Total KG" : "Total Units";
+
   const pdf = await PDFDocument.create();
   pdf.registerFontkit(fontkit);
 
@@ -343,7 +347,7 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
     text(page, "CODE", colCode, y, BODY_FONT_SIZE, true);
     text(page, "SHADE", colName, y, BODY_FONT_SIZE, true);
-    textRight(page, "QTY", colQtyRight, y, BODY_FONT_SIZE, true);
+    textRight(page, qtyLabel, colQtyRight, y, BODY_FONT_SIZE, true);
 
     y -= 10;
     page.drawLine({
@@ -409,7 +413,7 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
       text(page, nameLines[1], colName, y - LINE_GAP, BODY_FONT_SIZE);
     }
 
-    textRight(page, String(qty), colQtyRight, y, BODY_FONT_SIZE);
+    textRight(page, `${qty} ${isBulkKg ? "kg" : "pcs"}`, colQtyRight, y, BODY_FONT_SIZE);
     y -= rowHeight;
   }
 
@@ -424,7 +428,7 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
   textRight(page, `Total Shades: ${data.lines.length}`, RIGHT_EDGE, y, BODY_FONT_SIZE, true);
   y -= LINE_GAP;
-  textRight(page, `Total Units: ${totalUnits}`, RIGHT_EDGE, y, BODY_FONT_SIZE, true);
+  textRight(page, `${totalLabel}: ${totalUnits}${isBulkKg ? " kg" : " pcs"}`, RIGHT_EDGE, y, BODY_FONT_SIZE, true);
 
   footer(page);
 

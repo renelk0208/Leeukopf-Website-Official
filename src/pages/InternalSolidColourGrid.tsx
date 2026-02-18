@@ -98,6 +98,7 @@ export default function InternalSolidColourGrid() {
   const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [orderFormat, setOrderFormat] = useState<OrderFormat>("finished_units");
   const [bulkContainer, setBulkContainer] = useState<BulkContainer | "">("");
+  const [isBulkContainerAuto, setIsBulkContainerAuto] = useState(false);
 
   useEffect(() => {
     fetch("/data/solid-colour/pilot-80.json")
@@ -151,10 +152,22 @@ export default function InternalSolidColourGrid() {
   const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
 
   useEffect(() => {
+    if (orderFormat !== "bulk") {
+      setIsBulkContainerAuto(false);
+      return;
+    }
+
     if (bulkRequiresBucket && bulkContainer !== "5kg_bucket") {
       setBulkContainer("5kg_bucket");
+      setIsBulkContainerAuto(true);
+      return;
     }
-  }, [bulkRequiresBucket, bulkContainer]);
+
+    if (!bulkRequiresBucket && isBulkContainerAuto && bulkContainer === "5kg_bucket") {
+      setBulkContainer("");
+      setIsBulkContainerAuto(false);
+    }
+  }, [bulkRequiresBucket, bulkContainer, isBulkContainerAuto, orderFormat]);
 
   const handleSubmitOrder = async () => {
     const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => {
@@ -196,13 +209,6 @@ export default function InternalSolidColourGrid() {
     }
 
     if (orderFormat === "bulk") {
-      if (bulkRequiresBucket && bulkContainer !== "5kg_bucket") {
-        const message = "For quantities of 5kg or more, packing is automatically set to 5kg Buckets.";
-        setPackagingError(message);
-        setSubmitMessage({ type: "error", text: message });
-        return;
-      }
-
       if (!bulkContainer) {
         const message = "Please choose a bulk packing type: 1kg Flasks or 5kg Buckets.";
         setPackagingError(message);
@@ -574,9 +580,9 @@ export default function InternalSolidColourGrid() {
                     name="bulk-container"
                     value="1kg_flask"
                     checked={bulkContainer === "1kg_flask"}
-                    disabled={bulkRequiresBucket}
                     onChange={() => {
                       setBulkContainer("1kg_flask");
+                      setIsBulkContainerAuto(false);
                       setPackagingError(null);
                     }}
                   />
@@ -590,6 +596,7 @@ export default function InternalSolidColourGrid() {
                     checked={bulkContainer === "5kg_bucket"}
                     onChange={() => {
                       setBulkContainer("5kg_bucket");
+                      setIsBulkContainerAuto(false);
                       setPackagingError(null);
                     }}
                   />
@@ -598,7 +605,7 @@ export default function InternalSolidColourGrid() {
               </div>
               {bulkRequiresBucket && (
                 <div className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-                  5kg or more selected: packing has been automatically set to 5kg Buckets.
+                  5kg or more selected: 5kg Buckets has been auto-selected as a suggestion (you can still change it).
                 </div>
               )}
             </>
