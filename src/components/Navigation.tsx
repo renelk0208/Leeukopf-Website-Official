@@ -54,6 +54,7 @@ const SocialLinks = () => {
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDesktopSearchOpen, setIsDesktopSearchOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -64,6 +65,7 @@ export default function Navigation() {
 
     const queryValue = new URLSearchParams(location.search).get('search') ?? '';
     setSearchQuery(queryValue);
+    setIsDesktopSearchOpen(Boolean(queryValue));
   }, [location.pathname, location.search]);
 
   const navItems = [
@@ -92,6 +94,7 @@ export default function Navigation() {
 
     navigate(destination);
     setIsOpen(false);
+    setIsDesktopSearchOpen(Boolean(trimmedQuery));
   };
 
   return (
@@ -133,19 +136,57 @@ export default function Navigation() {
           </nav>
 
           <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
-            <form onSubmit={handleSearchSubmit} className="hidden xl:flex items-center">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Search products"
-                  aria-label="Search products"
-                  className="w-44 rounded-lg border border-gray-300 bg-white pl-9 pr-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                />
-              </div>
-            </form>
+            <div className="hidden xl:flex items-center">
+              {isDesktopSearchOpen ? (
+                <form onSubmit={handleSearchSubmit} className="flex items-center">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(event) => setSearchQuery(event.target.value)}
+                      placeholder="Search products"
+                      aria-label="Search products"
+                      autoFocus
+                      onKeyDown={(event) => {
+                        if (event.key === 'Escape') {
+                          event.preventDefault();
+                          if (!searchQuery.trim()) {
+                            setIsDesktopSearchOpen(false);
+                          }
+                        }
+                      }}
+                      className="w-44 rounded-lg border border-gray-300 bg-white pl-9 pr-9 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (searchQuery.trim()) {
+                          setSearchQuery('');
+                          navigate('/products');
+                          return;
+                        }
+
+                        setIsDesktopSearchOpen(false);
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label={searchQuery.trim() ? 'Clear search' : 'Close search'}
+                    >
+                      <X className="w-4 h-4" aria-hidden="true" />
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setIsDesktopSearchOpen(true)}
+                  className="inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 text-gray-500 hover:text-primary hover:border-primary transition-colors"
+                  aria-label="Open product search"
+                >
+                  <Search className="w-4 h-4" aria-hidden="true" />
+                </button>
+              )}
+            </div>
             <div className="hidden xl:flex items-center space-x-2">
               <CalendlyButton size="sm" className="mr-2" />
               <SocialLinks />
