@@ -38,6 +38,11 @@ const A4 = { w: 595.28, h: 841.89 };
 const M = 48;
 const TOP = 48;
 const BOTTOM = 80;
+const LETTERHEAD_MAX_WIDTH = 170;
+const LETTERHEAD_TOP_PADDING = 16;
+const ADDRESS_FONT_SIZE = 10;
+const BODY_FONT_SIZE = 12;
+const RIGHT_EDGE = A4.w - M;
 
 function safe(value?: string): string {
   return value && value.trim().length ? value.trim() : "—";
@@ -142,20 +147,20 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
       return;
     }
 
-    const headerWidth = Math.min(A4.w - (M * 2), letterheadDims.width);
+    const headerWidth = Math.min(LETTERHEAD_MAX_WIDTH, letterheadDims.width);
     const ratio = headerWidth / letterheadDims.width;
     const headerHeight = letterheadDims.height * ratio;
 
     page.drawImage(letterheadImage, {
       x: M,
-      y: A4.h - TOP - headerHeight + 4,
+      y: A4.h - LETTERHEAD_TOP_PADDING - headerHeight,
       width: headerWidth,
       height: headerHeight,
       opacity: 1,
     });
   };
 
-  const text = (page: PDFPage, value: string, x: number, y: number, size = 10.5, bold = false) => {
+  const text = (page: PDFPage, value: string, x: number, y: number, size = BODY_FONT_SIZE, bold = false) => {
     page.drawText(value ?? "—", {
       x,
       y,
@@ -163,6 +168,13 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
       font: bold ? fontBold : font,
       color: rgb(0, 0, 0),
     });
+  };
+
+  const textRight = (page: PDFPage, value: string, rightX: number, y: number, size = BODY_FONT_SIZE, bold = false) => {
+    const safeValue = value ?? "—";
+    const activeFont = bold ? fontBold : font;
+    const textWidth = activeFont.widthOfTextAtSize(safeValue, size);
+    text(page, safeValue, rightX - textWidth, y, size, bold);
   };
 
   const line = (page: PDFPage, y: number, thickness = 1) => {
@@ -175,29 +187,30 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   };
 
   const footer = (page: PDFPage) => {
+    line(page, 72, 0.8);
     text(
       page,
-      "This request is not a final invoice. A quotation will be sent by email once reviewed.",
+      "Thank you for your request. Our team will be in contact with you very soon.",
       M,
-      60,
-      9.5,
-      false
+      54,
+      10.5,
+      true
     );
-    text(page, "Generated automatically by Leeukopf B2B Order System", M, 42, 9, false);
+    text(page, "Leeukopf B2B Order System • This is a request summary, not a final invoice.", M, 38, 9.5, false);
   };
 
   const drawHeaderBlocks = (page: PDFPage): number => {
     drawLogoWatermark(page);
     drawLogoHeader(page);
 
-    const letterheadHeight = letterheadDims ? Math.min(A4.w - (M * 2), letterheadDims.width) * (letterheadDims.height / letterheadDims.width) : 0;
+    const letterheadHeight = letterheadDims ? Math.min(LETTERHEAD_MAX_WIDTH, letterheadDims.width) * (letterheadDims.height / letterheadDims.width) : 0;
     let y = A4.h - TOP - letterheadHeight - 12;
 
     text(page, "Solid Colour Order Request", M, y, 16, true);
     y -= 24;
 
-    text(page, `Order ID: ${data.orderId}`, M, y, 10.5, true);
-    text(page, `Date: ${data.createdAt}`, A4.w - M - 180, y, 10.5, false);
+    text(page, `Order ID: ${data.orderId}`, M, y, BODY_FONT_SIZE, true);
+    textRight(page, `Date: ${data.createdAt}`, RIGHT_EDGE, y, BODY_FONT_SIZE, false);
     y -= 18;
     line(page, y);
     y -= 18;
@@ -209,32 +222,32 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
     const rightX = A4.w / 2 + 10;
     const yStart = y;
 
-    text(page, `Company: ${safe(data.client.company)}`, leftX, y, 10.5);
+    text(page, `Company: ${safe(data.client.company)}`, leftX, y, BODY_FONT_SIZE);
     y -= 14;
-    text(page, `Invoice Address: ${safe(data.client.invoiceAddress)}`, leftX, y, 10.5);
+    text(page, `Invoice Address: ${safe(data.client.invoiceAddress)}`, leftX, y, ADDRESS_FONT_SIZE);
     y -= 14;
-    text(page, `Invoice Region: ${safe(data.client.invoiceRegion)}`, leftX, y, 10.5);
+    text(page, `Invoice Region: ${safe(data.client.invoiceRegion)}`, leftX, y, ADDRESS_FONT_SIZE);
     y -= 14;
-    text(page, `Invoice Postal Code: ${safe(data.client.invoicePostalCode)}`, leftX, y, 10.5);
+    text(page, `Invoice Postal Code: ${safe(data.client.invoicePostalCode)}`, leftX, y, ADDRESS_FONT_SIZE);
     y -= 14;
-    text(page, `Shipping Address: ${safe(data.client.shippingAddress)}`, leftX, y, 10.5);
+    text(page, `Shipping Address: ${safe(data.client.shippingAddress)}`, leftX, y, ADDRESS_FONT_SIZE);
     y -= 14;
-    text(page, `Shipping Region: ${safe(data.client.shippingRegion)}`, leftX, y, 10.5);
+    text(page, `Shipping Region: ${safe(data.client.shippingRegion)}`, leftX, y, ADDRESS_FONT_SIZE);
     y -= 14;
-    text(page, `Shipping Postal Code: ${safe(data.client.shippingPostalCode)}`, leftX, y, 10.5);
+    text(page, `Shipping Postal Code: ${safe(data.client.shippingPostalCode)}`, leftX, y, ADDRESS_FONT_SIZE);
     y -= 14;
-    text(page, `Same Address: ${data.client.sameAddress ? "Yes" : "No"}`, leftX, y, 10.5);
+    text(page, `Same Address: ${data.client.sameAddress ? "Yes" : "No"}`, leftX, y, BODY_FONT_SIZE);
     y -= 14;
-    text(page, `VAT: ${safe(data.client.vat)}`, leftX, y, 10.5);
+    text(page, `VAT: ${safe(data.client.vat)}`, leftX, y, BODY_FONT_SIZE);
     y -= 14;
-    text(page, `Country: ${safe(data.client.country)}`, leftX, y, 10.5);
+    text(page, `Country: ${safe(data.client.country)}`, leftX, y, BODY_FONT_SIZE);
 
     let yRight = yStart;
-    text(page, `Email: ${safe(data.client.contactEmail)}`, rightX, yRight, 10.5);
+    text(page, `Email: ${safe(data.client.contactEmail)}`, rightX, yRight, BODY_FONT_SIZE);
     yRight -= 14;
-    text(page, `Contact: ${safe(data.client.contactPerson)}`, rightX, yRight, 10.5);
+    text(page, `Contact: ${safe(data.client.contactPerson)}`, rightX, yRight, BODY_FONT_SIZE);
     yRight -= 14;
-    text(page, `Phone: ${safe(data.client.contactPhone)}`, rightX, yRight, 10.5);
+    text(page, `Phone: ${safe(data.client.contactPhone)}`, rightX, yRight, BODY_FONT_SIZE);
 
     y -= 18;
     line(page, y);
@@ -243,9 +256,9 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
     text(page, "Packaging (applies to all shades)", M, y, 12, true);
     y -= 16;
     const packagingChoice = data.packaging.mode === "custom" ? "Custom" : "Standard";
-    text(page, `Packaging choice: ${packagingChoice}`, M, y, 10.5);
+    text(page, `Packaging choice: ${packagingChoice}`, M, y, BODY_FONT_SIZE);
     y -= 14;
-    text(page, `System: ${safe(data.packaging.system)}`, M, y, 10.5);
+    text(page, `System: ${safe(data.packaging.system)}`, M, y, BODY_FONT_SIZE);
     y -= 14;
 
     if (data.packaging.mode === "custom") {
@@ -299,11 +312,11 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   const drawTableHeader = (page: PDFPage, y: number) => {
     const colCode = M;
     const colName = M + 140;
-    const colQty = A4.w - M - 60;
+    const colQtyRight = RIGHT_EDGE;
 
-    text(page, "CODE", colCode, y, 10.5, true);
-    text(page, "SHADE", colName, y, 10.5, true);
-    text(page, "QTY", colQty, y, 10.5, true);
+    text(page, "CODE", colCode, y, BODY_FONT_SIZE, true);
+    text(page, "SHADE", colName, y, BODY_FONT_SIZE, true);
+    textRight(page, "QTY", colQtyRight, y, BODY_FONT_SIZE, true);
 
     y -= 10;
     page.drawLine({
@@ -314,31 +327,29 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
     });
     y -= 14;
 
-    return { y, colCode, colName, colQty };
+    return { y, colCode, colName, colQtyRight };
   };
 
   let page = pdf.addPage([A4.w, A4.h]);
   let y = drawHeaderBlocks(page);
-  let { y: tableY, colCode, colName, colQty } = drawTableHeader(page, y);
+  let { y: tableY, colCode, colName, colQtyRight } = drawTableHeader(page, y);
   y = tableY;
 
   let totalUnits = 0;
 
   const ensureRoom = () => {
     if (y < BOTTOM) {
-      footer(page);
-
       page = pdf.addPage([A4.w, A4.h]);
 
       drawLogoWatermark(page);
       drawLogoHeader(page);
 
-      const letterheadHeight = letterheadDims ? Math.min(A4.w - (M * 2), letterheadDims.width) * (letterheadDims.height / letterheadDims.width) : 0;
+      const letterheadHeight = letterheadDims ? Math.min(LETTERHEAD_MAX_WIDTH, letterheadDims.width) * (letterheadDims.height / letterheadDims.width) : 0;
       let y2 = A4.h - TOP - letterheadHeight - 8;
       text(page, "Solid Colour Order Request", M, y2, 14, true);
       y2 -= 18;
-      text(page, `Order ID: ${data.orderId}`, M, y2, 10.5, true);
-      text(page, `Date: ${data.createdAt}`, A4.w - M - 180, y2, 10.5, false);
+      text(page, `Order ID: ${data.orderId}`, M, y2, BODY_FONT_SIZE, true);
+      textRight(page, `Date: ${data.createdAt}`, RIGHT_EDGE, y2, BODY_FONT_SIZE, false);
       y2 -= 14;
       line(page, y2);
       y2 -= 18;
@@ -347,7 +358,7 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
       y = tableHeader.y;
       colCode = tableHeader.colCode;
       colName = tableHeader.colName;
-      colQty = tableHeader.colQty;
+      colQtyRight = tableHeader.colQtyRight;
     }
   };
 
@@ -365,13 +376,13 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
       ensureRoom();
     }
 
-    text(page, code, colCode, y, 10.5);
-    text(page, nameLines[0], colName, y, 10.5);
+    text(page, code, colCode, y, BODY_FONT_SIZE);
+    text(page, nameLines[0], colName, y, BODY_FONT_SIZE);
     if (nameLines.length > 1) {
-      text(page, nameLines[1], colName, y - 14, 10.5);
+      text(page, nameLines[1], colName, y - 14, BODY_FONT_SIZE);
     }
 
-    text(page, String(qty), colQty + 20, y, 10.5);
+    textRight(page, String(qty), colQtyRight, y, BODY_FONT_SIZE);
     y -= rowHeight;
   }
 
@@ -384,9 +395,9 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   });
   y -= 18;
 
-  text(page, `Total Shades: ${data.lines.length}`, A4.w - M - 220, y, 10.5, true);
+  textRight(page, `Total Shades: ${data.lines.length}`, RIGHT_EDGE, y, BODY_FONT_SIZE, true);
   y -= 14;
-  text(page, `Total Units: ${totalUnits}`, A4.w - M - 220, y, 10.5, true);
+  textRight(page, `Total Units: ${totalUnits}`, RIGHT_EDGE, y, BODY_FONT_SIZE, true);
 
   footer(page);
 
