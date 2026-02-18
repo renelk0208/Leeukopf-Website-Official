@@ -1,4 +1,5 @@
 import { Handler } from "@netlify/functions";
+import { createHash } from "crypto";
 import { buildSolidColourPdf } from "./pdf/buildSolidColourPdf";
 import { Resend } from "resend";
 
@@ -41,6 +42,26 @@ function normalizeToken(value?: string | null): string {
   return (value ?? "").trim().replace(/^['"]|['"]$/g, "");
 }
 
+function extractIncomingToken(headers: Record<string, string | undefined>): string {
+  const authHeader = headers["authorization"] || headers["Authorization"] || "";
+  const legacyHeader = headers["x-solid-order-token"] || headers["X-Solid-Order-Token"] || "";
+
+  if (authHeader) {
+    const stripped = authHeader.replace(/^Bearer\s+/i, "");
+    return normalizeToken(stripped || authHeader);
+  }
+
+  return normalizeToken(legacyHeader);
+}
+
+function tokenFingerprint(token: string): string {
+  if (!token) {
+    return "empty";
+  }
+
+  return createHash("sha256").update(token).digest("hex").slice(0, 10);
+}
+
 export const handler: Handler = async (event) => {
   try {
     const jsonHeaders: Record<string, string> = { "Content-Type": "application/json" };
@@ -56,11 +77,7 @@ export const handler: Handler = async (event) => {
     const expected = normalizeToken(
       process.env.SOLID_COLOUR_ORDER_TOKEN || process.env.VITE_SOLID_COLOUR_ORDER_TOKEN
     );
-    const authHeader = event.headers["authorization"] || event.headers["Authorization"];
-    const legacyHeader = event.headers["x-solid-order-token"] || event.headers["X-Solid-Order-Token"];
-    const incoming = normalizeToken(
-      authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : legacyHeader || ""
-    );
+    const incoming = extractIncomingToken(event.headers);
     if (!expected || incoming !== expected) {
       const message = !expected
         ? "Unauthorized: server token is not configured"
@@ -68,7 +85,16 @@ export const handler: Handler = async (event) => {
       return {
         statusCode: 401,
         headers: jsonHeaders,
-        body: JSON.stringify({ success: false, message }),
+        body: JSON.stringify({
+          success: false,
+          message,
+          diagnostics: {
+            expectedFingerprint: tokenFingerprint(expected),
+            incomingFingerprint: tokenFingerprint(incoming),
+            expectedLength: expected.length,
+            incomingLength: incoming.length,
+          },
+        }),
       };
     }
 
