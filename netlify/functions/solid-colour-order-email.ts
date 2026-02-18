@@ -51,7 +51,7 @@ Order Lines:
 ${linesText}
 `;
 
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: `Leeukopf <${process.env.RESEND_FROM_EMAIL}>`,
       to: process.env.ORDERS_INBOX_EMAIL as string,
       replyTo: client.contactEmail,
@@ -70,7 +70,8 @@ ${linesText}
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ success: true, result }),
     };
   } catch (error) {
     console.error("Order submission error:", error);
