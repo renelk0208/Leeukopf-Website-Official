@@ -100,21 +100,6 @@ export default function InternalSolidColourGrid() {
   const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
   const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
 
-  const downloadOrderJson = (payload: unknown) => {
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {
-      type: "application/json",
-    });
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `solid-colour-order-pilot80-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  };
-
   const handleSubmitOrder = async () => {
     const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => {
       const row = rows.find((item) => (item["Internal_SKU"] || "") === sku);
@@ -166,31 +151,39 @@ export default function InternalSolidColourGrid() {
         body: JSON.stringify(payload),
       });
 
+      if (response.ok) {
+        const orderId = response.headers.get("x-order-id") || response.headers.get("X-Order-Id") || "request";
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Leeukopf-Solid-Colour-Order-${orderId}.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        setSubmitMessage({
+          type: "success",
+          text: `Order ${orderId} submitted successfully. Confirmation email sent.`,
+        });
+        return;
+      }
+
       const responseText = await response.text();
-      let data: { orderId?: string; message?: string } = {};
+      let data: { message?: string } = {};
       try {
         data = responseText ? JSON.parse(responseText) : {};
       } catch {
         data = { message: responseText || undefined };
       }
 
-      if (response.status === 200) {
-        downloadOrderJson(payload);
-        setSubmitMessage({
-          type: "success",
-          text: `Order ${data.orderId || ""} submitted successfully. Confirmation email sent.`,
-        });
-        return;
-      }
-
       setSubmitMessage({
         type: "error",
-        text: data?.message || "Failed to submit order. JSON was not downloaded.",
+        text: data?.message || "Failed to submit order. PDF was not downloaded.",
       });
     } catch {
       setSubmitMessage({
         type: "error",
-        text: "Network error while submitting order. JSON was not downloaded.",
+        text: "Network error while submitting order. PDF was not downloaded.",
       });
     } finally {
       setIsSubmitting(false);
