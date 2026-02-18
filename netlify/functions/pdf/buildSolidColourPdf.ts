@@ -88,14 +88,39 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   let logoDims: { width: number; height: number } | null = null;
 
   try {
-    const logoPath = path.join(process.cwd(), "netlify/functions/assets/leeukopf-logo.png");
-    const logoBytes = fs.readFileSync(logoPath);
-    logoImage = await pdf.embedPng(logoBytes);
-    logoDims = logoImage.scale(0.4);
+    const logoCandidates = [
+      path.join(process.cwd(), "netlify/functions/assets/leeukopf-logo.png"),
+      path.join(process.cwd(), ".netlify/functions-assets/leeukopf-logo.png"),
+    ];
+
+    const logoPath = logoCandidates.find((candidate) => fs.existsSync(candidate));
+    if (logoPath) {
+      const logoBytes = fs.readFileSync(logoPath);
+      logoImage = await pdf.embedPng(logoBytes);
+      logoDims = logoImage.scale(0.75);
+    }
   } catch {
     logoImage = null;
     logoDims = null;
   }
+
+  const drawLogoWatermark = (page: PDFPage) => {
+    if (!logoImage || !logoDims) {
+      return;
+    }
+
+    const watermarkWidth = Math.min(logoDims.width, A4.w - (M * 2));
+    const ratio = watermarkWidth / logoDims.width;
+    const watermarkHeight = logoDims.height * ratio;
+
+    page.drawImage(logoImage, {
+      x: (A4.w - watermarkWidth) / 2,
+      y: (A4.h - watermarkHeight) / 2,
+      width: watermarkWidth,
+      height: watermarkHeight,
+      opacity: 0.08,
+    });
+  };
 
   const text = (page: PDFPage, value: string, x: number, y: number, size = 10.5, bold = false) => {
     page.drawText(value ?? "—", {
@@ -129,16 +154,9 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   };
 
   const drawHeaderBlocks = (page: PDFPage): number => {
-    if (logoImage && logoDims) {
-      page.drawImage(logoImage, {
-        x: M,
-        y: A4.h - TOP - logoDims.height + 10,
-        width: logoDims.width,
-        height: logoDims.height,
-      });
-    }
+    drawLogoWatermark(page);
 
-    let y = logoDims ? A4.h - TOP - logoDims.height - 10 : A4.h - TOP;
+    let y = A4.h - TOP;
 
     text(page, "Solid Colour Order Request", M, y, 16, true);
     y -= 24;
@@ -277,16 +295,9 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
       page = pdf.addPage([A4.w, A4.h]);
 
-      if (logoImage && logoDims) {
-        page.drawImage(logoImage, {
-          x: M,
-          y: A4.h - TOP - logoDims.height + 10,
-          width: logoDims.width,
-          height: logoDims.height,
-        });
-      }
+      drawLogoWatermark(page);
 
-      let y2 = logoDims ? A4.h - TOP - logoDims.height - 6 : A4.h - TOP;
+      let y2 = A4.h - TOP;
       text(page, "Solid Colour Order Request", M, y2, 14, true);
       y2 -= 18;
       text(page, `Order ID: ${data.orderId}`, M, y2, 10.5, true);
