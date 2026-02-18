@@ -1,5 +1,4 @@
 import { Handler } from "@netlify/functions";
-import { createHash } from "crypto";
 import { buildSolidColourPdf } from "./pdf/buildSolidColourPdf";
 import { Resend } from "resend";
 
@@ -54,14 +53,6 @@ function extractIncomingToken(headers: Record<string, string | undefined>): stri
   return normalizeToken(legacyHeader);
 }
 
-function tokenFingerprint(token: string): string {
-  if (!token) {
-    return "empty";
-  }
-
-  return createHash("sha256").update(token).digest("hex").slice(0, 10);
-}
-
 export const handler: Handler = async (event) => {
   try {
     const jsonHeaders: Record<string, string> = { "Content-Type": "application/json" };
@@ -85,16 +76,7 @@ export const handler: Handler = async (event) => {
       return {
         statusCode: 401,
         headers: jsonHeaders,
-        body: JSON.stringify({
-          success: false,
-          message,
-          diagnostics: {
-            expectedFingerprint: tokenFingerprint(expected),
-            incomingFingerprint: tokenFingerprint(incoming),
-            expectedLength: expected.length,
-            incomingLength: incoming.length,
-          },
-        }),
+        body: JSON.stringify({ success: false, message }),
       };
     }
 
