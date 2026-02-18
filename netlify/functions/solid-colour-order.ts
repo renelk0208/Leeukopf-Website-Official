@@ -46,8 +46,10 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    const token = event.headers["x-solid-order-token"];
-    if (token !== process.env.SOLID_COLOUR_ORDER_TOKEN) {
+    const expected = process.env.SOLID_COLOUR_ORDER_TOKEN;
+    const authHeader = event.headers["authorization"] || event.headers["Authorization"];
+    const incoming = authHeader?.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
+    if (!expected || incoming !== expected) {
       return {
         statusCode: 401,
         headers: { "Content-Type": "application/json" },

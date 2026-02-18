@@ -124,7 +124,7 @@ export default function InternalSolidColourGrid() {
         qty,
       };
     });
-    const requestToken = import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "";
+    const token = import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "";
 
     if (!client.companyName || !client.email || exportData.length === 0) {
       setSubmitMessage({
@@ -134,7 +134,7 @@ export default function InternalSolidColourGrid() {
       return;
     }
 
-    if (!requestToken) {
+    if (!token) {
       setSubmitMessage({
         type: "error",
         text: "Missing VITE_SOLID_COLOUR_ORDER_TOKEN in environment.",
@@ -161,7 +161,7 @@ export default function InternalSolidColourGrid() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-solid-order-token": requestToken,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
