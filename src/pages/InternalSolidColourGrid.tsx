@@ -520,129 +520,147 @@ export default function InternalSolidColourGrid() {
             <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {packaging.system === "bottle" ? (
                 <>
-                  <select
-                    value={packaging.bottle?.size || ""}
-                    onChange={(e) => {
-                      setPackaging((prev) => ({
-                        ...prev,
-                        bottle: {
-                          ...(prev.bottle || { color: "", brushShape: "", brushType: "" }),
-                          size: e.target.value,
-                        },
-                      }));
-                      setPackagingError(null);
-                    }}
-                    className="rounded-xl border bg-white px-3 py-2 text-sm"
-                  >
-                    <option value="">Select…</option>
-                    {BOTTLE_SIZE_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                    ))}
-                  </select>
-
-                  <select
-                    value={packaging.bottle?.color || ""}
-                    onChange={(e) => {
-                      setPackaging((prev) => ({
-                        ...prev,
-                        bottle: {
-                          ...(prev.bottle || { size: "", brushShape: "", brushType: "" }),
-                          color: e.target.value,
-                        },
-                      }));
-                      setPackagingError(null);
-                    }}
-                    className="rounded-xl border bg-white px-3 py-2 text-sm"
-                  >
-                    <option value="">Select…</option>
-                    {BOTTLE_COLOR_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                    ))}
-                  </select>
-
-                  <select
-                    value={packaging.bottle?.brushShape || ""}
-                    onChange={(e) => {
-                      setPackaging((prev) => ({
-                        ...prev,
-                        bottle: {
-                          ...(prev.bottle || { size: "", color: "", brushType: "" }),
-                          brushShape: e.target.value,
-                        },
-                      }));
-                      setPackagingError(null);
-                    }}
-                    className="rounded-xl border bg-white px-3 py-2 text-sm"
-                  >
-                    <option value="">Select…</option>
-                    {BRUSH_SHAPE_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                    ))}
-                  </select>
-
-                  {ENABLE_BRUSH_TYPE && (
+                  <label className="text-xs font-medium text-neutral-600">
+                    Bottle Size
                     <select
-                      value={packaging.bottle?.brushType || ""}
+                      value={packaging.bottle?.size || ""}
                       onChange={(e) => {
                         setPackaging((prev) => ({
                           ...prev,
                           bottle: {
-                            ...(prev.bottle || { size: "", color: "", brushShape: "" }),
-                            brushType: e.target.value,
+                            ...(prev.bottle || { color: "", brushShape: "", brushType: "" }),
+                            size: e.target.value,
                           },
                         }));
                         setPackagingError(null);
                       }}
-                      className="rounded-xl border bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
                     >
                       <option value="">Select…</option>
-                      {BRUSH_TYPE_OPTIONS.map((option) => (
+                      {BOTTLE_SIZE_OPTIONS.map((option) => (
                         <option key={option} value={option}>{toDisplayLabel(option)}</option>
                       ))}
                     </select>
+                  </label>
+
+                  <label className="text-xs font-medium text-neutral-600">
+                    Bottle Color
+                    <select
+                      value={packaging.bottle?.color || ""}
+                      onChange={(e) => {
+                        setPackaging((prev) => ({
+                          ...prev,
+                          bottle: {
+                            ...(prev.bottle || { size: "", brushShape: "", brushType: "" }),
+                            color: e.target.value,
+                          },
+                        }));
+                        setPackagingError(null);
+                      }}
+                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="">Select…</option>
+                      {BOTTLE_COLOR_OPTIONS.map((option) => (
+                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="text-xs font-medium text-neutral-600">
+                    Brush Shape
+                    <select
+                      value={packaging.bottle?.brushShape || ""}
+                      onChange={(e) => {
+                        setPackaging((prev) => ({
+                          ...prev,
+                          bottle: {
+                            ...(prev.bottle || { size: "", color: "", brushType: "" }),
+                            brushShape: e.target.value,
+                          },
+                        }));
+                        setPackagingError(null);
+                      }}
+                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="">Select…</option>
+                      {BRUSH_SHAPE_OPTIONS.map((option) => (
+                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  {ENABLE_BRUSH_TYPE && (
+                    <label className="text-xs font-medium text-neutral-600">
+                      Brush Type
+                      <select
+                        value={packaging.bottle?.brushType || ""}
+                        onChange={(e) => {
+                          setPackaging((prev) => ({
+                            ...prev,
+                            bottle: {
+                              ...(prev.bottle || { size: "", color: "", brushShape: "" }),
+                              brushType: e.target.value,
+                            },
+                          }));
+                          setPackagingError(null);
+                        }}
+                        className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                      >
+                        <option value="">Select…</option>
+                        {BRUSH_TYPE_OPTIONS.map((option) => (
+                          <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                        ))}
+                      </select>
+                    </label>
                   )}
                 </>
               ) : (
                 <>
-                  <select
-                    value={packaging.jar?.size || ""}
-                    onChange={(e) => {
-                      setPackaging((prev) => ({
-                        ...prev,
-                        jar: {
-                          ...(prev.jar || { color: "" }),
-                          size: e.target.value,
-                        },
-                      }));
-                      setPackagingError(null);
-                    }}
-                    className="rounded-xl border bg-white px-3 py-2 text-sm"
-                  >
-                    <option value="">Select…</option>
-                    {JAR_SIZE_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                    ))}
-                  </select>
+                  <label className="text-xs font-medium text-neutral-600">
+                    Jar Size
+                    <select
+                      value={packaging.jar?.size || ""}
+                      onChange={(e) => {
+                        setPackaging((prev) => ({
+                          ...prev,
+                          jar: {
+                            ...(prev.jar || { color: "" }),
+                            size: e.target.value,
+                          },
+                        }));
+                        setPackagingError(null);
+                      }}
+                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="">Select…</option>
+                      {JAR_SIZE_OPTIONS.map((option) => (
+                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                      ))}
+                    </select>
+                  </label>
 
-                  <select
-                    value={packaging.jar?.color || ""}
-                    onChange={(e) => {
-                      setPackaging((prev) => ({
-                        ...prev,
-                        jar: {
-                          ...(prev.jar || { size: "" }),
-                          color: e.target.value,
-                        },
-                      }));
-                      setPackagingError(null);
-                    }}
-                    className="rounded-xl border bg-white px-3 py-2 text-sm"
-                  >
-                    <option value="">Select…</option>
-                    {JAR_COLOR_OPTIONS.map((option) => (
-                      <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                    ))}
-                  </select>
+                  <label className="text-xs font-medium text-neutral-600">
+                    Jar Color
+                    <select
+                      value={packaging.jar?.color || ""}
+                      onChange={(e) => {
+                        setPackaging((prev) => ({
+                          ...prev,
+                          jar: {
+                            ...(prev.jar || { size: "" }),
+                            color: e.target.value,
+                          },
+                        }));
+                        setPackagingError(null);
+                      }}
+                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="">Select…</option>
+                      {JAR_COLOR_OPTIONS.map((option) => (
+                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                      ))}
+                    </select>
+                  </label>
                 </>
               )}
             </div>
