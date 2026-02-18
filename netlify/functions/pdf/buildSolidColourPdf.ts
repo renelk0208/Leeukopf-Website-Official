@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { PDFDocument, PDFPage, StandardFonts, rgb } from "pdf-lib";
 
 type Line = { code: string; name: string; qty: number };
@@ -60,6 +62,11 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdf.embedFont(StandardFonts.HelveticaBold);
 
+  const logoPath = path.join(process.cwd(), "netlify/functions/assets/leeukopf-logo.png");
+  const logoBytes = fs.readFileSync(logoPath);
+  const logoImage = await pdf.embedPng(logoBytes);
+  const logoDims = logoImage.scale(0.4);
+
   const text = (page: PDFPage, value: string, x: number, y: number, size = 10.5, bold = false) => {
     page.drawText(value ?? "—", {
       x,
@@ -92,7 +99,14 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   };
 
   const drawHeaderBlocks = (page: PDFPage): number => {
-    let y = A4.h - TOP;
+    page.drawImage(logoImage, {
+      x: M,
+      y: A4.h - TOP - logoDims.height + 10,
+      width: logoDims.width,
+      height: logoDims.height,
+    });
+
+    let y = A4.h - TOP - logoDims.height - 10;
 
     text(page, "Solid Colour Order Request", M, y, 16, true);
     y -= 24;
@@ -204,7 +218,14 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
       page = pdf.addPage([A4.w, A4.h]);
 
-      let y2 = A4.h - TOP;
+      page.drawImage(logoImage, {
+        x: M,
+        y: A4.h - TOP - logoDims.height + 10,
+        width: logoDims.width,
+        height: logoDims.height,
+      });
+
+      let y2 = A4.h - TOP - logoDims.height - 6;
       text(page, "Solid Colour Order Request", M, y2, 14, true);
       y2 -= 18;
       text(page, `Order ID: ${data.orderId}`, M, y2, 10.5, true);
