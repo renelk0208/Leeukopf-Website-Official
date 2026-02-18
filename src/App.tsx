@@ -100,10 +100,10 @@ function App() {
           <Route path="/products/category-grid-test" element={<CategoryGridTestPage />} />
           <Route path="/catalog-test" element={<CatalogTest />} />
           <Route path="/cart-test" element={<CartTest />} />
-          <Route path="/b2b-builder-gels" element={<B2BBuilderGelsPage />} />
-          <{import.meta.env.DEV && (
-  <Route path="/b2b-builder-gels" element={<B2BBuilderGelsPage />} />
-)}
+
+          {import.meta.env.DEV && (
+            <Route path="/b2b-builder-gels" element={<B2BBuilderGelsPage />} />
+          )}
 
           {/* Builder & Structure Gels */}
           <Route path="/products/builder-and-structure-gels" element={<BuilderAndStructureGelsPage />} />
