@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 type Row = Record<string, string>;
 type OrderFormat = "finished_units" | "bulk";
+type BulkContainer = "1kg_flask" | "5kg_bucket";
 type OrderLine = {
   code: string;
   name: string;
@@ -96,6 +97,7 @@ export default function InternalSolidColourGrid() {
   const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [orderFormat, setOrderFormat] = useState<OrderFormat>("finished_units");
+  const [bulkContainer, setBulkContainer] = useState<BulkContainer | "">("");
 
   useEffect(() => {
     fetch("/data/solid-colour/pilot-80.json")
@@ -186,43 +188,53 @@ export default function InternalSolidColourGrid() {
       return;
     }
 
-    if (packaging.mode === "standard") {
-      if (packaging.system === "bottle") {
-        const missing: string[] = [];
-        if (!packaging.bottle?.size) missing.push("Bottle size");
-        if (!packaging.bottle?.color) missing.push("Bottle color");
-        if (!packaging.bottle?.brushShape) missing.push("Brush shape");
-        if (ENABLE_BRUSH_TYPE && !packaging.bottle?.brushType) missing.push("Brush type");
-
-        if (missing.length > 0) {
-          const message = `Missing packaging fields: ${missing.join(", ")}.`;
-          setPackagingError(message);
-          setSubmitMessage({ type: "error", text: message });
-          return;
-        }
-      } else {
-        const missing: string[] = [];
-        if (!packaging.jar?.size) missing.push("Jar size");
-        if (!packaging.jar?.color) missing.push("Jar color");
-
-        if (missing.length > 0) {
-          const message = `Missing packaging fields: ${missing.join(", ")}.`;
-          setPackagingError(message);
-          setSubmitMessage({ type: "error", text: message });
-          return;
-        }
-      }
-    } else {
-      const description = packaging.customDescription.trim();
-      if (description.length < 20) {
-        const message = "Packaging details (required) must be at least 20 characters for custom packaging.";
+    if (orderFormat === "bulk") {
+      if (!bulkContainer) {
+        const message = "Please choose a bulk packing type: 1kg Flasks or 5kg Buckets.";
         setPackagingError(message);
         setSubmitMessage({ type: "error", text: message });
         return;
       }
-    }
+      setPackagingError(null);
+    } else {
+      if (packaging.mode === "standard") {
+        if (packaging.system === "bottle") {
+          const missing: string[] = [];
+          if (!packaging.bottle?.size) missing.push("Bottle size");
+          if (!packaging.bottle?.color) missing.push("Bottle color");
+          if (!packaging.bottle?.brushShape) missing.push("Brush shape");
+          if (ENABLE_BRUSH_TYPE && !packaging.bottle?.brushType) missing.push("Brush type");
 
-    setPackagingError(null);
+          if (missing.length > 0) {
+            const message = `Missing packaging fields: ${missing.join(", ")}.`;
+            setPackagingError(message);
+            setSubmitMessage({ type: "error", text: message });
+            return;
+          }
+        } else {
+          const missing: string[] = [];
+          if (!packaging.jar?.size) missing.push("Jar size");
+          if (!packaging.jar?.color) missing.push("Jar color");
+
+          if (missing.length > 0) {
+            const message = `Missing packaging fields: ${missing.join(", ")}.`;
+            setPackagingError(message);
+            setSubmitMessage({ type: "error", text: message });
+            return;
+          }
+        }
+      } else {
+        const description = packaging.customDescription.trim();
+        if (description.length < 20) {
+          const message = "Packaging details (required) must be at least 20 characters for custom packaging.";
+          setPackagingError(message);
+          setSubmitMessage({ type: "error", text: message });
+          return;
+        }
+      }
+
+      setPackagingError(null);
+    }
 
     if (!token) {
       setSubmitMessage({
@@ -239,6 +251,7 @@ export default function InternalSolidColourGrid() {
     const payload = {
       orderFormat,
       qtyUnit,
+      bulkContainer: orderFormat === "bulk" ? bulkContainer : undefined,
       client: {
         companyName: client.companyName,
         contactName: client.contactName,
@@ -537,244 +550,280 @@ export default function InternalSolidColourGrid() {
             </div>
           )}
 
-          <div className="mt-3 border-t pt-3 text-sm font-semibold">Packaging <span className="text-red-600">*</span></div>
-          <div className="mt-2 grid gap-2 text-sm">
-            <label className="flex items-start gap-2">
-              <input
-                type="radio"
-                name="packaging-mode"
-                value="standard"
-                checked={packaging.mode === "standard"}
-                onChange={() => {
-                  setPackaging((prev) => ({ ...prev, mode: "standard" }));
-                  setPackagingError(null);
-                }}
-              />
-              <span>Use Leeukopf standard bottles & brushes</span>
-            </label>
-            <label className="flex items-start gap-2">
-              <input
-                type="radio"
-                name="packaging-mode"
-                value="custom"
-                checked={packaging.mode === "custom"}
-                onChange={() => {
-                  setPackaging((prev) => ({ ...prev, mode: "custom" }));
-                  setPackagingError(null);
-                }}
-              />
-              <span>I have my own packaging / I want something different</span>
-            </label>
-          </div>
-
-          <div className="mt-3 grid gap-2 sm:grid-cols-2">
-            <label className="text-xs font-medium text-neutral-600">System</label>
-            <div className="flex items-center gap-4 sm:col-span-1">
-              <label className="flex items-center gap-1 text-sm">
-                <input
-                  type="radio"
-                  name="packaging-system"
-                  value="bottle"
-                  checked={packaging.system === "bottle"}
-                  onChange={() => {
-                    setPackaging((prev) => ({ ...prev, system: "bottle" }));
-                    setPackagingError(null);
-                  }}
-                />
-                Bottle
-              </label>
-              <label className="flex items-center gap-1 text-sm">
-                <input
-                  type="radio"
-                  name="packaging-system"
-                  value="jar"
-                  checked={packaging.system === "jar"}
-                  onChange={() => {
-                    setPackaging((prev) => ({ ...prev, system: "jar" }));
-                    setPackagingError(null);
-                  }}
-                />
-                Jar
-              </label>
-            </div>
-          </div>
-
-          {packaging.mode === "standard" ? (
-            <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {packaging.system === "bottle" ? (
-                <>
-                  <label className="text-xs font-medium text-neutral-600">
-                    Bottle Size <span className="text-red-600">*</span>
-                    <select
-                      value={packaging.bottle?.size || ""}
-                      onChange={(e) => {
-                        setPackaging((prev) => ({
-                          ...prev,
-                          bottle: {
-                            ...(prev.bottle || { color: "", brushShape: "", brushType: "" }),
-                            size: e.target.value,
-                          },
-                        }));
-                        setPackagingError(null);
-                      }}
-                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
-                    >
-                      <option value="">Select…</option>
-                      {BOTTLE_SIZE_OPTIONS.map((option) => (
-                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="text-xs font-medium text-neutral-600">
-                    Bottle Color <span className="text-red-600">*</span>
-                    <select
-                      value={packaging.bottle?.color || ""}
-                      onChange={(e) => {
-                        setPackaging((prev) => ({
-                          ...prev,
-                          bottle: {
-                            ...(prev.bottle || { size: "", brushShape: "", brushType: "" }),
-                            color: e.target.value,
-                          },
-                        }));
-                        setPackagingError(null);
-                      }}
-                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
-                    >
-                      <option value="">Select…</option>
-                      {BOTTLE_COLOR_OPTIONS.map((option) => (
-                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="text-xs font-medium text-neutral-600">
-                    Brush Shape <span className="text-red-600">*</span>
-                    <select
-                      value={packaging.bottle?.brushShape || ""}
-                      onChange={(e) => {
-                        setPackaging((prev) => ({
-                          ...prev,
-                          bottle: {
-                            ...(prev.bottle || { size: "", color: "", brushType: "" }),
-                            brushShape: e.target.value,
-                          },
-                        }));
-                        setPackagingError(null);
-                      }}
-                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
-                    >
-                      <option value="">Select…</option>
-                      {BRUSH_SHAPE_OPTIONS.map((option) => (
-                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                      ))}
-                    </select>
-                  </label>
-
-                  {ENABLE_BRUSH_TYPE && (
-                    <label className="text-xs font-medium text-neutral-600">
-                      Brush Type <span className="text-red-600">*</span>
-                      <select
-                        value={packaging.bottle?.brushType || ""}
-                        onChange={(e) => {
-                          setPackaging((prev) => ({
-                            ...prev,
-                            bottle: {
-                              ...(prev.bottle || { size: "", color: "", brushShape: "" }),
-                              brushType: e.target.value,
-                            },
-                          }));
-                          setPackagingError(null);
-                        }}
-                        className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
-                      >
-                        <option value="">Select…</option>
-                        {BRUSH_TYPE_OPTIONS.map((option) => (
-                          <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                        ))}
-                      </select>
-                    </label>
-                  )}
-                </>
-              ) : (
-                <>
-                  <label className="text-xs font-medium text-neutral-600">
-                    Jar Size <span className="text-red-600">*</span>
-                    <select
-                      value={packaging.jar?.size || ""}
-                      onChange={(e) => {
-                        setPackaging((prev) => ({
-                          ...prev,
-                          jar: {
-                            ...(prev.jar || { color: "" }),
-                            size: e.target.value,
-                          },
-                        }));
-                        setPackagingError(null);
-                      }}
-                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
-                    >
-                      <option value="">Select…</option>
-                      {JAR_SIZE_OPTIONS.map((option) => (
-                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="text-xs font-medium text-neutral-600">
-                    Jar Color <span className="text-red-600">*</span>
-                    <select
-                      value={packaging.jar?.color || ""}
-                      onChange={(e) => {
-                        setPackaging((prev) => ({
-                          ...prev,
-                          jar: {
-                            ...(prev.jar || { size: "" }),
-                            color: e.target.value,
-                          },
-                        }));
-                        setPackagingError(null);
-                      }}
-                      className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
-                    >
-                      <option value="">Select…</option>
-                      {JAR_COLOR_OPTIONS.map((option) => (
-                        <option key={option} value={option}>{toDisplayLabel(option)}</option>
-                      ))}
-                    </select>
-                  </label>
-                </>
-              )}
-            </div>
+          {orderFormat === "bulk" ? (
+            <>
+              <div className="mt-3 border-t pt-3 text-sm font-semibold">Bulk Packing <span className="text-red-600">*</span></div>
+              <div className="mt-2 grid gap-2 text-sm">
+                <label className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="bulk-container"
+                    value="1kg_flask"
+                    checked={bulkContainer === "1kg_flask"}
+                    onChange={() => {
+                      setBulkContainer("1kg_flask");
+                      setPackagingError(null);
+                    }}
+                  />
+                  <span>1kg Flasks</span>
+                </label>
+                <label className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="bulk-container"
+                    value="5kg_bucket"
+                    checked={bulkContainer === "5kg_bucket"}
+                    onChange={() => {
+                      setBulkContainer("5kg_bucket");
+                      setPackagingError(null);
+                    }}
+                  />
+                  <span>5kg Buckets</span>
+                </label>
+              </div>
+            </>
           ) : (
-            <div className="mt-3">
-              <label className="mb-1 block text-sm font-medium">Packaging details (required) <span className="text-red-600">*</span></label>
-              <textarea
-                value={packaging.customDescription}
-                onChange={(e) => {
-                  setPackaging((prev) => ({ ...prev, customDescription: e.target.value }));
-                  setPackagingError(null);
-                }}
-                rows={4}
-                placeholder="Describe your custom packaging requirements"
-                className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
-              />
-            </div>
-          )}
+            <>
+              <div className="mt-3 border-t pt-3 text-sm font-semibold">Packaging <span className="text-red-600">*</span></div>
+              <div className="mt-2 grid gap-2 text-sm">
+                <label className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="packaging-mode"
+                    value="standard"
+                    checked={packaging.mode === "standard"}
+                    onChange={() => {
+                      setPackaging((prev) => ({ ...prev, mode: "standard" }));
+                      setPackagingError(null);
+                    }}
+                  />
+                  <span>Use Leeukopf standard bottles & brushes</span>
+                </label>
+                <label className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="packaging-mode"
+                    value="custom"
+                    checked={packaging.mode === "custom"}
+                    onChange={() => {
+                      setPackaging((prev) => ({ ...prev, mode: "custom" }));
+                      setPackagingError(null);
+                    }}
+                  />
+                  <span>I have my own packaging / I want something different</span>
+                </label>
+              </div>
 
-          <div className="mt-3">
-            <textarea
-              value={packaging.notes}
-              onChange={(e) => {
-                setPackaging((prev) => ({ ...prev, notes: e.target.value }));
-                setPackagingError(null);
-              }}
-              rows={2}
-              placeholder="Packaging notes (optional)"
-              className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
-            />
-          </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                <label className="text-xs font-medium text-neutral-600">System</label>
+                <div className="flex items-center gap-4 sm:col-span-1">
+                  <label className="flex items-center gap-1 text-sm">
+                    <input
+                      type="radio"
+                      name="packaging-system"
+                      value="bottle"
+                      checked={packaging.system === "bottle"}
+                      onChange={() => {
+                        setPackaging((prev) => ({ ...prev, system: "bottle" }));
+                        setPackagingError(null);
+                      }}
+                    />
+                    Bottle
+                  </label>
+                  <label className="flex items-center gap-1 text-sm">
+                    <input
+                      type="radio"
+                      name="packaging-system"
+                      value="jar"
+                      checked={packaging.system === "jar"}
+                      onChange={() => {
+                        setPackaging((prev) => ({ ...prev, system: "jar" }));
+                        setPackagingError(null);
+                      }}
+                    />
+                    Jar
+                  </label>
+                </div>
+              </div>
+
+              {packaging.mode === "standard" ? (
+                <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {packaging.system === "bottle" ? (
+                    <>
+                      <label className="text-xs font-medium text-neutral-600">
+                        Bottle Size <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.bottle?.size || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              bottle: {
+                                ...(prev.bottle || { color: "", brushShape: "", brushType: "" }),
+                                size: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {BOTTLE_SIZE_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="text-xs font-medium text-neutral-600">
+                        Bottle Color <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.bottle?.color || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              bottle: {
+                                ...(prev.bottle || { size: "", brushShape: "", brushType: "" }),
+                                color: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {BOTTLE_COLOR_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="text-xs font-medium text-neutral-600">
+                        Brush Shape <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.bottle?.brushShape || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              bottle: {
+                                ...(prev.bottle || { size: "", color: "", brushType: "" }),
+                                brushShape: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {BRUSH_SHAPE_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+
+                      {ENABLE_BRUSH_TYPE && (
+                        <label className="text-xs font-medium text-neutral-600">
+                          Brush Type <span className="text-red-600">*</span>
+                          <select
+                            value={packaging.bottle?.brushType || ""}
+                            onChange={(e) => {
+                              setPackaging((prev) => ({
+                                ...prev,
+                                bottle: {
+                                  ...(prev.bottle || { size: "", color: "", brushShape: "" }),
+                                  brushType: e.target.value,
+                                },
+                              }));
+                              setPackagingError(null);
+                            }}
+                            className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                          >
+                            <option value="">Select…</option>
+                            {BRUSH_TYPE_OPTIONS.map((option) => (
+                              <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                            ))}
+                          </select>
+                        </label>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <label className="text-xs font-medium text-neutral-600">
+                        Jar Size <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.jar?.size || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              jar: {
+                                ...(prev.jar || { color: "" }),
+                                size: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {JAR_SIZE_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="text-xs font-medium text-neutral-600">
+                        Jar Color <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.jar?.color || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              jar: {
+                                ...(prev.jar || { size: "" }),
+                                color: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {JAR_COLOR_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="mt-3">
+                  <label className="mb-1 block text-sm font-medium">Packaging details (required) <span className="text-red-600">*</span></label>
+                  <textarea
+                    value={packaging.customDescription}
+                    onChange={(e) => {
+                      setPackaging((prev) => ({ ...prev, customDescription: e.target.value }));
+                      setPackagingError(null);
+                    }}
+                    rows={4}
+                    placeholder="Describe your custom packaging requirements"
+                    className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                  />
+                </div>
+              )}
+
+              <div className="mt-3">
+                <textarea
+                  value={packaging.notes}
+                  onChange={(e) => {
+                    setPackaging((prev) => ({ ...prev, notes: e.target.value }));
+                    setPackagingError(null);
+                  }}
+                  rows={2}
+                  placeholder="Packaging notes (optional)"
+                  className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                />
+              </div>
+            </>
+          )}
 
           {packagingError && (
             <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">

@@ -212,107 +212,126 @@ export const handler: Handler = async (event) => {
     const shippingRegion = sameAddress ? client.invoiceRegion : client.shippingRegion;
     const shippingPostalCode = sameAddress ? client.invoicePostalCode : client.shippingPostalCode;
 
-    const packagingMode = packaging?.mode;
-    const packagingSystem = packaging?.system;
+    let packagingMode = packaging?.mode;
+    let packagingSystem = packaging?.system;
     const requiresBrushType = true;
 
     const missingPackagingFields: string[] = [];
 
-    if (!packagingMode) {
-      missingPackagingFields.push("packaging.mode");
-    }
-
-    if (!packagingSystem) {
-      missingPackagingFields.push("packaging.system");
-    }
-
-    if (missingPackagingFields.length > 0) {
-      return {
-        statusCode: 400,
-        headers: jsonHeaders,
-        body: JSON.stringify({
-          success: false,
-          message: "Invalid packaging payload.",
-          missingFields: missingPackagingFields,
-        }),
-      };
-    }
-
-    if (packagingMode === "standard") {
-      if (packagingSystem === "bottle") {
-        const missingFields: string[] = [];
-        if (!packaging?.bottle?.size) missingFields.push("bottle.size");
-        if (!packaging?.bottle?.color) missingFields.push("bottle.color");
-        if (!packaging?.bottle?.brushShape) missingFields.push("bottle.brushShape");
-        if (requiresBrushType && !packaging?.bottle?.brushType) missingFields.push("bottle.brushType");
-
-        if (missingFields.length > 0) {
-          return {
-            statusCode: 400,
-            headers: jsonHeaders,
-            body: JSON.stringify({
-              success: false,
-              message: "Invalid packaging for standard mode.",
-              missingFields,
-            }),
-          };
-        }
-      } else {
-        const missingFields: string[] = [];
-        if (!packaging?.jar?.size) missingFields.push("jar.size");
-        if (!packaging?.jar?.color) missingFields.push("jar.color");
-
-        if (missingFields.length > 0) {
-          return {
-            statusCode: 400,
-            headers: jsonHeaders,
-            body: JSON.stringify({
-              success: false,
-              message: "Invalid packaging for standard mode.",
-              missingFields,
-            }),
-          };
-        }
-      }
-    }
-
-    if (packagingMode === "custom") {
-      const customDescription = packaging?.customDescription?.trim() || "";
-      if (customDescription.length < 20) {
+    if (orderFormat === "bulk") {
+      if (bulkContainer !== "1kg_flask" && bulkContainer !== "5kg_bucket") {
         return {
           statusCode: 400,
           headers: jsonHeaders,
           body: JSON.stringify({
             success: false,
-            message: "Invalid packaging for custom mode. customDescription must be at least 20 characters.",
-            missingFields: ["packaging.customDescription"],
+            message: "Invalid bulk packing selection. Choose 1kg_flask or 5kg_bucket.",
+            missingFields: ["bulkContainer"],
           }),
         };
       }
+
+      packagingMode = "custom";
+      packagingSystem = "bottle";
     }
 
-    if (packagingMode !== "standard" && packagingMode !== "custom") {
-      return {
-        statusCode: 400,
-        headers: jsonHeaders,
-        body: JSON.stringify({
-          success: false,
-          message: "Invalid packaging mode.",
-          missingFields: ["packaging.mode"],
-        }),
-      };
-    }
+    if (orderFormat !== "bulk") {
+      if (!packagingMode) {
+        missingPackagingFields.push("packaging.mode");
+      }
 
-    if (packagingSystem !== "bottle" && packagingSystem !== "jar") {
-      return {
-        statusCode: 400,
-        headers: jsonHeaders,
-        body: JSON.stringify({
-          success: false,
-          message: "Invalid packaging system.",
-          missingFields: ["packaging.system"],
-        }),
-      };
+      if (!packagingSystem) {
+        missingPackagingFields.push("packaging.system");
+      }
+
+      if (missingPackagingFields.length > 0) {
+        return {
+          statusCode: 400,
+          headers: jsonHeaders,
+          body: JSON.stringify({
+            success: false,
+            message: "Invalid packaging payload.",
+            missingFields: missingPackagingFields,
+          }),
+        };
+      }
+
+      if (packagingMode === "standard") {
+        if (packagingSystem === "bottle") {
+          const missingFields: string[] = [];
+          if (!packaging?.bottle?.size) missingFields.push("bottle.size");
+          if (!packaging?.bottle?.color) missingFields.push("bottle.color");
+          if (!packaging?.bottle?.brushShape) missingFields.push("bottle.brushShape");
+          if (requiresBrushType && !packaging?.bottle?.brushType) missingFields.push("bottle.brushType");
+
+          if (missingFields.length > 0) {
+            return {
+              statusCode: 400,
+              headers: jsonHeaders,
+              body: JSON.stringify({
+                success: false,
+                message: "Invalid packaging for standard mode.",
+                missingFields,
+              }),
+            };
+          }
+        } else {
+          const missingFields: string[] = [];
+          if (!packaging?.jar?.size) missingFields.push("jar.size");
+          if (!packaging?.jar?.color) missingFields.push("jar.color");
+
+          if (missingFields.length > 0) {
+            return {
+              statusCode: 400,
+              headers: jsonHeaders,
+              body: JSON.stringify({
+                success: false,
+                message: "Invalid packaging for standard mode.",
+                missingFields,
+              }),
+            };
+          }
+        }
+      }
+
+      if (packagingMode === "custom") {
+        const customDescription = packaging?.customDescription?.trim() || "";
+        if (customDescription.length < 20) {
+          return {
+            statusCode: 400,
+            headers: jsonHeaders,
+            body: JSON.stringify({
+              success: false,
+              message: "Invalid packaging for custom mode. customDescription must be at least 20 characters.",
+              missingFields: ["packaging.customDescription"],
+            }),
+          };
+        }
+      }
+
+      if (packagingMode !== "standard" && packagingMode !== "custom") {
+        return {
+          statusCode: 400,
+          headers: jsonHeaders,
+          body: JSON.stringify({
+            success: false,
+            message: "Invalid packaging mode.",
+            missingFields: ["packaging.mode"],
+          }),
+        };
+      }
+
+      if (packagingSystem !== "bottle" && packagingSystem !== "jar") {
+        return {
+          statusCode: 400,
+          headers: jsonHeaders,
+          body: JSON.stringify({
+            success: false,
+            message: "Invalid packaging system.",
+            missingFields: ["packaging.system"],
+          }),
+        };
+      }
     }
 
     const normalizedLines = lines.map((line) => ({
@@ -350,13 +369,13 @@ export const handler: Handler = async (event) => {
       bulk_container: bulkContainer,
       packaging_mode: packagingMode,
       packaging_system: packagingSystem,
-      packaging_bottle_size: packaging?.bottle?.size || null,
-      packaging_bottle_color: packaging?.bottle?.color || null,
-      packaging_brush_shape: packaging?.bottle?.brushShape || null,
-      packaging_brush_type: packaging?.bottle?.brushType || null,
-      packaging_jar_size: packaging?.jar?.size || null,
-      packaging_jar_color: packaging?.jar?.color || null,
-      packaging_custom_description: packaging?.customDescription || null,
+      packaging_bottle_size: orderFormat === "bulk" ? null : (packaging?.bottle?.size || null),
+      packaging_bottle_color: orderFormat === "bulk" ? null : (packaging?.bottle?.color || null),
+      packaging_brush_shape: orderFormat === "bulk" ? null : (packaging?.bottle?.brushShape || null),
+      packaging_brush_type: orderFormat === "bulk" ? null : (packaging?.bottle?.brushType || null),
+      packaging_jar_size: orderFormat === "bulk" ? null : (packaging?.jar?.size || null),
+      packaging_jar_color: orderFormat === "bulk" ? null : (packaging?.jar?.color || null),
+      packaging_custom_description: orderFormat === "bulk" ? `Bulk order in ${bulkContainer === "5kg_bucket" ? "5kg buckets" : "1kg flasks"}` : (packaging?.customDescription || null),
       packaging_notes: packaging?.notes || null,
       line_count: normalizedLines.length,
       total_qty: totalUnits,
@@ -416,7 +435,9 @@ export const handler: Handler = async (event) => {
     const subject = `Solid Colour Order — ${client.companyName} (${orderId})`;
 
     const packagingChoiceLabel = packagingMode === "custom" ? "Custom" : "Standard";
-    const packagingDetailsText = packagingMode === "custom"
+    const packagingDetailsText = orderFormat === "bulk"
+      ? `Bulk packing selected: ${bulkContainer === "5kg_bucket" ? "5kg Buckets" : "1kg Flasks"}`
+      : packagingMode === "custom"
       ? `Custom packaging requested: ${packaging?.customDescription || ""}`
       : packagingSystem === "jar"
         ? `Jar Size: ${packaging?.jar?.size || ""}\nJar Color: ${packaging?.jar?.color || ""}`
