@@ -62,10 +62,18 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdf.embedFont(StandardFonts.HelveticaBold);
 
-  const logoPath = path.join(process.cwd(), "netlify/functions/assets/leeukopf-logo.png");
-  const logoBytes = fs.readFileSync(logoPath);
-  const logoImage = await pdf.embedPng(logoBytes);
-  const logoDims = logoImage.scale(0.4);
+  let logoImage: Awaited<ReturnType<typeof pdf.embedPng>> | null = null;
+  let logoDims: { width: number; height: number } | null = null;
+
+  try {
+    const logoPath = path.join(process.cwd(), "netlify/functions/assets/leeukopf-logo.png");
+    const logoBytes = fs.readFileSync(logoPath);
+    logoImage = await pdf.embedPng(logoBytes);
+    logoDims = logoImage.scale(0.4);
+  } catch {
+    logoImage = null;
+    logoDims = null;
+  }
 
   const text = (page: PDFPage, value: string, x: number, y: number, size = 10.5, bold = false) => {
     page.drawText(value ?? "—", {
@@ -99,14 +107,16 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
   };
 
   const drawHeaderBlocks = (page: PDFPage): number => {
-    page.drawImage(logoImage, {
-      x: M,
-      y: A4.h - TOP - logoDims.height + 10,
-      width: logoDims.width,
-      height: logoDims.height,
-    });
+    if (logoImage && logoDims) {
+      page.drawImage(logoImage, {
+        x: M,
+        y: A4.h - TOP - logoDims.height + 10,
+        width: logoDims.width,
+        height: logoDims.height,
+      });
+    }
 
-    let y = A4.h - TOP - logoDims.height - 10;
+    let y = logoDims ? A4.h - TOP - logoDims.height - 10 : A4.h - TOP;
 
     text(page, "Solid Colour Order Request", M, y, 16, true);
     y -= 24;
@@ -218,14 +228,16 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
       page = pdf.addPage([A4.w, A4.h]);
 
-      page.drawImage(logoImage, {
-        x: M,
-        y: A4.h - TOP - logoDims.height + 10,
-        width: logoDims.width,
-        height: logoDims.height,
-      });
+      if (logoImage && logoDims) {
+        page.drawImage(logoImage, {
+          x: M,
+          y: A4.h - TOP - logoDims.height + 10,
+          width: logoDims.width,
+          height: logoDims.height,
+        });
+      }
 
-      let y2 = A4.h - TOP - logoDims.height - 6;
+      let y2 = logoDims ? A4.h - TOP - logoDims.height - 6 : A4.h - TOP;
       text(page, "Solid Colour Order Request", M, y2, 14, true);
       y2 -= 18;
       text(page, `Order ID: ${data.orderId}`, M, y2, 10.5, true);
