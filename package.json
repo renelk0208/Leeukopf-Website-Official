@@ -18,7 +18,8 @@
     "audit:images": "node scripts/audit-images.js",
     "generate:sitemap": "node scripts/generate-sitemap.cjs",
     "report:images": "node scripts/report-large-images.cjs",
-    "generate:pwa-icons": "node scripts/generate-pwa-icons.mjs"
+    "generate:pwa-icons": "node scripts/generate-pwa-icons.mjs",
+    "solid:pilot80": "node scripts/csv-to-json.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
