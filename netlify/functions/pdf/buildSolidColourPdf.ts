@@ -8,6 +8,8 @@ type Line = { code: string; name: string; qty: number; unit?: "pcs" | "kg" };
 type Payload = {
   orderId: string;
   createdAt: string;
+  orderFormat?: "finished_units" | "bulk";
+  bulkContainer?: "1kg_flask" | "5kg_bucket" | null;
   client: {
     company: string;
     contactPerson: string;
@@ -25,7 +27,7 @@ type Payload = {
   };
   packaging: {
     mode: "standard" | "custom";
-    system: "bottle" | "jar";
+    system: "bottle" | "jar" | "bulk";
     bottle?: { size?: string; color?: string; brushShape?: string; brushType?: string };
     jar?: { size?: string; color?: string };
     customDescription?: string;
@@ -45,6 +47,8 @@ const TITLE_FONT_SIZE = 16;
 const SECTION_TITLE_FONT_SIZE = 12;
 const LINE_GAP = 12;
 const RIGHT_EDGE = A4.w - M;
+const LETTERHEAD_INFO_FONT_SIZE = 8;
+const LETTERHEAD_INFO_LINE_GAP = 9;
 
 function safe(value?: string): string {
   return value && value.trim().length ? value.trim() : "—";
@@ -166,6 +170,29 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
     });
   };
 
+  const drawCompanyHeaderDetails = (page: PDFPage, logoHeight: number) => {
+    const infoX = M + LETTERHEAD_MAX_WIDTH + 12;
+    const infoTopY = A4.h - LETTERHEAD_TOP_PADDING - 2;
+
+    const lines = [
+      "Head Office:",
+      "Thermitek Ltd, 8 Racho Dimchev, Sofia, 1000",
+      "Factory Address:",
+      "Leeukopf Laboratories, 30 Zelenondolsko Shose, Blagoevgrad, 2700",
+      "Tel: (+359) 73 891 041",
+      "Email: info@leeukopf.com",
+    ];
+
+    let y = infoTopY;
+    for (const [index, value] of lines.entries()) {
+      const isHeading = index === 0 || index === 2;
+      text(page, value, infoX, y, LETTERHEAD_INFO_FONT_SIZE, isHeading);
+      y -= LETTERHEAD_INFO_LINE_GAP;
+    }
+
+    return Math.max(logoHeight, lines.length * LETTERHEAD_INFO_LINE_GAP);
+  };
+
   const text = (page: PDFPage, value: string, x: number, y: number, size = BODY_FONT_SIZE, bold = false) => {
     page.drawText(value ?? "—", {
       x,
@@ -235,7 +262,8 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
     drawLogoHeader(page);
 
     const letterheadHeight = letterheadDims ? Math.min(LETTERHEAD_MAX_WIDTH, letterheadDims.width) * (letterheadDims.height / letterheadDims.width) : 0;
-    let y = A4.h - TOP - letterheadHeight - 8;
+    const headerDetailsHeight = drawCompanyHeaderDetails(page, letterheadHeight);
+    let y = A4.h - TOP - headerDetailsHeight - 8;
 
     text(page, "Solid Colour Order Request", M, y, TITLE_FONT_SIZE, true);
     y -= 18;
@@ -286,13 +314,24 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
     text(page, "Packaging (applies to all shades)", M, y, SECTION_TITLE_FONT_SIZE, true);
     y -= LINE_GAP;
-    const packagingChoice = data.packaging.mode === "custom" ? "Custom" : "Standard";
+    const isBulkOrder = data.orderFormat === "bulk" || data.packaging.system === "bulk" || isBulkKg;
+    const hasFlaskQty = data.lines.some((line) => (Number(line.qty) || 0) > 0 && (Number(line.qty) || 0) < 5);
+    const hasBucketQty = data.lines.some((line) => (Number(line.qty) || 0) >= 5);
+    const packagingChoice = isBulkOrder
+      ? (hasFlaskQty && hasBucketQty
+        ? "1kg Flasks + 5kg Buckets"
+        : data.bulkContainer === "5kg_bucket" || hasBucketQty
+          ? "5kg Buckets"
+          : "1kg Flasks")
+      : data.packaging.mode === "custom"
+        ? "Custom"
+        : "Standard";
     text(page, `Packaging choice: ${packagingChoice}`, M, y, BODY_FONT_SIZE);
     y -= LINE_GAP;
-    text(page, `System: ${safe(data.packaging.system)}`, M, y, BODY_FONT_SIZE);
+    text(page, `System: ${isBulkOrder ? "Bulk" : safe(data.packaging.system)}`, M, y, BODY_FONT_SIZE);
     y -= LINE_GAP;
 
-    if (data.packaging.mode === "custom") {
+    if (isBulkOrder || data.packaging.mode === "custom") {
       const descriptionLines = wrapText(`Custom packaging requested: ${safe(data.packaging.customDescription)}`, 95);
       text(page, descriptionLines[0], M, y);
       y -= LINE_GAP;
@@ -376,7 +415,8 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
       drawLogoHeader(page);
 
       const letterheadHeight = letterheadDims ? Math.min(LETTERHEAD_MAX_WIDTH, letterheadDims.width) * (letterheadDims.height / letterheadDims.width) : 0;
-      let y2 = A4.h - TOP - letterheadHeight - 8;
+      const headerDetailsHeight = drawCompanyHeaderDetails(page, letterheadHeight);
+      let y2 = A4.h - TOP - headerDetailsHeight - 8;
       text(page, "Solid Colour Order Request", M, y2, 14, true);
       y2 -= 16;
       text(page, `Order ID: ${data.orderId}`, M, y2, BODY_FONT_SIZE, true);
