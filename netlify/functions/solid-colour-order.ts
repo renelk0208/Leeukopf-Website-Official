@@ -108,9 +108,31 @@ export const handler: Handler = async (event) => {
 
     const orderId = `SC-${Date.now()}`;
 
-    const packagingMode: "standard" | "custom" = packaging?.mode === "custom" ? "custom" : "standard";
-    const packagingSystem: "bottle" | "jar" = packaging?.system === "jar" ? "jar" : "bottle";
+    const packagingMode = packaging?.mode;
+    const packagingSystem = packaging?.system;
     const requiresBrushType = true;
+
+    const missingPackagingFields: string[] = [];
+
+    if (!packagingMode) {
+      missingPackagingFields.push("packaging.mode");
+    }
+
+    if (!packagingSystem) {
+      missingPackagingFields.push("packaging.system");
+    }
+
+    if (missingPackagingFields.length > 0) {
+      return {
+        statusCode: 400,
+        headers: jsonHeaders,
+        body: JSON.stringify({
+          success: false,
+          message: "Invalid packaging payload.",
+          missingFields: missingPackagingFields,
+        }),
+      };
+    }
 
     if (packagingMode === "standard") {
       if (packagingSystem === "bottle") {
@@ -126,7 +148,8 @@ export const handler: Handler = async (event) => {
             headers: jsonHeaders,
             body: JSON.stringify({
               success: false,
-              message: `Invalid packaging for standard mode. Missing: ${missingFields.join(", ")}`,
+              message: "Invalid packaging for standard mode.",
+              missingFields,
             }),
           };
         }
@@ -141,7 +164,8 @@ export const handler: Handler = async (event) => {
             headers: jsonHeaders,
             body: JSON.stringify({
               success: false,
-              message: `Invalid packaging for standard mode. Missing: ${missingFields.join(", ")}`,
+              message: "Invalid packaging for standard mode.",
+              missingFields,
             }),
           };
         }
@@ -157,9 +181,34 @@ export const handler: Handler = async (event) => {
           body: JSON.stringify({
             success: false,
             message: "Invalid packaging for custom mode. customDescription must be at least 20 characters.",
+            missingFields: ["packaging.customDescription"],
           }),
         };
       }
+    }
+
+    if (packagingMode !== "standard" && packagingMode !== "custom") {
+      return {
+        statusCode: 400,
+        headers: jsonHeaders,
+        body: JSON.stringify({
+          success: false,
+          message: "Invalid packaging mode.",
+          missingFields: ["packaging.mode"],
+        }),
+      };
+    }
+
+    if (packagingSystem !== "bottle" && packagingSystem !== "jar") {
+      return {
+        statusCode: 400,
+        headers: jsonHeaders,
+        body: JSON.stringify({
+          success: false,
+          message: "Invalid packaging system.",
+          missingFields: ["packaging.system"],
+        }),
+      };
     }
 
     const totalUnits = lines.reduce(

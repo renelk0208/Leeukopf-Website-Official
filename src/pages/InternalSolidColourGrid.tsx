@@ -392,7 +392,7 @@ export default function InternalSolidColourGrid() {
                     }}
                     className="rounded-xl border bg-white px-3 py-2 text-sm"
                   >
-                    <option value="">Bottle size</option>
+                    <option value="">Select…</option>
                     {BOTTLE_SIZE_OPTIONS.map((option) => (
                       <option key={option} value={option}>{option}</option>
                     ))}
@@ -412,7 +412,7 @@ export default function InternalSolidColourGrid() {
                     }}
                     className="rounded-xl border bg-white px-3 py-2 text-sm"
                   >
-                    <option value="">Bottle color</option>
+                    <option value="">Select…</option>
                     {BOTTLE_COLOR_OPTIONS.map((option) => (
                       <option key={option} value={option}>{option}</option>
                     ))}
@@ -432,7 +432,7 @@ export default function InternalSolidColourGrid() {
                     }}
                     className="rounded-xl border bg-white px-3 py-2 text-sm"
                   >
-                    <option value="">Brush shape</option>
+                    <option value="">Select…</option>
                     {BRUSH_SHAPE_OPTIONS.map((option) => (
                       <option key={option} value={option}>{option}</option>
                     ))}
@@ -453,7 +453,7 @@ export default function InternalSolidColourGrid() {
                       }}
                       className="rounded-xl border bg-white px-3 py-2 text-sm"
                     >
-                      <option value="">Brush type</option>
+                      <option value="">Select…</option>
                       {BRUSH_TYPE_OPTIONS.map((option) => (
                         <option key={option} value={option}>{option}</option>
                       ))}
@@ -476,7 +476,7 @@ export default function InternalSolidColourGrid() {
                     }}
                     className="rounded-xl border bg-white px-3 py-2 text-sm"
                   >
-                    <option value="">Jar size</option>
+                    <option value="">Select…</option>
                     {JAR_SIZE_OPTIONS.map((option) => (
                       <option key={option} value={option}>{option}</option>
                     ))}
@@ -496,7 +496,7 @@ export default function InternalSolidColourGrid() {
                     }}
                     className="rounded-xl border bg-white px-3 py-2 text-sm"
                   >
-                    <option value="">Jar color</option>
+                    <option value="">Select…</option>
                     {JAR_COLOR_OPTIONS.map((option) => (
                       <option key={option} value={option}>{option}</option>
                     ))}
