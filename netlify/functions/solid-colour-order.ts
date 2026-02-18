@@ -1,6 +1,7 @@
 import { Handler } from "@netlify/functions";
 import { buildSolidColourPdf } from "./pdf/buildSolidColourPdf";
 import { Resend } from "resend";
+import { createClient } from "@supabase/supabase-js";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -24,6 +25,7 @@ type LinePayload = {
   code: string;
   name: string;
   qty: number;
+  unit?: "pcs" | "kg";
 };
 
 type BottlePackaging = {
@@ -50,8 +52,71 @@ type PackagingPayload = {
 type OrderPayload = {
   client: ClientPayload;
   lines: LinePayload[];
+  orderFormat?: "finished_units" | "bulk";
+  qtyUnit?: "pcs" | "kg";
+  bulkContainer?: "1kg_flask" | "5kg_bucket";
   packaging?: PackagingPayload;
 };
+
+type PersistedOrderRow = {
+  order_id: string;
+  order_date: string;
+  company_name: string;
+  contact_name: string;
+  contact_email: string;
+  contact_number: string;
+  vat: string | null;
+  country: string | null;
+  invoice_address: string;
+  invoice_region: string;
+  invoice_postal_code: string;
+  shipping_address: string;
+  shipping_region: string;
+  shipping_postal_code: string;
+  same_address: boolean;
+  order_format: "finished_units" | "bulk";
+  qty_unit: "pcs" | "kg";
+  bulk_container: "1kg_flask" | "5kg_bucket" | null;
+  packaging_mode: "standard" | "custom";
+  packaging_system: string;
+  packaging_bottle_size: string | null;
+  packaging_bottle_color: string | null;
+  packaging_brush_shape: string | null;
+  packaging_brush_type: string | null;
+  packaging_jar_size: string | null;
+  packaging_jar_color: string | null;
+  packaging_custom_description: string | null;
+  packaging_notes: string | null;
+  line_count: number;
+  total_qty: number;
+  lines: Array<{ code: string; name: string; qty: number; unit: "pcs" | "kg" }>;
+  zoho_payload: Record<string, unknown>;
+  source: string;
+};
+
+function getSupabaseAdmin() {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    return null;
+  }
+
+  return createClient(supabaseUrl, serviceRoleKey);
+}
+
+async function persistOrderForZoho(row: PersistedOrderRow) {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    console.warn("[solid-colour-order] Supabase persistence skipped: missing SUPABASE_URL/VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+    return;
+  }
+
+  const { error } = await supabase.from("solid_colour_orders").insert(row);
+  if (error) {
+    throw new Error(`Failed to persist order to Supabase: ${error.message}`);
+  }
+}
 
 function normalizeToken(value?: string | null): string {
   return (value ?? "").trim().replace(/^['"]|['"]$/g, "");
@@ -106,6 +171,9 @@ export const handler: Handler = async (event) => {
 
     const payload = JSON.parse(event.body) as OrderPayload;
     const { client, lines, packaging } = payload;
+    const orderFormat = payload.orderFormat === "bulk" ? "bulk" : "finished_units";
+    const qtyUnit = payload.qtyUnit === "kg" ? "kg" : "pcs";
+    const bulkContainer = payload.bulkContainer ?? null;
 
     const missingClientFields: string[] = [];
     if (!client?.companyName?.trim()) missingClientFields.push("client.companyName");
@@ -247,14 +315,72 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    const totalUnits = lines.reduce(
+    const normalizedLines = lines.map((line) => ({
+      ...line,
+      unit: line.unit === "kg" ? "kg" : "pcs",
+    }));
+
+    const totalUnits = normalizedLines.reduce(
       (sum, line) => sum + (Number(line.qty) || 0),
       0
     );
 
-    const linesText = lines
+    const linesText = normalizedLines
       .map((line) => `• ${line.code} (${line.name}) x ${line.qty}`)
       .join("\n");
+
+    await persistOrderForZoho({
+      order_id: orderId,
+      order_date: new Date().toISOString().slice(0, 10),
+      company_name: client.companyName,
+      contact_name: client.contactName,
+      contact_email: client.contactEmail,
+      contact_number: client.contactNumber,
+      vat: client.vat || null,
+      country: client.country || null,
+      invoice_address: client.invoiceAddress,
+      invoice_region: client.invoiceRegion,
+      invoice_postal_code: client.invoicePostalCode,
+      shipping_address: shippingAddress,
+      shipping_region: shippingRegion,
+      shipping_postal_code: shippingPostalCode,
+      same_address: sameAddress,
+      order_format: orderFormat,
+      qty_unit: qtyUnit,
+      bulk_container: bulkContainer,
+      packaging_mode: packagingMode,
+      packaging_system: packagingSystem,
+      packaging_bottle_size: packaging?.bottle?.size || null,
+      packaging_bottle_color: packaging?.bottle?.color || null,
+      packaging_brush_shape: packaging?.bottle?.brushShape || null,
+      packaging_brush_type: packaging?.bottle?.brushType || null,
+      packaging_jar_size: packaging?.jar?.size || null,
+      packaging_jar_color: packaging?.jar?.color || null,
+      packaging_custom_description: packaging?.customDescription || null,
+      packaging_notes: packaging?.notes || null,
+      line_count: normalizedLines.length,
+      total_qty: totalUnits,
+      lines: normalizedLines,
+      zoho_payload: {
+        order_id: orderId,
+        order_date: new Date().toISOString().slice(0, 10),
+        company_name: client.companyName,
+        contact_name: client.contactName,
+        contact_email: client.contactEmail,
+        contact_number: client.contactNumber,
+        vat: client.vat || "",
+        country: client.country || "",
+        order_format: orderFormat,
+        qty_unit: qtyUnit,
+        bulk_container: bulkContainer || "",
+        packaging_mode: packagingMode,
+        packaging_system: packagingSystem,
+        total_qty: totalUnits,
+        line_count: normalizedLines.length,
+        lines: normalizedLines,
+      },
+      source: "internal_solid_colour_grid",
+    });
 
     const pdfBytes = await buildSolidColourPdf({
       orderId,
@@ -282,7 +408,7 @@ export const handler: Handler = async (event) => {
         customDescription: packaging?.customDescription,
         notes: packaging?.notes,
       },
-      lines,
+      lines: normalizedLines,
     });
     const pdfFileName = `Leeukopf-Solid-Colour-Order-${orderId}.pdf`;
     const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
