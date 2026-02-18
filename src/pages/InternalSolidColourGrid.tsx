@@ -5,6 +5,12 @@ type OrderLine = {
   sku: string;
   qty: number;
 };
+type ClientDetails = {
+  companyName: string;
+  vat: string;
+  country: string;
+  email: string;
+};
 
 export default function InternalSolidColourGrid() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -12,6 +18,12 @@ export default function InternalSolidColourGrid() {
   const [imgStatus, setImgStatus] = useState<Record<string, "OK" | "MISSING">>({});
   const [onlyMissing, setOnlyMissing] = useState(false);
   const [order, setOrder] = useState<Record<string, number>>({});
+  const [client, setClient] = useState<ClientDetails>({
+    companyName: "",
+    vat: "",
+    country: "",
+    email: "",
+  });
 
   useEffect(() => {
     fetch("/data/solid-colour/pilot-80.json")
@@ -19,6 +31,21 @@ export default function InternalSolidColourGrid() {
       .then((data) => setRows(Array.isArray(data) ? data : []))
       .catch(() => setRows([]));
   }, []);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("solidColourOrderPilot80");
+    if (saved) {
+      try {
+        setOrder(JSON.parse(saved));
+      } catch {
+        setOrder({});
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("solidColourOrderPilot80", JSON.stringify(order));
+  }, [order]);
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -73,6 +100,34 @@ export default function InternalSolidColourGrid() {
       </div>
 
       <div className="mb-6 rounded-xl border bg-white p-4 shadow-sm">
+        <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <input
+            value={client.companyName}
+            onChange={(e) => setClient((prev) => ({ ...prev, companyName: e.target.value }))}
+            placeholder="Company name"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <input
+            value={client.vat}
+            onChange={(e) => setClient((prev) => ({ ...prev, vat: e.target.value }))}
+            placeholder="VAT"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <input
+            value={client.country}
+            onChange={(e) => setClient((prev) => ({ ...prev, country: e.target.value }))}
+            placeholder="Country"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <input
+            type="email"
+            value={client.email}
+            onChange={(e) => setClient((prev) => ({ ...prev, email: e.target.value }))}
+            placeholder="Contact email"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+        </div>
+
         <div className="text-sm font-semibold">
           Selected Shades: {selectedItems.length}
         </div>
@@ -80,27 +135,52 @@ export default function InternalSolidColourGrid() {
           Total Units: {totalUnits}
         </div>
 
-        <button
-          onClick={() => {
-            const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({ sku, qty }));
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setOrder({})}
+            className="rounded-xl border bg-white px-4 py-2 text-xs"
+          >
+            Clear
+          </button>
 
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-              type: "application/json",
-            });
+          <button
+            onClick={async () => {
+              const text = selectedItems
+                .map(([sku, qty]) => `${sku} x ${qty}`)
+                .join("\n");
+              await navigator.clipboard.writeText(text);
+            }}
+            className="rounded-xl border bg-white px-4 py-2 text-xs"
+          >
+            Copy list
+          </button>
 
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `solid-colour-order-pilot80-${new Date().toISOString().slice(0, 10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
-          }}
-          className="mt-3 rounded-xl bg-black px-4 py-2 text-xs text-white"
-        >
-          Export Order
-        </button>
+          <button
+            onClick={() => {
+              const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({ sku, qty }));
+              const payload = {
+                client,
+                lines: exportData,
+              };
+
+              const blob = new Blob([JSON.stringify(payload, null, 2)], {
+                type: "application/json",
+              });
+
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `solid-colour-order-pilot80-${new Date().toISOString().slice(0, 10)}.json`;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            }}
+            className="rounded-xl bg-black px-4 py-2 text-xs text-white"
+          >
+            Export Order
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
