@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Row = Record<string, string>;
+type OrderFormat = "finished_units" | "bulk";
 type OrderLine = {
   code: string;
   name: string;
   qty: number;
+  unit: "pcs" | "kg";
 };
 type ClientDetails = {
   companyName: string;
@@ -92,6 +94,8 @@ export default function InternalSolidColourGrid() {
   const [packagingError, setPackagingError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
+  const [orderFormat, setOrderFormat] = useState<OrderFormat>("finished_units");
 
   useEffect(() => {
     fetch("/data/solid-colour/pilot-80.json")
@@ -140,6 +144,7 @@ export default function InternalSolidColourGrid() {
   }, [rows, q, onlyMissing, imgStatus]);
 
   const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
+  const qtyUnit: "pcs" | "kg" = orderFormat === "bulk" ? "kg" : "pcs";
   const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
 
   const handleSubmitOrder = async () => {
@@ -149,6 +154,7 @@ export default function InternalSolidColourGrid() {
         code: row?.["Shade_Code"] || sku,
         name: row?.["Shade_Name"] || sku,
         qty,
+        unit: qtyUnit,
       };
     });
     const token = import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "";
@@ -231,6 +237,8 @@ export default function InternalSolidColourGrid() {
     const shippingPostalCode = client.sameAddress ? client.invoicePostalCode : client.shippingPostalCode;
 
     const payload = {
+      orderFormat,
+      qtyUnit,
       client: {
         companyName: client.companyName,
         contactName: client.contactName,
@@ -284,6 +292,7 @@ export default function InternalSolidColourGrid() {
           type: "success",
           text: `Order ${orderId} submitted successfully. Confirmation email sent.`,
         });
+        setShowThankYouPopup(true);
         return;
       }
 
@@ -311,6 +320,25 @@ export default function InternalSolidColourGrid() {
 
   return (
     <div className="mx-auto max-w-6xl p-6">
+      {showThankYouPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-md rounded-2xl border bg-white p-5 shadow-xl">
+            <div className="text-base font-semibold">Leeukopf Laboratories</div>
+            <p className="mt-2 text-sm text-neutral-700">
+              Leeukopf Laboratories thanks you for your request, our dedicated team will be in contact with you soon!
+            </p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setShowThankYouPopup(false)}
+                className="rounded-xl bg-black px-4 py-2 text-xs text-white"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Internal Solid Colour Grid (Pilot 80)</h1>
@@ -479,7 +507,37 @@ export default function InternalSolidColourGrid() {
         </div>
 
         <div className="rounded-xl border bg-neutral-50 p-3">
-          <div className="text-sm font-semibold">Packaging <span className="text-red-600">*</span></div>
+          <div className="text-sm font-semibold">Order format <span className="text-red-600">*</span></div>
+          <div className="mt-2 grid gap-2 text-sm">
+            <label className="flex items-start gap-2">
+              <input
+                type="radio"
+                name="order-format"
+                value="finished_units"
+                checked={orderFormat === "finished_units"}
+                onChange={() => setOrderFormat("finished_units")}
+              />
+              <span>Finished units (we bottle it)</span>
+            </label>
+            <label className="flex items-start gap-2">
+              <input
+                type="radio"
+                name="order-format"
+                value="bulk"
+                checked={orderFormat === "bulk"}
+                onChange={() => setOrderFormat("bulk")}
+              />
+              <span>Bulk (you fill your own bottles)</span>
+            </label>
+          </div>
+
+          {orderFormat === "bulk" && (
+            <div className="mt-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-700">
+              Bulk selected: MOQ per shade is 1kg.
+            </div>
+          )}
+
+          <div className="mt-3 border-t pt-3 text-sm font-semibold">Packaging <span className="text-red-600">*</span></div>
           <div className="mt-2 grid gap-2 text-sm">
             <label className="flex items-start gap-2">
               <input
@@ -729,7 +787,7 @@ export default function InternalSolidColourGrid() {
           Selected Shades: {selectedItems.length}
         </div>
         <div className="text-sm">
-          Total Units: {totalUnits}
+          {qtyUnit === "kg" ? "Total KG" : "Total Units"}: {totalUnits}
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -743,7 +801,7 @@ export default function InternalSolidColourGrid() {
           <button
             onClick={async () => {
               const text = selectedItems
-                .map(([sku, qty]) => `${sku} x ${qty}`)
+                .map(([sku, qty]) => `${sku} x ${qty}${qtyUnit === "kg" ? "kg" : " pcs"}`)
                 .join("\n");
               await navigator.clipboard.writeText(text);
             }}
@@ -823,14 +881,15 @@ export default function InternalSolidColourGrid() {
                   <input
                     type="number"
                     min={0}
-                    placeholder="Qty"
+                    placeholder={qtyUnit === "kg" ? "KG" : "Qty"}
                     value={order[sku] || ""}
                     onChange={(e) => {
+                      const minQty = orderFormat === "bulk" ? 1 : 30;
                       const val = parseInt(e.target.value || "0", 10);
                       if (val === 0) {
                         setOrder((prev) => ({ ...prev, [sku]: 0 }));
-                      } else if (val < 30) {
-                        setOrder((prev) => ({ ...prev, [sku]: 30 }));
+                      } else if (val < minQty) {
+                        setOrder((prev) => ({ ...prev, [sku]: minQty }));
                       } else {
                         setOrder((prev) => ({ ...prev, [sku]: val }));
                       }
