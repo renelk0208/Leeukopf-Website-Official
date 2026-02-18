@@ -231,6 +231,19 @@ export const handler: Handler = async (event) => {
         };
       }
 
+      const hasFiveOrMore = lines.some((line) => Number(line.qty) >= 5);
+      if (hasFiveOrMore && bulkContainer !== "5kg_bucket") {
+        return {
+          statusCode: 400,
+          headers: jsonHeaders,
+          body: JSON.stringify({
+            success: false,
+            message: "Bulk lines with qty >= 5 must use 5kg_bucket.",
+            missingFields: ["bulkContainer"],
+          }),
+        };
+      }
+
       packagingMode = "custom";
       packagingSystem = "bottle";
     }

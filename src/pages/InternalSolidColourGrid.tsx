@@ -147,7 +147,14 @@ export default function InternalSolidColourGrid() {
 
   const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
   const qtyUnit: "pcs" | "kg" = orderFormat === "bulk" ? "kg" : "pcs";
+  const bulkRequiresBucket = orderFormat === "bulk" && selectedItems.some(([, qty]) => qty >= 5);
   const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
+
+  useEffect(() => {
+    if (bulkRequiresBucket && bulkContainer !== "5kg_bucket") {
+      setBulkContainer("5kg_bucket");
+    }
+  }, [bulkRequiresBucket, bulkContainer]);
 
   const handleSubmitOrder = async () => {
     const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => {
@@ -189,6 +196,13 @@ export default function InternalSolidColourGrid() {
     }
 
     if (orderFormat === "bulk") {
+      if (bulkRequiresBucket && bulkContainer !== "5kg_bucket") {
+        const message = "For quantities of 5kg or more, packing is automatically set to 5kg Buckets.";
+        setPackagingError(message);
+        setSubmitMessage({ type: "error", text: message });
+        return;
+      }
+
       if (!bulkContainer) {
         const message = "Please choose a bulk packing type: 1kg Flasks or 5kg Buckets.";
         setPackagingError(message);
@@ -560,6 +574,7 @@ export default function InternalSolidColourGrid() {
                     name="bulk-container"
                     value="1kg_flask"
                     checked={bulkContainer === "1kg_flask"}
+                    disabled={bulkRequiresBucket}
                     onChange={() => {
                       setBulkContainer("1kg_flask");
                       setPackagingError(null);
@@ -581,6 +596,11 @@ export default function InternalSolidColourGrid() {
                   <span>5kg Buckets</span>
                 </label>
               </div>
+              {bulkRequiresBucket && (
+                <div className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                  5kg or more selected: packing has been automatically set to 5kg Buckets.
+                </div>
+              )}
             </>
           ) : (
             <>
