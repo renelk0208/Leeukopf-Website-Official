@@ -177,10 +177,13 @@ export const handler: Handler = async (event) => {
       authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : legacyHeader || ""
     );
     if (!expected || incoming !== expected) {
+      const message = !expected
+        ? "Unauthorized: server token is not configured"
+        : "Unauthorized: token mismatch";
       return {
         statusCode: 401,
         headers: jsonHeaders,
-        body: JSON.stringify({ success: false, message: "Unauthorized" }),
+        body: JSON.stringify({ success: false, message }),
       };
     }
 
