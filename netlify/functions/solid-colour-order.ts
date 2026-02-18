@@ -11,19 +11,29 @@ type ClientPayload = {
 };
 
 type LinePayload = {
-  sku: string;
+  code: string;
+  name: string;
   qty: number;
 };
 
+type BottlePackaging = {
+  size?: string;
+  color?: string;
+  brushShape?: string;
+  brushType?: string;
+};
+
 type PackagingPayload = {
-  bottleSystem?: string;
+  system?: string;
+  bottle?: BottlePackaging | null;
+  jar?: Record<string, string> | null;
   notes?: string;
 };
 
 type OrderPayload = {
   client: ClientPayload;
   lines: LinePayload[];
-  packagingSelections?: PackagingPayload;
+  packaging?: PackagingPayload;
 };
 
 export const handler: Handler = async (event) => {
@@ -54,7 +64,7 @@ export const handler: Handler = async (event) => {
     }
 
     const payload = JSON.parse(event.body) as OrderPayload;
-    const { client, lines, packagingSelections } = payload;
+    const { client, lines, packaging } = payload;
 
     if (!client?.companyName || !client?.contactEmail || !lines?.length) {
       return {
@@ -72,7 +82,7 @@ export const handler: Handler = async (event) => {
     );
 
     const linesText = lines
-      .map((line) => `• ${line.sku} x ${line.qty}`)
+      .map((line) => `• ${line.code} (${line.name}) x ${line.qty}`)
       .join("\n");
 
     const subject = `Solid Colour Order — ${client.companyName} (${orderId})`;
@@ -85,8 +95,12 @@ Company: ${client.companyName}
 VAT: ${client.vat || ""}
 Country: ${client.country || ""}
 Contact Email: ${client.contactEmail}
-Bottle System: ${packagingSelections?.bottleSystem || ""}
-Packaging Notes: ${packagingSelections?.notes || ""}
+Packaging System: ${packaging?.system || ""}
+Bottle Size: ${packaging?.bottle?.size || ""}
+Bottle Color: ${packaging?.bottle?.color || ""}
+Brush Shape: ${packaging?.bottle?.brushShape || ""}
+Brush Type: ${packaging?.bottle?.brushType || ""}
+Packaging Notes: ${packaging?.notes || ""}
 
 Total Units: ${totalUnits}
 

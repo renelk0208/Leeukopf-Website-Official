@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 
 type Row = Record<string, string>;
 type OrderLine = {
-  sku: string;
+  code: string;
+  name: string;
   qty: number;
 };
 type ClientDetails = {
@@ -11,8 +12,16 @@ type ClientDetails = {
   country: string;
   email: string;
 };
-type PackagingSelections = {
-  bottleSystem: string;
+type BottlePackaging = {
+  size: string;
+  color: string;
+  brushShape: string;
+  brushType: string;
+};
+type PackagingPayload = {
+  system: "bottle" | "jar";
+  bottle: BottlePackaging | null;
+  jar: Record<string, string> | null;
   notes: string;
 };
 
@@ -28,8 +37,15 @@ export default function InternalSolidColourGrid() {
     country: "",
     email: "",
   });
-  const [packagingSelections, setPackagingSelections] = useState<PackagingSelections>({
-    bottleSystem: "10ml/15ml",
+  const [packaging, setPackaging] = useState<PackagingPayload>({
+    system: "bottle",
+    bottle: {
+      size: "10ml",
+      color: "white",
+      brushShape: "oval",
+      brushType: "standard",
+    },
+    jar: null,
     notes: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -100,7 +116,14 @@ export default function InternalSolidColourGrid() {
   };
 
   const handleSubmitOrder = async () => {
-    const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({ sku, qty }));
+    const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => {
+      const row = rows.find((item) => (item["Internal_SKU"] || "") === sku);
+      return {
+        code: row?.["Shade_Code"] || sku,
+        name: row?.["Shade_Name"] || sku,
+        qty,
+      };
+    });
     const requestToken = import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "";
 
     if (!client.companyName || !client.email || exportData.length === 0) {
@@ -127,7 +150,7 @@ export default function InternalSolidColourGrid() {
         contactEmail: client.email,
       },
       lines: exportData,
-      packagingSelections,
+      packaging,
     };
 
     try {
@@ -227,17 +250,23 @@ export default function InternalSolidColourGrid() {
             className="rounded-xl border bg-white px-3 py-2 text-sm"
           />
           <input
-            value={packagingSelections.bottleSystem}
+            value={packaging.bottle?.size || ""}
             onChange={(e) =>
-              setPackagingSelections((prev) => ({ ...prev, bottleSystem: e.target.value }))
+              setPackaging((prev) => ({
+                ...prev,
+                bottle: {
+                  ...(prev.bottle || { color: "white", brushShape: "oval", brushType: "standard" }),
+                  size: e.target.value,
+                },
+              }))
             }
-            placeholder="Bottle system"
+            placeholder="Bottle size"
             className="rounded-xl border bg-white px-3 py-2 text-sm"
           />
           <input
-            value={packagingSelections.notes}
+            value={packaging.notes}
             onChange={(e) =>
-              setPackagingSelections((prev) => ({ ...prev, notes: e.target.value }))
+              setPackaging((prev) => ({ ...prev, notes: e.target.value }))
             }
             placeholder="Packaging notes"
             className="rounded-xl border bg-white px-3 py-2 text-sm"
