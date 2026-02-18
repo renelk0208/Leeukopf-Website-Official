@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import PageTemplate from '../../components/PageTemplate';
 import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
-import OrderTable from '../../components/OrderTable';
 import { isSubcategoryEnabled } from '../../config/productCategories';
 import { categoryHero } from '../../config/imageMap';
 
@@ -96,20 +95,6 @@ export default function BuilderAndStructureGelsPage() {
           </p>
         </div>
       </div>
-
-      {/* B2B Order Builder Gels */}
-      <section className="mb-10 sm:mb-12 md:mb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
-            B2B Order Builder Gels
-          </h2>
-          <div className="space-y-8">
-            <OrderTable groupCode="UGI-LM" />
-            <OrderTable groupCode="UGI" />
-            <OrderTable groupCode="Y2-UGI-PR" />
-          </div>
-        </div>
-      </section>
 
       {/* Subcategories Grid */}
       <div className="mb-10 sm:mb-12 md:mb-16">
