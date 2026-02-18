@@ -158,6 +158,13 @@ export default function PrivateLabelPage() {
 
       {/* Private Label Categories Section */}
       <div className="mb-10 sm:mb-12 md:mb-16">
+        {/* Important Notice */}
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 sm:mb-8">
+          <p className="text-sm sm:text-base text-gray-800">
+            <strong className="font-bold">IMPORTANT:</strong> Not all bottles/jars shown are included in the Private Label packages. Selected bottles only.
+          </p>
+        </div>
+
         <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
           Private label packaging options
         </h2>

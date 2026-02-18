@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, FileText } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import OptimizedImage from '../components/OptimizedImage';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
@@ -314,6 +314,32 @@ export default function PrivateLabelBottlesPage() {
       ]}
     >
       <div className="space-y-8 sm:space-y-10 md:space-y-12">
+        {/* View Specification Section */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <FileText size={24} className="text-blue-800" aria-hidden="true" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                Available Bottles Specification
+              </h2>
+              <p className="text-sm text-gray-600 mb-3">
+                View the complete list of bottles regularly available and included in our Private Label packages, with specifications and pricing information.
+              </p>
+              <a
+                href="/docs/private-label/private-label-bottles-specification.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition-colors text-sm"
+              >
+                <FileText size={18} aria-hidden="true" />
+                View Specification Sheet
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Responsive bottle grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {BOTTLES.map((bottle) => (
