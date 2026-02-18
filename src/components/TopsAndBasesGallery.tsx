@@ -18,7 +18,7 @@ const TOPS_BASES_CATEGORIES = [
     folder: 'brush-on-builder', 
     title: 'Brush-On Builder',
     description: 'Builder base for strengthening and extending',
-    categoryImage: '/img/products/builder-systems/BIAB builder-in-a-bottle/brush-on-builder-category-card-image.jpg'
+    categoryImage: '/img/products/builder-systems/BIAB builder-in-a-bottle/BIAB-brush-on-builder-category-card-image.jpg'
   },
   { 
     id: 'effectTops', 
