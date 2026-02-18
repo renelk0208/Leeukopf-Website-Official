@@ -11,6 +11,10 @@ type ClientDetails = {
   country: string;
   email: string;
 };
+type PackagingSelections = {
+  bottleSystem: string;
+  notes: string;
+};
 
 export default function InternalSolidColourGrid() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -24,6 +28,12 @@ export default function InternalSolidColourGrid() {
     country: "",
     email: "",
   });
+  const [packagingSelections, setPackagingSelections] = useState<PackagingSelections>({
+    bottleSystem: "10ml/15ml",
+    notes: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     fetch("/data/solid-colour/pilot-80.json")
@@ -71,8 +81,83 @@ export default function InternalSolidColourGrid() {
     return out;
   }, [rows, q, onlyMissing, imgStatus]);
 
-  const selectedItems = Object.entries(order).filter(([_, qty]) => qty > 0);
-  const totalUnits = selectedItems.reduce((sum, [_, qty]) => sum + qty, 0);
+  const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
+  const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
+
+  const downloadOrderJson = (payload: unknown) => {
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `solid-colour-order-pilot80-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportOrder = async () => {
+    const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({ sku, qty }));
+
+    if (!client.companyName || !client.email || exportData.length === 0) {
+      setSubmitMessage({
+        type: "error",
+        text: "Please add company/email and at least one shade before exporting.",
+      });
+      return;
+    }
+
+    const payload = {
+      client: {
+        companyName: client.companyName,
+        vat: client.vat,
+        country: client.country,
+        contactEmail: client.email,
+      },
+      lines: exportData,
+      packagingSelections,
+    };
+
+    try {
+      setIsSubmitting(true);
+      setSubmitMessage(null);
+
+      const response = await fetch("/.netlify/functions/solid-colour-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-solid-order-token": import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.status === 200) {
+        downloadOrderJson(payload);
+        setSubmitMessage({
+          type: "success",
+          text: `Order ${data.orderId || ""} submitted successfully. Confirmation email sent.`,
+        });
+        return;
+      }
+
+      setSubmitMessage({
+        type: "error",
+        text: data?.message || "Failed to submit order. JSON was not downloaded.",
+      });
+    } catch {
+      setSubmitMessage({
+        type: "error",
+        text: "Network error while submitting order. JSON was not downloaded.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-6xl p-6">
@@ -126,6 +211,22 @@ export default function InternalSolidColourGrid() {
             placeholder="Contact email"
             className="rounded-xl border bg-white px-3 py-2 text-sm"
           />
+          <input
+            value={packagingSelections.bottleSystem}
+            onChange={(e) =>
+              setPackagingSelections((prev) => ({ ...prev, bottleSystem: e.target.value }))
+            }
+            placeholder="Bottle system"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
+          <input
+            value={packagingSelections.notes}
+            onChange={(e) =>
+              setPackagingSelections((prev) => ({ ...prev, notes: e.target.value }))
+            }
+            placeholder="Packaging notes"
+            className="rounded-xl border bg-white px-3 py-2 text-sm"
+          />
         </div>
 
         <div className="text-sm font-semibold">
@@ -156,31 +257,25 @@ export default function InternalSolidColourGrid() {
           </button>
 
           <button
-            onClick={() => {
-              const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({ sku, qty }));
-              const payload = {
-                client,
-                lines: exportData,
-              };
-
-              const blob = new Blob([JSON.stringify(payload, null, 2)], {
-                type: "application/json",
-              });
-
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = url;
-              a.download = `solid-colour-order-pilot80-${new Date().toISOString().slice(0, 10)}.json`;
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
-              URL.revokeObjectURL(url);
-            }}
+            onClick={handleExportOrder}
+            disabled={isSubmitting}
             className="rounded-xl bg-black px-4 py-2 text-xs text-white"
           >
-            Export Order
+            {isSubmitting ? "Submitting..." : "Export Order"}
           </button>
         </div>
+
+        {submitMessage && (
+          <div
+            className={`mt-3 rounded-xl border px-3 py-2 text-xs ${
+              submitMessage.type === "success"
+                ? "border-green-200 bg-green-50 text-green-700"
+                : "border-red-200 bg-red-50 text-red-700"
+            }`}
+          >
+            {submitMessage.text}
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
