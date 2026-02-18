@@ -84,41 +84,74 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
     font = await pdf.embedFont(StandardFonts.Helvetica);
   }
 
-  let logoImage: Awaited<ReturnType<typeof pdf.embedPng>> | null = null;
-  let logoDims: { width: number; height: number } | null = null;
-
-  try {
-    const logoCandidates = [
-      path.join(process.cwd(), "netlify/functions/assets/leeukopf-logo.png"),
-      path.join(process.cwd(), ".netlify/functions-assets/leeukopf-logo.png"),
+  const resolveAssetPath = (fileName: string): string | null => {
+    const candidates = [
+      path.join(process.cwd(), `netlify/functions/assets/${fileName}`),
+      path.join(process.cwd(), `.netlify/functions-assets/${fileName}`),
     ];
 
-    const logoPath = logoCandidates.find((candidate) => fs.existsSync(candidate));
-    if (logoPath) {
-      const logoBytes = fs.readFileSync(logoPath);
-      logoImage = await pdf.embedPng(logoBytes);
-      logoDims = logoImage.scale(0.75);
+    return candidates.find((candidate) => fs.existsSync(candidate)) || null;
+  };
+
+  let letterheadImage: Awaited<ReturnType<typeof pdf.embedPng>> | null = null;
+  let letterheadDims: { width: number; height: number } | null = null;
+  let watermarkImage: Awaited<ReturnType<typeof pdf.embedPng>> | null = null;
+  let watermarkDims: { width: number; height: number } | null = null;
+
+  try {
+    const letterheadPath = resolveAssetPath("leeukopf_black.png") || resolveAssetPath("leeukopf-logo.png");
+    if (letterheadPath) {
+      const letterheadBytes = fs.readFileSync(letterheadPath);
+      letterheadImage = await pdf.embedPng(letterheadBytes);
+      letterheadDims = letterheadImage.scale(0.6);
+    }
+
+    const watermarkPath = resolveAssetPath("watermark.logo.Lion.png") || resolveAssetPath("leeukopf-logo.png");
+    if (watermarkPath) {
+      const watermarkBytes = fs.readFileSync(watermarkPath);
+      watermarkImage = await pdf.embedPng(watermarkBytes);
+      watermarkDims = watermarkImage.scale(0.8);
     }
   } catch {
-    logoImage = null;
-    logoDims = null;
+    letterheadImage = null;
+    letterheadDims = null;
+    watermarkImage = null;
+    watermarkDims = null;
   }
 
   const drawLogoWatermark = (page: PDFPage) => {
-    if (!logoImage || !logoDims) {
+    if (!watermarkImage || !watermarkDims) {
       return;
     }
 
-    const watermarkWidth = Math.min(logoDims.width, A4.w - (M * 2));
-    const ratio = watermarkWidth / logoDims.width;
-    const watermarkHeight = logoDims.height * ratio;
+    const watermarkWidth = Math.min(watermarkDims.width, A4.w - (M * 2));
+    const ratio = watermarkWidth / watermarkDims.width;
+    const watermarkHeight = watermarkDims.height * ratio;
 
-    page.drawImage(logoImage, {
+    page.drawImage(watermarkImage, {
       x: (A4.w - watermarkWidth) / 2,
       y: (A4.h - watermarkHeight) / 2,
       width: watermarkWidth,
       height: watermarkHeight,
-      opacity: 0.08,
+      opacity: 1,
+    });
+  };
+
+  const drawLogoHeader = (page: PDFPage) => {
+    if (!letterheadImage || !letterheadDims) {
+      return;
+    }
+
+    const headerWidth = Math.min(A4.w - (M * 2), letterheadDims.width);
+    const ratio = headerWidth / letterheadDims.width;
+    const headerHeight = letterheadDims.height * ratio;
+
+    page.drawImage(letterheadImage, {
+      x: M,
+      y: A4.h - TOP - headerHeight + 4,
+      width: headerWidth,
+      height: headerHeight,
+      opacity: 1,
     });
   };
 
@@ -155,8 +188,10 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
   const drawHeaderBlocks = (page: PDFPage): number => {
     drawLogoWatermark(page);
+    drawLogoHeader(page);
 
-    let y = A4.h - TOP;
+    const letterheadHeight = letterheadDims ? Math.min(A4.w - (M * 2), letterheadDims.width) * (letterheadDims.height / letterheadDims.width) : 0;
+    let y = A4.h - TOP - letterheadHeight - 12;
 
     text(page, "Solid Colour Order Request", M, y, 16, true);
     y -= 24;
@@ -296,8 +331,10 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
       page = pdf.addPage([A4.w, A4.h]);
 
       drawLogoWatermark(page);
+      drawLogoHeader(page);
 
-      let y2 = A4.h - TOP;
+      const letterheadHeight = letterheadDims ? Math.min(A4.w - (M * 2), letterheadDims.width) * (letterheadDims.height / letterheadDims.width) : 0;
+      let y2 = A4.h - TOP - letterheadHeight - 8;
       text(page, "Solid Colour Order Request", M, y2, 14, true);
       y2 -= 18;
       text(page, `Order ID: ${data.orderId}`, M, y2, 10.5, true);
