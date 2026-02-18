@@ -99,7 +99,7 @@ export default function InternalSolidColourGrid() {
     URL.revokeObjectURL(url);
   };
 
-  const handleExportOrder = async () => {
+  const handleSubmitOrder = async () => {
     const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => ({ sku, qty }));
 
     if (!client.companyName || !client.email || exportData.length === 0) {
@@ -257,11 +257,11 @@ export default function InternalSolidColourGrid() {
           </button>
 
           <button
-            onClick={handleExportOrder}
+            onClick={handleSubmitOrder}
             disabled={isSubmitting}
             className="rounded-xl bg-black px-4 py-2 text-xs text-white"
           >
-            {isSubmitting ? "Submitting..." : "Export Order"}
+            {isSubmitting ? "Submitting..." : "Submit Order"}
           </button>
         </div>
 
