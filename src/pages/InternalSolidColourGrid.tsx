@@ -68,7 +68,7 @@ export default function InternalSolidColourGrid() {
     shippingAddress: "",
     shippingRegion: "",
     shippingPostalCode: "",
-    sameAddress: true,
+    sameAddress: false,
     vat: "",
     country: "",
     email: "",
@@ -335,64 +335,77 @@ export default function InternalSolidColourGrid() {
       </div>
 
       <div className="mb-6 rounded-xl border bg-white p-4 shadow-sm">
+        <div className="mb-2 text-xs text-neutral-600">Fields marked with <span className="text-red-600">*</span> are required.</div>
         <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-          <input
-            value={client.companyName}
-            onChange={(e) => setClient((prev) => ({ ...prev, companyName: e.target.value }))}
-            placeholder="Company Name or Client Name"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
-          <input
-            value={client.contactName}
-            onChange={(e) => setClient((prev) => ({ ...prev, contactName: e.target.value }))}
-            placeholder="Contact Name"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
-          <input
-            value={client.contactNumber}
-            onChange={(e) => setClient((prev) => ({ ...prev, contactNumber: e.target.value }))}
-            placeholder="Contact Number"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
-          <input
-            value={client.invoiceAddress}
-            onChange={(e) => {
-              const value = e.target.value;
-              setClient((prev) => ({
-                ...prev,
-                invoiceAddress: value,
-                shippingAddress: prev.sameAddress ? value : prev.shippingAddress,
-              }));
-            }}
-            placeholder="Invoice Address"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
-          <input
-            value={client.invoiceRegion}
-            onChange={(e) => {
-              const value = e.target.value;
-              setClient((prev) => ({
-                ...prev,
-                invoiceRegion: value,
-                shippingRegion: prev.sameAddress ? value : prev.shippingRegion,
-              }));
-            }}
-            placeholder="Invoice Region"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
-          <input
-            value={client.invoicePostalCode}
-            onChange={(e) => {
-              const value = e.target.value;
-              setClient((prev) => ({
-                ...prev,
-                invoicePostalCode: value,
-                shippingPostalCode: prev.sameAddress ? value : prev.shippingPostalCode,
-              }));
-            }}
-            placeholder="Invoice Postal Code"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
+          <label className="text-xs font-medium text-neutral-600">Company Name or Client Name <span className="text-red-600">*</span>
+            <input
+              value={client.companyName}
+              onChange={(e) => setClient((prev) => ({ ...prev, companyName: e.target.value }))}
+              placeholder="Company Name or Client Name"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-medium text-neutral-600">Contact Name <span className="text-red-600">*</span>
+            <input
+              value={client.contactName}
+              onChange={(e) => setClient((prev) => ({ ...prev, contactName: e.target.value }))}
+              placeholder="Contact Name"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-medium text-neutral-600">Contact Number <span className="text-red-600">*</span>
+            <input
+              value={client.contactNumber}
+              onChange={(e) => setClient((prev) => ({ ...prev, contactNumber: e.target.value }))}
+              placeholder="Contact Number"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-medium text-neutral-600">Invoice Address <span className="text-red-600">*</span>
+            <input
+              value={client.invoiceAddress}
+              onChange={(e) => {
+                const value = e.target.value;
+                setClient((prev) => ({
+                  ...prev,
+                  invoiceAddress: value,
+                  shippingAddress: prev.sameAddress ? value : prev.shippingAddress,
+                }));
+              }}
+              placeholder="Invoice Address"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-medium text-neutral-600">Invoice Region <span className="text-red-600">*</span>
+            <input
+              value={client.invoiceRegion}
+              onChange={(e) => {
+                const value = e.target.value;
+                setClient((prev) => ({
+                  ...prev,
+                  invoiceRegion: value,
+                  shippingRegion: prev.sameAddress ? value : prev.shippingRegion,
+                }));
+              }}
+              placeholder="Invoice Region"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-medium text-neutral-600">Invoice Postal Code <span className="text-red-600">*</span>
+            <input
+              value={client.invoicePostalCode}
+              onChange={(e) => {
+                const value = e.target.value;
+                setClient((prev) => ({
+                  ...prev,
+                  invoicePostalCode: value,
+                  shippingPostalCode: prev.sameAddress ? value : prev.shippingPostalCode,
+                }));
+              }}
+              placeholder="Invoice Postal Code"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
           <label className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2 text-sm sm:col-span-2">
             <input
               type="checkbox"
@@ -412,49 +425,61 @@ export default function InternalSolidColourGrid() {
           </label>
           {!client.sameAddress && (
             <>
-              <input
-                value={client.shippingAddress}
-                onChange={(e) => setClient((prev) => ({ ...prev, shippingAddress: e.target.value }))}
-                placeholder="Shipping Address"
-                className="rounded-xl border bg-white px-3 py-2 text-sm"
-              />
-              <input
-                value={client.shippingRegion}
-                onChange={(e) => setClient((prev) => ({ ...prev, shippingRegion: e.target.value }))}
-                placeholder="Shipping Region"
-                className="rounded-xl border bg-white px-3 py-2 text-sm"
-              />
-              <input
-                value={client.shippingPostalCode}
-                onChange={(e) => setClient((prev) => ({ ...prev, shippingPostalCode: e.target.value }))}
-                placeholder="Shipping Postal Code"
-                className="rounded-xl border bg-white px-3 py-2 text-sm"
-              />
+              <label className="text-xs font-medium text-neutral-600">Shipping Address <span className="text-red-600">*</span>
+                <input
+                  value={client.shippingAddress}
+                  onChange={(e) => setClient((prev) => ({ ...prev, shippingAddress: e.target.value }))}
+                  placeholder="Shipping Address"
+                  className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="text-xs font-medium text-neutral-600">Shipping Region <span className="text-red-600">*</span>
+                <input
+                  value={client.shippingRegion}
+                  onChange={(e) => setClient((prev) => ({ ...prev, shippingRegion: e.target.value }))}
+                  placeholder="Shipping Region"
+                  className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="text-xs font-medium text-neutral-600">Shipping Postal Code <span className="text-red-600">*</span>
+                <input
+                  value={client.shippingPostalCode}
+                  onChange={(e) => setClient((prev) => ({ ...prev, shippingPostalCode: e.target.value }))}
+                  placeholder="Shipping Postal Code"
+                  className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                />
+              </label>
             </>
           )}
-          <input
-            value={client.vat}
-            onChange={(e) => setClient((prev) => ({ ...prev, vat: e.target.value }))}
-            placeholder="VAT (optional)"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
-          <input
-            value={client.country}
-            onChange={(e) => setClient((prev) => ({ ...prev, country: e.target.value }))}
-            placeholder="Country"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
-          <input
-            type="email"
-            value={client.email}
-            onChange={(e) => setClient((prev) => ({ ...prev, email: e.target.value }))}
-            placeholder="Contact email"
-            className="rounded-xl border bg-white px-3 py-2 text-sm"
-          />
+          <label className="text-xs font-medium text-neutral-600">VAT (optional)
+            <input
+              value={client.vat}
+              onChange={(e) => setClient((prev) => ({ ...prev, vat: e.target.value }))}
+              placeholder="VAT (optional)"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-medium text-neutral-600">Country <span className="text-red-600">*</span>
+            <input
+              value={client.country}
+              onChange={(e) => setClient((prev) => ({ ...prev, country: e.target.value }))}
+              placeholder="Country"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-medium text-neutral-600">Contact Email <span className="text-red-600">*</span>
+            <input
+              type="email"
+              value={client.email}
+              onChange={(e) => setClient((prev) => ({ ...prev, email: e.target.value }))}
+              placeholder="Contact Email"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
         </div>
 
         <div className="rounded-xl border bg-neutral-50 p-3">
-          <div className="text-sm font-semibold">Packaging</div>
+          <div className="text-sm font-semibold">Packaging <span className="text-red-600">*</span></div>
           <div className="mt-2 grid gap-2 text-sm">
             <label className="flex items-start gap-2">
               <input
@@ -521,7 +546,7 @@ export default function InternalSolidColourGrid() {
               {packaging.system === "bottle" ? (
                 <>
                   <label className="text-xs font-medium text-neutral-600">
-                    Bottle Size
+                    Bottle Size <span className="text-red-600">*</span>
                     <select
                       value={packaging.bottle?.size || ""}
                       onChange={(e) => {
@@ -544,7 +569,7 @@ export default function InternalSolidColourGrid() {
                   </label>
 
                   <label className="text-xs font-medium text-neutral-600">
-                    Bottle Color
+                    Bottle Color <span className="text-red-600">*</span>
                     <select
                       value={packaging.bottle?.color || ""}
                       onChange={(e) => {
@@ -567,7 +592,7 @@ export default function InternalSolidColourGrid() {
                   </label>
 
                   <label className="text-xs font-medium text-neutral-600">
-                    Brush Shape
+                    Brush Shape <span className="text-red-600">*</span>
                     <select
                       value={packaging.bottle?.brushShape || ""}
                       onChange={(e) => {
@@ -591,7 +616,7 @@ export default function InternalSolidColourGrid() {
 
                   {ENABLE_BRUSH_TYPE && (
                     <label className="text-xs font-medium text-neutral-600">
-                      Brush Type
+                      Brush Type <span className="text-red-600">*</span>
                       <select
                         value={packaging.bottle?.brushType || ""}
                         onChange={(e) => {
@@ -617,7 +642,7 @@ export default function InternalSolidColourGrid() {
               ) : (
                 <>
                   <label className="text-xs font-medium text-neutral-600">
-                    Jar Size
+                    Jar Size <span className="text-red-600">*</span>
                     <select
                       value={packaging.jar?.size || ""}
                       onChange={(e) => {
@@ -640,7 +665,7 @@ export default function InternalSolidColourGrid() {
                   </label>
 
                   <label className="text-xs font-medium text-neutral-600">
-                    Jar Color
+                    Jar Color <span className="text-red-600">*</span>
                     <select
                       value={packaging.jar?.color || ""}
                       onChange={(e) => {
@@ -666,7 +691,7 @@ export default function InternalSolidColourGrid() {
             </div>
           ) : (
             <div className="mt-3">
-              <label className="mb-1 block text-sm font-medium">Packaging details (required)</label>
+              <label className="mb-1 block text-sm font-medium">Packaging details (required) <span className="text-red-600">*</span></label>
               <textarea
                 value={packaging.customDescription}
                 onChange={(e) => {
