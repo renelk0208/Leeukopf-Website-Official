@@ -20,7 +20,8 @@
     "report:images": "node scripts/report-large-images.cjs",
     "generate:pwa-icons": "node scripts/generate-pwa-icons.mjs",
     "solid:pilot80": "node scripts/csv-to-json.mjs",
-    "solid:hex": "node scripts/hex-from-swatches.mjs"
+    "solid:hex": "node scripts/hex-from-swatches.mjs",
+    "solid:hex:python": ".\\.venv\\Scripts\\python.exe extract_colour_data.py"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",

@@ -181,7 +181,7 @@ export default function InternalSolidColourGrid() {
       return;
     }
 
-    if (bulkRequiresBucket && bulkContainer !== "5kg_bucket") {
+    if (bulkRequiresBucket && (bulkContainer === "" || isBulkContainerAuto) && bulkContainer !== "5kg_bucket") {
       setBulkContainer("5kg_bucket");
       setIsBulkContainerAuto(true);
       return;
