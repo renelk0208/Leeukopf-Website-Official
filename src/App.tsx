@@ -54,6 +54,7 @@ const EffectsTopCoatsPage = lazy(() => import('./pages/products/top-bases/top-co
 const BaseCoatsPage = lazy(() => import('./pages/products/top-bases/BaseCoatsPage'));
 const ClassicBasePage = lazy(() => import('./pages/products/top-bases/base-coats/ClassicBasePage'));
 const RubberBasePage = lazy(() => import('./pages/products/top-bases/base-coats/RubberBasePage'));
+const EffectsRubberBasePage = lazy(() => import('./pages/products/top-bases/base-coats/EffectsRubberBasePage'));
 const SuperiorBasePage = lazy(() => import('./pages/products/top-bases/base-coats/SuperiorBasePage'));
 const NoHeatSpikeBuilderGelPage = lazy(() => import('./pages/products/top-bases/base-coats/NoHeatSpikeBuilderGelPage'));
 const BrushOnBuilderPage = lazy(() => import('./pages/products/top-bases/BrushOnBuilderPage'));
@@ -126,6 +127,7 @@ function App() {
           <Route path="/products/top-and-bases/base-coats" element={<BaseCoatsPage />} />
           <Route path="/products/top-and-bases/base-coats/classic" element={<ClassicBasePage />} />
           <Route path="/products/top-and-bases/base-coats/rubber-base" element={<RubberBasePage />} />
+          <Route path="/products/top-and-bases/base-coats/rubber-base/effects" element={<EffectsRubberBasePage />} />
           <Route path="/products/top-and-bases/base-coats/superior-base-5-in-1" element={<SuperiorBasePage />} />
           <Route path="/products/top-and-bases/brush-on-builder" element={<BrushOnBuilderPage />} />
           

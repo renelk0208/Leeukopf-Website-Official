@@ -16,7 +16,7 @@ export default function BaseCoatsPage() {
     {
       key: 'effectsRubberBase',
       title: 'Effects Rubber Base',
-      path: '/products/top-and-bases/base-coats/rubber-base',
+      path: '/products/top-and-bases/base-coats/rubber-base/effects',
       description: 'Flexible rubber bases with stunning visual effects, all HEMA-free and TPO-free.',
       image: categoryHero['effects-rubber-base'],
     },
@@ -66,7 +66,7 @@ export default function BaseCoatsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {subcategories.map((subcategory) => (
             <Link
-              key={subcategory.path}
+              key={subcategory.key}
               to={subcategory.path}
               className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >

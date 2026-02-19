@@ -402,8 +402,11 @@ export async function buildSolidColourPdf(data: Payload): Promise<Uint8Array> {
 
   let page = pdf.addPage([A4.w, A4.h]);
   let y = drawHeaderBlocks(page);
-  const { y: tableY, colCode, colName, colQtyRight } = drawTableHeader(page, y);
-  y = tableY;
+  const tableHeader = drawTableHeader(page, y);
+  y = tableHeader.y;
+  let colCode = tableHeader.colCode;
+  let colName = tableHeader.colName;
+  let colQtyRight = tableHeader.colQtyRight;
 
   let totalUnits = 0;
 
