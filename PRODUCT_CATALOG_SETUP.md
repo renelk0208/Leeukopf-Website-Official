@@ -164,14 +164,15 @@ npm run solid:hex:python
 ```
 
 This command will:
-- regenerate `colour-data-0001-0400.csv`
+- regenerate `colour-data-0001-1200.csv`
 - extract HEX/H/S/V values from `public/img/solid-colour/*.webp`
 - auto-merge `Hex_Code` values into `public/data/solid-colour/pilot-80.json` by `Internal_SKU`
+- process the full SKU range from `LC-GP-0001` to `LC-GP-1200`
 
 Expected successful output example:
 
 ```text
-✅ Wrote colour-data-0001-0400.csv with 400 rows
+✅ Wrote colour-data-0001-1200.csv with <row_count> rows
 ✅ Updated 0 / 80 matched rows in public\data\solid-colour\pilot-80.json (total rows: 80)
 ```
 

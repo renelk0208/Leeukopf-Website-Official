@@ -9,11 +9,11 @@ from PIL import Image
 # CONFIG
 # -----------------------
 IMAGES_DIR = os.path.join("public", "img", "solid-colour")  # adjust if your folder differs
-OUTPUT_CSV = "colour-data-0001-0400.csv"
+OUTPUT_CSV = "colour-data-0001-1200.csv"
 PILOT_JSON = os.path.join("public", "data", "solid-colour", "pilot-80.json")
 
 START_N = 1
-END_N = 400
+END_N = 1200
 
 CENTER_CROP_KEEP = 0.55
 WORK_SIZE = (120, 120)
