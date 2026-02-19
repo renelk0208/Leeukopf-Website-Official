@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, FileText } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import OptimizedImage from '../components/OptimizedImage';
-import PdfModal from '../components/PdfModal';
 import { RESPONSIVE_SIZES } from '../lib/responsive-sizes';
 
 interface BottleProduct {
@@ -225,7 +224,6 @@ export default function PrivateLabelBottlesPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [showPdfModal, setShowPdfModal] = useState(false);
 
   const currentImage = selectedBottle?.images[currentImageIndex];
 
@@ -329,13 +327,15 @@ export default function PrivateLabelBottlesPage() {
               <p className="text-sm text-gray-600 mb-3">
                 View the complete list of bottles regularly available and included in our Private Label packages, with specifications and pricing information.
               </p>
-              <button
-                onClick={() => setShowPdfModal(true)}
+              <a
+                href="/docs/private-label/private-label-bottles-specification.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors text-sm"
               >
                 <FileText size={18} aria-hidden="true" />
                 View Specification Sheet
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -494,15 +494,6 @@ export default function PrivateLabelBottlesPage() {
             )}
           </div>
         </div>
-      )}
-
-      {/* PDF Modal */}
-      {showPdfModal && (
-        <PdfModal
-          pdfUrl="/docs/private-label/private-label-bottles-specification.pdf"
-          title="Available Bottle Specifications"
-          onClose={() => setShowPdfModal(false)}
-        />
       )}
     </PageTemplate>
   );
