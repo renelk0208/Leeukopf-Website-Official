@@ -155,6 +155,28 @@ After setting up your Google Sheet:
 - Ensure the `category` column has values for all products
 - Category names are case-sensitive in filtering
 
+### Solid Colour HEX Updates
+
+When solid-colour swatch images are updated, run:
+
+```bash
+npm run solid:hex:python
+```
+
+This command will:
+- regenerate `colour-data-0001-0400.csv`
+- extract HEX/H/S/V values from `public/img/solid-colour/*.webp`
+- auto-merge `Hex_Code` values into `public/data/solid-colour/pilot-80.json` by `Internal_SKU`
+
+Expected successful output example:
+
+```text
+✅ Wrote colour-data-0001-0400.csv with 400 rows
+✅ Updated 0 / 80 matched rows in public\data\solid-colour\pilot-80.json (total rows: 80)
+```
+
+Note: `Updated 0 / 80` is normal when `pilot-80.json` is already up to date.
+
 ### Support
 
 For additional help:

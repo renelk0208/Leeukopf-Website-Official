@@ -113,3 +113,26 @@ For more detailed instructions, see [CONTRIBUTING.md](CONTRIBUTING.md).
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 - `npm run typecheck` - Run TypeScript type checking
+- `npm run solid:hex:python` - Extract HEX/H/S/V from swatches and auto-merge HEX values into `public/data/solid-colour/pilot-80.json`
+
+## Solid Colour HEX Workflow
+
+Run this command after updating swatch images:
+
+```bash
+npm run solid:hex:python
+```
+
+This command will:
+- regenerate `colour-data-0001-0400.csv`
+- extract HEX/H/S/V values from `public/img/solid-colour/*.webp`
+- auto-merge `Hex_Code` values into `public/data/solid-colour/pilot-80.json` by `Internal_SKU`
+
+Expected successful output example:
+
+```text
+✅ Wrote colour-data-0001-0400.csv with 400 rows
+✅ Updated 0 / 80 matched rows in public\data\solid-colour\pilot-80.json (total rows: 80)
+```
+
+Note: `Updated 0 / 80` is normal when `pilot-80.json` is already up to date.
