@@ -1,4 +1,5 @@
 import type { Product } from '../types/order';
+import { categories, resolveOrderCategoryKey } from '../config/categories';
 
 /**
  * Parse a CSV line handling quoted values and commas within quotes
@@ -95,9 +96,15 @@ export async function loadProducts(): Promise<Product[]> {
       // Filter: only active products with non-empty code
       const isActive = product.active.toUpperCase() === 'TRUE';
       const hasCode = product.code.trim() !== '';
+      const resolvedCategoryKey = resolveOrderCategoryKey(product.category);
 
-      if (isActive && hasCode) {
-        products.push(product);
+      if (isActive && hasCode && resolvedCategoryKey) {
+        products.push({
+          ...product,
+          category: categories[resolvedCategoryKey].label,
+        });
+      } else if (isActive && hasCode && import.meta.env.DEV && !resolvedCategoryKey) {
+        console.warn(`[B2B] Excluding product with unmapped category: "${product.category}" (${product.code})`);
       }
     }
 

@@ -22,10 +22,10 @@ const ValentinesPage = lazy(() => import('./pages/ValentinesPage'));
 const LiveFeedPage = lazy(() => import('./pages/LiveFeedPage'));
 const FaqStartBrandPage = lazy(() => import('./pages/FaqStartBrandPage'));
 const OrderFormPage = lazy(() => import('./pages/OrderFormPage'));
+const OrderPage = lazy(() => import('./pages/OrderPage'));
 const CatalogTest = lazy(() => import("./pages/CatalogTest"));
 const CartTest = lazy(() => import("./pages/CartTest"));
 const B2BBuilderGelsPage = lazy(() => import('./pages/B2BBuilderGelsPage'));
-const InternalSolidColourGrid = lazy(() => import('./pages/InternalSolidColourGrid'));
 
 // Product Pages
 const GelPolishPage = lazy(() => import('./pages/products/GelPolishPage'));
@@ -94,6 +94,8 @@ function App() {
           <Route path="/live-feed" element={<LiveFeedPage />} />
           <Route path="/faq-starting-a-gel-polish-brand" element={<FaqStartBrandPage />} />
           <Route path="/order-form" element={<OrderFormPage />} />
+          <Route path="/b2b-top-base" element={<OrderPage categoryKey="topBase" />} />
+          <Route path="/b2b-solid-colour" element={<OrderPage categoryKey="solidColour" />} />
 
           {/* Products */}
           <Route path="/products" element={<ProductsPage />} />
@@ -101,7 +103,7 @@ function App() {
           <Route path="/products/category-grid-test" element={<CategoryGridTestPage />} />
           <Route path="/catalog-test" element={<CatalogTest />} />
           <Route path="/cart-test" element={<CartTest />} />
-          <Route path="/internal/solid-colour" element={<InternalSolidColourGrid />} />
+          <Route path="/internal/solid-colour" element={<OrderPage categoryKey="solidColour" />} />
 
           {import.meta.env.DEV && (
             <Route path="/b2b-builder-gels" element={<B2BBuilderGelsPage />} />

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { getBuilderGelCatalog } from "../lib/catalog";
 import { useCart } from "../contexts/CartContext";
+import type { CatalogEntry } from "../types/catalog";
 
 interface Props {
   groupCode: string;
@@ -9,13 +10,24 @@ interface Props {
 export default function OrderTable({ groupCode }: Props) {
   const { addItem } = useCart();
   type CartPackSize = Parameters<typeof addItem>[0]["packSize"];
+  type ShadeValue = CatalogEntry["shades"][number] | string;
+
+  const resolveShade = (shade: ShadeValue) => {
+    if (typeof shade === "string") {
+      return { shadeCode: shade, shadeName: "" };
+    }
+    return {
+      shadeCode: shade.shadeCode,
+      shadeName: shade.shadeName ?? "",
+    };
+  };
 
   // Load catalog synchronously (your project is already using this style)
   const catalog = getBuilderGelCatalog();
 
   // Find the matching product group
   const entry = useMemo(() => {
-    return catalog.find((e: any) => e.groupCode === groupCode);
+    return catalog.find((e) => e.groupCode === groupCode);
   }, [catalog, groupCode]);
 
   const [quantities, setQuantities] = useState<Record<string, number>>({});
@@ -23,8 +35,8 @@ export default function OrderTable({ groupCode }: Props) {
   function addAllShades() {
     if (!entry) return;
 
-    entry.shades.forEach((shade: any) => {
-      const shadeCode = shade.shadeCode ?? shade;
+    (entry.shades as ShadeValue[]).forEach((shade) => {
+      const { shadeCode } = resolveShade(shade);
 
       const selectedSize =
         sizes[shadeCode] ?? entry.allowedPackSizes?.[0] ?? "15g";
@@ -72,9 +84,8 @@ return (
           </thead>
 
           <tbody>
-            {entry.shades.map((shade: any) => {
-              const shadeCode = shade.shadeCode ?? shade; // supports both object and string
-              const shadeName = shade.shadeName ?? "";
+            {(entry.shades as ShadeValue[]).map((shade) => {
+              const { shadeCode, shadeName } = resolveShade(shade);
 
               const defaultPackSize = (entry.allowedPackSizes?.[0] ?? "15g") as CartPackSize;
               const selectedSize = sizes[shadeCode] ?? defaultPackSize;

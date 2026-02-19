@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Search, X } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 import CalendlyButton from './CalendlyButton';
+import { useAuth } from '../contexts/AuthContext';
 
 const SocialLinks = () => {
   const socialMedia = [
@@ -52,11 +53,17 @@ const SocialLinks = () => {
 };
 
 export default function Navigation() {
+  const { user, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDesktopSearchOpen, setIsDesktopSearchOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const b2bLinks = [
+    { label: 'Solid Colour', path: '/b2b-solid-colour' },
+    { label: 'Top & Base Coats', path: '/b2b-top-base' },
+  ];
 
   useEffect(() => {
     if (!location.pathname.startsWith('/products')) {
@@ -79,6 +86,8 @@ export default function Navigation() {
     { label: 'FAQ', path: '/faq-starting-a-gel-polish-brand' },
     { label: 'Client Registration', path: '/client-registration' },
   ];
+
+  const isB2BActive = b2bLinks.some((item) => location.pathname === item.path);
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
@@ -132,6 +141,35 @@ export default function Navigation() {
                   </Link>
                 </li>
               ))}
+              {!loading && user && (
+                <li className="relative nav-item group">
+                  <button
+                    type="button"
+                    className={`block px-3 py-2 md:text-base lg:text-lg font-medium transition-colors whitespace-nowrap ${
+                      isB2BActive
+                        ? 'text-[#A3005A] border-b-2 border-[#A3005A]'
+                        : 'text-[#444444] hover:text-[#A3005A]'
+                    }`}
+                  >
+                    B2B Order Portal
+                  </button>
+                  <div className="invisible absolute left-0 top-full z-50 mt-1 min-w-56 rounded-lg border border-gray-200 bg-white p-2 opacity-0 shadow-lg transition-all duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                    {b2bLinks.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                          location.pathname === item.path
+                            ? 'text-[#A3005A] bg-primary-50'
+                            : 'text-[#444444] hover:text-[#A3005A] hover:bg-gray-50'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                </li>
+              )}
             </ul>
           </nav>
 
@@ -237,6 +275,28 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
+
+            {!loading && user && (
+              <div className="mt-2 rounded-md bg-primary-50/40 px-2 py-2">
+                <div className="px-2 pb-1 text-xs font-semibold text-[#A3005A] uppercase tracking-wider">
+                  B2B Order Portal
+                </div>
+                {b2bLinks.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setIsOpen(false)}
+                    className={`block w-full text-left px-3 py-3 rounded-md transition-colors font-medium text-sm ${
+                      location.pathname === item.path
+                        ? 'text-[#A3005A] bg-primary-50'
+                        : 'text-[#444444] hover:text-[#A3005A] hover:bg-gray-50'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
 
             <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
               <div className="px-3 mb-3">

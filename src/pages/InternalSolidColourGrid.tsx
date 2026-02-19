@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { categories } from "../config/categories";
 
 type Row = Record<string, string>;
 type OrderFormat = "finished_units" | "bulk";
@@ -51,7 +52,14 @@ const BRUSH_SHAPE_OPTIONS = ["oval", "flat"];
 const BRUSH_TYPE_OPTIONS = ["standard", "thin"];
 const JAR_SIZE_OPTIONS = ["10ml", "15ml"];
 const JAR_COLOR_OPTIONS = ["white", "black"];
-const ENABLE_BRUSH_TYPE = true;
+const solidColourConfig = categories.solidColour;
+const ALLOWED_UNITS = solidColourConfig.allowedUnits;
+const ALLOWED_PACKAGING = solidColourConfig.allowedPackaging;
+const ENABLE_BRUSH_TYPE = solidColourConfig.hasGlobalBrush;
+const SHOW_JAR_SIZE_SELECTOR = solidColourConfig.hasJarSizeSelector;
+const ALLOWS_PCS_UNIT = ALLOWED_UNITS.includes("pcs");
+const ALLOWS_KG_UNIT = ALLOWED_UNITS.includes("kg");
+const ALLOWS_BUCKET_PACKAGING = ALLOWED_PACKAGING.includes("bucket");
 
 const toDisplayLabel = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
@@ -147,9 +155,25 @@ export default function InternalSolidColourGrid() {
   }, [rows, q, onlyMissing, imgStatus]);
 
   const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
-  const qtyUnit: "pcs" | "kg" = orderFormat === "bulk" ? "kg" : "pcs";
+  const qtyUnit: "pcs" | "kg" = orderFormat === "bulk"
+    ? (ALLOWS_KG_UNIT ? "kg" : "pcs")
+    : (ALLOWS_PCS_UNIT ? "pcs" : "kg");
   const bulkRequiresBucket = orderFormat === "bulk" && selectedItems.some(([, qty]) => qty >= 5);
   const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
+
+  useEffect(() => {
+    if ((!ALLOWS_KG_UNIT || !ALLOWS_BUCKET_PACKAGING) && orderFormat === "bulk") {
+      setOrderFormat("finished_units");
+      setBulkContainer("");
+      setIsBulkContainerAuto(false);
+    }
+  }, [orderFormat]);
+
+  useEffect(() => {
+    if (!SHOW_JAR_SIZE_SELECTOR && packaging.system !== "bottle") {
+      setPackaging((prev) => ({ ...prev, system: "bottle" }));
+    }
+  }, [packaging.system]);
 
   useEffect(() => {
     if (orderFormat !== "bulk") {
@@ -289,8 +313,8 @@ export default function InternalSolidColourGrid() {
       },
       lines: exportData,
       packaging: {
-        mode: packaging.mode,
-        system: packaging.system,
+        mode: orderFormat === "bulk" ? "custom" : packaging.mode,
+        system: orderFormat === "bulk" ? "bulk" : packaging.system,
         bottle: packaging.bottle,
         jar: packaging.jar,
         customDescription: packaging.customDescription,
@@ -552,16 +576,18 @@ export default function InternalSolidColourGrid() {
               />
               <span>Finished units (we bottle it)</span>
             </label>
-            <label className="flex items-start gap-2">
-              <input
-                type="radio"
-                name="order-format"
-                value="bulk"
-                checked={orderFormat === "bulk"}
-                onChange={() => setOrderFormat("bulk")}
-              />
-              <span>Bulk (you fill your own bottles)</span>
-            </label>
+            {ALLOWS_KG_UNIT && ALLOWS_BUCKET_PACKAGING && (
+              <label className="flex items-start gap-2">
+                <input
+                  type="radio"
+                  name="order-format"
+                  value="bulk"
+                  checked={orderFormat === "bulk"}
+                  onChange={() => setOrderFormat("bulk")}
+                />
+                <span>Bulk (you fill your own bottles)</span>
+              </label>
+            )}
           </div>
 
           {orderFormat === "bulk" && (
@@ -657,25 +683,27 @@ export default function InternalSolidColourGrid() {
                     />
                     Bottle
                   </label>
-                  <label className="flex items-center gap-1 text-sm">
-                    <input
-                      type="radio"
-                      name="packaging-system"
-                      value="jar"
-                      checked={packaging.system === "jar"}
-                      onChange={() => {
-                        setPackaging((prev) => ({ ...prev, system: "jar" }));
-                        setPackagingError(null);
-                      }}
-                    />
-                    Jar
-                  </label>
+                  {SHOW_JAR_SIZE_SELECTOR && (
+                    <label className="flex items-center gap-1 text-sm">
+                      <input
+                        type="radio"
+                        name="packaging-system"
+                        value="jar"
+                        checked={packaging.system === "jar"}
+                        onChange={() => {
+                          setPackaging((prev) => ({ ...prev, system: "jar" }));
+                          setPackagingError(null);
+                        }}
+                      />
+                      Jar
+                    </label>
+                  )}
                 </div>
               </div>
 
               {packaging.mode === "standard" ? (
                 <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  {packaging.system === "bottle" ? (
+                  {!SHOW_JAR_SIZE_SELECTOR || packaging.system === "bottle" ? (
                     <>
                       <label className="text-xs font-medium text-neutral-600">
                         Bottle Size <span className="text-red-600">*</span>

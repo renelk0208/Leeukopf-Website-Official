@@ -42,7 +42,7 @@ type JarPackaging = {
 
 type PackagingPayload = {
   mode?: "standard" | "custom";
-  system?: string;
+  system?: "bottle" | "jar" | "bulk";
   bottle?: BottlePackaging | null;
   jar?: JarPackaging | null;
   customDescription?: string;
@@ -232,7 +232,7 @@ export const handler: Handler = async (event) => {
       }
 
       packagingMode = "custom";
-      packagingSystem = "bottle";
+      packagingSystem = "bulk";
     }
 
     if (orderFormat !== "bulk") {
@@ -404,6 +404,8 @@ export const handler: Handler = async (event) => {
     const pdfBytes = await buildSolidColourPdf({
       orderId,
       createdAt: new Date().toISOString().slice(0, 10),
+      orderFormat,
+      bulkContainer,
       client: {
         company: client.companyName,
         contactPerson: client.contactName,

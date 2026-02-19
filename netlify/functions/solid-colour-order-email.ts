@@ -3,6 +3,23 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+interface SolidOrderClient {
+  companyName: string;
+  contactEmail: string;
+  vat?: string;
+  country?: string;
+}
+
+interface SolidOrderLine {
+  sku: string;
+  qty: number | string;
+}
+
+interface SolidOrderPayload {
+  client: SolidOrderClient;
+  lines: SolidOrderLine[];
+}
+
 export const handler: Handler = async (event) => {
   try {
     if (event.httpMethod !== "POST") {
@@ -18,7 +35,7 @@ export const handler: Handler = async (event) => {
       return { statusCode: 400, body: "Missing body" };
     }
 
-    const payload = JSON.parse(event.body);
+    const payload = JSON.parse(event.body) as Partial<SolidOrderPayload>;
 
     const { client, lines } = payload;
 
@@ -27,12 +44,12 @@ export const handler: Handler = async (event) => {
     }
 
     const totalUnits = lines.reduce(
-      (sum: number, line: any) => sum + (Number(line.qty) || 0),
+      (sum: number, line: SolidOrderLine) => sum + (Number(line.qty) || 0),
       0
     );
 
     const linesText = lines
-      .map((l: any) => `• ${l.sku} x ${l.qty}`)
+      .map((line: SolidOrderLine) => `• ${line.sku} x ${line.qty}`)
       .join("\n");
 
     const subject = `Solid Colour Order — ${client.companyName}`;

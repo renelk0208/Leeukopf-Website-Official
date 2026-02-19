@@ -1,11 +1,15 @@
 /**
  * Product Categories Visibility Configuration
  * 
+ * Public website browsing configuration.
+ *
  * Control which product categories and subcategories are visible on the website.
  * Set to `true` to show the category, `false` to hide it.
  * 
  * This allows you to gradually enable categories as assets and content become available,
  * without removing any code.
+ *
+ * Keep B2B order-form rules in `src/config/categories.ts`.
  */
 
 export const enabledCategories = {

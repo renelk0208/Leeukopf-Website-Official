@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { CartItem, CartState } from '../types/cart';
 
 const CART_STORAGE_KEY = 'leeukopf_cart';
@@ -97,7 +97,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setState(initialState);
   };
 
-  const getTotalQty = () => state.items.reduce((total, item) => total + item.qty, 0);
+  const getTotalQty = useCallback(() => state.items.reduce((total, item) => total + item.qty, 0), [state.items]);
 
   const value = useMemo<CartContextType>(
     () => ({
@@ -108,7 +108,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       clearCart,
       getTotalQty,
     }),
-    [state]
+    [state, getTotalQty]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
