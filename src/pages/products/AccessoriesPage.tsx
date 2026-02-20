@@ -75,7 +75,7 @@ export default function AccessoriesPage() {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Nail Forms & Tips</h3>
             <p className="text-sm text-gray-600 font-light leading-relaxed mb-3">
-              Paper forms and plastic tips for gel and acrylic extensions. Available in various shapes and 
+              Paper forms and plastic tips for gel extensions. Available in various shapes and 
               sizes to fit different nail beds.
             </p>
             <ul className="space-y-2 text-sm text-gray-600 font-light">
@@ -163,8 +163,8 @@ export default function AccessoriesPage() {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Dappen Dishes & Mixing Supplies</h3>
             <p className="text-sm text-gray-600 font-light leading-relaxed mb-3">
-              Glass and ceramic dishes for acrylic monomer, slip solution and art gel mixing. Essential for 
-              professional acrylic and polygel applications.
+              Glass and ceramic dishes for slip solution and art gel mixing. Essential for 
+              professional polygel and gel applications.
             </p>
             <ul className="space-y-2 text-sm text-gray-600 font-light">
               <li className="flex items-start">

@@ -5,7 +5,6 @@ interface ProductSEOProps {
     | 'top-bases' 
     | 'polygel-acrygel' 
     | 'liquid-polygel'
-    | 'acrylic-systems' 
     | 'liquids-solutions' 
     | 'nail-art' 
     | 'accessories'
@@ -82,7 +81,7 @@ export default function ProductSEO({ category }: ProductSEOProps) {
       content: (
         <>
           <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
-            Our Polygel and AcryGel systems combine the strength of traditional acrylic with the flexibility 
+            Our Polygel and AcryGel systems combine high strength with the flexibility 
             and convenience of gel technology. These lightweight hybrid formulas offer controlled workability, 
             no strong odour, and a smooth, self-levelling finish ideal for both extensions and overlays.
           </p>
@@ -115,27 +114,6 @@ export default function ProductSEO({ category }: ProductSEOProps) {
           <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
             Ideal for natural nail overlays, extensions, and nail art applications. Available for private label 
             with flexible customization options and comprehensive regulatory support for European market compliance.
-          </p>
-        </>
-      ),
-    },
-    'acrylic-systems': {
-      title: 'Professional Acrylic Systems',
-      content: (
-        <>
-          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
-            Our acrylic powder and liquid systems deliver the strength, stability and fast-setting performance 
-            that professional nail technicians depend on for sculpted enhancements. Developed and manufactured 
-            in Europe, our acrylics offer consistent quality, smooth application and reliable results.
-          </p>
-          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
-            Available in standard-set and fast-set formulations, all free from HEMA and TPO. Our powder range 
-            includes clear, cover pinks, and specialty shades, with excellent colour stability and minimal 
-            yellowing over time. Each system is formulated for optimal ratio mixing and smooth, bubble-free application.
-          </p>
-          <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
-            Suitable for full extensions, overlays and nail art applications. Available for private label with 
-            custom shade matching, flexible MOQs and comprehensive regulatory support for European market placement.
           </p>
         </>
       ),

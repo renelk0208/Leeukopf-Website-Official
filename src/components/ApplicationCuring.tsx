@@ -1,5 +1,5 @@
 interface ApplicationCuringProps {
-  type: 'gel-polish' | 'builder-gels' | 'top-coats' | 'base-coats' | 'polygel-acrygel' | 'liquid-polygel' | 'acrylic-systems' | 'liquids';
+  type: 'gel-polish' | 'builder-gels' | 'top-coats' | 'base-coats' | 'polygel-acrygel' | 'liquid-polygel' | 'liquids';
 }
 
 export default function ApplicationCuring({ type }: ApplicationCuringProps) {
@@ -53,14 +53,6 @@ export default function ApplicationCuring({ type }: ApplicationCuringProps) {
         { label: 'Cure in 48W UV/LED Lamp', value: '60–90 seconds', primary: true },
         { label: 'Note', value: '(Different lamps will result in different curing times)', primary: false },
         { label: 'Flash cure', value: 'Allowed for building layers', primary: false },
-      ],
-    },
-    'acrylic-systems': {
-      title: 'Application & Curing',
-      items: [
-        { label: 'Important', value: 'Do not cure by lamp — acrylics cure by air', primary: false },
-        { label: 'Standard-set', value: '3–5 minutes air dry', primary: false },
-        { label: 'Fast-set', value: '2–3 minutes air dry', primary: false },
       ],
     },
     'liquids': {

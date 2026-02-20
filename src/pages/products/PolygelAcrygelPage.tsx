@@ -139,7 +139,7 @@ export default function PolygelAcrygelPage() {
         {/* Hero Description */}
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
-            A lightweight hybrid formula blending the strength of acrylic with the flexibility of gel. Perfect 
+            A lightweight hybrid formula combining high strength with the flexibility of gel. Perfect 
             for sculpting controlled, structured enhancements with no strong odor and easy workability.
           </p>
         </div>
@@ -154,7 +154,7 @@ export default function PolygelAcrygelPage() {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Hybrid Technology</h3>
             <p className="text-sm text-gray-600 font-light leading-relaxed">
-              Combines the best properties of acrylic and gel systems for superior workability and strength. 
+              Combines the best properties of hybrid enhancement systems for superior workability and strength. 
               No strong odor, easy to shape, and cures under LED or UV lamps.
             </p>
           </div>
