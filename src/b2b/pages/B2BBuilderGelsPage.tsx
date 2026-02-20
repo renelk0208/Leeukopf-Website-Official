@@ -41,7 +41,7 @@ function parseCSVLine(line: string): string[] {
 }
 
 export default function B2BBuilderGelsPage() {
-  const { items, bottlePackaging, addOrUpdateItem } = useB2BCart();
+  const { items, addOrUpdateItem } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
 
@@ -89,8 +89,6 @@ export default function B2BBuilderGelsPage() {
     return map;
   }, [items]);
 
-  const quantitiesLocked = bottlePackaging === null;
-
   return (
     <div className="space-y-4">
       <div>
@@ -98,14 +96,12 @@ export default function B2BBuilderGelsPage() {
         <p className="mt-1 text-sm text-gray-600">Add builder gel products to the same shared B2B inquiry cart.</p>
       </div>
 
-      {quantitiesLocked ? (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-          Select bottle packaging in Checkout to enable quantities.
+      <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+        Add items here first, then set bottle packaging in Checkout before export/submit.
           <Link to="/b2b/checkout" className="ml-2 font-semibold underline">
             Open Checkout
           </Link>
-        </div>
-      ) : null}
+      </div>
 
       <div className="overflow-hidden rounded-lg border border-gray-200">
         <div className="max-h-[68vh] overflow-auto">
@@ -134,7 +130,6 @@ export default function B2BBuilderGelsPage() {
                         type="number"
                         min={0}
                         step={1}
-                        disabled={quantitiesLocked}
                         value={value}
                         onChange={(event) => {
                           setDraftQty((prev) => ({
@@ -142,13 +137,12 @@ export default function B2BBuilderGelsPage() {
                             [product.code]: event.target.value,
                           }));
                         }}
-                        className="w-24 rounded-md border border-gray-300 px-2 py-1 disabled:cursor-not-allowed disabled:bg-gray-100"
+                        className="w-24 rounded-md border border-gray-300 px-2 py-1"
                       />
                     </td>
                     <td className="px-3 py-2">
                       <button
                         type="button"
-                        disabled={quantitiesLocked}
                         onClick={() => {
                           const qty = Number.parseInt((draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "0")).trim(), 10);
                           addOrUpdateItem({
@@ -163,7 +157,7 @@ export default function B2BBuilderGelsPage() {
                             },
                           });
                         }}
-                        className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:bg-gray-400"
+                        className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-semibold text-white"
                       >
                         Save
                       </button>
