@@ -940,14 +940,15 @@ export default function InternalSolidColourGrid() {
         {filtered.map((r, idx) => {
           const sku = r["Internal_SKU"] || "";
           const name = r["Shade_Name"] || "";
-          const hex = r["Hex_Code"] || "";
-          const img = r["Swatch_Image"] || "";
+          const hex = r["Hex_Code"] || r["HEX"] || "";
+          const img = r["Swatch_Image"] || (sku ? `/img/solid-colour/${sku}.webp` : "");
           const key = sku || `row-${idx}`;
           const status = imgStatus[key];
+          const showImage = Boolean(img) && status !== "MISSING";
           return (
             <div key={key} className="rounded-2xl border bg-white p-3 shadow-sm">
               <div className="aspect-square overflow-hidden rounded-xl bg-neutral-50 relative">
-                {img ? (
+                {showImage ? (
                   <>
                     <img
                       src={img}
