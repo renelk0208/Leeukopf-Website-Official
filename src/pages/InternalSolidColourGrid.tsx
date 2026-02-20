@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { categories } from "../config/categories";
 
 type Row = Record<string, string>;
@@ -88,12 +88,36 @@ type SelectedShade = {
   family: string;
 };
 
+type GridFilter = "all" | "selected" | "unselected";
+
+type ShadeTileProps = {
+  rowId: string;
+  sku: string;
+  code: string;
+  hex: string;
+  image: string;
+  hasImage: boolean;
+  currentView: "nail" | "card";
+  isSelected: boolean;
+  qtyValue: number | "";
+  qtyUnit: "pcs" | "kg";
+  onToggleSelected: (id: string) => void;
+  onToggleView: (id: string, hasImage: boolean) => void;
+  onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
+  onSetQty: (sku: string, value: string) => void;
+};
+
 type SelectedPanelProps = {
   selectedCount: number;
   countsByFamily: Array<[string, number]>;
   selectedShades: SelectedShade[];
+  gridFilter: GridFilter;
+  onGridFilterChange: (filter: GridFilter) => void;
   onRemoveShade: (id: string) => void;
   onClearAll: () => void;
+  onCopyCodes: () => void;
+  onDownloadCsv: () => void;
+  copyFeedback: boolean;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
   className?: string;
 };
@@ -193,12 +217,154 @@ const getRowFamily = (row: Row): string => {
   return classifyFamilyFromHex(getRowHex(row));
 };
 
+const ShadeTile = memo(function ShadeTile({
+  rowId,
+  sku,
+  code,
+  hex,
+  image,
+  hasImage,
+  currentView,
+  isSelected,
+  qtyValue,
+  qtyUnit,
+  onToggleSelected,
+  onToggleView,
+  onSetImageStatus,
+  onSetQty,
+}: ShadeTileProps) {
+  const showImage = hasImage && currentView === "nail";
+  const showCard = !hasImage || currentView === "card";
+
+  const handleToggleSelected = useCallback(() => {
+    onToggleSelected(rowId);
+  }, [onToggleSelected, rowId]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onToggleSelected(rowId);
+    }
+  }, [onToggleSelected, rowId]);
+
+  const handleToggleViewClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onToggleView(rowId, hasImage);
+  }, [onToggleView, rowId, hasImage]);
+
+  const handleImageLoad = useCallback(() => {
+    onSetImageStatus(rowId, "OK");
+  }, [onSetImageStatus, rowId]);
+
+  const handleImageError = useCallback(() => {
+    onSetImageStatus(rowId, "MISSING");
+  }, [onSetImageStatus, rowId]);
+
+  const stopPropagation = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+  }, []);
+
+  const handleQtyChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onSetQty(sku, e.target.value);
+  }, [onSetQty, sku]);
+
+  return (
+    <div
+      className={`cursor-pointer rounded-2xl border bg-white p-3 shadow-sm transition ${
+        isSelected ? "border-black ring-2 ring-black/10" : "border-neutral-200"
+      }`}
+      role="button"
+      tabIndex={0}
+      aria-pressed={isSelected}
+      aria-label={`${isSelected ? "Deselect" : "Select"} ${code}`}
+      onClick={handleToggleSelected}
+      onKeyDown={handleKeyDown}
+    >
+      <div
+        className="relative aspect-square w-full overflow-hidden rounded-xl bg-neutral-50"
+        role="img"
+        aria-label={`${code} ${showImage ? "nail view" : "card view"}`}
+      >
+        {showImage ? (
+          <>
+            <img
+              src={image}
+              alt={code}
+              className="h-full w-full object-cover"
+              loading="lazy"
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+            />
+            <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+              View card
+            </div>
+          </>
+        ) : showCard && hex ? (
+          <>
+            <div className="h-full w-full" style={{ backgroundColor: hex }} />
+            {hasImage && (
+              <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+                View nail
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="flex h-full items-center justify-center px-2 text-center text-xs text-neutral-500">{code}</div>
+        )}
+
+        {isSelected && (
+          <div className="absolute left-2 top-2 rounded-full border bg-black px-2 py-0.5 text-[10px] text-white shadow-sm">
+            Selected
+          </div>
+        )}
+      </div>
+
+      <div className="mt-2">
+        <div className="text-xs font-semibold">{code}</div>
+        {sku && sku !== code && <div className="text-[11px] text-neutral-500">{sku}</div>}
+
+        <button
+          type="button"
+          disabled={!hasImage}
+          aria-pressed={currentView === "card"}
+          aria-label={
+            hasImage
+              ? `${currentView === "nail" ? "Show card view" : "Show nail view"} for ${code}`
+              : `No alternate view available for ${code}`
+          }
+          onClick={handleToggleViewClick}
+          className="mt-2 rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {!hasImage ? "No alternate view" : currentView === "nail" ? "Show card" : "Show nail"}
+        </button>
+
+        <div className="mt-3 flex items-center gap-2" onClick={stopPropagation}>
+          <input
+            type="number"
+            min={0}
+            placeholder={qtyUnit === "kg" ? "KG" : "Qty"}
+            value={qtyValue}
+            onClick={stopPropagation}
+            onChange={handleQtyChange}
+            className="w-16 rounded border px-2 py-1 text-xs"
+          />
+        </div>
+      </div>
+    </div>
+  );
+});
+
 function SelectedPanel({
   selectedCount,
   countsByFamily,
   selectedShades,
+  gridFilter,
+  onGridFilterChange,
   onRemoveShade,
   onClearAll,
+  onCopyCodes,
+  onDownloadCsv,
+  copyFeedback,
   onSetImageStatus,
   className,
 }: SelectedPanelProps) {
@@ -232,6 +398,46 @@ function SelectedPanel({
             className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Clear all
+          </button>
+        </div>
+
+        <div className="mb-2 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => onGridFilterChange(gridFilter === "selected" ? "all" : "selected")}
+            className={`rounded-full border px-2 py-1 text-[11px] transition ${
+              gridFilter === "selected" ? "bg-black text-white" : "bg-neutral-50 text-neutral-700"
+            }`}
+          >
+            Show selected only
+          </button>
+          <button
+            type="button"
+            onClick={() => onGridFilterChange(gridFilter === "unselected" ? "all" : "unselected")}
+            className={`rounded-full border px-2 py-1 text-[11px] transition ${
+              gridFilter === "unselected" ? "bg-black text-white" : "bg-neutral-50 text-neutral-700"
+            }`}
+          >
+            Show unselected only
+          </button>
+        </div>
+
+        <div className="mb-3 flex gap-2">
+          <button
+            type="button"
+            onClick={onCopyCodes}
+            disabled={selectedCount === 0}
+            className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {copyFeedback ? "Copied ✓" : "Copy Codes"}
+          </button>
+          <button
+            type="button"
+            onClick={onDownloadCsv}
+            disabled={selectedCount === 0}
+            className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Download CSV
           </button>
         </div>
 
@@ -347,6 +553,9 @@ export default function InternalSolidColourGrid() {
   const [isBulkContainerAuto, setIsBulkContainerAuto] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [gridFilter, setGridFilter] = useState<GridFilter>("all");
+  const [copyFeedback, setCopyFeedback] = useState(false);
+  const copyFeedbackTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     fetch("/data/solid-1200.json")
@@ -387,6 +596,14 @@ export default function InternalSolidColourGrid() {
   useEffect(() => {
     localStorage.setItem(SELECTED_SHADES_STORAGE_KEY, JSON.stringify(Array.from(selectedIds)));
   }, [selectedIds]);
+
+  useEffect(() => {
+    return () => {
+      if (copyFeedbackTimeoutRef.current !== null) {
+        window.clearTimeout(copyFeedbackTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const setImageStatus = useCallback((id: string, status: "OK" | "MISSING") => {
     setImgStatus((prev) => (prev[id] === status ? prev : { ...prev, [id]: status }));
@@ -480,6 +697,66 @@ export default function InternalSolidColourGrid() {
   }, [selectedShades]);
 
   const selectedCount = selectedShades.length;
+
+  const filteredShades = useMemo(() => {
+    if (gridFilter === "all") return filtered;
+    const selectedOnly = gridFilter === "selected";
+    return filtered.filter((row, idx) => selectedIds.has(getRowId(row, idx)) === selectedOnly);
+  }, [filtered, gridFilter, selectedIds]);
+
+  const setOrderQty = useCallback((sku: string, value: string) => {
+    const minQty = orderFormat === "bulk" ? 1 : 30;
+    const parsed = parseInt(value || "0", 10);
+
+    setOrder((prev) => {
+      if (parsed === 0) return { ...prev, [sku]: 0 };
+      if (parsed < minQty) return { ...prev, [sku]: minQty };
+      return { ...prev, [sku]: parsed };
+    });
+  }, [orderFormat]);
+
+  const toggleTileView = useCallback((id: string, hasImage: boolean) => {
+    if (!hasImage) return;
+    setTileView((prev) => ({
+      ...prev,
+      [id]: (prev[id] || "nail") === "nail" ? "card" : "nail",
+    }));
+  }, []);
+
+  const changeGridFilter = useCallback((filter: GridFilter) => {
+    setGridFilter(filter);
+  }, []);
+
+  const handleCopyCodes = useCallback(async () => {
+    if (!selectedShades.length) return;
+    const text = selectedShades.map((shade) => shade.code).join(", ");
+    await navigator.clipboard.writeText(text);
+    setCopyFeedback(true);
+
+    if (copyFeedbackTimeoutRef.current !== null) {
+      window.clearTimeout(copyFeedbackTimeoutRef.current);
+    }
+    copyFeedbackTimeoutRef.current = window.setTimeout(() => {
+      setCopyFeedback(false);
+      copyFeedbackTimeoutRef.current = null;
+    }, 1600);
+  }, [selectedShades]);
+
+  const handleDownloadCsv = useCallback(() => {
+    if (!selectedShades.length) return;
+
+    const escapeCell = (value: string) => `"${value.replace(/"/g, '""')}"`;
+    const lines = ["code,family", ...selectedShades.map((shade) => `${escapeCell(shade.code)},${escapeCell(shade.family)}`)];
+    const csv = lines.join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "leeukopf-selected-shades.csv";
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }, [selectedShades]);
 
   const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
   const qtyUnit: "pcs" | "kg" = orderFormat === "bulk"
@@ -706,8 +983,13 @@ export default function InternalSolidColourGrid() {
     selectedCount,
     countsByFamily,
     selectedShades,
+    gridFilter,
+    onGridFilterChange: changeGridFilter,
     onRemoveShade: removeSelected,
     onClearAll: clearSelected,
+    onCopyCodes: handleCopyCodes,
+    onDownloadCsv: handleDownloadCsv,
+    copyFeedback,
     onSetImageStatus: setImageStatus,
   };
 
@@ -1275,7 +1557,7 @@ export default function InternalSolidColourGrid() {
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
         <div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-            {filtered.map((r, idx) => {
+            {filteredShades.map((r, idx) => {
               const rowId = getRowId(r, idx);
               const sku = r["Internal_SKU"] || "";
               const code = getRowCode(r, rowId);
@@ -1284,121 +1566,31 @@ export default function InternalSolidColourGrid() {
               const status = imgStatus[rowId];
               const hasImage = Boolean(img) && status !== "MISSING";
               const currentView = tileView[rowId] || "nail";
-              const showImage = hasImage && currentView === "nail";
-              const showCard = !hasImage || currentView === "card";
               const isSelected = selectedIds.has(rowId);
 
               return (
-                <div
+                <ShadeTile
                   key={rowId}
-                  className={`cursor-pointer rounded-2xl border bg-white p-3 shadow-sm transition ${
-                    isSelected ? "border-black ring-2 ring-black/10" : "border-neutral-200"
-                  }`}
-                  role="button"
-                  tabIndex={0}
-                  aria-pressed={isSelected}
-                  aria-label={`${isSelected ? "Deselect" : "Select"} ${code}`}
-                  onClick={() => toggleSelected(rowId)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      toggleSelected(rowId);
-                    }
-                  }}
-                >
-                  <div
-                    className="relative aspect-square w-full overflow-hidden rounded-xl bg-neutral-50"
-                    role="img"
-                    aria-label={`${code} ${showImage ? "nail view" : "card view"}`}
-                  >
-                    {showImage ? (
-                      <>
-                        <img
-                          src={img}
-                          alt={code}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                          onLoad={() => setImageStatus(rowId, "OK")}
-                          onError={() => setImageStatus(rowId, "MISSING")}
-                        />
-                        <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
-                          View card
-                        </div>
-                      </>
-                    ) : showCard && hex ? (
-                      <>
-                        <div className="h-full w-full" style={{ backgroundColor: hex }} />
-                        {hasImage && (
-                          <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
-                            View nail
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className="flex h-full items-center justify-center px-2 text-center text-xs text-neutral-500">{code}</div>
-                    )}
-
-                    {isSelected && (
-                      <div className="absolute left-2 top-2 rounded-full border bg-black px-2 py-0.5 text-[10px] text-white shadow-sm">
-                        Selected
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="mt-2">
-                    <div className="text-xs font-semibold">{code}</div>
-                    {sku && sku !== code && <div className="text-[11px] text-neutral-500">{sku}</div>}
-
-                    <button
-                      type="button"
-                      disabled={!hasImage}
-                      aria-pressed={currentView === "card"}
-                      aria-label={
-                        hasImage
-                          ? `${currentView === "nail" ? "Show card view" : "Show nail view"} for ${code}`
-                          : `No alternate view available for ${code}`
-                      }
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!hasImage) return;
-                        setTileView((prev) => ({
-                          ...prev,
-                          [rowId]: (prev[rowId] || "nail") === "nail" ? "card" : "nail",
-                        }));
-                      }}
-                      className="mt-2 rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      {!hasImage ? "No alternate view" : currentView === "nail" ? "Show card" : "Show nail"}
-                    </button>
-
-                    <div className="mt-3 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                      <input
-                        type="number"
-                        min={0}
-                        placeholder={qtyUnit === "kg" ? "KG" : "Qty"}
-                        value={order[sku] || ""}
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={(e) => {
-                          const minQty = orderFormat === "bulk" ? 1 : 30;
-                          const val = parseInt(e.target.value || "0", 10);
-                          if (val === 0) {
-                            setOrder((prev) => ({ ...prev, [sku]: 0 }));
-                          } else if (val < minQty) {
-                            setOrder((prev) => ({ ...prev, [sku]: minQty }));
-                          } else {
-                            setOrder((prev) => ({ ...prev, [sku]: val }));
-                          }
-                        }}
-                        className="w-16 rounded border px-2 py-1 text-xs"
-                      />
-                    </div>
-                  </div>
-                </div>
+                  rowId={rowId}
+                  sku={sku}
+                  code={code}
+                  hex={hex}
+                  image={img}
+                  hasImage={hasImage}
+                  currentView={currentView}
+                  isSelected={isSelected}
+                  qtyValue={order[sku] || ""}
+                  qtyUnit={qtyUnit}
+                  onToggleSelected={toggleSelected}
+                  onToggleView={toggleTileView}
+                  onSetImageStatus={setImageStatus}
+                  onSetQty={setOrderQty}
+                />
               );
             })}
           </div>
 
-          {!filtered.length && (
+          {!filteredShades.length && (
             <div className="mt-8 rounded-xl border bg-white p-6 text-sm text-neutral-600">
               No results. Check that <code className="font-mono">solid-1200.json</code> exists in{" "}
               <code className="font-mono">public/data/</code>.
