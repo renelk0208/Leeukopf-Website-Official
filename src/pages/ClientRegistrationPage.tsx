@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import { trackLead } from '../lib/metaPixel';
@@ -183,6 +183,19 @@ export default function ClientRegistrationPage() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [activeTab, setActiveTab] = useState<'Distributors' | 'PrivateLabel' | 'Influencers'>('Distributors');
+
+  useEffect(() => {
+    const availableTabs: Array<'Distributors' | 'PrivateLabel' | 'Influencers'> = [];
+    if (formData.interestDistribution) availableTabs.push('Distributors');
+    if (formData.interestPrivateLabel) availableTabs.push('PrivateLabel');
+    if (formData.interestInfluencer) availableTabs.push('Influencers');
+
+    if (!availableTabs.length) return;
+    if (!availableTabs.includes(activeTab)) {
+      setActiveTab(availableTabs[0]);
+      setFormData((prev) => ({ ...prev, client_type: availableTabs[0] }));
+    }
+  }, [activeTab, formData.interestDistribution, formData.interestPrivateLabel, formData.interestInfluencer]);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -461,6 +474,7 @@ export default function ClientRegistrationPage() {
       }
 
       setSubmitSuccess(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
       // Track Lead event with Meta Pixel
       trackLead({
@@ -540,9 +554,10 @@ export default function ClientRegistrationPage() {
   const isFormValid = formData.company && formData.contact && formData.email &&
                       validateEmail(formData.email) && formData.country &&
                       formData.businessType && formData.gdprConsent && formData.privacyPolicyAccepted &&
-                      (formData.interestPrivateLabel || formData.interestDistribution) &&
+                      (formData.interestPrivateLabel || formData.interestDistribution || formData.interestInfluencer) &&
                       formData.interests.length > 0 &&
                       (formData.country !== 'Other' || formData.countryOther.trim()) &&
+                      (!formData.interestInfluencer || formData.instagram.trim() || formData.tiktok.trim()) &&
                       (!formData.requestSampleBox || (
                         formData.street.trim() && formData.district.trim() && 
                         formData.postalCode.trim() && formData.phone.trim()

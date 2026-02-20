@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageTemplate from '../components/PageTemplate';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import type { BottlePackaging, CartItem, CartUnitType } from '../b2b/types';
@@ -51,6 +50,10 @@ type ProfileView = {
 type SavedCartState = {
   items: CartItem[];
   bottlePackaging: BottlePackaging | null;
+};
+
+type ApprovedClientRecord = {
+  email: string;
 };
 
 const B2B_CART_STORAGE_KEY = 'leeukopf_b2b_cart_v1';
@@ -138,6 +141,7 @@ export default function ClientPortalDashboardPage() {
   const { user, signOut } = useAuth();
   const [profile, setProfile] = useState<ProfileView | null>(null);
   const [orders, setOrders] = useState<SolidOrderRecord[]>([]);
+  const [accessDenied, setAccessDenied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reorderingOrderId, setReorderingOrderId] = useState<string | null>(null);
@@ -149,13 +153,30 @@ export default function ClientPortalDashboardPage() {
 
     setLoading(true);
     setError('');
+    setAccessDenied(false);
 
     try {
+      const approvedResult = await supabase
+        .from('approved_clients')
+        .select('email')
+        .ilike('email', email)
+        .maybeSingle();
+
+      if (approvedResult.error) throw approvedResult.error;
+
+      const approvedClient = approvedResult.data as ApprovedClientRecord | null;
+      if (!approvedClient) {
+        setAccessDenied(true);
+        setProfile(null);
+        setOrders([]);
+        return;
+      }
+
       const [registrationResult, ordersResult] = await Promise.all([
         supabase
           .from('client_registrations')
           .select('company, contact, email, phone, country, vat_eori, billing_address, shipping_address, created_at')
-          .eq('email', email)
+          .ilike('email', email)
           .order('created_at', { ascending: false })
           .limit(1)
           .maybeSingle(),
@@ -164,7 +185,7 @@ export default function ClientPortalDashboardPage() {
           .select(
             'id, order_id, order_date, created_at, company_name, contact_name, contact_email, contact_number, vat, country, packaging_bottle_size, packaging_bottle_color, packaging_brush_type, packaging_system, lines, line_count, total_qty'
           )
-          .eq('contact_email', email)
+          .ilike('contact_email', email)
           .order('created_at', { ascending: false })
           .limit(20),
       ]);
@@ -217,15 +238,13 @@ export default function ClientPortalDashboardPage() {
   const hasOrders = useMemo(() => orders.length > 0, [orders.length]);
 
   return (
-    <PageTemplate
-      title="Client Portal"
-      subtitle="Your saved profile details and previous orders."
-      breadcrumbs={[
-        { label: 'Home', path: '/' },
-        { label: 'Client Portal' },
-      ]}
-    >
-      <div className="space-y-6">
+    <div className="min-h-screen bg-gray-50 px-4 py-10 sm:py-14">
+      <div className="mx-auto max-w-5xl space-y-6">
+        <section className="rounded-2xl border border-grey-card bg-white p-5 shadow-sm sm:p-6">
+          <h1 className="text-3xl font-bold text-grey-primary">Leeukopf Client Portal</h1>
+          <p className="mt-1 text-sm text-grey-secondary">Your saved profile details and previous orders.</p>
+        </section>
+
         <section className="rounded-2xl border border-grey-card bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -268,8 +287,13 @@ export default function ClientPortalDashboardPage() {
 
           {loading ? <p className="text-sm text-grey-secondary">Loading...</p> : null}
           {error ? <p className="text-sm text-red-700">{error}</p> : null}
+          {accessDenied ? (
+            <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+              Your login is not approved for portal access yet. Please contact Leeukopf support.
+            </div>
+          ) : null}
 
-          {profile && !loading ? (
+          {profile && !loading && !accessDenied ? (
             <div className="grid gap-3 text-sm sm:grid-cols-2">
               <div><span className="font-semibold text-grey-primary">Company:</span> <span className="text-grey-secondary">{profile.companyName}</span></div>
               <div><span className="font-semibold text-grey-primary">Contact:</span> <span className="text-grey-secondary">{profile.contactName}</span></div>
@@ -287,11 +311,11 @@ export default function ClientPortalDashboardPage() {
           <h3 className="text-lg font-semibold text-grey-primary">Order history</h3>
           <p className="mt-1 text-sm text-grey-secondary">Use reorder to load a previous order directly into B2B checkout.</p>
 
-          {!loading && !hasOrders ? (
+          {!loading && !hasOrders && !accessDenied ? (
             <p className="mt-4 text-sm text-grey-secondary">No orders found for this email yet.</p>
           ) : null}
 
-          {hasOrders ? (
+          {hasOrders && !accessDenied ? (
             <div className="mt-4 space-y-3">
               {orders.map((order) => (
                 <div key={order.id} className="rounded-lg border border-grey-card p-4">
@@ -316,6 +340,6 @@ export default function ClientPortalDashboardPage() {
           ) : null}
         </section>
       </div>
-    </PageTemplate>
+    </div>
   );
 }
