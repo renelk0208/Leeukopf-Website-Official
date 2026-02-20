@@ -97,7 +97,6 @@ const productInterests = [
   'Bases',
   'Primers',
   'Builder Systems',
-  'Acrylics',
   'Polygel',
   'Packaging'
 ];
