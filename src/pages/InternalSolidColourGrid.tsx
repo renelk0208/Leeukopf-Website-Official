@@ -371,6 +371,11 @@ const ShadeTile = memo(function ShadeTile({
     onToggleView(rowId, hasImage);
   }, [onToggleView, rowId, hasImage]);
 
+  const handlePreviewToggleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onToggleView(rowId, hasImage);
+  }, [onToggleView, rowId, hasImage]);
+
   const handleImageLoad = useCallback(() => {
     onSetImageStatus(rowId, "OK");
   }, [onSetImageStatus, rowId]);
@@ -419,17 +424,25 @@ const ShadeTile = memo(function ShadeTile({
               onLoad={handleImageLoad}
               onError={handleImageError}
             />
-            <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+            <button
+              type="button"
+              onClick={handlePreviewToggleClick}
+              className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm"
+            >
               View card
-            </div>
+            </button>
           </>
         ) : showCard && hex ? (
           <>
             <div className="h-full w-full" style={{ backgroundColor: hex }} />
             {hasImage && (
-              <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+              <button
+                type="button"
+                onClick={handlePreviewToggleClick}
+                className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm"
+              >
                 View nail
-              </div>
+              </button>
             )}
           </>
         ) : (
@@ -1106,6 +1119,19 @@ export default function InternalSolidColourGrid() {
     return map;
   }, [rows]);
 
+  const skuToRowId = useMemo(() => {
+    const map = new Map<string, string>();
+    rows.forEach((row, idx) => {
+      const rowId = getRowId(row, idx);
+      const internalSku = row["Internal_SKU"] || "";
+      const shadeCode = row["Shade_Code"] || "";
+      if (internalSku) map.set(internalSku, rowId);
+      if (shadeCode) map.set(shadeCode, rowId);
+      map.set(rowId, rowId);
+    });
+    return map;
+  }, [rows]);
+
   useEffect(() => {
     const selectedArray = Array.from(selectedIds);
     const selectedSet = new Set(selectedArray);
@@ -1271,6 +1297,56 @@ export default function InternalSolidColourGrid() {
 
   const selectedCount = selectedShades.length;
 
+  useEffect(() => {
+    const positiveOrderEntries = Object.entries(order).filter(([sku, qty]) => Boolean(sku) && qty > 0);
+    if (!positiveOrderEntries.length) return;
+
+    const orderIds = positiveOrderEntries
+      .map(([sku]) => skuToRowId.get(sku) || "")
+      .filter((id): id is string => Boolean(id));
+
+    if (!orderIds.length) return;
+
+    setSelectedIds((prev) => {
+      let changed = false;
+      const next = new Set(prev);
+      orderIds.forEach((id) => {
+        if (!next.has(id)) {
+          next.add(id);
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+
+    setSelectedOrder((prev) => {
+      const next = [...prev];
+      let changed = false;
+      orderIds.forEach((id) => {
+        if (!next.includes(id)) {
+          next.unshift(id);
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+
+    setQuantities((prev) => {
+      const next = { ...prev };
+      let changed = false;
+      positiveOrderEntries.forEach(([sku, qty]) => {
+        const id = skuToRowId.get(sku);
+        if (!id) return;
+        const normalized = normalizeQuantity(qty);
+        if (next[id] !== normalized) {
+          next[id] = normalized;
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+  }, [order, skuToRowId]);
+
   const filteredShades = useMemo(() => {
     if (gridFilter === "all") return filtered;
     const selectedOnly = gridFilter === "selected";
@@ -1309,8 +1385,7 @@ export default function InternalSolidColourGrid() {
 
     setOrder((prev) => ({ ...prev, [sku]: nextOrderQty }));
 
-    const row = rows.find((item) => (item["Internal_SKU"] || item["Shade_Code"] || "") === sku);
-    const rowId = row ? getRowId(row, 0) : sku;
+    const rowId = skuToRowId.get(sku) || sku;
 
     if (!rowId) return;
 
@@ -1343,7 +1418,7 @@ export default function InternalSolidColourGrid() {
         return rest;
       });
     }
-  }, [orderFormat, rows]);
+  }, [orderFormat, skuToRowId]);
 
   const toggleTileView = useCallback((id: string, hasImage: boolean) => {
     if (!hasImage) return;
