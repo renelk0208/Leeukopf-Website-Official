@@ -67,6 +67,7 @@ export default function InternalSolidColourGrid() {
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
   const [imgStatus, setImgStatus] = useState<Record<string, "OK" | "MISSING">>({});
+  const [tileView, setTileView] = useState<Record<string, "nail" | "card">>({});
   const [onlyMissing, setOnlyMissing] = useState(false);
   const [order, setOrder] = useState<Record<string, number>>({});
   const [client, setClient] = useState<ClientDetails>({
@@ -944,10 +945,23 @@ export default function InternalSolidColourGrid() {
           const img = r["Swatch_Image"] || (sku ? `/img/solid-colour/${sku}.webp` : "");
           const key = sku || `row-${idx}`;
           const status = imgStatus[key];
-          const showImage = Boolean(img) && status !== "MISSING";
+          const hasImage = Boolean(img) && status !== "MISSING";
+          const currentView = tileView[key] || "nail";
+          const showImage = hasImage && currentView === "nail";
+          const showCard = !hasImage || currentView === "card";
           return (
             <div key={key} className="rounded-2xl border bg-white p-3 shadow-sm">
-              <div className="aspect-square overflow-hidden rounded-xl bg-neutral-50 relative">
+              <button
+                type="button"
+                className="aspect-square w-full overflow-hidden rounded-xl bg-neutral-50 relative text-left"
+                onClick={() => {
+                  if (!hasImage) return;
+                  setTileView((prev) => ({
+                    ...prev,
+                    [key]: (prev[key] || "nail") === "nail" ? "card" : "nail",
+                  }));
+                }}
+              >
                 {showImage ? (
                   <>
                     <img
@@ -969,13 +983,24 @@ export default function InternalSolidColourGrid() {
                     <div className="absolute top-2 left-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
                       {status ?? "…"}
                     </div>
+
+                    <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+                      View card
+                    </div>
                   </>
-                ) : hex ? (
-                  <div className="h-full w-full" style={{ backgroundColor: hex }} />
+                ) : showCard && hex ? (
+                  <>
+                    <div className="h-full w-full" style={{ backgroundColor: hex }} />
+                    {hasImage && (
+                      <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+                        View nail
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <div className="flex h-full items-center justify-center text-xs text-neutral-500">No image</div>
                 )}
-              </div>
+              </button>
 
               <div className="mt-2">
                 <div className="text-xs font-semibold">{sku}</div>
