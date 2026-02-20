@@ -1,7 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText } from 'lucide-react';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus } from 'lucide-react';
+
+interface ClientRegistrationLead {
+  id: string;
+  company: string;
+  contact: string;
+  email: string;
+  country: string;
+  business_type: string;
+  created_at: string;
+}
 
 interface SiteSettings {
   primary_color: string;
@@ -16,12 +26,15 @@ const DEFAULT_COLORS: SiteSettings = {
 };
 
 export default function AdminDashboard() {
-  const { signOut, user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures'>('products');
+  const { signOut, user, session } = useAuth();
+  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients'>('products');
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
   const [brochureRequests, setBrochureRequests] = useState<BrochureRequest[]>([]);
+  const [clientRegistrations, setClientRegistrations] = useState<ClientRegistrationLead[]>([]);
+  const [approvedEmails, setApprovedEmails] = useState<Set<string>>(new Set());
+  const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
@@ -75,11 +88,42 @@ export default function AdminDashboard() {
     if (data) setBrochureRequests(data);
   }, []);
 
+  const loadClientRegistrations = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('client_registrations')
+      .select('id, company, contact, email, country, business_type, created_at')
+      .order('created_at', { ascending: false })
+      .limit(250);
+
+    if (error) {
+      console.error('Failed to load client registrations:', error);
+      return;
+    }
+
+    setClientRegistrations((data ?? []) as ClientRegistrationLead[]);
+  }, []);
+
+  const loadApprovedClients = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('approved_clients')
+      .select('email');
+
+    if (error) {
+      console.error('Failed to load approved clients:', error);
+      return;
+    }
+
+    const next = new Set((data ?? []).map((row) => String(row.email).toLowerCase()));
+    setApprovedEmails(next);
+  }, []);
+
   useEffect(() => {
     loadCategories();
     loadColors();
     loadBrochureRequests();
-  }, [loadCategories, loadColors, loadBrochureRequests]);
+    loadClientRegistrations();
+    loadApprovedClients();
+  }, [loadCategories, loadColors, loadBrochureRequests, loadClientRegistrations, loadApprovedClients]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -231,6 +275,46 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleApproveAndInvite = async (registration: ClientRegistrationLead) => {
+    if (!session?.access_token) {
+      setMessage('Missing admin session. Please sign in again.');
+      return;
+    }
+
+    setInvitingEmail(registration.email);
+    try {
+      const response = await fetch('/api/admin-client-invite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          email: registration.email,
+          company: registration.company,
+          contact: registration.contact,
+        }),
+      });
+
+      const payload = (await response.json()) as { success?: boolean; message?: string };
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || 'Failed to approve and invite client.');
+      }
+
+      setApprovedEmails((prev) => {
+        const next = new Set(prev);
+        next.add(registration.email.toLowerCase());
+        return next;
+      });
+      setMessage(payload.message || `Client approved and invite sent to ${registration.email}.`);
+    } catch (error) {
+      console.error('Approve+invite error:', error);
+      setMessage(error instanceof Error ? error.message : 'Failed to approve and invite client.');
+    } finally {
+      setInvitingEmail(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-cyan-500/20 px-6 py-4">
@@ -296,6 +380,22 @@ export default function AdminDashboard() {
           >
             <Palette size={20} />
             <span>Customize Colors</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('clients')}
+            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+              activeTab === 'clients'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
+                : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
+            }`}
+          >
+            <UserPlus size={20} />
+            <span>Client Access</span>
+            {clientRegistrations.length > 0 && (
+              <span className="ml-2 px-2 py-1 bg-cyan-500 text-white rounded-full text-xs">
+                {clientRegistrations.length}
+              </span>
+            )}
           </button>
         </div>
 
@@ -623,6 +723,76 @@ export default function AdminDashboard() {
                 <span>Save Colors</span>
               </button>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'clients' && (
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-cyan-500/20 p-6">
+            <h2 className="text-2xl font-bold text-white mb-2">Client Access Approvals</h2>
+            <p className="text-gray-400 mb-6">
+              Approve a registration and send the portal invitation email in one click.
+            </p>
+
+            {clientRegistrations.length === 0 ? (
+              <div className="text-center py-12">
+                <UserPlus size={48} className="mx-auto text-gray-600 mb-4" />
+                <p className="text-gray-400">No client registrations yet</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-cyan-500/20">
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Date</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Company</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Contact</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Email</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Country</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Business Type</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Status</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clientRegistrations.map((registration) => {
+                      const isApproved = approvedEmails.has(registration.email.toLowerCase());
+                      return (
+                        <tr key={registration.id} className="border-b border-cyan-500/10 hover:bg-slate-900/30">
+                          <td className="py-4 px-4 text-gray-400 text-sm">
+                            {new Date(registration.created_at).toLocaleDateString()}
+                          </td>
+                          <td className="py-4 px-4 text-white">{registration.company}</td>
+                          <td className="py-4 px-4 text-gray-300">{registration.contact}</td>
+                          <td className="py-4 px-4 text-cyan-400">
+                            <a href={`mailto:${registration.email}`} className="hover:underline">
+                              {registration.email}
+                            </a>
+                          </td>
+                          <td className="py-4 px-4 text-gray-300">{registration.country}</td>
+                          <td className="py-4 px-4 text-gray-300">{registration.business_type ?? '-'}</td>
+                          <td className="py-4 px-4">
+                            {isApproved ? (
+                              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm">Approved</span>
+                            ) : (
+                              <span className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full text-sm">Pending</span>
+                            )}
+                          </td>
+                          <td className="py-4 px-4">
+                            <button
+                              onClick={() => handleApproveAndInvite(registration)}
+                              disabled={invitingEmail === registration.email}
+                              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {invitingEmail === registration.email ? 'Sending...' : 'Approve + Invite'}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
       </div>

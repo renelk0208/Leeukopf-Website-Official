@@ -30,6 +30,9 @@ tmp/
 # Local Netlify folder
 .netlify
 
+# Netlify function secrets (never commit real service account keys)
+netlify/functions/assets/google-service-account.json
+
 # Backup files created by image fix scripts
 *.bak
 # Temporary files and reports

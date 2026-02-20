@@ -1,17 +1,35 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const rawSupabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const rawSupabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Missing Supabase environment variables - some features will be disabled');
+const isValidSupabaseUrl = (value: string): boolean => {
+  if (!value) return false;
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+};
+
+const supabaseUrl = isValidSupabaseUrl(rawSupabaseUrl)
+  ? rawSupabaseUrl
+  : 'https://placeholder.supabase.co';
+
+const supabaseAnonKey = rawSupabaseAnonKey || 'placeholder-key';
+
+if (!isValidSupabaseUrl(rawSupabaseUrl) || !rawSupabaseAnonKey) {
+  console.warn(
+    'Supabase environment variables are missing or invalid - Supabase features will be degraded until VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are fixed.'
+  );
 }
 
 // Create a client even if env vars are missing to prevent app crashes
 // Features requiring Supabase will fail gracefully
 export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key'
+  supabaseUrl,
+  supabaseAnonKey
 );
 
 export interface ProductCategory {

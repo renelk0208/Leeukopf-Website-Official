@@ -10,6 +10,9 @@
 [build.environment]
   NODE_VERSION = "20"
 
+[[context.deploy-preview.plugins]]
+  package = "@netlify/plugin-lighthouse"
+
 # Explicit redirects for API endpoints to Netlify Functions
 # These MUST come before the SPA wildcard redirect
 [[redirects]]

@@ -2,6 +2,8 @@ import type { Handler, HandlerEvent } from '@netlify/functions';
 import { Resend } from 'resend';
 import * as jose from 'jose';
 import { webcrypto } from 'crypto';
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
 
 // Polyfill global crypto for jose on Netlify
 if (!globalThis.crypto) {
@@ -60,6 +62,63 @@ interface FormData {
   // Influencers fields
   country_audience?: string;
   avg_views?: string;
+}
+
+interface GoogleCredentials {
+  serviceAccountEmail: string;
+  privateKey: string;
+}
+
+function readGoogleCredentialsFromFile(): GoogleCredentials | null {
+  const configuredPath = process.env.GOOGLE_SERVICE_ACCOUNT_FILE;
+  const candidatePaths = [
+    configuredPath,
+    join(process.cwd(), 'netlify/functions/assets/google-service-account.json'),
+    join(process.cwd(), 'assets/google-service-account.json'),
+  ].filter((value): value is string => Boolean(value && value.trim()));
+
+  for (const filePath of candidatePaths) {
+    try {
+      if (!existsSync(filePath)) continue;
+      const raw = readFileSync(filePath, 'utf8');
+      const parsed = JSON.parse(raw) as {
+        client_email?: string;
+        private_key?: string;
+      };
+
+      if (parsed.client_email && parsed.private_key) {
+        return {
+          serviceAccountEmail: parsed.client_email,
+          privateKey: parsed.private_key,
+        };
+      }
+    } catch (error) {
+      console.error('Failed reading Google credentials file:', filePath, error);
+    }
+  }
+
+  return null;
+}
+
+function getGoogleCredentials(): GoogleCredentials {
+  const envServiceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const envPrivateKey = process.env.GOOGLE_PRIVATE_KEY;
+
+  if (envServiceAccountEmail && envPrivateKey) {
+    return {
+      serviceAccountEmail: envServiceAccountEmail,
+      privateKey: envPrivateKey,
+    };
+  }
+
+  const fileCredentials = readGoogleCredentialsFromFile();
+  if (fileCredentials) {
+    return fileCredentials;
+  }
+
+  throw new Error(
+    'Google Sheets credentials missing. Set GOOGLE_SERVICE_ACCOUNT_EMAIL + GOOGLE_PRIVATE_KEY or provide netlify/functions/assets/google-service-account.json (or GOOGLE_SERVICE_ACCOUNT_FILE).'
+  );
 }
 
 // Get allowed origins for CORS
@@ -242,20 +301,19 @@ async function getGoogleAccessToken(serviceAccountEmail: string, privateKey: str
     throw new Error(`Failed to get access token: ${tokenResponse.status}`);
   }
 
-  const tokenData = await tokenResponse.json();
+  const tokenData = (await tokenResponse.json()) as { access_token: string };
   return tokenData.access_token;
 }
 
 // Append data to Google Sheets using jose for authentication
 async function appendToGoogleSheets(formData: FormData): Promise<void> {
   console.log('FUNCTION VERSION: prod-force-upload-2025-12-17-1016');
-  
-  const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+
+  const { serviceAccountEmail, privateKey } = getGoogleCredentials();
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
   const sheetTab = process.env.GOOGLE_SHEET_TAB || 'Raw_Leads';
 
-  if (!serviceAccountEmail || !privateKey || !spreadsheetId) {
+  if (!spreadsheetId) {
     console.error('Missing Google Sheets configuration');
     throw new Error('Google Sheets configuration is incomplete');
   }
