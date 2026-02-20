@@ -2317,8 +2317,8 @@ export default function InternalSolidColourGrid() {
           <div className="h-20 md:hidden" />
         </div>
 
-        <aside className="hidden md:block md:self-start">
-          <SelectedPanel {...panelProps} className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto" />
+        <aside className="hidden md:block md:self-start md:sticky md:top-24">
+          <SelectedPanel {...panelProps} className="max-h-[calc(100vh-7rem)] overflow-y-auto" />
         </aside>
       </div>
 
