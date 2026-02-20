@@ -149,7 +149,7 @@ type ShadeTileProps = {
   qtyValue: number | "";
   qtyUnit: "pcs" | "kg";
   onToggleSelected: (id: string) => void;
-  onToggleView: (id: string, hasImage: boolean) => void;
+  onToggleView: (id: string) => void;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
   onSetQty: (sku: string, value: string) => void;
 };
@@ -191,7 +191,7 @@ type ShadeGridProps = {
   items: GridShadeItem[];
   qtyUnit: "pcs" | "kg";
   onToggleSelected: (id: string) => void;
-  onToggleView: (id: string, hasImage: boolean) => void;
+  onToggleView: (id: string) => void;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
   onSetQty: (sku: string, value: string) => void;
 };
@@ -350,10 +350,11 @@ const ShadeTile = memo(function ShadeTile({
   const showCard = !hasImage || currentView === "card";
   const [candidateIndex, setCandidateIndex] = useState(0);
   const activeImage = imageCandidates[candidateIndex] || "";
+  const candidateSignature = imageCandidates.join("|");
 
   useEffect(() => {
     setCandidateIndex(0);
-  }, [imageCandidates]);
+  }, [candidateSignature]);
 
   const handleToggleSelected = useCallback(() => {
     onToggleSelected(rowId);
@@ -368,13 +369,13 @@ const ShadeTile = memo(function ShadeTile({
 
   const handleToggleViewClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    onToggleView(rowId, hasImage);
-  }, [onToggleView, rowId, hasImage]);
+    onToggleView(rowId);
+  }, [onToggleView, rowId]);
 
   const handlePreviewToggleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    onToggleView(rowId, hasImage);
-  }, [onToggleView, rowId, hasImage]);
+    onToggleView(rowId);
+  }, [onToggleView, rowId]);
 
   const handleImageLoad = useCallback(() => {
     onSetImageStatus(rowId, "OK");
@@ -514,10 +515,11 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
 }: SelectedSwatchItemProps) {
   const [candidateIndex, setCandidateIndex] = useState(0);
   const activeImage = shade.imageCandidates[candidateIndex] || "";
+  const candidateSignature = shade.imageCandidates.join("|");
 
   useEffect(() => {
     setCandidateIndex(0);
-  }, [shade.imageCandidates]);
+  }, [candidateSignature]);
 
   const handleRemove = useCallback(() => onRemoveShade(shade.id), [onRemoveShade, shade.id]);
   const handleLoad = useCallback(() => onSetImageStatus(shade.id, "OK"), [onSetImageStatus, shade.id]);
@@ -1420,8 +1422,7 @@ export default function InternalSolidColourGrid() {
     }
   }, [orderFormat, skuToRowId]);
 
-  const toggleTileView = useCallback((id: string, hasImage: boolean) => {
-    if (!hasImage) return;
+  const toggleTileView = useCallback((id: string) => {
     setTileView((prev) => ({
       ...prev,
       [id]: (prev[id] || "nail") === "nail" ? "card" : "nail",
