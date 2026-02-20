@@ -20,16 +20,16 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
+    <div className="min-h-screen bg-grey-offWhite">
+      <header className="sticky top-0 z-30 border-b border-grey-card bg-white/95 backdrop-blur-sm">
         <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">B2B Portal</h1>
-            <p className="text-sm text-gray-600">{totals.totalLines} items / {totals.totalQty} total units</p>
+            <h1 className="text-2xl font-bold text-grey-primary">B2B Portal</h1>
+            <p className="text-sm text-grey-secondary">{totals.totalLines} items / {totals.totalQty} total units</p>
           </div>
           <Link
             to="/b2b/checkout"
-            className="inline-flex items-center rounded-md bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800"
+            className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-600"
           >
             Checkout ({totals.totalLines})
           </Link>
@@ -37,7 +37,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
       </header>
 
       <div className="mx-auto grid w-full max-w-screen-2xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="h-fit rounded-xl border border-gray-200 bg-white p-3 lg:sticky lg:top-24">
+        <aside className="h-fit rounded-xl border border-grey-card bg-white p-3 lg:sticky lg:top-24">
           <nav className="space-y-1" aria-label="B2B portal navigation">
             {navItems.map((item) => (
               <NavLink
@@ -46,7 +46,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
                 end={item.path === "/b2b"}
                 className={({ isActive }) =>
                   `flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    isActive ? "bg-gray-900 text-white" : "text-gray-700 hover:bg-gray-100"
+                    isActive ? "bg-primary text-white" : "text-grey-primary hover:bg-primary-50"
                   }`
                 }
               >
@@ -61,7 +61,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
           </nav>
         </aside>
 
-        <main className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6">{children}</main>
+        <main className="rounded-xl border border-grey-card bg-white p-4 sm:p-6">{children}</main>
       </div>
     </div>
   );

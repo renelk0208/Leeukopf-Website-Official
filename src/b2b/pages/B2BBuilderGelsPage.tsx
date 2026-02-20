@@ -92,35 +92,35 @@ export default function B2BBuilderGelsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">Builder Gels</h2>
-        <p className="mt-1 text-sm text-gray-600">Add builder gel products to the same shared B2B inquiry cart.</p>
+        <h2 className="text-2xl font-bold text-grey-primary">Builder Gels</h2>
+        <p className="mt-1 text-sm text-grey-secondary">Add builder gel products to the same shared B2B inquiry cart.</p>
       </div>
 
-      <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+      <div className="rounded-lg border border-primary-200 bg-primary-50 p-3 text-sm text-primary-700">
         Add items here first, then set bottle packaging in Checkout before export/submit.
           <Link to="/b2b/checkout" className="ml-2 font-semibold underline">
             Open Checkout
           </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-gray-200">
+      <div className="overflow-hidden rounded-lg border border-grey-card">
         <div className="max-h-[68vh] overflow-auto">
           <table className="w-full text-sm">
-            <thead className="sticky top-0 bg-gray-50">
+            <thead className="sticky top-0 bg-primary-50">
               <tr>
-                <th className="px-3 py-2 text-left font-semibold text-gray-700">Code</th>
-                <th className="px-3 py-2 text-left font-semibold text-gray-700">Product</th>
-                <th className="px-3 py-2 text-left font-semibold text-gray-700">Size</th>
-                <th className="px-3 py-2 text-left font-semibold text-gray-700">MOQ</th>
-                <th className="px-3 py-2 text-left font-semibold text-gray-700">Qty</th>
-                <th className="px-3 py-2 text-left font-semibold text-gray-700">Action</th>
+                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Code</th>
+                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Product</th>
+                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Size</th>
+                <th className="px-3 py-2 text-left font-semibold text-grey-primary">MOQ</th>
+                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Qty</th>
+                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Action</th>
               </tr>
             </thead>
             <tbody>
               {products.map((product) => {
                 const value = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? product.moq ?? "");
                 return (
-                  <tr key={product.code} className="border-t border-gray-100">
+                  <tr key={product.code} className="border-t border-grey-card/60">
                     <td className="px-3 py-2 font-mono">{product.code}</td>
                     <td className="px-3 py-2">{product.product_name}</td>
                     <td className="px-3 py-2">{product.size} {product.unit}</td>
@@ -137,7 +137,7 @@ export default function B2BBuilderGelsPage() {
                             [product.code]: event.target.value,
                           }));
                         }}
-                        className="w-24 rounded-md border border-gray-300 px-2 py-1"
+                        className="w-24 rounded-md border border-grey-card px-2 py-1 text-grey-primary"
                       />
                     </td>
                     <td className="px-3 py-2">
@@ -157,7 +157,7 @@ export default function B2BBuilderGelsPage() {
                             },
                           });
                         }}
-                        className="rounded-md bg-gray-900 px-3 py-1.5 text-xs font-semibold text-white"
+                        className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-600"
                       >
                         Save
                       </button>

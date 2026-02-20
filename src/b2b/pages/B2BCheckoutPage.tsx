@@ -180,18 +180,18 @@ export default function B2BCheckoutPage() {
   return (
     <div className="space-y-6">
       <section>
-        <h2 className="text-2xl font-bold text-gray-900">Checkout</h2>
-        <p className="mt-1 text-sm text-gray-600">Review all categories, set packaging, export CSV, and submit inquiry.</p>
+        <h2 className="text-2xl font-bold text-grey-primary">Checkout</h2>
+        <p className="mt-1 text-sm text-grey-secondary">Review all categories, set packaging, export CSV, and submit inquiry.</p>
       </section>
 
-      <section className="rounded-lg border border-gray-200 p-4">
+      <section className="rounded-lg border border-grey-card p-4">
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-900">Bottle Packaging (Required)</h3>
+          <h3 className="text-lg font-semibold text-grey-primary">Bottle Packaging (Required)</h3>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Size</label>
+            <label className="mb-1 block text-sm font-medium text-grey-primary">Size</label>
             <select
               value={packagingDraft.size}
               onChange={(event) => {
@@ -199,7 +199,7 @@ export default function B2BCheckoutPage() {
                 if (!value) return;
                 setPackagingField("size", value);
               }}
-              className="w-full rounded-md border border-gray-300 px-3 py-2"
+              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
             >
               <option value="">Select size</option>
               {bottleSizes.map((option) => (
@@ -211,7 +211,7 @@ export default function B2BCheckoutPage() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Color</label>
+            <label className="mb-1 block text-sm font-medium text-grey-primary">Color</label>
             <select
               value={packagingDraft.color}
               onChange={(event) => {
@@ -219,7 +219,7 @@ export default function B2BCheckoutPage() {
                 if (!value) return;
                 setPackagingField("color", value);
               }}
-              className="w-full rounded-md border border-gray-300 px-3 py-2"
+              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
             >
               <option value="">Select color</option>
               {bottleColors.map((option) => (
@@ -231,7 +231,7 @@ export default function B2BCheckoutPage() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Brush</label>
+            <label className="mb-1 block text-sm font-medium text-grey-primary">Brush</label>
             <select
               value={packagingDraft.brush}
               onChange={(event) => {
@@ -239,7 +239,7 @@ export default function B2BCheckoutPage() {
                 if (!value) return;
                 setPackagingField("brush", value);
               }}
-              className="w-full rounded-md border border-gray-300 px-3 py-2"
+              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
             >
               <option value="">Select brush</option>
               {brushTypes.map((option) => (
@@ -251,7 +251,7 @@ export default function B2BCheckoutPage() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Branding</label>
+            <label className="mb-1 block text-sm font-medium text-grey-primary">Branding</label>
             <select
               value={packagingDraft.branding}
               onChange={(event) => {
@@ -259,7 +259,7 @@ export default function B2BCheckoutPage() {
                 if (!value) return;
                 setPackagingField("branding", value);
               }}
-              className="w-full rounded-md border border-gray-300 px-3 py-2"
+              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
             >
               <option value="">Select branding</option>
               {brandings.map((option) => (
@@ -271,7 +271,7 @@ export default function B2BCheckoutPage() {
           </div>
         </div>
 
-        <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 p-3 text-sm text-gray-700">
+        <div className="mt-3 rounded-md border border-grey-card bg-primary-50 p-3 text-sm text-grey-primary">
           <div>Filled units: {filledUnitsTotal}</div>
           <div>Bottles required: {bottleUnitsRequired}</div>
         </div>
@@ -283,29 +283,29 @@ export default function B2BCheckoutPage() {
         ) : null}
       </section>
 
-      <section className="rounded-lg border border-gray-200 p-4">
-        <h3 className="text-lg font-semibold text-gray-900">Cart Items</h3>
+      <section className="rounded-lg border border-grey-card p-4">
+        <h3 className="text-lg font-semibold text-grey-primary">Cart Items</h3>
         {!items.length ? (
-          <p className="mt-2 text-sm text-gray-600">Your cart is empty.</p>
+          <p className="mt-2 text-sm text-grey-secondary">Your cart is empty.</p>
         ) : (
           <div className="mt-4 space-y-5">
             {groupedItems.map(([category, categoryItems]) => (
               <div key={category}>
-                <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-600">{getB2BCategoryLabel(category as CartItem["category"])}</h4>
-                <div className="mt-2 overflow-hidden rounded-md border border-gray-200">
+                <h4 className="text-sm font-semibold uppercase tracking-wide text-grey-secondary">{getB2BCategoryLabel(category as CartItem["category"])}</h4>
+                <div className="mt-2 overflow-hidden rounded-md border border-grey-card">
                   <table className="w-full text-sm">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-primary-50">
                       <tr>
-                        <th className="px-3 py-2 text-left font-semibold text-gray-700">Code</th>
-                        <th className="px-3 py-2 text-left font-semibold text-gray-700">Name</th>
-                        <th className="px-3 py-2 text-left font-semibold text-gray-700">Qty</th>
-                        <th className="px-3 py-2 text-left font-semibold text-gray-700">Unit</th>
-                        <th className="px-3 py-2 text-left font-semibold text-gray-700">Action</th>
+                        <th className="px-3 py-2 text-left font-semibold text-grey-primary">Code</th>
+                        <th className="px-3 py-2 text-left font-semibold text-grey-primary">Name</th>
+                        <th className="px-3 py-2 text-left font-semibold text-grey-primary">Qty</th>
+                        <th className="px-3 py-2 text-left font-semibold text-grey-primary">Unit</th>
+                        <th className="px-3 py-2 text-left font-semibold text-grey-primary">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {categoryItems.map((item) => (
-                        <tr key={`${item.category}-${item.code}`} className="border-t border-gray-100">
+                        <tr key={`${item.category}-${item.code}`} className="border-t border-grey-card/60">
                           <td className="px-3 py-2 font-mono">{item.code}</td>
                           <td className="px-3 py-2">{item.name ?? "-"}</td>
                           <td className="px-3 py-2">
@@ -318,7 +318,7 @@ export default function B2BCheckoutPage() {
                                 const qty = Number.parseInt(event.target.value, 10);
                                 setQuantity(item.category, item.code, Number.isFinite(qty) ? qty : 0);
                               }}
-                              className="w-24 rounded-md border border-gray-300 px-2 py-1"
+                              className="w-24 rounded-md border border-grey-card px-2 py-1 text-grey-primary"
                             />
                           </td>
                           <td className="px-3 py-2">{item.unitType ?? "PCS"}</td>
@@ -326,7 +326,7 @@ export default function B2BCheckoutPage() {
                             <button
                               type="button"
                               onClick={() => removeItem(item.category, item.code)}
-                              className="rounded-md border border-red-300 px-2 py-1 text-xs font-semibold text-red-700"
+                              className="rounded-md border border-primary-200 px-2 py-1 text-xs font-semibold text-primary"
                             >
                               Remove
                             </button>
@@ -359,7 +359,7 @@ export default function B2BCheckoutPage() {
           type="button"
           disabled={!canProceed || items.length === 0}
           onClick={exportCsv}
-          className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary disabled:cursor-not-allowed disabled:opacity-50"
         >
           Export CSV
         </button>
@@ -367,7 +367,7 @@ export default function B2BCheckoutPage() {
           type="button"
           disabled={!canProceed || items.length === 0}
           onClick={submit}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-gray-400"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-primary-200"
         >
           Submit
         </button>
