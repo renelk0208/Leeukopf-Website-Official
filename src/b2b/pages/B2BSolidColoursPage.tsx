@@ -47,5 +47,5 @@ export default function B2BSolidColoursPage() {
     });
   }, [addOrUpdateItem, items, removeItem]);
 
-  return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} />;
+  return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock />;
 }

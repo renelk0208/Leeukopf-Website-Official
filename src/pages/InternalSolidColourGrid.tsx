@@ -148,6 +148,7 @@ export type InternalSolidColourSyncItem = {
 
 type InternalSolidColourGridProps = {
   onSelectionSync?: (items: InternalSolidColourSyncItem[]) => void;
+  disableClientInfoLock?: boolean;
 };
 
 type ShadeTileProps = {
@@ -956,7 +957,7 @@ function MobileDrawer({ open, onClose, panelProps }: MobileDrawerProps) {
   );
 }
 
-export default function InternalSolidColourGrid({ onSelectionSync }: InternalSolidColourGridProps = {}) {
+export default function InternalSolidColourGrid({ onSelectionSync, disableClientInfoLock = false }: InternalSolidColourGridProps = {}) {
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
   const [imgStatus, setImgStatus] = useState<Record<string, "OK" | "MISSING">>({});
@@ -1632,6 +1633,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
   const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
   const missingClientFields = useMemo(() => getMissingRequiredClientFields(client), [client]);
   const isClientInfoComplete = missingClientFields.length === 0;
+  const interactionLocked = !disableClientInfoLock && !isClientInfoComplete;
 
   useEffect(() => {
     if ((!ALLOWS_KG_UNIT || !ALLOWS_BUCKET_PACKAGING) && orderFormat === "bulk") {
@@ -1854,7 +1856,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
     onCopyCodes: handleCopyCodes,
     onDownloadCsv: handleDownloadCsv,
     copyFeedback,
-    interactionLocked: !isClientInfoComplete,
+    interactionLocked,
     onSetImageStatus: setImageStatus,
   };
 
@@ -2046,7 +2048,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
           </label>
         </div>
 
-        {!isClientInfoComplete && (
+        {!isClientInfoComplete && !disableClientInfoLock && (
           <div className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
             Complete required client fields to unlock shade selection, quantity editing, and order actions. Missing: {missingClientFields.join(", ")}.
           </div>
@@ -2386,7 +2388,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <button
             onClick={() => setOrder({})}
-            disabled={!isClientInfoComplete}
+            disabled={interactionLocked}
             className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
           >
             Clear
@@ -2399,7 +2401,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                 .join("\n");
               await navigator.clipboard.writeText(text);
             }}
-            disabled={!isClientInfoComplete}
+            disabled={interactionLocked}
             className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
           >
             Copy list
@@ -2434,7 +2436,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
             qtyUnit={qtyUnit}
             minQty={tileMinQty}
             qtyStep={tileQtyStep}
-            interactionLocked={!isClientInfoComplete}
+            interactionLocked={interactionLocked}
             onToggleSelected={toggleSelected}
             onToggleView={toggleTileView}
             onSetImageStatus={setImageStatus}
@@ -2459,7 +2461,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
       <button
         type="button"
         className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg disabled:cursor-not-allowed disabled:opacity-60 md:hidden"
-        disabled={!isClientInfoComplete}
+        disabled={interactionLocked}
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
