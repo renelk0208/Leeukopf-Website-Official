@@ -148,6 +148,8 @@ type ShadeTileProps = {
   isSelected: boolean;
   qtyValue: number | "";
   qtyUnit: "pcs" | "kg";
+  minQty: number;
+  qtyStep: number;
   onToggleSelected: (id: string) => void;
   onToggleView: (id: string) => void;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
@@ -190,6 +192,8 @@ type MobileDrawerProps = {
 type ShadeGridProps = {
   items: GridShadeItem[];
   qtyUnit: "pcs" | "kg";
+  minQty: number;
+  qtyStep: number;
   onToggleSelected: (id: string) => void;
   onToggleView: (id: string) => void;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
@@ -341,6 +345,8 @@ const ShadeTile = memo(function ShadeTile({
   isSelected,
   qtyValue,
   qtyUnit,
+  minQty,
+  qtyStep,
   onToggleSelected,
   onToggleView,
   onSetImageStatus,
@@ -479,7 +485,8 @@ const ShadeTile = memo(function ShadeTile({
         <div className="mt-3 flex items-center gap-2" onClick={stopPropagation}>
           <input
             type="number"
-            min={0}
+            min={minQty}
+            step={qtyStep}
             placeholder={qtyUnit === "kg" ? "KG" : "Qty"}
             value={qtyValue}
             onClick={stopPropagation}
@@ -586,7 +593,7 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
   );
 });
 
-function ShadeGrid({ items, qtyUnit, onToggleSelected, onToggleView, onSetImageStatus, onSetQty }: ShadeGridProps) {
+function ShadeGrid({ items, qtyUnit, minQty, qtyStep, onToggleSelected, onToggleView, onSetImageStatus, onSetQty }: ShadeGridProps) {
   if (ENABLE_VIRTUAL_GRID) {
     return (
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
@@ -603,6 +610,8 @@ function ShadeGrid({ items, qtyUnit, onToggleSelected, onToggleView, onSetImageS
             isSelected={item.isSelected}
             qtyValue={item.qtyValue}
             qtyUnit={qtyUnit}
+            minQty={minQty}
+            qtyStep={qtyStep}
             onToggleSelected={onToggleSelected}
             onToggleView={onToggleView}
             onSetImageStatus={onSetImageStatus}
@@ -628,6 +637,8 @@ function ShadeGrid({ items, qtyUnit, onToggleSelected, onToggleView, onSetImageS
           isSelected={item.isSelected}
           qtyValue={item.qtyValue}
           qtyUnit={qtyUnit}
+          minQty={minQty}
+          qtyStep={qtyStep}
           onToggleSelected={onToggleSelected}
           onToggleView={onToggleView}
           onSetImageStatus={onSetImageStatus}
@@ -1397,13 +1408,16 @@ export default function InternalSolidColourGrid() {
   );
 
   const setOrderQty = useCallback((sku: string, value: string) => {
-    const minQty = orderFormat === "bulk" ? 1 : 30;
     const parsed = parseInt(value || "0", 10);
 
     let nextOrderQty = 0;
-    if (parsed === 0) nextOrderQty = 0;
-    else if (parsed < minQty) nextOrderQty = minQty;
-    else nextOrderQty = parsed;
+    if (Number.isNaN(parsed) || parsed <= 0) {
+      nextOrderQty = 0;
+    } else if (orderFormat === "bulk") {
+      nextOrderQty = Math.max(1, parsed);
+    } else {
+      nextOrderQty = normalizeQuantity(parsed);
+    }
 
     setOrder((prev) => ({ ...prev, [sku]: nextOrderQty }));
 
@@ -1441,6 +1455,9 @@ export default function InternalSolidColourGrid() {
       });
     }
   }, [orderFormat, skuToRowId]);
+
+  const tileMinQty = orderFormat === "bulk" ? 1 : QUANTITY_MOQ;
+  const tileQtyStep = orderFormat === "bulk" ? 1 : QUANTITY_STEP;
 
   const toggleTileView = useCallback((id: string) => {
     setTileView((prev) => ({
@@ -2308,6 +2325,8 @@ export default function InternalSolidColourGrid() {
           <ShadeGrid
             items={gridItems}
             qtyUnit={qtyUnit}
+            minQty={tileMinQty}
+            qtyStep={tileQtyStep}
             onToggleSelected={toggleSelected}
             onToggleView={toggleTileView}
             onSetImageStatus={setImageStatus}
