@@ -1038,22 +1038,42 @@ export default function InternalSolidColourGrid() {
 
   const setQuantityInput = useCallback((id: string, value: string) => {
     const numeric = parseInt(value || String(QUANTITY_MOQ), 10);
-    setQuantities((prev) => ({ ...prev, [id]: normalizeQuantity(numeric) }));
-  }, []);
+    const nextQty = normalizeQuantity(numeric);
+
+    setQuantities((prev) => ({ ...prev, [id]: nextQty }));
+
+    const row = rows.find((item, idx) => getRowId(item, idx) === id);
+    const sku = row?.["Internal_SKU"] || row?.["Shade_Code"] || id;
+    if (sku) {
+      setOrder((prev) => ({ ...prev, [sku]: nextQty }));
+    }
+  }, [rows]);
 
   const incrementQuantity = useCallback((id: string) => {
     setQuantities((prev) => {
       const current = prev[id] ?? QUANTITY_MOQ;
-      return { ...prev, [id]: normalizeQuantity(current + QUANTITY_STEP) };
+      const nextQty = normalizeQuantity(current + QUANTITY_STEP);
+      const row = rows.find((item, idx) => getRowId(item, idx) === id);
+      const sku = row?.["Internal_SKU"] || row?.["Shade_Code"] || id;
+      if (sku) {
+        setOrder((orderPrev) => ({ ...orderPrev, [sku]: nextQty }));
+      }
+      return { ...prev, [id]: nextQty };
     });
-  }, []);
+  }, [rows]);
 
   const decrementQuantity = useCallback((id: string) => {
     setQuantities((prev) => {
       const current = prev[id] ?? QUANTITY_MOQ;
-      return { ...prev, [id]: normalizeQuantity(current - QUANTITY_STEP) };
+      const nextQty = normalizeQuantity(current - QUANTITY_STEP);
+      const row = rows.find((item, idx) => getRowId(item, idx) === id);
+      const sku = row?.["Internal_SKU"] || row?.["Shade_Code"] || id;
+      if (sku) {
+        setOrder((orderPrev) => ({ ...orderPrev, [sku]: nextQty }));
+      }
+      return { ...prev, [id]: nextQty };
     });
-  }, []);
+  }, [rows]);
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -1282,12 +1302,48 @@ export default function InternalSolidColourGrid() {
     const minQty = orderFormat === "bulk" ? 1 : 30;
     const parsed = parseInt(value || "0", 10);
 
-    setOrder((prev) => {
-      if (parsed === 0) return { ...prev, [sku]: 0 };
-      if (parsed < minQty) return { ...prev, [sku]: minQty };
-      return { ...prev, [sku]: parsed };
-    });
-  }, [orderFormat]);
+    let nextOrderQty = 0;
+    if (parsed === 0) nextOrderQty = 0;
+    else if (parsed < minQty) nextOrderQty = minQty;
+    else nextOrderQty = parsed;
+
+    setOrder((prev) => ({ ...prev, [sku]: nextOrderQty }));
+
+    const row = rows.find((item) => (item["Internal_SKU"] || item["Shade_Code"] || "") === sku);
+    const rowId = row ? getRowId(row, 0) : sku;
+
+    if (!rowId) return;
+
+    if (nextOrderQty > 0) {
+      setSelectedIds((prev) => {
+        if (prev.has(rowId)) return prev;
+        const next = new Set(prev);
+        next.add(rowId);
+        return next;
+      });
+
+      setSelectedOrder((prev) => [rowId, ...prev.filter((entry) => entry !== rowId)]);
+
+      setQuantities((prev) => ({
+        ...prev,
+        [rowId]: normalizeQuantity(nextOrderQty),
+      }));
+    } else {
+      setSelectedIds((prev) => {
+        if (!prev.has(rowId)) return prev;
+        const next = new Set(prev);
+        next.delete(rowId);
+        return next;
+      });
+
+      setSelectedOrder((prev) => prev.filter((entry) => entry !== rowId));
+      setQuantities((prev) => {
+        if (!(rowId in prev)) return prev;
+        const { [rowId]: _removed, ...rest } = prev;
+        return rest;
+      });
+    }
+  }, [orderFormat, rows]);
 
   const toggleTileView = useCallback((id: string, hasImage: boolean) => {
     if (!hasImage) return;
