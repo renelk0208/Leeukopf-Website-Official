@@ -2,13 +2,30 @@ import { useCallback } from "react";
 import InternalSolidColourGrid, { type InternalSolidColourSyncItem } from "../../pages/InternalSolidColourGrid";
 import { useB2BCart } from "../store/B2BCartContext";
 
+function toSolidOrderCode(code: string, internalSku?: string): string {
+  const source = (internalSku || code || "").trim();
+  const match = source.match(/^LC-GP-(\d+)$/i);
+  if (match) {
+    return `Gel Polish-${match[1]}`;
+  }
+  return code;
+}
+
 export default function B2BSolidColoursPage() {
   const { items, addOrUpdateItem, removeItem } = useB2BCart();
 
   const handleSelectionSync = useCallback((selectedItems: InternalSolidColourSyncItem[]) => {
+    const normalizedSelectedItems = selectedItems.map((item) => {
+      const mappedCode = toSolidOrderCode(item.code, item.internalSku);
+      return {
+        ...item,
+        code: mappedCode,
+      };
+    });
+
     const existingSolidItems = items.filter((item) => item.category === "SOLID_GEL_POLISH");
     const existingByCode = new Map(existingSolidItems.map((item) => [item.code, item]));
-    const selectedCodes = new Set(selectedItems.map((item) => item.code));
+    const selectedCodes = new Set(normalizedSelectedItems.map((item) => item.code));
 
     existingSolidItems.forEach((item) => {
       if (!selectedCodes.has(item.code)) {
@@ -16,7 +33,7 @@ export default function B2BSolidColoursPage() {
       }
     });
 
-    selectedItems.forEach((item) => {
+    normalizedSelectedItems.forEach((item) => {
       const quantity = Number.isFinite(item.quantity) ? Math.max(0, Math.floor(item.quantity)) : 0;
       const nextName = item.name?.trim() ? item.name : item.code;
       const nextInternalSku = item.internalSku || item.code;
