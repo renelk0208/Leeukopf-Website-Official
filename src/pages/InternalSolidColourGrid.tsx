@@ -109,14 +109,14 @@ export default function InternalSolidColourGrid() {
   const [isBulkContainerAuto, setIsBulkContainerAuto] = useState(false);
 
   useEffect(() => {
-    fetch("/data/solid-colour/pilot-80.json")
-      .then((r) => r.json())
-      .then((data) => setRows(Array.isArray(data) ? data : []))
+    fetch("/data/solid-1200.json")
+      .then((res) => res.json())
+      .then((data: unknown) => setRows(Array.isArray(data) ? (data as Row[]) : []))
       .catch(() => setRows([]));
   }, []);
 
   useEffect(() => {
-    const saved = localStorage.getItem("solidColourOrderPilot80");
+    const saved = localStorage.getItem("solidColourOrder1200");
     if (saved) {
       try {
         setOrder(JSON.parse(saved));
@@ -127,7 +127,7 @@ export default function InternalSolidColourGrid() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("solidColourOrderPilot80", JSON.stringify(order));
+    localStorage.setItem("solidColourOrder1200", JSON.stringify(order));
   }, [order]);
 
   const filtered = useMemo(() => {
@@ -398,7 +398,7 @@ export default function InternalSolidColourGrid() {
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Internal Solid Colour Grid (Pilot 80)</h1>
+          <h1 className="text-2xl font-semibold">Internal Solid Colour Grid (1200)</h1>
           <p className="text-sm text-neutral-600">Not linked anywhere — internal testing only.</p>
         </div>
 
@@ -969,10 +969,10 @@ export default function InternalSolidColourGrid() {
                       {status ?? "…"}
                     </div>
                   </>
+                ) : hex ? (
+                  <div className="h-full w-full" style={{ backgroundColor: hex }} />
                 ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-neutral-500">
-                    No image
-                  </div>
+                  <div className="flex h-full items-center justify-center text-xs text-neutral-500">No image</div>
                 )}
               </div>
 
@@ -1009,8 +1009,8 @@ export default function InternalSolidColourGrid() {
 
       {!filtered.length && (
         <div className="mt-8 rounded-xl border bg-white p-6 text-sm text-neutral-600">
-          No results. Check that <code className="font-mono">pilot-80.json</code> exists in{" "}
-          <code className="font-mono">public/data/solid-colour/</code>.
+          No results. Check that <code className="font-mono">solid-1200.json</code> exists in{" "}
+          <code className="font-mono">public/data/</code>.
         </div>
       )}
     </div>
