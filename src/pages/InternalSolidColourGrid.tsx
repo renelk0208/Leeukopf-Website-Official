@@ -839,7 +839,14 @@ function MobileDrawer({ open, onClose, panelProps }: MobileDrawerProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end bg-black/40 md:hidden" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-end bg-black/40 md:hidden"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div
         className="min-h-[72vh] max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border bg-white pb-[max(1rem,env(safe-area-inset-bottom))]"
         onClick={(e) => e.stopPropagation()}
@@ -2325,7 +2332,11 @@ export default function InternalSolidColourGrid() {
       <button
         type="button"
         className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg md:hidden"
-        onClick={() => setIsMobileDrawerOpen(true)}
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          window.setTimeout(() => setIsMobileDrawerOpen(true), 0);
+        }}
         aria-label="Open My Colour Chart"
       >
         <div className="text-sm font-semibold">My Colour Chart ({selectedCount})</div>
@@ -2336,7 +2347,7 @@ export default function InternalSolidColourGrid() {
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed z-40 rounded-full border bg-white px-4 py-2 text-xs font-semibold shadow-lg transition hover:bg-neutral-50"
+          className="fixed z-40 hidden rounded-full border bg-white px-4 py-2 text-xs font-semibold shadow-lg transition hover:bg-neutral-50 md:block"
           style={{ right: "1rem", bottom: "calc(max(1rem, env(safe-area-inset-bottom)) + 5.5rem)" }}
           aria-label="Back to top"
         >
