@@ -909,6 +909,7 @@ export default function InternalSolidColourGrid() {
   const [sortMode, setSortMode] = useState<SelectedSortMode>("family");
   const [showQuantities, setShowQuantities] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [gridFilter, setGridFilter] = useState<GridFilter>("all");
   const [copyFeedback, setCopyFeedback] = useState(false);
   const copyFeedbackTimeoutRef = useRef<number | null>(null);
@@ -998,6 +999,16 @@ export default function InternalSolidColourGrid() {
         window.clearTimeout(copyFeedbackTimeoutRef.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setShowBackToTop(window.scrollY > 500);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const setImageStatus = useCallback((id: string, status: "OK" | "MISSING") => {
@@ -2285,7 +2296,7 @@ export default function InternalSolidColourGrid() {
         )}
       </div>
 
-      <div className="md:grid md:grid-cols-[minmax(0,1fr)_280px] md:gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
+      <div className="md:grid md:grid-cols-[minmax(0,1fr)_280px] md:items-start md:gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
         <div>
           <ShadeGrid
             items={gridItems}
@@ -2307,7 +2318,7 @@ export default function InternalSolidColourGrid() {
         </div>
 
         <aside className="hidden md:block md:self-start">
-          <SelectedPanel {...panelProps} className="sticky top-6 max-h-[calc(100vh-2rem)] overflow-y-auto" />
+          <SelectedPanel {...panelProps} className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto" />
         </aside>
       </div>
 
@@ -2320,6 +2331,18 @@ export default function InternalSolidColourGrid() {
         <div className="text-sm font-semibold">My Colour Chart ({selectedCount})</div>
         <div className="text-xs text-neutral-600">Total units: {totalSelectedUnits}</div>
       </button>
+
+      {showBackToTop ? (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed z-40 rounded-full border bg-white px-4 py-2 text-xs font-semibold shadow-lg transition hover:bg-neutral-50"
+          style={{ right: "1rem", bottom: "calc(max(1rem, env(safe-area-inset-bottom)) + 5.5rem)" }}
+          aria-label="Back to top"
+        >
+          Back to top
+        </button>
+      ) : null}
 
       <MobileDrawer
         open={isMobileDrawerOpen}
