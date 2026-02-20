@@ -10,7 +10,6 @@ jobs:
   lighthouse:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v4
@@ -31,12 +30,5 @@ jobs:
       - name: Wait for preview server
         run: npx wait-on http://127.0.0.1:4173
 
-      - name: Run Lighthouse (non-blocking report)
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: |
-            http://127.0.0.1:4173/
-            http://127.0.0.1:4173/products
-            http://127.0.0.1:4173/client-registration
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+      - name: Run Lighthouse with thresholds
+        run: npx @lhci/cli autorun --config=.lighthouserc.json
