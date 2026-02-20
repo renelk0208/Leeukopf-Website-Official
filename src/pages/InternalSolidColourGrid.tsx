@@ -951,16 +951,10 @@ export default function InternalSolidColourGrid() {
           const showCard = !hasImage || currentView === "card";
           return (
             <div key={key} className="rounded-2xl border bg-white p-3 shadow-sm">
-              <button
-                type="button"
-                className="aspect-square w-full overflow-hidden rounded-xl bg-neutral-50 relative text-left"
-                onClick={() => {
-                  if (!hasImage) return;
-                  setTileView((prev) => ({
-                    ...prev,
-                    [key]: (prev[key] || "nail") === "nail" ? "card" : "nail",
-                  }));
-                }}
+              <div
+                className="aspect-square w-full overflow-hidden rounded-xl bg-neutral-50 relative"
+                role="img"
+                aria-label={`${sku} ${showImage ? "nail view" : "card view"}`}
               >
                 {showImage ? (
                   <>
@@ -1000,12 +994,33 @@ export default function InternalSolidColourGrid() {
                 ) : (
                   <div className="flex h-full items-center justify-center text-xs text-neutral-500">No image</div>
                 )}
-              </button>
+              </div>
 
               <div className="mt-2">
                 <div className="text-xs font-semibold">{sku}</div>
                 <div className="text-[11px] text-neutral-600 line-clamp-2">{name}</div>
                 <div className="text-[11px] text-neutral-600 mt-1">HEX: {hex || "—"}</div>
+
+                <button
+                  type="button"
+                  disabled={!hasImage}
+                  aria-pressed={currentView === "card"}
+                  aria-label={
+                    hasImage
+                      ? `${currentView === "nail" ? "Show card view" : "Show nail view"} for ${sku}`
+                      : `No alternate view available for ${sku}`
+                  }
+                  onClick={() => {
+                    if (!hasImage) return;
+                    setTileView((prev) => ({
+                      ...prev,
+                      [key]: (prev[key] || "nail") === "nail" ? "card" : "nail",
+                    }));
+                  }}
+                  className="mt-2 rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {!hasImage ? "No alternate view" : currentView === "nail" ? "Show card" : "Show nail"}
+                </button>
 
                 <div className="mt-3 flex items-center gap-2">
                   <input
