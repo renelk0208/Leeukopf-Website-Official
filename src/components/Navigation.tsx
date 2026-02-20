@@ -87,6 +87,7 @@ export default function Navigation() {
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
     { label: 'FAQ', path: '/faq-starting-a-gel-polish-brand' },
     { label: 'Client Registration', path: '/client-registration' },
+    { label: 'Client Portal', path: '/portal/login' },
   ];
 
   const isB2BActive = location.pathname === '/b2b' || location.pathname.startsWith('/b2b/');

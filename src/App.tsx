@@ -32,6 +32,9 @@ const B2BBuilderGelsPortalPage = lazy(() => import("./b2b/pages/B2BBuilderGelsPa
 const B2BCheckoutPage = lazy(() => import("./b2b/pages/B2BCheckoutPage"));
 const LegacyB2BSolidColoursPage = lazy(() => import("./b2b/pages/LegacyB2BSolidColoursPage"));
 const LegacyB2BBuilderGelsPage = lazy(() => import("./b2b/pages/LegacyB2BBuilderGelsPage"));
+const ClientPortalProtectedRoute = lazy(() => import('./components/ClientPortalProtectedRoute'));
+const ClientPortalLoginPage = lazy(() => import('./pages/ClientPortalLoginPage'));
+const ClientPortalDashboardPage = lazy(() => import('./pages/ClientPortalDashboardPage'));
 
 // Product Pages
 const GelPolishPage = lazy(() => import('./pages/products/GelPolishPage'));
@@ -111,6 +114,16 @@ function App() {
             <Route path="builder-gels" element={<B2BBuilderGelsPortalPage />} />
             <Route path="checkout" element={<B2BCheckoutPage />} />
           </Route>
+
+          <Route path="/portal/login" element={<ClientPortalLoginPage />} />
+          <Route
+            path="/portal"
+            element={
+              <ClientPortalProtectedRoute>
+                <ClientPortalDashboardPage />
+              </ClientPortalProtectedRoute>
+            }
+          />
 
           {/* Products */}
           <Route path="/products" element={<ProductsPage />} />

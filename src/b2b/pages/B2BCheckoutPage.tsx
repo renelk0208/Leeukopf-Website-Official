@@ -54,6 +54,7 @@ export default function B2BCheckoutPage() {
     bottlePackaging,
     setBottlePackaging,
     clearBottlePackaging,
+    clearCart,
     removeItem,
     setQuantity,
     getTotals,
@@ -154,6 +155,7 @@ export default function B2BCheckoutPage() {
     };
     console.log("[B2B Submit Payload]", payload);
     alert("B2B inquiry payload logged in console. Backend submit endpoint can be wired next.");
+    clearCart();
   };
 
   const setPackagingField = <K extends keyof typeof packagingDraft>(key: K, value: (typeof packagingDraft)[K]) => {
