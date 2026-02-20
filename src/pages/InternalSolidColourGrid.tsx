@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { categories } from "../config/categories";
 
 type Row = Record<string, string>;
@@ -60,8 +60,245 @@ const SHOW_JAR_SIZE_SELECTOR = solidColourConfig.hasJarSizeSelector;
 const ALLOWS_PCS_UNIT = ALLOWED_UNITS.includes("pcs");
 const ALLOWS_KG_UNIT = ALLOWED_UNITS.includes("kg");
 const ALLOWS_BUCKET_PACKAGING = ALLOWED_PACKAGING.includes("bucket");
+const SELECTED_SHADES_STORAGE_KEY = "lk_selected_solid_shades";
+const FAMILY_ORDER = [
+  "Reds",
+  "Oranges",
+  "Yellows",
+  "Greens",
+  "Teals",
+  "Blues",
+  "Purples",
+  "Pinks",
+  "Browns",
+  "Nudes/Beiges",
+  "Whites",
+  "Blacks",
+  "Greys",
+  "Other",
+] as const;
 
 const toDisplayLabel = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+
+type SelectedShade = {
+  id: string;
+  code: string;
+  image: string;
+  hasImage: boolean;
+  family: string;
+};
+
+type SelectedPanelProps = {
+  selectedCount: number;
+  countsByFamily: Array<[string, number]>;
+  selectedShades: SelectedShade[];
+  onRemoveShade: (id: string) => void;
+  onClearAll: () => void;
+  onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
+  className?: string;
+};
+
+type MobileDrawerProps = {
+  open: boolean;
+  onClose: () => void;
+  panelProps: SelectedPanelProps;
+};
+
+const normalizeHex = (value: string): string | null => {
+  const raw = value.trim();
+  if (!raw) return null;
+  const hex = raw.startsWith("#") ? raw.slice(1) : raw;
+  if (!/^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$/.test(hex)) return null;
+  if (hex.length === 3) {
+    const expanded = hex
+      .split("")
+      .map((char) => char + char)
+      .join("");
+    return `#${expanded.toUpperCase()}`;
+  }
+  return `#${hex.toUpperCase()}`;
+};
+
+const hexToHsl = (hex: string): { h: number; s: number; l: number } | null => {
+  const normalized = normalizeHex(hex);
+  if (!normalized) return null;
+
+  const r = parseInt(normalized.slice(1, 3), 16) / 255;
+  const g = parseInt(normalized.slice(3, 5), 16) / 255;
+  const b = parseInt(normalized.slice(5, 7), 16) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+
+  let h = 0;
+  const l = (max + min) / 2;
+  const s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+  if (delta !== 0) {
+    if (max === r) h = ((g - b) / delta) % 6;
+    else if (max === g) h = (b - r) / delta + 2;
+    else h = (r - g) / delta + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+
+  return {
+    h,
+    s: s * 100,
+    l: l * 100,
+  };
+};
+
+const classifyFamilyFromHex = (hex: string): string => {
+  const hsl = hexToHsl(hex);
+  if (!hsl) return "Other";
+
+  const { h, s, l } = hsl;
+
+  if (l >= 92 && s <= 12) return "Whites";
+  if (l <= 12 && s <= 20) return "Blacks";
+  if (s <= 12) return "Greys";
+
+  if (h >= 20 && h < 45 && l < 45) return "Browns";
+  if ((h >= 15 && h < 50 && s < 35 && l >= 45) || (h >= 10 && h < 40 && s < 45 && l >= 70)) {
+    return "Nudes/Beiges";
+  }
+
+  if (h < 15 || h >= 345) return "Reds";
+  if (h < 45) return "Oranges";
+  if (h < 70) return "Yellows";
+  if (h < 165) return "Greens";
+  if (h < 195) return "Teals";
+  if (h < 255) return "Blues";
+  if (h < 290) return "Purples";
+  if (h < 345) return "Pinks";
+
+  return "Other";
+};
+
+const FAMILY_FIELDS = ["family", "Family", "Colour_Family", "Color_Family", "colour_family", "color_family"];
+
+const getRowId = (row: Row, idx: number): string => row["Internal_SKU"] || row["Shade_Code"] || `row-${idx}`;
+
+const getRowCode = (row: Row, fallbackId: string): string => row["Shade_Code"] || row["Internal_SKU"] || fallbackId;
+
+const getRowHex = (row: Row): string => row["Hex_Code"] || row["HEX"] || "";
+
+const getRowImage = (row: Row, id: string): string => row["Swatch_Image"] || `/img/solid-colour/${id}.webp`;
+
+const getRowFamily = (row: Row): string => {
+  const familyField = FAMILY_FIELDS.map((key) => row[key]).find((value) => Boolean(value?.trim()));
+  if (familyField) return familyField.trim();
+  return classifyFamilyFromHex(getRowHex(row));
+};
+
+function SelectedPanel({
+  selectedCount,
+  countsByFamily,
+  selectedShades,
+  onRemoveShade,
+  onClearAll,
+  onSetImageStatus,
+  className,
+}: SelectedPanelProps) {
+  return (
+    <div className={`rounded-2xl border bg-white p-4 shadow-sm ${className ?? ""}`}>
+      <div className="text-base font-semibold">My Colour Chart</div>
+      <div className="mt-1 text-sm text-neutral-600">Selected: {selectedCount}</div>
+
+      <div className="mt-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Family counts</div>
+        {countsByFamily.length ? (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {countsByFamily.map(([family, count]) => (
+              <span key={family} className="rounded-full border bg-neutral-50 px-2 py-1 text-[11px] text-neutral-700">
+                {family}: {count}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2 text-xs text-neutral-500">No shades selected yet.</div>
+        )}
+      </div>
+
+      <div className="mt-4">
+        <div className="mb-2 flex items-center justify-between">
+          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Selected swatches</div>
+          <button
+            type="button"
+            onClick={onClearAll}
+            disabled={selectedCount === 0}
+            className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Clear all
+          </button>
+        </div>
+
+        {selectedShades.length ? (
+          <div className="grid grid-cols-3 gap-2">
+            {selectedShades.map((shade) => (
+              <div key={shade.id} className="relative rounded-lg border bg-neutral-50 p-1">
+                <button
+                  type="button"
+                  onClick={() => onRemoveShade(shade.id)}
+                  className="absolute right-1 top-1 z-10 h-5 w-5 rounded-full border bg-white text-[10px] leading-none"
+                  aria-label={`Remove ${shade.code}`}
+                >
+                  ×
+                </button>
+
+                <div className="aspect-square overflow-hidden rounded-md bg-neutral-100">
+                  {shade.hasImage ? (
+                    <img
+                      src={shade.image}
+                      alt={shade.code}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                      onLoad={() => onSetImageStatus(shade.id, "OK")}
+                      onError={() => onSetImageStatus(shade.id, "MISSING")}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center px-1 text-center text-[10px] font-medium text-neutral-600">
+                      {shade.code}
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-1 truncate text-[10px] font-medium text-neutral-700">{shade.code}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-dashed p-3 text-xs text-neutral-500">
+            Tap shades in the grid to build your chart.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MobileDrawer({ open, onClose, panelProps }: MobileDrawerProps) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end bg-black/40 lg:hidden" onClick={onClose}>
+      <div
+        className="max-h-[85vh] w-full overflow-y-auto rounded-t-2xl border bg-white p-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <div className="text-sm font-semibold">My Colour Chart</div>
+          <button type="button" onClick={onClose} className="rounded-md border px-2 py-1 text-xs">
+            Close
+          </button>
+        </div>
+        <SelectedPanel {...panelProps} className="border-0 p-0 shadow-none" />
+      </div>
+    </div>
+  );
+}
 
 export default function InternalSolidColourGrid() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -108,6 +345,8 @@ export default function InternalSolidColourGrid() {
   const [orderFormat, setOrderFormat] = useState<OrderFormat>("finished_units");
   const [bulkContainer, setBulkContainer] = useState<BulkContainer | "">("");
   const [isBulkContainerAuto, setIsBulkContainerAuto] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   useEffect(() => {
     fetch("/data/solid-1200.json")
@@ -131,6 +370,50 @@ export default function InternalSolidColourGrid() {
     localStorage.setItem("solidColourOrder1200", JSON.stringify(order));
   }, [order]);
 
+  useEffect(() => {
+    const raw = localStorage.getItem(SELECTED_SHADES_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const ids = parsed.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+        setSelectedIds(new Set(ids));
+      }
+    } catch {
+      setSelectedIds(new Set());
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(SELECTED_SHADES_STORAGE_KEY, JSON.stringify(Array.from(selectedIds)));
+  }, [selectedIds]);
+
+  const setImageStatus = useCallback((id: string, status: "OK" | "MISSING") => {
+    setImgStatus((prev) => (prev[id] === status ? prev : { ...prev, [id]: status }));
+  }, []);
+
+  const toggleSelected = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const removeSelected = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      if (!prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  }, []);
+
+  const clearSelected = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
     let out = rows;
@@ -146,14 +429,57 @@ export default function InternalSolidColourGrid() {
 
     if (onlyMissing) {
       out = out.filter((r, idx) => {
-        const sku = r["Internal_SKU"] || "";
-        const key = sku || `row-${idx}`;
+        const key = getRowId(r, idx);
         return imgStatus[key] === "MISSING";
       });
     }
 
     return out;
   }, [rows, q, onlyMissing, imgStatus]);
+
+  const rowById = useMemo(() => {
+    const map = new Map<string, Row>();
+    rows.forEach((row, idx) => {
+      map.set(getRowId(row, idx), row);
+    });
+    return map;
+  }, [rows]);
+
+  const selectedShades = useMemo<SelectedShade[]>(() => {
+    const out: SelectedShade[] = [];
+    selectedIds.forEach((id) => {
+      const row = rowById.get(id);
+      if (!row) return;
+      const image = getRowImage(row, id);
+      out.push({
+        id,
+        code: getRowCode(row, id),
+        image,
+        hasImage: Boolean(image) && imgStatus[id] !== "MISSING",
+        family: getRowFamily(row),
+      });
+    });
+
+    return out.sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
+  }, [selectedIds, rowById, imgStatus]);
+
+  const countsByFamily = useMemo<Array<[string, number]>>(() => {
+    const counts = new Map<string, number>();
+    selectedShades.forEach((shade) => {
+      counts.set(shade.family, (counts.get(shade.family) || 0) + 1);
+    });
+
+    return Array.from(counts.entries()).sort((a, b) => {
+      const indexA = FAMILY_ORDER.indexOf(a[0] as (typeof FAMILY_ORDER)[number]);
+      const indexB = FAMILY_ORDER.indexOf(b[0] as (typeof FAMILY_ORDER)[number]);
+      const safeA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
+      const safeB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
+      if (safeA !== safeB) return safeA - safeB;
+      return a[0].localeCompare(b[0]);
+    });
+  }, [selectedShades]);
+
+  const selectedCount = selectedShades.length;
 
   const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
   const qtyUnit: "pcs" | "kg" = orderFormat === "bulk"
@@ -374,6 +700,15 @@ export default function InternalSolidColourGrid() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const panelProps: SelectedPanelProps = {
+    selectedCount,
+    countsByFamily,
+    selectedShades,
+    onRemoveShade: removeSelected,
+    onClearAll: clearSelected,
+    onSetImageStatus: setImageStatus,
   };
 
   return (
@@ -937,123 +1272,160 @@ export default function InternalSolidColourGrid() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-        {filtered.map((r, idx) => {
-          const sku = r["Internal_SKU"] || "";
-          const name = r["Shade_Name"] || "";
-          const hex = r["Hex_Code"] || r["HEX"] || "";
-          const img = r["Swatch_Image"] || (sku ? `/img/solid-colour/${sku}.webp` : "");
-          const key = sku || `row-${idx}`;
-          const status = imgStatus[key];
-          const hasImage = Boolean(img) && status !== "MISSING";
-          const currentView = tileView[key] || "nail";
-          const showImage = hasImage && currentView === "nail";
-          const showCard = !hasImage || currentView === "card";
-          return (
-            <div key={key} className="rounded-2xl border bg-white p-3 shadow-sm">
-              <div
-                className="aspect-square w-full overflow-hidden rounded-xl bg-neutral-50 relative"
-                role="img"
-                aria-label={`${sku} ${showImage ? "nail view" : "card view"}`}
-              >
-                {showImage ? (
-                  <>
-                    <img
-                      src={img}
-                      alt={sku}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                      onLoad={() =>
-                        setImgStatus((prev) => (prev[key] === "OK" ? prev : { ...prev, [key]: "OK" }))
-                      }
-                      onError={() =>
-                        setImgStatus((prev) =>
-                          prev[key] === "MISSING" ? prev : { ...prev, [key]: "MISSING" }
-                        )
-                      }
-                    />
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
+        <div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {filtered.map((r, idx) => {
+              const rowId = getRowId(r, idx);
+              const sku = r["Internal_SKU"] || "";
+              const code = getRowCode(r, rowId);
+              const hex = getRowHex(r);
+              const img = getRowImage(r, rowId);
+              const status = imgStatus[rowId];
+              const hasImage = Boolean(img) && status !== "MISSING";
+              const currentView = tileView[rowId] || "nail";
+              const showImage = hasImage && currentView === "nail";
+              const showCard = !hasImage || currentView === "card";
+              const isSelected = selectedIds.has(rowId);
 
-                    {/* Status badge */}
-                    <div className="absolute top-2 left-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
-                      {status ?? "…"}
-                    </div>
+              return (
+                <div
+                  key={rowId}
+                  className={`cursor-pointer rounded-2xl border bg-white p-3 shadow-sm transition ${
+                    isSelected ? "border-black ring-2 ring-black/10" : "border-neutral-200"
+                  }`}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
+                  aria-label={`${isSelected ? "Deselect" : "Select"} ${code}`}
+                  onClick={() => toggleSelected(rowId)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggleSelected(rowId);
+                    }
+                  }}
+                >
+                  <div
+                    className="relative aspect-square w-full overflow-hidden rounded-xl bg-neutral-50"
+                    role="img"
+                    aria-label={`${code} ${showImage ? "nail view" : "card view"}`}
+                  >
+                    {showImage ? (
+                      <>
+                        <img
+                          src={img}
+                          alt={code}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                          onLoad={() => setImageStatus(rowId, "OK")}
+                          onError={() => setImageStatus(rowId, "MISSING")}
+                        />
+                        <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+                          View card
+                        </div>
+                      </>
+                    ) : showCard && hex ? (
+                      <>
+                        <div className="h-full w-full" style={{ backgroundColor: hex }} />
+                        {hasImage && (
+                          <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
+                            View nail
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="flex h-full items-center justify-center px-2 text-center text-xs text-neutral-500">{code}</div>
+                    )}
 
-                    <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
-                      View card
-                    </div>
-                  </>
-                ) : showCard && hex ? (
-                  <>
-                    <div className="h-full w-full" style={{ backgroundColor: hex }} />
-                    {hasImage && (
-                      <div className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm">
-                        View nail
+                    {isSelected && (
+                      <div className="absolute left-2 top-2 rounded-full border bg-black px-2 py-0.5 text-[10px] text-white shadow-sm">
+                        Selected
                       </div>
                     )}
-                  </>
-                ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-neutral-500">No image</div>
-                )}
-              </div>
+                  </div>
 
-              <div className="mt-2">
-                <div className="text-xs font-semibold">{sku}</div>
-                <div className="text-[11px] text-neutral-600 line-clamp-2">{name}</div>
-                <div className="text-[11px] text-neutral-600 mt-1">HEX: {hex || "—"}</div>
+                  <div className="mt-2">
+                    <div className="text-xs font-semibold">{code}</div>
+                    {sku && sku !== code && <div className="text-[11px] text-neutral-500">{sku}</div>}
 
-                <button
-                  type="button"
-                  disabled={!hasImage}
-                  aria-pressed={currentView === "card"}
-                  aria-label={
-                    hasImage
-                      ? `${currentView === "nail" ? "Show card view" : "Show nail view"} for ${sku}`
-                      : `No alternate view available for ${sku}`
-                  }
-                  onClick={() => {
-                    if (!hasImage) return;
-                    setTileView((prev) => ({
-                      ...prev,
-                      [key]: (prev[key] || "nail") === "nail" ? "card" : "nail",
-                    }));
-                  }}
-                  className="mt-2 rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {!hasImage ? "No alternate view" : currentView === "nail" ? "Show card" : "Show nail"}
-                </button>
-
-                <div className="mt-3 flex items-center gap-2">
-                  <input
-                    type="number"
-                    min={0}
-                    placeholder={qtyUnit === "kg" ? "KG" : "Qty"}
-                    value={order[sku] || ""}
-                    onChange={(e) => {
-                      const minQty = orderFormat === "bulk" ? 1 : 30;
-                      const val = parseInt(e.target.value || "0", 10);
-                      if (val === 0) {
-                        setOrder((prev) => ({ ...prev, [sku]: 0 }));
-                      } else if (val < minQty) {
-                        setOrder((prev) => ({ ...prev, [sku]: minQty }));
-                      } else {
-                        setOrder((prev) => ({ ...prev, [sku]: val }));
+                    <button
+                      type="button"
+                      disabled={!hasImage}
+                      aria-pressed={currentView === "card"}
+                      aria-label={
+                        hasImage
+                          ? `${currentView === "nail" ? "Show card view" : "Show nail view"} for ${code}`
+                          : `No alternate view available for ${code}`
                       }
-                    }}
-                    className="w-16 rounded border px-2 py-1 text-xs"
-                  />
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!hasImage) return;
+                        setTileView((prev) => ({
+                          ...prev,
+                          [rowId]: (prev[rowId] || "nail") === "nail" ? "card" : "nail",
+                        }));
+                      }}
+                      className="mt-2 rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {!hasImage ? "No alternate view" : currentView === "nail" ? "Show card" : "Show nail"}
+                    </button>
+
+                    <div className="mt-3 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      <input
+                        type="number"
+                        min={0}
+                        placeholder={qtyUnit === "kg" ? "KG" : "Qty"}
+                        value={order[sku] || ""}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => {
+                          const minQty = orderFormat === "bulk" ? 1 : 30;
+                          const val = parseInt(e.target.value || "0", 10);
+                          if (val === 0) {
+                            setOrder((prev) => ({ ...prev, [sku]: 0 }));
+                          } else if (val < minQty) {
+                            setOrder((prev) => ({ ...prev, [sku]: minQty }));
+                          } else {
+                            setOrder((prev) => ({ ...prev, [sku]: val }));
+                          }
+                        }}
+                        className="w-16 rounded border px-2 py-1 text-xs"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              );
+            })}
+          </div>
+
+          {!filtered.length && (
+            <div className="mt-8 rounded-xl border bg-white p-6 text-sm text-neutral-600">
+              No results. Check that <code className="font-mono">solid-1200.json</code> exists in{" "}
+              <code className="font-mono">public/data/</code>.
             </div>
-          );
-        })}
+          )}
+
+          <div className="h-20 lg:hidden" />
+        </div>
+
+        <aside className="hidden lg:block">
+          <SelectedPanel {...panelProps} className="sticky top-6" />
+        </aside>
       </div>
 
-      {!filtered.length && (
-        <div className="mt-8 rounded-xl border bg-white p-6 text-sm text-neutral-600">
-          No results. Check that <code className="font-mono">solid-1200.json</code> exists in{" "}
-          <code className="font-mono">public/data/</code>.
-        </div>
-      )}
+      <button
+        type="button"
+        className="fixed bottom-4 left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg lg:hidden"
+        onClick={() => setIsMobileDrawerOpen(true)}
+      >
+        <span className="text-sm font-semibold">My Colour Chart ({selectedCount})</span>
+      </button>
+
+      <MobileDrawer
+        open={isMobileDrawerOpen}
+        onClose={() => setIsMobileDrawerOpen(false)}
+        panelProps={panelProps}
+      />
     </div>
   );
 }
