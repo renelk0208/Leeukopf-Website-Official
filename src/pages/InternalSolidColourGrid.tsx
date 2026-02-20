@@ -150,6 +150,7 @@ type ShadeTileProps = {
   qtyUnit: "pcs" | "kg";
   minQty: number;
   qtyStep: number;
+  interactionLocked: boolean;
   onToggleSelected: (id: string) => void;
   onToggleView: (id: string) => void;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
@@ -179,6 +180,7 @@ type SelectedPanelProps = {
   onCopyCodes: () => void;
   onDownloadCsv: () => void;
   copyFeedback: boolean;
+  interactionLocked: boolean;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
   className?: string;
 };
@@ -194,6 +196,7 @@ type ShadeGridProps = {
   qtyUnit: "pcs" | "kg";
   minQty: number;
   qtyStep: number;
+  interactionLocked: boolean;
   onToggleSelected: (id: string) => void;
   onToggleView: (id: string) => void;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
@@ -275,6 +278,26 @@ const classifyFamilyFromHex = (hex: string): string => {
 
 const FAMILY_FIELDS = ["family", "Family", "Colour_Family", "Color_Family", "colour_family", "color_family"];
 
+function getMissingRequiredClientFields(client: ClientDetails): string[] {
+  const missing: string[] = [];
+  if (!client.companyName.trim()) missing.push("Company Name or Client Name");
+  if (!client.invoiceAddress.trim()) missing.push("Invoice Address");
+  if (!client.invoiceRegion.trim()) missing.push("Invoice Region");
+  if (!client.country.trim()) missing.push("Country");
+  if (!client.invoicePostalCode.trim()) missing.push("Invoice Postal Code");
+  if (!client.email.trim()) missing.push("Email");
+  if (!client.contactNumber.trim()) missing.push("Contact Number");
+  if (!client.contactName.trim()) missing.push("Contact Name");
+
+  if (!client.sameAddress) {
+    if (!client.shippingAddress.trim()) missing.push("Shipping Address");
+    if (!client.shippingRegion.trim()) missing.push("Shipping Region");
+    if (!client.shippingPostalCode.trim()) missing.push("Shipping Postal Code");
+  }
+
+  return missing;
+}
+
 const getRowId = (row: Row, idx: number): string => row["Internal_SKU"] || row["Shade_Code"] || `row-${idx}`;
 
 const getRowCode = (row: Row, fallbackId: string): string => row["Shade_Code"] || row["Internal_SKU"] || fallbackId;
@@ -322,8 +345,17 @@ const getRowFamily = (row: Row): string => {
 
 function normalizeQuantity(value: number): number {
   if (Number.isNaN(value)) return QUANTITY_MOQ;
-  const rounded = Math.round(value / QUANTITY_STEP) * QUANTITY_STEP;
-  return Math.max(QUANTITY_MOQ, rounded);
+  const roundedUp = Math.ceil(value / QUANTITY_STEP) * QUANTITY_STEP;
+  return Math.max(QUANTITY_MOQ, roundedUp);
+}
+
+function violatesFinishedUnitsMoqRule(value: number): boolean {
+  if (!Number.isFinite(value) || value <= 0) return false;
+  return value < QUANTITY_MOQ || value % QUANTITY_STEP !== 0;
+}
+
+function showMoqRulePopup() {
+  window.alert("MOQ is 30 units per colour and increase by increments of 5 units");
 }
 
 const codeSort = (left: string, right: string): number =>
@@ -333,6 +365,34 @@ const panelFamilyOrderIndex = (family: string): number => {
   const idx = PANEL_FAMILY_ORDER.indexOf(family as (typeof PANEL_FAMILY_ORDER)[number]);
   return idx === -1 ? Number.MAX_SAFE_INTEGER : idx;
 };
+
+const FAMILY_SEARCH_ALIASES: Record<string, string[]> = {
+  reds: ["red", "reds"],
+  oranges: ["orange", "oranges"],
+  yellows: ["yellow", "yellows"],
+  greens: ["green", "greens"],
+  teals: ["teal", "teals"],
+  blues: ["blue", "blues"],
+  purples: ["purple", "purples", "violet", "violets"],
+  pinks: ["pink", "pinks"],
+  browns: ["brown", "browns"],
+  "nudes/beiges": ["nude", "nudes", "beige", "beiges", "nude/beige"],
+  whites: ["white", "whites"],
+  blacks: ["black", "blacks"],
+  greys: ["grey", "greys", "gray", "grays"],
+  other: ["other"],
+};
+
+function matchesFamilyQuery(row: Row, query: string): boolean {
+  const family = getRowFamily(row).toLowerCase();
+  if (family.includes(query)) return true;
+
+  return Object.entries(FAMILY_SEARCH_ALIASES).some(([familyKey, aliases]) => {
+    const matchesAlias = aliases.some((alias) => alias.includes(query) || query.includes(alias));
+    if (!matchesAlias) return false;
+    return family === familyKey;
+  });
+}
 
 const ShadeTile = memo(function ShadeTile({
   rowId,
@@ -347,6 +407,7 @@ const ShadeTile = memo(function ShadeTile({
   qtyUnit,
   minQty,
   qtyStep,
+  interactionLocked,
   onToggleSelected,
   onToggleView,
   onSetImageStatus,
@@ -363,25 +424,29 @@ const ShadeTile = memo(function ShadeTile({
   }, [candidateSignature]);
 
   const handleToggleSelected = useCallback(() => {
+    if (interactionLocked) return;
     onToggleSelected(rowId);
-  }, [onToggleSelected, rowId]);
+  }, [interactionLocked, onToggleSelected, rowId]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (interactionLocked) return;
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       onToggleSelected(rowId);
     }
-  }, [onToggleSelected, rowId]);
+  }, [interactionLocked, onToggleSelected, rowId]);
 
   const handleToggleViewClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (interactionLocked) return;
     e.stopPropagation();
     onToggleView(rowId);
-  }, [onToggleView, rowId]);
+  }, [interactionLocked, onToggleView, rowId]);
 
   const handlePreviewToggleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (interactionLocked) return;
     e.stopPropagation();
     onToggleView(rowId);
-  }, [onToggleView, rowId]);
+  }, [interactionLocked, onToggleView, rowId]);
 
   const handleImageLoad = useCallback(() => {
     onSetImageStatus(rowId, "OK");
@@ -401,16 +466,19 @@ const ShadeTile = memo(function ShadeTile({
   }, []);
 
   const handleQtyChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (interactionLocked) return;
     onSetQty(sku, e.target.value);
-  }, [onSetQty, sku]);
+  }, [interactionLocked, onSetQty, sku]);
 
   return (
     <div
-      className={`cursor-pointer rounded-2xl border bg-white p-3 shadow-sm transition ${
+      className={`rounded-2xl border bg-white p-3 shadow-sm transition ${
+        interactionLocked ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+      } ${
         isSelected ? "border-black ring-2 ring-black/10" : "border-neutral-200"
       }`}
       role="button"
-      tabIndex={0}
+      tabIndex={interactionLocked ? -1 : 0}
       aria-pressed={isSelected}
       aria-label={`${isSelected ? "Deselect" : "Select"} ${code}`}
       onClick={handleToggleSelected}
@@ -469,7 +537,7 @@ const ShadeTile = memo(function ShadeTile({
 
         <button
           type="button"
-          disabled={!hasImage}
+          disabled={interactionLocked || !hasImage}
           aria-pressed={currentView === "card"}
           aria-label={
             hasImage
@@ -489,6 +557,7 @@ const ShadeTile = memo(function ShadeTile({
             step={qtyStep}
             placeholder={qtyUnit === "kg" ? "KG" : "Qty"}
             value={qtyValue}
+            disabled={interactionLocked}
             onClick={stopPropagation}
             onChange={handleQtyChange}
             className="w-16 rounded border px-2 py-1 text-xs"
@@ -503,6 +572,7 @@ type SelectedSwatchItemProps = {
   shade: SelectedShade;
   quantity: number;
   showQuantities: boolean;
+  interactionLocked: boolean;
   onRemoveShade: (id: string) => void;
   onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
   onQuantityInput: (id: string, value: string) => void;
@@ -514,6 +584,7 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
   shade,
   quantity,
   showQuantities,
+  interactionLocked,
   onRemoveShade,
   onSetImageStatus,
   onQuantityInput,
@@ -528,7 +599,10 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
     setCandidateIndex(0);
   }, [candidateSignature]);
 
-  const handleRemove = useCallback(() => onRemoveShade(shade.id), [onRemoveShade, shade.id]);
+  const handleRemove = useCallback(() => {
+    if (interactionLocked) return;
+    onRemoveShade(shade.id);
+  }, [interactionLocked, onRemoveShade, shade.id]);
   const handleLoad = useCallback(() => onSetImageStatus(shade.id, "OK"), [onSetImageStatus, shade.id]);
   const handleError = useCallback(() => {
     setCandidateIndex((prev) => {
@@ -539,17 +613,27 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
     });
   }, [onSetImageStatus, shade.id, shade.imageCandidates.length]);
   const handleInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => onQuantityInput(shade.id, e.target.value),
-    [onQuantityInput, shade.id]
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (interactionLocked) return;
+      onQuantityInput(shade.id, e.target.value);
+    },
+    [interactionLocked, onQuantityInput, shade.id]
   );
-  const handleInc = useCallback(() => onQuantityIncrement(shade.id), [onQuantityIncrement, shade.id]);
-  const handleDec = useCallback(() => onQuantityDecrement(shade.id), [onQuantityDecrement, shade.id]);
+  const handleInc = useCallback(() => {
+    if (interactionLocked) return;
+    onQuantityIncrement(shade.id);
+  }, [interactionLocked, onQuantityIncrement, shade.id]);
+  const handleDec = useCallback(() => {
+    if (interactionLocked) return;
+    onQuantityDecrement(shade.id);
+  }, [interactionLocked, onQuantityDecrement, shade.id]);
 
   return (
     <div className="relative rounded-lg border bg-neutral-50 p-1">
       <button
         type="button"
         onClick={handleRemove}
+        disabled={interactionLocked}
         className="absolute right-1 top-1 z-10 h-5 w-5 rounded-full border bg-white text-[10px] leading-none"
         aria-label={`Remove ${shade.code}`}
       >
@@ -577,23 +661,24 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
 
       {showQuantities && (
         <div className="mt-1 flex items-center justify-center gap-1">
-          <button type="button" onClick={handleDec} className="h-5 w-5 rounded border text-[10px]">-</button>
+          <button type="button" onClick={handleDec} disabled={interactionLocked} className="h-5 w-5 rounded border text-[10px] disabled:cursor-not-allowed disabled:opacity-50">-</button>
           <input
             type="number"
             min={QUANTITY_MOQ}
             step={QUANTITY_STEP}
             value={quantity}
+            disabled={interactionLocked}
             onChange={handleInput}
             className="w-11 rounded border px-1 py-0.5 text-center text-[10px]"
           />
-          <button type="button" onClick={handleInc} className="h-5 w-5 rounded border text-[10px]">+</button>
+          <button type="button" onClick={handleInc} disabled={interactionLocked} className="h-5 w-5 rounded border text-[10px] disabled:cursor-not-allowed disabled:opacity-50">+</button>
         </div>
       )}
     </div>
   );
 });
 
-function ShadeGrid({ items, qtyUnit, minQty, qtyStep, onToggleSelected, onToggleView, onSetImageStatus, onSetQty }: ShadeGridProps) {
+function ShadeGrid({ items, qtyUnit, minQty, qtyStep, interactionLocked, onToggleSelected, onToggleView, onSetImageStatus, onSetQty }: ShadeGridProps) {
   if (ENABLE_VIRTUAL_GRID) {
     return (
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
@@ -612,6 +697,7 @@ function ShadeGrid({ items, qtyUnit, minQty, qtyStep, onToggleSelected, onToggle
             qtyUnit={qtyUnit}
             minQty={minQty}
             qtyStep={qtyStep}
+            interactionLocked={interactionLocked}
             onToggleSelected={onToggleSelected}
             onToggleView={onToggleView}
             onSetImageStatus={onSetImageStatus}
@@ -639,6 +725,7 @@ function ShadeGrid({ items, qtyUnit, minQty, qtyStep, onToggleSelected, onToggle
           qtyUnit={qtyUnit}
           minQty={minQty}
           qtyStep={qtyStep}
+          interactionLocked={interactionLocked}
           onToggleSelected={onToggleSelected}
           onToggleView={onToggleView}
           onSetImageStatus={onSetImageStatus}
@@ -672,6 +759,7 @@ function SelectedPanel({
   onCopyCodes,
   onDownloadCsv,
   copyFeedback,
+  interactionLocked,
   onSetImageStatus,
   className,
 }: SelectedPanelProps) {
@@ -682,6 +770,7 @@ function SelectedPanel({
         shade={shade}
         quantity={quantities[shade.id] ?? QUANTITY_MOQ}
         showQuantities={showQuantities}
+        interactionLocked={interactionLocked}
         onRemoveShade={onRemoveShade}
         onSetImageStatus={onSetImageStatus}
         onQuantityInput={onQuantityInput}
@@ -689,7 +778,7 @@ function SelectedPanel({
         onQuantityDecrement={onQuantityDecrement}
       />
     ),
-    [onQuantityDecrement, onQuantityIncrement, onQuantityInput, onRemoveShade, onSetImageStatus, quantities, showQuantities]
+    [interactionLocked, onQuantityDecrement, onQuantityIncrement, onQuantityInput, onRemoveShade, onSetImageStatus, quantities, showQuantities]
   );
 
   return (
@@ -734,7 +823,7 @@ function SelectedPanel({
           <button
             type="button"
             onClick={onClearAll}
-            disabled={selectedCount === 0}
+            disabled={interactionLocked || selectedCount === 0}
             className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Clear all
@@ -747,6 +836,7 @@ function SelectedPanel({
             <button
               type="button"
               onClick={() => onSortModeChange("family")}
+              disabled={interactionLocked}
               className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "family" ? "bg-black text-white" : "text-neutral-700"}`}
             >
               By Family
@@ -754,6 +844,7 @@ function SelectedPanel({
             <button
               type="button"
               onClick={() => onSortModeChange("code")}
+              disabled={interactionLocked}
               className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "code" ? "bg-black text-white" : "text-neutral-700"}`}
             >
               By Code
@@ -761,6 +852,7 @@ function SelectedPanel({
             <button
               type="button"
               onClick={() => onSortModeChange("recent")}
+              disabled={interactionLocked}
               className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "recent" ? "bg-black text-white" : "text-neutral-700"}`}
             >
               Recently Added
@@ -772,6 +864,7 @@ function SelectedPanel({
           <button
             type="button"
             onClick={() => onGridFilterChange(gridFilter === "selected" ? "all" : "selected")}
+            disabled={interactionLocked}
             className={`rounded-full border px-2 py-1 text-[11px] transition ${
               gridFilter === "selected" ? "bg-black text-white" : "bg-neutral-50 text-neutral-700"
             }`}
@@ -781,6 +874,7 @@ function SelectedPanel({
           <button
             type="button"
             onClick={() => onGridFilterChange(gridFilter === "unselected" ? "all" : "unselected")}
+            disabled={interactionLocked}
             className={`rounded-full border px-2 py-1 text-[11px] transition ${
               gridFilter === "unselected" ? "bg-black text-white" : "bg-neutral-50 text-neutral-700"
             }`}
@@ -793,7 +887,7 @@ function SelectedPanel({
           <button
             type="button"
             onClick={onCopyCodes}
-            disabled={selectedCount === 0}
+            disabled={interactionLocked || selectedCount === 0}
             className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {copyFeedback ? "Copied ✓" : "Copy Codes"}
@@ -801,7 +895,7 @@ function SelectedPanel({
           <button
             type="button"
             onClick={onDownloadCsv}
-            disabled={selectedCount === 0}
+            disabled={interactionLocked || selectedCount === 0}
             className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Download CSV
@@ -814,6 +908,7 @@ function SelectedPanel({
             <button
               type="button"
               onClick={onToggleQuantities}
+              disabled={interactionLocked}
               className={`rounded-full border px-2 py-0.5 text-[11px] ${showQuantities ? "bg-black text-white" : "bg-white text-neutral-700"}`}
             >
               {showQuantities ? "On" : "Off"}
@@ -1049,8 +1144,9 @@ export default function InternalSolidColourGrid() {
       setQuantities((prevQty) => {
         if (exists) {
           if (!(id in prevQty)) return prevQty;
-          const { [id]: _removed, ...rest } = prevQty;
-          return rest;
+          const nextQty = { ...prevQty };
+          delete nextQty[id];
+          return nextQty;
         }
         if (id in prevQty) return prevQty;
         return { ...prevQty, [id]: QUANTITY_MOQ };
@@ -1071,8 +1167,9 @@ export default function InternalSolidColourGrid() {
     setSelectedOrder((prev) => prev.filter((entry) => entry !== id));
     setQuantities((prev) => {
       if (!(id in prev)) return prev;
-      const { [id]: _removed, ...rest } = prev;
-      return rest;
+      const next = { ...prev };
+      delete next[id];
+      return next;
     });
   }, []);
 
@@ -1084,6 +1181,9 @@ export default function InternalSolidColourGrid() {
 
   const setQuantityInput = useCallback((id: string, value: string) => {
     const numeric = parseInt(value || String(QUANTITY_MOQ), 10);
+    if (orderFormat !== "bulk" && violatesFinishedUnitsMoqRule(numeric)) {
+      showMoqRulePopup();
+    }
     const nextQty = normalizeQuantity(numeric);
 
     setQuantities((prev) => ({ ...prev, [id]: nextQty }));
@@ -1093,7 +1193,7 @@ export default function InternalSolidColourGrid() {
     if (sku) {
       setOrder((prev) => ({ ...prev, [sku]: nextQty }));
     }
-  }, [rows]);
+  }, [orderFormat, rows]);
 
   const incrementQuantity = useCallback((id: string) => {
     setQuantities((prev) => {
@@ -1130,7 +1230,7 @@ export default function InternalSolidColourGrid() {
         const sku = (r["Internal_SKU"] || "").toLowerCase();
         const name = (r["Shade_Name"] || "").toLowerCase();
         const code = (r["Shade_Code"] || "").toLowerCase();
-        return sku.includes(query) || name.includes(query) || code.includes(query);
+        return sku.includes(query) || name.includes(query) || code.includes(query) || matchesFamilyQuery(r, query);
       });
     }
 
@@ -1416,6 +1516,9 @@ export default function InternalSolidColourGrid() {
     } else if (orderFormat === "bulk") {
       nextOrderQty = Math.max(1, parsed);
     } else {
+      if (violatesFinishedUnitsMoqRule(parsed)) {
+        showMoqRulePopup();
+      }
       nextOrderQty = normalizeQuantity(parsed);
     }
 
@@ -1450,8 +1553,9 @@ export default function InternalSolidColourGrid() {
       setSelectedOrder((prev) => prev.filter((entry) => entry !== rowId));
       setQuantities((prev) => {
         if (!(rowId in prev)) return prev;
-        const { [rowId]: _removed, ...rest } = prev;
-        return rest;
+        const next = { ...prev };
+        delete next[rowId];
+        return next;
       });
     }
   }, [orderFormat, skuToRowId]);
@@ -1518,6 +1622,8 @@ export default function InternalSolidColourGrid() {
     : (ALLOWS_PCS_UNIT ? "pcs" : "kg");
   const bulkRequiresBucket = orderFormat === "bulk" && selectedItems.some(([, qty]) => qty >= 5);
   const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
+  const missingClientFields = useMemo(() => getMissingRequiredClientFields(client), [client]);
+  const isClientInfoComplete = missingClientFields.length === 0;
 
   useEffect(() => {
     if ((!ALLOWS_KG_UNIT || !ALLOWS_BUCKET_PACKAGING) && orderFormat === "bulk") {
@@ -1562,22 +1668,6 @@ export default function InternalSolidColourGrid() {
       };
     });
     const token = import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "";
-
-    const missingClientFields: string[] = [];
-    if (!client.companyName.trim()) missingClientFields.push("Company Name or Client Name");
-    if (!client.invoiceAddress.trim()) missingClientFields.push("Invoice Address");
-    if (!client.invoiceRegion.trim()) missingClientFields.push("Invoice Region");
-    if (!client.country.trim()) missingClientFields.push("Country");
-    if (!client.invoicePostalCode.trim()) missingClientFields.push("Invoice Postal Code");
-    if (!client.email.trim()) missingClientFields.push("Email");
-    if (!client.contactNumber.trim()) missingClientFields.push("Contact Number");
-    if (!client.contactName.trim()) missingClientFields.push("Contact Name");
-
-    if (!client.sameAddress) {
-      if (!client.shippingAddress.trim()) missingClientFields.push("Shipping Address");
-      if (!client.shippingRegion.trim()) missingClientFields.push("Shipping Region");
-      if (!client.shippingPostalCode.trim()) missingClientFields.push("Shipping Postal Code");
-    }
 
     if (missingClientFields.length > 0 || exportData.length === 0) {
       const details = missingClientFields.length > 0
@@ -1756,6 +1846,7 @@ export default function InternalSolidColourGrid() {
     onCopyCodes: handleCopyCodes,
     onDownloadCsv: handleDownloadCsv,
     copyFeedback,
+    interactionLocked: !isClientInfoComplete,
     onSetImageStatus: setImageStatus,
   };
 
@@ -1789,7 +1880,7 @@ export default function InternalSolidColourGrid() {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search by SKU / code / name…"
+          placeholder="Search by SKU / code / name / family (e.g. red, pink, blue)…"
           className="w-full rounded-xl border bg-white px-4 py-2 text-sm shadow-sm sm:w-80"
         />
 
@@ -1806,7 +1897,7 @@ export default function InternalSolidColourGrid() {
       <div className="mb-6 rounded-xl border bg-white p-4 shadow-sm">
         <div className="mb-2 text-xs text-neutral-600">Fields marked with <span className="text-red-600">*</span> are required.</div>
         <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-          <label className="text-xs font-medium text-neutral-600">Company Name or Client Name <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-neutral-700">Company Name or Client Name <span className="text-red-600">*</span>
             <input
               value={client.companyName}
               onChange={(e) => setClient((prev) => ({ ...prev, companyName: e.target.value }))}
@@ -1814,7 +1905,7 @@ export default function InternalSolidColourGrid() {
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-medium text-neutral-600">Contact Name <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-neutral-700">Contact Name <span className="text-red-600">*</span>
             <input
               value={client.contactName}
               onChange={(e) => setClient((prev) => ({ ...prev, contactName: e.target.value }))}
@@ -1822,7 +1913,7 @@ export default function InternalSolidColourGrid() {
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-medium text-neutral-600">Contact Number <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-neutral-700">Contact Number <span className="text-red-600">*</span>
             <input
               value={client.contactNumber}
               onChange={(e) => setClient((prev) => ({ ...prev, contactNumber: e.target.value }))}
@@ -1830,7 +1921,7 @@ export default function InternalSolidColourGrid() {
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-medium text-neutral-600">Invoice Address <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-neutral-700">Invoice Address <span className="text-red-600">*</span>
             <input
               value={client.invoiceAddress}
               onChange={(e) => {
@@ -1845,7 +1936,7 @@ export default function InternalSolidColourGrid() {
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-medium text-neutral-600">Invoice Region <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-neutral-700">Invoice Region <span className="text-red-600">*</span>
             <input
               value={client.invoiceRegion}
               onChange={(e) => {
@@ -1860,7 +1951,7 @@ export default function InternalSolidColourGrid() {
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-medium text-neutral-600">Invoice Postal Code <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-neutral-700">Invoice Postal Code <span className="text-red-600">*</span>
             <input
               value={client.invoicePostalCode}
               onChange={(e) => {
@@ -1894,7 +1985,7 @@ export default function InternalSolidColourGrid() {
           </label>
           {!client.sameAddress && (
             <>
-              <label className="text-xs font-medium text-neutral-600">Shipping Address <span className="text-red-600">*</span>
+              <label className="text-xs font-semibold text-neutral-700">Shipping Address <span className="text-red-600">*</span>
                 <input
                   value={client.shippingAddress}
                   onChange={(e) => setClient((prev) => ({ ...prev, shippingAddress: e.target.value }))}
@@ -1902,7 +1993,7 @@ export default function InternalSolidColourGrid() {
                   className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
                 />
               </label>
-              <label className="text-xs font-medium text-neutral-600">Shipping Region <span className="text-red-600">*</span>
+              <label className="text-xs font-semibold text-neutral-700">Shipping Region <span className="text-red-600">*</span>
                 <input
                   value={client.shippingRegion}
                   onChange={(e) => setClient((prev) => ({ ...prev, shippingRegion: e.target.value }))}
@@ -1910,7 +2001,7 @@ export default function InternalSolidColourGrid() {
                   className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
                 />
               </label>
-              <label className="text-xs font-medium text-neutral-600">Shipping Postal Code <span className="text-red-600">*</span>
+              <label className="text-xs font-semibold text-neutral-700">Shipping Postal Code <span className="text-red-600">*</span>
                 <input
                   value={client.shippingPostalCode}
                   onChange={(e) => setClient((prev) => ({ ...prev, shippingPostalCode: e.target.value }))}
@@ -1928,7 +2019,7 @@ export default function InternalSolidColourGrid() {
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-medium text-neutral-600">Country <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-neutral-700">Country <span className="text-red-600">*</span>
             <input
               value={client.country}
               onChange={(e) => setClient((prev) => ({ ...prev, country: e.target.value }))}
@@ -1936,7 +2027,7 @@ export default function InternalSolidColourGrid() {
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-medium text-neutral-600">Contact Email <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-neutral-700">Contact Email <span className="text-red-600">*</span>
             <input
               type="email"
               value={client.email}
@@ -1946,6 +2037,12 @@ export default function InternalSolidColourGrid() {
             />
           </label>
         </div>
+
+        {!isClientInfoComplete && (
+          <div className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+            Complete required client fields to unlock shade selection, quantity editing, and order actions. Missing: {missingClientFields.join(", ")}.
+          </div>
+        )}
 
         <div className="rounded-xl border bg-neutral-50 p-3">
           <div className="text-sm font-semibold">Order format <span className="text-red-600">*</span></div>
@@ -2271,17 +2368,18 @@ export default function InternalSolidColourGrid() {
           )}
         </div>
 
-        <div className="text-sm font-semibold">
+        <div className="text-sm font-semibold md:hidden">
           Selected Shades: {selectedItems.length}
         </div>
-        <div className="text-sm">
+        <div className="text-sm md:hidden">
           {qtyUnit === "kg" ? "Total KG" : "Total Units"}: {totalUnits}
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <button
             onClick={() => setOrder({})}
-            className="rounded-xl border bg-white px-4 py-2 text-xs"
+            disabled={!isClientInfoComplete}
+            className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
           >
             Clear
           </button>
@@ -2293,15 +2391,16 @@ export default function InternalSolidColourGrid() {
                 .join("\n");
               await navigator.clipboard.writeText(text);
             }}
-            className="rounded-xl border bg-white px-4 py-2 text-xs"
+            disabled={!isClientInfoComplete}
+            className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
           >
             Copy list
           </button>
 
           <button
             onClick={handleSubmitOrder}
-            disabled={isSubmitting}
-            className="rounded-xl bg-black px-4 py-2 text-xs text-white"
+            disabled={!isClientInfoComplete || isSubmitting}
+            className="rounded-xl bg-black px-4 py-2 text-xs text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "Submitting..." : "Submit Order"}
           </button>
@@ -2327,6 +2426,7 @@ export default function InternalSolidColourGrid() {
             qtyUnit={qtyUnit}
             minQty={tileMinQty}
             qtyStep={tileQtyStep}
+            interactionLocked={!isClientInfoComplete}
             onToggleSelected={toggleSelected}
             onToggleView={toggleTileView}
             onSetImageStatus={setImageStatus}
@@ -2350,7 +2450,8 @@ export default function InternalSolidColourGrid() {
 
       <button
         type="button"
-        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg md:hidden"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg disabled:cursor-not-allowed disabled:opacity-60 md:hidden"
+        disabled={!isClientInfoComplete}
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
