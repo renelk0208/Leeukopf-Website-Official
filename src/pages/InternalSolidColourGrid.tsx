@@ -106,7 +106,7 @@ const toDisplayLabel = (value: string) => value.charAt(0).toUpperCase() + value.
 type SelectedShade = {
   id: string;
   code: string;
-  image: string;
+  imageCandidates: string[];
   hasImage: boolean;
   family: string;
 };
@@ -128,7 +128,7 @@ type GridShadeItem = {
   sku: string;
   code: string;
   hex: string;
-  image: string;
+  imageCandidates: string[];
   hasImage: boolean;
   currentView: "nail" | "card";
   isSelected: boolean;
@@ -142,7 +142,7 @@ type ShadeTileProps = {
   sku: string;
   code: string;
   hex: string;
-  image: string;
+  imageCandidates: string[];
   hasImage: boolean;
   currentView: "nail" | "card";
   isSelected: boolean;
@@ -277,7 +277,38 @@ const getRowCode = (row: Row, fallbackId: string): string => row["Shade_Code"] |
 
 const getRowHex = (row: Row): string => row["Hex_Code"] || row["HEX"] || "";
 
-const getRowImage = (row: Row, id: string): string => row["Swatch_Image"] || `/img/solid-colour/${id}.webp`;
+const toImagePath = (value: string): string => {
+  if (!value) return "";
+  if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("/")) return value;
+  return `/img/solid-colour/${value}.webp`;
+};
+
+const getImageCandidatesFromId = (value: string): string[] => {
+  const match = value.match(/^(.*?)(\d+)$/);
+  if (!match) return [value];
+
+  const prefix = match[1];
+  const numericRaw = match[2];
+  const numeric = parseInt(numericRaw, 10);
+  if (Number.isNaN(numeric)) return [value];
+
+  const variants = [
+    `${prefix}${numericRaw}`,
+    `${prefix}${String(numeric).padStart(4, "0")}`,
+    `${prefix}${String(numeric).padStart(5, "0")}`,
+    `${prefix}${numeric}`,
+  ];
+
+  return Array.from(new Set(variants));
+};
+
+const getRowImageCandidates = (row: Row, id: string): string[] => {
+  const explicit = (row["Swatch_Image"] || "").trim();
+  const rawCandidates = explicit
+    ? [explicit]
+    : getImageCandidatesFromId(id);
+  return Array.from(new Set(rawCandidates.map((entry) => toImagePath(entry)).filter(Boolean)));
+};
 
 const getRowFamily = (row: Row): string => {
   const familyField = FAMILY_FIELDS.map((key) => row[key]).find((value) => Boolean(value?.trim()));
@@ -304,7 +335,7 @@ const ShadeTile = memo(function ShadeTile({
   sku,
   code,
   hex,
-  image,
+  imageCandidates,
   hasImage,
   currentView,
   isSelected,
@@ -317,6 +348,12 @@ const ShadeTile = memo(function ShadeTile({
 }: ShadeTileProps) {
   const showImage = hasImage && currentView === "nail";
   const showCard = !hasImage || currentView === "card";
+  const [candidateIndex, setCandidateIndex] = useState(0);
+  const activeImage = imageCandidates[candidateIndex] || "";
+
+  useEffect(() => {
+    setCandidateIndex(0);
+  }, [imageCandidates]);
 
   const handleToggleSelected = useCallback(() => {
     onToggleSelected(rowId);
@@ -339,8 +376,13 @@ const ShadeTile = memo(function ShadeTile({
   }, [onSetImageStatus, rowId]);
 
   const handleImageError = useCallback(() => {
-    onSetImageStatus(rowId, "MISSING");
-  }, [onSetImageStatus, rowId]);
+    setCandidateIndex((prev) => {
+      const next = prev + 1;
+      if (next < imageCandidates.length) return next;
+      onSetImageStatus(rowId, "MISSING");
+      return prev;
+    });
+  }, [imageCandidates.length, onSetImageStatus, rowId]);
 
   const stopPropagation = useCallback((e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
@@ -370,7 +412,7 @@ const ShadeTile = memo(function ShadeTile({
         {showImage ? (
           <>
             <img
-              src={image}
+              src={activeImage}
               alt={code}
               className="h-full w-full object-cover"
               loading="lazy"
@@ -457,9 +499,23 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
   onQuantityIncrement,
   onQuantityDecrement,
 }: SelectedSwatchItemProps) {
+  const [candidateIndex, setCandidateIndex] = useState(0);
+  const activeImage = shade.imageCandidates[candidateIndex] || "";
+
+  useEffect(() => {
+    setCandidateIndex(0);
+  }, [shade.imageCandidates]);
+
   const handleRemove = useCallback(() => onRemoveShade(shade.id), [onRemoveShade, shade.id]);
   const handleLoad = useCallback(() => onSetImageStatus(shade.id, "OK"), [onSetImageStatus, shade.id]);
-  const handleError = useCallback(() => onSetImageStatus(shade.id, "MISSING"), [onSetImageStatus, shade.id]);
+  const handleError = useCallback(() => {
+    setCandidateIndex((prev) => {
+      const next = prev + 1;
+      if (next < shade.imageCandidates.length) return next;
+      onSetImageStatus(shade.id, "MISSING");
+      return prev;
+    });
+  }, [onSetImageStatus, shade.id, shade.imageCandidates.length]);
   const handleInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => onQuantityInput(shade.id, e.target.value),
     [onQuantityInput, shade.id]
@@ -481,7 +537,7 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
       <div className="aspect-square overflow-hidden rounded-md bg-neutral-100">
         {shade.hasImage ? (
           <img
-            src={shade.image}
+            src={activeImage}
             alt={shade.code}
             className="h-full w-full object-cover"
             loading="lazy"
@@ -526,7 +582,7 @@ function ShadeGrid({ items, qtyUnit, onToggleSelected, onToggleView, onSetImageS
             sku={item.sku}
             code={item.code}
             hex={item.hex}
-            image={item.image}
+            imageCandidates={item.imageCandidates}
             hasImage={item.hasImage}
             currentView={item.currentView}
             isSelected={item.isSelected}
@@ -551,7 +607,7 @@ function ShadeGrid({ items, qtyUnit, onToggleSelected, onToggleView, onSetImageS
           sku={item.sku}
           code={item.code}
           hex={item.hex}
-          image={item.image}
+          imageCandidates={item.imageCandidates}
           hasImage={item.hasImage}
           currentView={item.currentView}
           isSelected={item.isSelected}
@@ -1073,12 +1129,12 @@ export default function InternalSolidColourGrid() {
     selectedIds.forEach((id) => {
       const row = rowById.get(id);
       if (!row) return;
-      const image = getRowImage(row, id);
+      const imageCandidates = getRowImageCandidates(row, id);
       out.push({
         id,
         code: getRowCode(row, id),
-        image,
-        hasImage: Boolean(image) && imgStatus[id] !== "MISSING",
+        imageCandidates,
+        hasImage: imageCandidates.length > 0 && imgStatus[id] !== "MISSING",
         family: getRowFamily(row),
       });
     });
@@ -1206,14 +1262,14 @@ export default function InternalSolidColourGrid() {
       filteredShades.map((row, idx) => {
         const rowId = getRowId(row, idx);
         const sku = row["Internal_SKU"] || "";
-        const image = getRowImage(row, rowId);
+        const imageCandidates = getRowImageCandidates(row, rowId);
         return {
           rowId,
           sku,
           code: getRowCode(row, rowId),
           hex: getRowHex(row),
-          image,
-          hasImage: Boolean(image) && imgStatus[rowId] !== "MISSING",
+          imageCandidates,
+          hasImage: imageCandidates.length > 0 && imgStatus[rowId] !== "MISSING",
           currentView: tileView[rowId] || "nail",
           isSelected: selectedIds.has(rowId),
           qtyValue: order[sku] || "",
