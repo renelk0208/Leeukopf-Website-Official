@@ -61,8 +61,10 @@ export default function Navigation() {
   const navigate = useNavigate();
 
   const b2bLinks = [
-    { label: 'Solid Colour', path: '/b2b-solid-colour' },
-    { label: 'Top & Base Coats', path: '/b2b-top-base' },
+    { label: 'Dashboard', path: '/b2b' },
+    { label: 'Solid Colours', path: '/b2b/solid-colours' },
+    { label: 'Builder Gels', path: '/b2b/builder-gels' },
+    { label: 'Checkout', path: '/b2b/checkout' },
   ];
 
   useEffect(() => {
@@ -87,7 +89,7 @@ export default function Navigation() {
     { label: 'Client Registration', path: '/client-registration' },
   ];
 
-  const isB2BActive = b2bLinks.some((item) => location.pathname === item.path);
+  const isB2BActive = location.pathname === '/b2b' || location.pathname.startsWith('/b2b/');
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';

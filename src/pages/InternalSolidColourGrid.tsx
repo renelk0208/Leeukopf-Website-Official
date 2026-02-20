@@ -839,18 +839,20 @@ function MobileDrawer({ open, onClose, panelProps }: MobileDrawerProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end bg-black/40 lg:hidden" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end bg-black/40 md:hidden" onClick={onClose}>
       <div
-        className="max-h-[85vh] w-full overflow-y-auto rounded-t-2xl border bg-white p-4"
+        className="min-h-[72vh] max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border bg-white pb-[max(1rem,env(safe-area-inset-bottom))]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-3 flex items-center justify-between">
+        <div className="sticky top-0 z-10 mb-3 flex items-center justify-between border-b bg-white px-4 py-3">
           <div className="text-sm font-semibold">My Colour Chart</div>
           <button type="button" onClick={onClose} className="rounded-md border px-2 py-1 text-xs">
             Close
           </button>
         </div>
-        <SelectedPanel {...panelProps} className="border-0 p-0 shadow-none" />
+        <div className="px-4">
+          <SelectedPanel {...panelProps} className="border-0 p-0 shadow-none" />
+        </div>
       </div>
     </div>
   );
@@ -2283,7 +2285,7 @@ export default function InternalSolidColourGrid() {
         )}
       </div>
 
-      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
+      <div className="md:grid md:grid-cols-[minmax(0,1fr)_280px] md:gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
         <div>
           <ShadeGrid
             items={gridItems}
@@ -2301,20 +2303,22 @@ export default function InternalSolidColourGrid() {
             </div>
           )}
 
-          <div className="h-20 lg:hidden" />
+          <div className="h-20 md:hidden" />
         </div>
 
-        <aside className="hidden lg:block">
-          <SelectedPanel {...panelProps} className="sticky top-6" />
+        <aside className="hidden md:block md:self-start">
+          <SelectedPanel {...panelProps} className="sticky top-6 max-h-[calc(100vh-2rem)] overflow-y-auto" />
         </aside>
       </div>
 
       <button
         type="button"
-        className="fixed bottom-4 left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg lg:hidden"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg md:hidden"
         onClick={() => setIsMobileDrawerOpen(true)}
+        aria-label="Open My Colour Chart"
       >
-        <span className="text-sm font-semibold">My Colour Chart ({selectedCount})</span>
+        <div className="text-sm font-semibold">My Colour Chart ({selectedCount})</div>
+        <div className="text-xs text-neutral-600">Total units: {totalSelectedUnits}</div>
       </button>
 
       <MobileDrawer

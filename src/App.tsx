@@ -25,7 +25,13 @@ const OrderFormPage = lazy(() => import('./pages/OrderFormPage'));
 const OrderPage = lazy(() => import('./pages/OrderPage'));
 const CatalogTest = lazy(() => import("./pages/CatalogTest"));
 const CartTest = lazy(() => import("./pages/CartTest"));
-const B2BBuilderGelsPage = lazy(() => import('./pages/B2BBuilderGelsPage'));
+const B2BPortalShell = lazy(() => import("./b2b/B2BPortalShell"));
+const B2BDashboard = lazy(() => import("./b2b/pages/B2BDashboard"));
+const B2BSolidColoursPage = lazy(() => import("./b2b/pages/B2BSolidColoursPage"));
+const B2BBuilderGelsPortalPage = lazy(() => import("./b2b/pages/B2BBuilderGelsPage"));
+const B2BCheckoutPage = lazy(() => import("./b2b/pages/B2BCheckoutPage"));
+const LegacyB2BSolidColoursPage = lazy(() => import("./b2b/pages/LegacyB2BSolidColoursPage"));
+const LegacyB2BBuilderGelsPage = lazy(() => import("./b2b/pages/LegacyB2BBuilderGelsPage"));
 
 // Product Pages
 const GelPolishPage = lazy(() => import('./pages/products/GelPolishPage'));
@@ -96,7 +102,15 @@ function App() {
           <Route path="/faq-starting-a-gel-polish-brand" element={<FaqStartBrandPage />} />
           <Route path="/order-form" element={<OrderFormPage />} />
           <Route path="/b2b-top-base" element={<OrderPage categoryKey="topBase" />} />
-          <Route path="/b2b-solid-colour" element={<OrderPage categoryKey="solidColour" />} />
+          <Route path="/b2b-solid-colour" element={<LegacyB2BSolidColoursPage />} />
+          <Route path="/b2b-builder-gels" element={<LegacyB2BBuilderGelsPage />} />
+
+          <Route path="/b2b" element={<B2BPortalShell />}>
+            <Route index element={<B2BDashboard />} />
+            <Route path="solid-colours" element={<B2BSolidColoursPage />} />
+            <Route path="builder-gels" element={<B2BBuilderGelsPortalPage />} />
+            <Route path="checkout" element={<B2BCheckoutPage />} />
+          </Route>
 
           {/* Products */}
           <Route path="/products" element={<ProductsPage />} />
@@ -105,10 +119,6 @@ function App() {
           <Route path="/catalog-test" element={<CatalogTest />} />
           <Route path="/cart-test" element={<CartTest />} />
           <Route path="/internal/solid-colour" element={<OrderPage categoryKey="solidColour" />} />
-
-          {import.meta.env.DEV && (
-            <Route path="/b2b-builder-gels" element={<B2BBuilderGelsPage />} />
-          )}
 
           {/* Builder & Structure Gels */}
           <Route path="/products/builder-and-structure-gels" element={<BuilderAndStructureGelsPage />} />
