@@ -129,28 +129,6 @@ export default function LiquidsAndSolutionsPage() {
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Acrylic Liquids (Monomers)</h3>
-            <p className="text-sm text-gray-600 font-light leading-relaxed mb-3">
-              Professional acrylic liquids designed to work with our acrylic powder systems. Available in 
-              standard and fast-set formulations for different working preferences.
-            </p>
-            <ul className="space-y-2 text-sm text-gray-600 font-light">
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>Optimal powder-to-liquid ratio</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>Controlled setting times</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>Superior strength and clarity</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Polygel Slip Solutions</h3>
             <p className="text-sm text-gray-600 font-light leading-relaxed mb-3">
               Specialty solutions that allow smooth manipulation and shaping of polygel and acrygel products 
