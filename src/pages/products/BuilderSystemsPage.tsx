@@ -15,12 +15,8 @@ export default function BuilderSystemsPage() {
       description: 'Standard and premium reinforcement systems'
     },
     {
-      title: 'Acrylics',
-      description: 'Standard and fast-setting professional systems'
-    },
-    {
       title: 'Polygel (Acrygel)',
-      description: 'Innovative hybrid gel and acrylic system'
+      description: 'Innovative hybrid extension gel system'
     }
   ];
 
@@ -28,7 +24,7 @@ export default function BuilderSystemsPage() {
     <>
       <PageTemplate
         title="Builder Systems"
-        subtitle="Professional nail extension and strengthening systems. From traditional acrylics to innovative polygels, find the perfect solution."
+        subtitle="Professional nail extension and strengthening systems designed for control, durability and efficient salon workflows."
         breadcrumbs={[
           { label: 'Home', path: '/' },
           { label: 'Our Products', path: '/products' },
@@ -104,12 +100,6 @@ export default function BuilderSystemsPage() {
                   <td className="py-3 px-4 text-gray-600">Nail repairs</td>
                   <td className="py-3 px-4 text-gray-600">Wrap technique</td>
                   <td className="py-3 px-4 text-gray-600">60s LED</td>
-                </tr>
-                <tr>
-                  <td className="py-3 px-4 font-medium text-gray-900">Acrylics</td>
-                  <td className="py-3 px-4 text-gray-600">Full extensions</td>
-                  <td className="py-3 px-4 text-gray-600">Powder & liquid</td>
-                  <td className="py-3 px-4 text-gray-600">Air dry 2-3min</td>
                 </tr>
                 <tr>
                   <td className="py-3 px-4 font-medium text-gray-900">Polygel</td>

@@ -18,7 +18,6 @@ export const enabledCategories = {
   builderAndStructureGels: true, // Enabled - images available
   topAndBases: true, // Enabled - images available
   polygelAcrygel: false, // Moved to Builder & Structure Gels subcategory
-  acrylicSystems: true, // Enabled - images available
   liquidsAndSolutions: true, // Enabled - images available
   nailArt: true, // Enabled - images available
   lamps: true, // Enabled - UV & LED Lamps with 2 models

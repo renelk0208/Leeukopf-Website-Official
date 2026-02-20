@@ -114,15 +114,6 @@ export default function ProductsPage() {
       searchTerms: ['polygel', 'acrygel', 'hybrid gel'],
     },
     {
-      title: 'Acrylic Systems',
-      subtitle: 'High-performance powders and liquids — always free from HEMA and TPO',
-      imageSrc: '/img/products/builder-systems/Acrylic/acrylic-powder-and liquid-category-card-image.jpg',
-      href: '/products/acrylic-systems',
-      alt: 'Acrylic Systems',
-      enabledKey: 'acrylicSystems',
-      searchTerms: ['acrylic', 'powder', 'liquid'],
-    },
-    {
       title: 'Liquids & Solutions',
       subtitle: 'Professional prep and cleanse solutions',
       imageSrc: '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',

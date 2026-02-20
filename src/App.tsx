@@ -41,7 +41,6 @@ const GelPolishPage = lazy(() => import('./pages/products/GelPolishPage'));
 const BuilderAndStructureGelsPage = lazy(() => import('./pages/products/BuilderAndStructureGelsPage'));
 const TopAndBasesPage = lazy(() => import('./pages/products/TopAndBasesPage'));
 const PolygelAcrygelPage = lazy(() => import('./pages/products/PolygelAcrygelPage'));
-const AcrylicSystemsPage = lazy(() => import('./pages/products/AcrylicSystemsPage'));
 const LiquidsAndSolutionsPage = lazy(() => import('./pages/products/LiquidsAndSolutionsPage'));
 const NailArtPage = lazy(() => import('./pages/products/NailArtPage'));
 const AccessoriesPage = lazy(() => import('./pages/products/AccessoriesPage'));
@@ -162,7 +161,6 @@ function App() {
           {/* Other Product Categories */}
           <Route path="/products/polygel-acrygel" element={<PolygelAcrygelPage />} />
           <Route path="/products/liquid-polygel" element={<LiquidPolygelPage />} />
-          <Route path="/products/acrylic-systems" element={<AcrylicSystemsPage />} />
           <Route path="/products/liquids-and-solutions" element={<LiquidsAndSolutionsPage />} />
           <Route path="/products/nail-art" element={<NailArtPage />} />
           <Route path="/products/nail-art/nail-art-products" element={<NailArtProductsPage />} />
