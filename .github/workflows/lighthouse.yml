@@ -1,0 +1,42 @@
+name: Lighthouse Audit
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Start preview server
+        run: npm run preview -- --host 0.0.0.0 --port 4173 &
+
+      - name: Wait for preview server
+        run: npx wait-on http://127.0.0.1:4173
+
+      - name: Run Lighthouse (non-blocking report)
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            http://127.0.0.1:4173/
+            http://127.0.0.1:4173/products
+            http://127.0.0.1:4173/client-registration
+          uploadArtifacts: true
+          temporaryPublicStorage: true
