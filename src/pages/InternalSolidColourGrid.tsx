@@ -998,6 +998,7 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
   const [packagingError, setPackagingError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [missingDetailsPopup, setMissingDetailsPopup] = useState<string[] | null>(null);
   const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [orderFormat, setOrderFormat] = useState<OrderFormat>("finished_units");
   const [bulkContainer, setBulkContainer] = useState<BulkContainer | "">("");
@@ -1683,6 +1684,9 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
       const details = missingClientFields.length > 0
         ? ` Missing: ${missingClientFields.join(", ")}.`
         : "";
+      if (missingClientFields.length > 0) {
+        setMissingDetailsPopup(missingClientFields);
+      }
       setSubmitMessage({
         type: "error",
         text: `Please complete all required client fields and add at least one shade before exporting.${details}`,
@@ -1881,6 +1885,30 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
         </div>
       )}
 
+      {missingDetailsPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-lg rounded-2xl border bg-white p-5 shadow-xl">
+            <div className="text-base font-semibold text-grey-primary">Complete Required Details</div>
+            <p className="mt-2 text-sm text-grey-secondary">
+              Before you can continue, please complete all required client details:
+            </p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-grey-primary">
+              {missingDetailsPopup.map((field) => (
+                <li key={field}>{field}</li>
+              ))}
+            </ul>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setMissingDetailsPopup(null)}
+                className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Internal Solid Colour Grid (1200)</h1>
@@ -2047,12 +2075,6 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
             />
           </label>
         </div>
-
-        {!isClientInfoComplete && !disableClientInfoLock && (
-          <div className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-            Complete required client fields to unlock shade selection, quantity editing, and order actions. Missing: {missingClientFields.join(", ")}.
-          </div>
-        )}
 
         <div className="rounded-xl border border-grey-card bg-primary-50 p-3">
           <div className="text-sm font-semibold">Order format <span className="text-red-600">*</span></div>
@@ -2409,7 +2431,7 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
 
           <button
             onClick={handleSubmitOrder}
-            disabled={!isClientInfoComplete || isSubmitting}
+            disabled={isSubmitting}
             className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "Submitting..." : "Submit Order"}
