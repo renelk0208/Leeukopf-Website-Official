@@ -1864,7 +1864,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="w-full max-w-md rounded-2xl border bg-white p-5 shadow-xl">
             <div className="text-base font-semibold">Leeukopf Laboratories</div>
-            <p className="mt-2 text-sm text-neutral-700">
+            <p className="mt-2 text-sm text-grey-primary">
               Leeukopf Laboratories thanks you for your request, our dedicated team will be in contact with you soon!
             </p>
             <div className="mt-4 flex justify-end">
