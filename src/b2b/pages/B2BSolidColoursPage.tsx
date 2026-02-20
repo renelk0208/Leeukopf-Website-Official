@@ -6,7 +6,7 @@ function toSolidOrderCode(code: string, internalSku?: string): string {
   const source = (internalSku || code || "").trim();
   const match = source.match(/^LC-GP-(\d+)$/i);
   if (match) {
-    return `Gel Polish-${match[1]}`;
+    return "Solid Gel Polish";
   }
   return code;
 }
