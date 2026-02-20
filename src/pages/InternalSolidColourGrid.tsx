@@ -137,6 +137,19 @@ type GridShadeItem = {
 
 type GridFilter = "all" | "selected" | "unselected";
 
+export type InternalSolidColourSyncItem = {
+  id: string;
+  code: string;
+  internalSku?: string;
+  name: string;
+  hex?: string;
+  quantity: number;
+};
+
+type InternalSolidColourGridProps = {
+  onSelectionSync?: (items: InternalSolidColourSyncItem[]) => void;
+};
+
 type ShadeTileProps = {
   rowId: string;
   sku: string;
@@ -971,7 +984,7 @@ function MobileDrawer({ open, onClose, panelProps }: MobileDrawerProps) {
   );
 }
 
-export default function InternalSolidColourGrid() {
+export default function InternalSolidColourGrid({ onSelectionSync }: InternalSolidColourGridProps = {}) {
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
   const [imgStatus, setImgStatus] = useState<Record<string, "OK" | "MISSING">>({});
@@ -1429,6 +1442,29 @@ export default function InternalSolidColourGrid() {
   const estimatedBlocks = useMemo(() => Math.ceil(totalSelectedUnits / ESTIMATED_BLOCK_SIZE), [totalSelectedUnits]);
 
   const selectedCount = selectedShades.length;
+
+  const syncPayload = useMemo<InternalSolidColourSyncItem[]>(() => {
+    return selectedShades.map((shade) => {
+      const row = rowById.get(shade.id);
+      const code = row ? getRowCode(row, shade.id) : shade.code;
+      const quantity = quantities[shade.id] ?? QUANTITY_MOQ;
+      const normalizedHex = row ? normalizeHex(row["HEX"] || "") : null;
+
+      return {
+        id: shade.id,
+        code,
+        internalSku: row?.["Internal_SKU"] || undefined,
+        name: row?.["Shade_Name"] || code,
+        hex: normalizedHex || undefined,
+        quantity,
+      };
+    });
+  }, [quantities, rowById, selectedShades]);
+
+  useEffect(() => {
+    if (!onSelectionSync) return;
+    onSelectionSync(syncPayload);
+  }, [onSelectionSync, syncPayload]);
 
   useEffect(() => {
     const positiveOrderEntries = Object.entries(order).filter(([sku, qty]) => Boolean(sku) && qty > 0);
