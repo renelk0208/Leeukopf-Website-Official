@@ -379,34 +379,6 @@ const panelFamilyOrderIndex = (family: string): number => {
   return idx === -1 ? Number.MAX_SAFE_INTEGER : idx;
 };
 
-const FAMILY_SEARCH_ALIASES: Record<string, string[]> = {
-  reds: ["red", "reds"],
-  oranges: ["orange", "oranges"],
-  yellows: ["yellow", "yellows"],
-  greens: ["green", "greens"],
-  teals: ["teal", "teals"],
-  blues: ["blue", "blues"],
-  purples: ["purple", "purples", "violet", "violets"],
-  pinks: ["pink", "pinks"],
-  browns: ["brown", "browns"],
-  "nudes/beiges": ["nude", "nudes", "beige", "beiges", "nude/beige"],
-  whites: ["white", "whites"],
-  blacks: ["black", "blacks"],
-  greys: ["grey", "greys", "gray", "grays"],
-  other: ["other"],
-};
-
-function matchesFamilyQuery(row: Row, query: string): boolean {
-  const family = getRowFamily(row).toLowerCase();
-  if (family.includes(query)) return true;
-
-  return Object.entries(FAMILY_SEARCH_ALIASES).some(([familyKey, aliases]) => {
-    const matchesAlias = aliases.some((alias) => alias.includes(query) || query.includes(alias));
-    if (!matchesAlias) return false;
-    return family === familyKey;
-  });
-}
-
 const ShadeTile = memo(function ShadeTile({
   rowId,
   sku,
@@ -1243,7 +1215,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
         const sku = (r["Internal_SKU"] || "").toLowerCase();
         const name = (r["Shade_Name"] || "").toLowerCase();
         const code = (r["Shade_Code"] || "").toLowerCase();
-        return sku.includes(query) || name.includes(query) || code.includes(query) || matchesFamilyQuery(r, query);
+        return sku.includes(query) || name.includes(query) || code.includes(query);
       });
     }
 
@@ -1916,7 +1888,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search by SKU / code / name / family (e.g. red, pink, blue)…"
+          placeholder="Search by SKU / code / name…"
           className="w-full rounded-xl border bg-white px-4 py-2 text-sm shadow-sm sm:w-80"
         />
 
