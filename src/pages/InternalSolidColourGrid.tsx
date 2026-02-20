@@ -61,6 +61,12 @@ const ALLOWS_PCS_UNIT = ALLOWED_UNITS.includes("pcs");
 const ALLOWS_KG_UNIT = ALLOWED_UNITS.includes("kg");
 const ALLOWS_BUCKET_PACKAGING = ALLOWED_PACKAGING.includes("bucket");
 const SELECTED_SHADES_STORAGE_KEY = "lk_selected_solid_shades";
+const SELECTED_SHADES_ORDER_STORAGE_KEY = "lk_selected_solid_shades_order";
+const SELECTED_SHADES_QTY_STORAGE_KEY = "lk_selected_solid_shades_qty";
+const ENABLE_VIRTUAL_GRID = false;
+const QUANTITY_MOQ = 30;
+const QUANTITY_STEP = 5;
+const ESTIMATED_BLOCK_SIZE = 300;
 const FAMILY_ORDER = [
   "Reds",
   "Oranges",
@@ -77,6 +83,23 @@ const FAMILY_ORDER = [
   "Greys",
   "Other",
 ] as const;
+const PANEL_FAMILY_ORDER = [
+  "Nudes/Beiges",
+  "Pinks",
+  "Reds",
+  "Oranges",
+  "Yellows",
+  "Greens",
+  "Teals",
+  "Blues",
+  "Purples",
+  "Browns",
+  "Greys",
+  "Whites",
+  "Blacks",
+  "Other",
+] as const;
+const BALANCE_PREFERRED_FAMILIES = ["Nudes/Beiges", "Reds", "Greens", "Blues", "Whites", "Blacks"] as const;
 
 const toDisplayLabel = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
@@ -86,6 +109,30 @@ type SelectedShade = {
   image: string;
   hasImage: boolean;
   family: string;
+};
+
+type SelectedSortMode = "family" | "code" | "recent";
+
+type SelectedFamilyGroup = {
+  family: string;
+  shades: SelectedShade[];
+};
+
+type BalanceInsight = {
+  topFamilies: Array<{ family: string; percentage: number }>;
+  hint: string | null;
+};
+
+type GridShadeItem = {
+  rowId: string;
+  sku: string;
+  code: string;
+  hex: string;
+  image: string;
+  hasImage: boolean;
+  currentView: "nail" | "card";
+  isSelected: boolean;
+  qtyValue: number | "";
 };
 
 type GridFilter = "all" | "selected" | "unselected";
@@ -111,8 +158,20 @@ type SelectedPanelProps = {
   selectedCount: number;
   countsByFamily: Array<[string, number]>;
   selectedShades: SelectedShade[];
+  groupedSelectedShades: SelectedFamilyGroup[];
+  sortMode: SelectedSortMode;
+  onSortModeChange: (mode: SelectedSortMode) => void;
+  balanceInsight: BalanceInsight;
   gridFilter: GridFilter;
   onGridFilterChange: (filter: GridFilter) => void;
+  showQuantities: boolean;
+  onToggleQuantities: () => void;
+  quantities: Record<string, number>;
+  totalSelectedUnits: number;
+  estimatedBlocks: number;
+  onQuantityInput: (id: string, value: string) => void;
+  onQuantityIncrement: (id: string) => void;
+  onQuantityDecrement: (id: string) => void;
   onRemoveShade: (id: string) => void;
   onClearAll: () => void;
   onCopyCodes: () => void;
@@ -126,6 +185,15 @@ type MobileDrawerProps = {
   open: boolean;
   onClose: () => void;
   panelProps: SelectedPanelProps;
+};
+
+type ShadeGridProps = {
+  items: GridShadeItem[];
+  qtyUnit: "pcs" | "kg";
+  onToggleSelected: (id: string) => void;
+  onToggleView: (id: string, hasImage: boolean) => void;
+  onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
+  onSetQty: (sku: string, value: string) => void;
 };
 
 const normalizeHex = (value: string): string | null => {
@@ -215,6 +283,20 @@ const getRowFamily = (row: Row): string => {
   const familyField = FAMILY_FIELDS.map((key) => row[key]).find((value) => Boolean(value?.trim()));
   if (familyField) return familyField.trim();
   return classifyFamilyFromHex(getRowHex(row));
+};
+
+function normalizeQuantity(value: number): number {
+  if (Number.isNaN(value)) return QUANTITY_MOQ;
+  const rounded = Math.round(value / QUANTITY_STEP) * QUANTITY_STEP;
+  return Math.max(QUANTITY_MOQ, rounded);
+}
+
+const codeSort = (left: string, right: string): number =>
+  left.localeCompare(right, undefined, { numeric: true, sensitivity: "base" });
+
+const panelFamilyOrderIndex = (family: string): number => {
+  const idx = PANEL_FAMILY_ORDER.indexOf(family as (typeof PANEL_FAMILY_ORDER)[number]);
+  return idx === -1 ? Number.MAX_SAFE_INTEGER : idx;
 };
 
 const ShadeTile = memo(function ShadeTile({
@@ -354,12 +436,155 @@ const ShadeTile = memo(function ShadeTile({
   );
 });
 
+type SelectedSwatchItemProps = {
+  shade: SelectedShade;
+  quantity: number;
+  showQuantities: boolean;
+  onRemoveShade: (id: string) => void;
+  onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
+  onQuantityInput: (id: string, value: string) => void;
+  onQuantityIncrement: (id: string) => void;
+  onQuantityDecrement: (id: string) => void;
+};
+
+const SelectedSwatchItem = memo(function SelectedSwatchItem({
+  shade,
+  quantity,
+  showQuantities,
+  onRemoveShade,
+  onSetImageStatus,
+  onQuantityInput,
+  onQuantityIncrement,
+  onQuantityDecrement,
+}: SelectedSwatchItemProps) {
+  const handleRemove = useCallback(() => onRemoveShade(shade.id), [onRemoveShade, shade.id]);
+  const handleLoad = useCallback(() => onSetImageStatus(shade.id, "OK"), [onSetImageStatus, shade.id]);
+  const handleError = useCallback(() => onSetImageStatus(shade.id, "MISSING"), [onSetImageStatus, shade.id]);
+  const handleInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => onQuantityInput(shade.id, e.target.value),
+    [onQuantityInput, shade.id]
+  );
+  const handleInc = useCallback(() => onQuantityIncrement(shade.id), [onQuantityIncrement, shade.id]);
+  const handleDec = useCallback(() => onQuantityDecrement(shade.id), [onQuantityDecrement, shade.id]);
+
+  return (
+    <div className="relative rounded-lg border bg-neutral-50 p-1">
+      <button
+        type="button"
+        onClick={handleRemove}
+        className="absolute right-1 top-1 z-10 h-5 w-5 rounded-full border bg-white text-[10px] leading-none"
+        aria-label={`Remove ${shade.code}`}
+      >
+        ×
+      </button>
+
+      <div className="aspect-square overflow-hidden rounded-md bg-neutral-100">
+        {shade.hasImage ? (
+          <img
+            src={shade.image}
+            alt={shade.code}
+            className="h-full w-full object-cover"
+            loading="lazy"
+            onLoad={handleLoad}
+            onError={handleError}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center px-1 text-center text-[10px] font-medium text-neutral-600">
+            {shade.code}
+          </div>
+        )}
+      </div>
+
+      <div className="mt-1 truncate text-[10px] font-medium text-neutral-700">{shade.code}</div>
+
+      {showQuantities && (
+        <div className="mt-1 flex items-center justify-center gap-1">
+          <button type="button" onClick={handleDec} className="h-5 w-5 rounded border text-[10px]">-</button>
+          <input
+            type="number"
+            min={QUANTITY_MOQ}
+            step={QUANTITY_STEP}
+            value={quantity}
+            onChange={handleInput}
+            className="w-11 rounded border px-1 py-0.5 text-center text-[10px]"
+          />
+          <button type="button" onClick={handleInc} className="h-5 w-5 rounded border text-[10px]">+</button>
+        </div>
+      )}
+    </div>
+  );
+});
+
+function ShadeGrid({ items, qtyUnit, onToggleSelected, onToggleView, onSetImageStatus, onSetQty }: ShadeGridProps) {
+  if (ENABLE_VIRTUAL_GRID) {
+    return (
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {items.map((item) => (
+          <ShadeTile
+            key={item.rowId}
+            rowId={item.rowId}
+            sku={item.sku}
+            code={item.code}
+            hex={item.hex}
+            image={item.image}
+            hasImage={item.hasImage}
+            currentView={item.currentView}
+            isSelected={item.isSelected}
+            qtyValue={item.qtyValue}
+            qtyUnit={qtyUnit}
+            onToggleSelected={onToggleSelected}
+            onToggleView={onToggleView}
+            onSetImageStatus={onSetImageStatus}
+            onSetQty={onSetQty}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      {items.map((item) => (
+        <ShadeTile
+          key={item.rowId}
+          rowId={item.rowId}
+          sku={item.sku}
+          code={item.code}
+          hex={item.hex}
+          image={item.image}
+          hasImage={item.hasImage}
+          currentView={item.currentView}
+          isSelected={item.isSelected}
+          qtyValue={item.qtyValue}
+          qtyUnit={qtyUnit}
+          onToggleSelected={onToggleSelected}
+          onToggleView={onToggleView}
+          onSetImageStatus={onSetImageStatus}
+          onSetQty={onSetQty}
+        />
+      ))}
+    </div>
+  );
+}
+
 function SelectedPanel({
   selectedCount,
   countsByFamily,
   selectedShades,
+  groupedSelectedShades,
+  sortMode,
+  onSortModeChange,
+  balanceInsight,
   gridFilter,
   onGridFilterChange,
+  showQuantities,
+  onToggleQuantities,
+  quantities,
+  totalSelectedUnits,
+  estimatedBlocks,
+  onQuantityInput,
+  onQuantityIncrement,
+  onQuantityDecrement,
   onRemoveShade,
   onClearAll,
   onCopyCodes,
@@ -368,10 +593,43 @@ function SelectedPanel({
   onSetImageStatus,
   className,
 }: SelectedPanelProps) {
+  const renderSwatch = useCallback(
+    (shade: SelectedShade) => (
+      <SelectedSwatchItem
+        key={shade.id}
+        shade={shade}
+        quantity={quantities[shade.id] ?? QUANTITY_MOQ}
+        showQuantities={showQuantities}
+        onRemoveShade={onRemoveShade}
+        onSetImageStatus={onSetImageStatus}
+        onQuantityInput={onQuantityInput}
+        onQuantityIncrement={onQuantityIncrement}
+        onQuantityDecrement={onQuantityDecrement}
+      />
+    ),
+    [onQuantityDecrement, onQuantityIncrement, onQuantityInput, onRemoveShade, onSetImageStatus, quantities, showQuantities]
+  );
+
   return (
     <div className={`rounded-2xl border bg-white p-4 shadow-sm ${className ?? ""}`}>
       <div className="text-base font-semibold">My Colour Chart</div>
       <div className="mt-1 text-sm text-neutral-600">Selected: {selectedCount}</div>
+
+      <div className="mt-3 rounded-xl border bg-neutral-50 p-3">
+        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Balance</div>
+        {balanceInsight.topFamilies.length ? (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {balanceInsight.topFamilies.map((entry) => (
+              <span key={entry.family} className="rounded-full border bg-white px-2 py-1 text-[11px] text-neutral-700">
+                {entry.family} {entry.percentage}%
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2 text-xs text-neutral-500">No balance data yet.</div>
+        )}
+        {balanceInsight.hint && <div className="mt-2 text-xs text-neutral-700">{balanceInsight.hint}</div>}
+      </div>
 
       <div className="mt-4">
         <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Family counts</div>
@@ -399,6 +657,33 @@ function SelectedPanel({
           >
             Clear all
           </button>
+        </div>
+
+        <div className="mb-2">
+          <div className="mb-1 text-[11px] text-neutral-500">Sort</div>
+          <div className="inline-flex rounded-full border bg-neutral-50 p-1">
+            <button
+              type="button"
+              onClick={() => onSortModeChange("family")}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "family" ? "bg-black text-white" : "text-neutral-700"}`}
+            >
+              By Family
+            </button>
+            <button
+              type="button"
+              onClick={() => onSortModeChange("code")}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "code" ? "bg-black text-white" : "text-neutral-700"}`}
+            >
+              By Code
+            </button>
+            <button
+              type="button"
+              onClick={() => onSortModeChange("recent")}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "recent" ? "bg-black text-white" : "text-neutral-700"}`}
+            >
+              Recently Added
+            </button>
+          </div>
         </div>
 
         <div className="mb-2 flex flex-wrap gap-2">
@@ -441,40 +726,34 @@ function SelectedPanel({
           </button>
         </div>
 
-        {selectedShades.length ? (
-          <div className="grid grid-cols-3 gap-2">
-            {selectedShades.map((shade) => (
-              <div key={shade.id} className="relative rounded-lg border bg-neutral-50 p-1">
-                <button
-                  type="button"
-                  onClick={() => onRemoveShade(shade.id)}
-                  className="absolute right-1 top-1 z-10 h-5 w-5 rounded-full border bg-white text-[10px] leading-none"
-                  aria-label={`Remove ${shade.code}`}
-                >
-                  ×
-                </button>
-
-                <div className="aspect-square overflow-hidden rounded-md bg-neutral-100">
-                  {shade.hasImage ? (
-                    <img
-                      src={shade.image}
-                      alt={shade.code}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                      onLoad={() => onSetImageStatus(shade.id, "OK")}
-                      onError={() => onSetImageStatus(shade.id, "MISSING")}
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center px-1 text-center text-[10px] font-medium text-neutral-600">
-                      {shade.code}
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-1 truncate text-[10px] font-medium text-neutral-700">{shade.code}</div>
-              </div>
-            ))}
+        <div className="mb-3 rounded-lg border bg-neutral-50 px-2 py-2">
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-medium text-neutral-700">Add quantities</div>
+            <button
+              type="button"
+              onClick={onToggleQuantities}
+              className={`rounded-full border px-2 py-0.5 text-[11px] ${showQuantities ? "bg-black text-white" : "bg-white text-neutral-700"}`}
+            >
+              {showQuantities ? "On" : "Off"}
+            </button>
           </div>
+          <div className="mt-1 text-[11px] text-neutral-600">Total units: {totalSelectedUnits}</div>
+          <div className="text-[11px] text-neutral-600">Estimated production blocks: {estimatedBlocks}</div>
+        </div>
+
+        {selectedShades.length ? (
+          sortMode === "family" ? (
+            <div className="space-y-3">
+              {groupedSelectedShades.map((group) => (
+                <div key={group.family}>
+                  <div className="mb-1 text-[11px] font-medium text-neutral-700">{group.family} ({group.shades.length})</div>
+                  <div className="grid grid-cols-3 gap-2">{group.shades.map(renderSwatch)}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-2">{selectedShades.map(renderSwatch)}</div>
+          )
         ) : (
           <div className="rounded-lg border border-dashed p-3 text-xs text-neutral-500">
             Tap shades in the grid to build your chart.
@@ -552,6 +831,10 @@ export default function InternalSolidColourGrid() {
   const [bulkContainer, setBulkContainer] = useState<BulkContainer | "">("");
   const [isBulkContainerAuto, setIsBulkContainerAuto] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [selectedOrder, setSelectedOrder] = useState<string[]>([]);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [sortMode, setSortMode] = useState<SelectedSortMode>("family");
+  const [showQuantities, setShowQuantities] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [gridFilter, setGridFilter] = useState<GridFilter>("all");
   const [copyFeedback, setCopyFeedback] = useState(false);
@@ -594,8 +877,47 @@ export default function InternalSolidColourGrid() {
   }, []);
 
   useEffect(() => {
+    const raw = localStorage.getItem(SELECTED_SHADES_ORDER_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const safe = parsed.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+        setSelectedOrder(safe);
+      }
+    } catch {
+      setSelectedOrder([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const raw = localStorage.getItem(SELECTED_SHADES_QTY_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        const safe: Record<string, number> = {};
+        Object.entries(parsed).forEach(([key, value]) => {
+          if (typeof value === "number") safe[key] = normalizeQuantity(value);
+        });
+        setQuantities(safe);
+      }
+    } catch {
+      setQuantities({});
+    }
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem(SELECTED_SHADES_STORAGE_KEY, JSON.stringify(Array.from(selectedIds)));
   }, [selectedIds]);
+
+  useEffect(() => {
+    localStorage.setItem(SELECTED_SHADES_ORDER_STORAGE_KEY, JSON.stringify(selectedOrder));
+  }, [selectedOrder]);
+
+  useEffect(() => {
+    localStorage.setItem(SELECTED_SHADES_QTY_STORAGE_KEY, JSON.stringify(quantities));
+  }, [quantities]);
 
   useEffect(() => {
     return () => {
@@ -612,8 +934,26 @@ export default function InternalSolidColourGrid() {
   const toggleSelected = useCallback((id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
+      const exists = next.has(id);
+
+      if (exists) next.delete(id);
       else next.add(id);
+
+      setSelectedOrder((prevOrder) => {
+        if (exists) return prevOrder.filter((entry) => entry !== id);
+        return [id, ...prevOrder.filter((entry) => entry !== id)];
+      });
+
+      setQuantities((prevQty) => {
+        if (exists) {
+          if (!(id in prevQty)) return prevQty;
+          const { [id]: _removed, ...rest } = prevQty;
+          return rest;
+        }
+        if (id in prevQty) return prevQty;
+        return { ...prevQty, [id]: QUANTITY_MOQ };
+      });
+
       return next;
     });
   }, []);
@@ -625,10 +965,38 @@ export default function InternalSolidColourGrid() {
       next.delete(id);
       return next;
     });
+
+    setSelectedOrder((prev) => prev.filter((entry) => entry !== id));
+    setQuantities((prev) => {
+      if (!(id in prev)) return prev;
+      const { [id]: _removed, ...rest } = prev;
+      return rest;
+    });
   }, []);
 
   const clearSelected = useCallback(() => {
     setSelectedIds(new Set());
+    setSelectedOrder([]);
+    setQuantities({});
+  }, []);
+
+  const setQuantityInput = useCallback((id: string, value: string) => {
+    const numeric = parseInt(value || String(QUANTITY_MOQ), 10);
+    setQuantities((prev) => ({ ...prev, [id]: normalizeQuantity(numeric) }));
+  }, []);
+
+  const incrementQuantity = useCallback((id: string) => {
+    setQuantities((prev) => {
+      const current = prev[id] ?? QUANTITY_MOQ;
+      return { ...prev, [id]: normalizeQuantity(current + QUANTITY_STEP) };
+    });
+  }, []);
+
+  const decrementQuantity = useCallback((id: string) => {
+    setQuantities((prev) => {
+      const current = prev[id] ?? QUANTITY_MOQ;
+      return { ...prev, [id]: normalizeQuantity(current - QUANTITY_STEP) };
+    });
   }, []);
 
   const filtered = useMemo(() => {
@@ -662,6 +1030,44 @@ export default function InternalSolidColourGrid() {
     return map;
   }, [rows]);
 
+  useEffect(() => {
+    const selectedArray = Array.from(selectedIds);
+    const selectedSet = new Set(selectedArray);
+
+    setSelectedOrder((prev) => {
+      const kept = prev.filter((id) => selectedSet.has(id));
+      const missing = selectedArray.filter((id) => !kept.includes(id));
+      if (missing.length === 0 && kept.length === prev.length) return prev;
+      return [...kept, ...missing];
+    });
+
+    setQuantities((prev) => {
+      const next: Record<string, number> = {};
+      let changed = false;
+
+      selectedArray.forEach((id) => {
+        if (typeof prev[id] === "number") next[id] = normalizeQuantity(prev[id]);
+        else {
+          next[id] = QUANTITY_MOQ;
+          changed = true;
+        }
+      });
+
+      const prevKeys = Object.keys(prev);
+      if (!changed && prevKeys.length !== Object.keys(next).length) changed = true;
+      if (!changed) {
+        for (const key of prevKeys) {
+          if (!(key in next) || next[key] !== prev[key]) {
+            changed = true;
+            break;
+          }
+        }
+      }
+
+      return changed ? next : prev;
+    });
+  }, [selectedIds]);
+
   const selectedShades = useMemo<SelectedShade[]>(() => {
     const out: SelectedShade[] = [];
     selectedIds.forEach((id) => {
@@ -677,8 +1083,49 @@ export default function InternalSolidColourGrid() {
       });
     });
 
-    return out.sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }));
+    return out;
   }, [selectedIds, rowById, imgStatus]);
+
+  const selectedByCode = useMemo(() => [...selectedShades].sort((a, b) => codeSort(a.code, b.code)), [selectedShades]);
+
+  const selectedOrderIndex = useMemo(() => {
+    const index = new Map<string, number>();
+    selectedOrder.forEach((id, pos) => index.set(id, pos));
+    return index;
+  }, [selectedOrder]);
+
+  const selectedByRecent = useMemo(
+    () =>
+      [...selectedShades].sort((a, b) => {
+        const left = selectedOrderIndex.get(a.id) ?? Number.MAX_SAFE_INTEGER;
+        const right = selectedOrderIndex.get(b.id) ?? Number.MAX_SAFE_INTEGER;
+        if (left !== right) return left - right;
+        return codeSort(a.code, b.code);
+      }),
+    [selectedShades, selectedOrderIndex]
+  );
+
+  const groupedSelectedShades = useMemo<SelectedFamilyGroup[]>(() => {
+    const groups = new Map<string, SelectedShade[]>();
+    selectedByCode.forEach((shade) => {
+      const arr = groups.get(shade.family) || [];
+      arr.push(shade);
+      groups.set(shade.family, arr);
+    });
+
+    return Array.from(groups.entries())
+      .sort((a, b) => {
+        const familyOrder = panelFamilyOrderIndex(a[0]) - panelFamilyOrderIndex(b[0]);
+        if (familyOrder !== 0) return familyOrder;
+        return a[0].localeCompare(b[0]);
+      })
+      .map(([family, shades]) => ({ family, shades }));
+  }, [selectedByCode]);
+
+  const displaySelectedShades = useMemo(() => {
+    if (sortMode === "recent") return selectedByRecent;
+    return selectedByCode;
+  }, [selectedByCode, selectedByRecent, sortMode]);
 
   const countsByFamily = useMemo<Array<[string, number]>>(() => {
     const counts = new Map<string, number>();
@@ -696,6 +1143,56 @@ export default function InternalSolidColourGrid() {
     });
   }, [selectedShades]);
 
+  const balanceInsight = useMemo<BalanceInsight>(() => {
+    if (!selectedShades.length) return { topFamilies: [], hint: null };
+
+    const total = selectedShades.length;
+    const familyCounts = new Map<string, number>();
+    selectedShades.forEach((shade) => {
+      familyCounts.set(shade.family, (familyCounts.get(shade.family) || 0) + 1);
+    });
+
+    const ranked = Array.from(familyCounts.entries()).sort((a, b) => {
+      if (b[1] !== a[1]) return b[1] - a[1];
+      return panelFamilyOrderIndex(a[0]) - panelFamilyOrderIndex(b[0]);
+    });
+
+    const topFamilies = ranked.slice(0, 6).map(([family, count]) => ({
+      family,
+      percentage: Math.round((count / total) * 100),
+    }));
+
+    const dominant = ranked[0];
+    const preferredSuggestion = [...BALANCE_PREFERRED_FAMILIES]
+      .map((family) => ({ family, count: familyCounts.get(family) || 0 }))
+      .sort((a, b) => {
+        if (a.count !== b.count) return a.count - b.count;
+        return panelFamilyOrderIndex(a.family) - panelFamilyOrderIndex(b.family);
+      })
+      .slice(0, 2)
+      .map((item) => item.family);
+
+    let hint: string | null = null;
+    if (dominant && dominant[1] / total > 0.45) {
+      hint = `Mostly ${dominant[0]}. Add contrast with ${preferredSuggestion.join(" and ")}.`;
+    } else if (total < 10) {
+      hint = "Early build. Add 2–3 anchors: nudes + 1 deep tone.";
+    } else if (!familyCounts.has("Nudes/Beiges") && total >= 12) {
+      hint = "Consider adding 2–4 nudes/beiges for wearable balance.";
+    } else if ((!familyCounts.has("Whites") || !familyCounts.has("Blacks")) && total >= 12) {
+      hint = "Consider 1–2 whites/blacks for line-work + contrast.";
+    }
+
+    return { topFamilies, hint };
+  }, [selectedShades]);
+
+  const totalSelectedUnits = useMemo(
+    () => selectedShades.reduce((sum, shade) => sum + (quantities[shade.id] ?? QUANTITY_MOQ), 0),
+    [quantities, selectedShades]
+  );
+
+  const estimatedBlocks = useMemo(() => Math.ceil(totalSelectedUnits / ESTIMATED_BLOCK_SIZE), [totalSelectedUnits]);
+
   const selectedCount = selectedShades.length;
 
   const filteredShades = useMemo(() => {
@@ -703,6 +1200,27 @@ export default function InternalSolidColourGrid() {
     const selectedOnly = gridFilter === "selected";
     return filtered.filter((row, idx) => selectedIds.has(getRowId(row, idx)) === selectedOnly);
   }, [filtered, gridFilter, selectedIds]);
+
+  const gridItems = useMemo<GridShadeItem[]>(
+    () =>
+      filteredShades.map((row, idx) => {
+        const rowId = getRowId(row, idx);
+        const sku = row["Internal_SKU"] || "";
+        const image = getRowImage(row, rowId);
+        return {
+          rowId,
+          sku,
+          code: getRowCode(row, rowId),
+          hex: getRowHex(row),
+          image,
+          hasImage: Boolean(image) && imgStatus[rowId] !== "MISSING",
+          currentView: tileView[rowId] || "nail",
+          isSelected: selectedIds.has(rowId),
+          qtyValue: order[sku] || "",
+        };
+      }),
+    [filteredShades, imgStatus, order, selectedIds, tileView]
+  );
 
   const setOrderQty = useCallback((sku: string, value: string) => {
     const minQty = orderFormat === "bulk" ? 1 : 30;
@@ -727,9 +1245,17 @@ export default function InternalSolidColourGrid() {
     setGridFilter(filter);
   }, []);
 
+  const changeSortMode = useCallback((mode: SelectedSortMode) => {
+    setSortMode(mode);
+  }, []);
+
+  const toggleQuantities = useCallback(() => {
+    setShowQuantities((prev) => !prev);
+  }, []);
+
   const handleCopyCodes = useCallback(async () => {
-    if (!selectedShades.length) return;
-    const text = selectedShades.map((shade) => shade.code).join(", ");
+    if (!displaySelectedShades.length) return;
+    const text = displaySelectedShades.map((shade) => shade.code).join(", ");
     await navigator.clipboard.writeText(text);
     setCopyFeedback(true);
 
@@ -740,13 +1266,16 @@ export default function InternalSolidColourGrid() {
       setCopyFeedback(false);
       copyFeedbackTimeoutRef.current = null;
     }, 1600);
-  }, [selectedShades]);
+  }, [displaySelectedShades]);
 
   const handleDownloadCsv = useCallback(() => {
-    if (!selectedShades.length) return;
+    if (!displaySelectedShades.length) return;
 
     const escapeCell = (value: string) => `"${value.replace(/"/g, '""')}"`;
-    const lines = ["code,family", ...selectedShades.map((shade) => `${escapeCell(shade.code)},${escapeCell(shade.family)}`)];
+    const lines = [
+      "code,family",
+      ...displaySelectedShades.map((shade) => `${escapeCell(shade.code)},${escapeCell(shade.family)}`),
+    ];
     const csv = lines.join("\n");
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -756,7 +1285,7 @@ export default function InternalSolidColourGrid() {
     anchor.download = "leeukopf-selected-shades.csv";
     anchor.click();
     URL.revokeObjectURL(url);
-  }, [selectedShades]);
+  }, [displaySelectedShades]);
 
   const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
   const qtyUnit: "pcs" | "kg" = orderFormat === "bulk"
@@ -982,9 +1511,21 @@ export default function InternalSolidColourGrid() {
   const panelProps: SelectedPanelProps = {
     selectedCount,
     countsByFamily,
-    selectedShades,
+    selectedShades: displaySelectedShades,
+    groupedSelectedShades,
+    sortMode,
+    onSortModeChange: changeSortMode,
+    balanceInsight,
     gridFilter,
     onGridFilterChange: changeGridFilter,
+    showQuantities,
+    onToggleQuantities: toggleQuantities,
+    quantities,
+    totalSelectedUnits,
+    estimatedBlocks,
+    onQuantityInput: setQuantityInput,
+    onQuantityIncrement: incrementQuantity,
+    onQuantityDecrement: decrementQuantity,
     onRemoveShade: removeSelected,
     onClearAll: clearSelected,
     onCopyCodes: handleCopyCodes,
@@ -1556,39 +2097,14 @@ export default function InternalSolidColourGrid() {
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
         <div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-            {filteredShades.map((r, idx) => {
-              const rowId = getRowId(r, idx);
-              const sku = r["Internal_SKU"] || "";
-              const code = getRowCode(r, rowId);
-              const hex = getRowHex(r);
-              const img = getRowImage(r, rowId);
-              const status = imgStatus[rowId];
-              const hasImage = Boolean(img) && status !== "MISSING";
-              const currentView = tileView[rowId] || "nail";
-              const isSelected = selectedIds.has(rowId);
-
-              return (
-                <ShadeTile
-                  key={rowId}
-                  rowId={rowId}
-                  sku={sku}
-                  code={code}
-                  hex={hex}
-                  image={img}
-                  hasImage={hasImage}
-                  currentView={currentView}
-                  isSelected={isSelected}
-                  qtyValue={order[sku] || ""}
-                  qtyUnit={qtyUnit}
-                  onToggleSelected={toggleSelected}
-                  onToggleView={toggleTileView}
-                  onSetImageStatus={setImageStatus}
-                  onSetQty={setOrderQty}
-                />
-              );
-            })}
-          </div>
+          <ShadeGrid
+            items={gridItems}
+            qtyUnit={qtyUnit}
+            onToggleSelected={toggleSelected}
+            onToggleView={toggleTileView}
+            onSetImageStatus={setImageStatus}
+            onSetQty={setOrderQty}
+          />
 
           {!filteredShades.length && (
             <div className="mt-8 rounded-xl border bg-white p-6 text-sm text-neutral-600">
