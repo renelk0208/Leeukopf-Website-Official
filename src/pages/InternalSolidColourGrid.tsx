@@ -460,7 +460,7 @@ const ShadeTile = memo(function ShadeTile({
       className={`rounded-2xl border bg-white p-3 shadow-sm transition ${
         interactionLocked ? "cursor-not-allowed opacity-60" : "cursor-pointer"
       } ${
-        isSelected ? "border-black ring-2 ring-black/10" : "border-neutral-200"
+        isSelected ? "border-primary ring-2 ring-primary-200" : "border-grey-card"
       }`}
       role="button"
       tabIndex={interactionLocked ? -1 : 0}
@@ -470,7 +470,7 @@ const ShadeTile = memo(function ShadeTile({
       onKeyDown={handleKeyDown}
     >
       <div
-        className="relative aspect-square w-full overflow-hidden rounded-xl bg-neutral-50"
+        className="relative aspect-square w-full overflow-hidden rounded-xl bg-primary-50"
         role="img"
         aria-label={`${code} ${showImage ? "nail view" : "card view"}`}
       >
@@ -506,11 +506,11 @@ const ShadeTile = memo(function ShadeTile({
             )}
           </>
         ) : (
-          <div className="flex h-full items-center justify-center px-2 text-center text-xs text-neutral-500">{code}</div>
+          <div className="flex h-full items-center justify-center px-2 text-center text-xs text-grey-secondary">{code}</div>
         )}
 
         {isSelected && (
-          <div className="absolute left-2 top-2 rounded-full border bg-black px-2 py-0.5 text-[10px] text-white shadow-sm">
+          <div className="absolute left-2 top-2 rounded-full border border-primary bg-primary px-2 py-0.5 text-[10px] text-white shadow-sm">
             Selected
           </div>
         )}
@@ -518,7 +518,7 @@ const ShadeTile = memo(function ShadeTile({
 
       <div className="mt-2">
         <div className="text-xs font-semibold">{code}</div>
-        {sku && sku !== code && <div className="text-[11px] text-neutral-500">{sku}</div>}
+        {sku && sku !== code && <div className="text-[11px] text-grey-secondary">{sku}</div>}
 
         <button
           type="button"
@@ -530,7 +530,7 @@ const ShadeTile = memo(function ShadeTile({
               : `No alternate view available for ${code}`
           }
           onClick={handleToggleViewClick}
-          className="mt-2 rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-2 rounded-md border border-grey-card px-2 py-1 text-[11px] text-grey-primary disabled:cursor-not-allowed disabled:opacity-50"
         >
           {!hasImage ? "No alternate view" : currentView === "nail" ? "Show card" : "Show nail"}
         </button>
@@ -614,7 +614,7 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
   }, [interactionLocked, onQuantityDecrement, shade.id]);
 
   return (
-    <div className="relative rounded-lg border bg-neutral-50 p-1">
+    <div className="relative rounded-lg border border-grey-card bg-primary-50 p-1">
       <button
         type="button"
         onClick={handleRemove}
@@ -625,7 +625,7 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
         ×
       </button>
 
-      <div className="aspect-square overflow-hidden rounded-md bg-neutral-100">
+      <div className="aspect-square overflow-hidden rounded-md bg-white">
         {shade.hasImage ? (
           <img
             src={activeImage}
@@ -636,13 +636,13 @@ const SelectedSwatchItem = memo(function SelectedSwatchItem({
             onError={handleError}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center px-1 text-center text-[10px] font-medium text-neutral-600">
+          <div className="flex h-full w-full items-center justify-center px-1 text-center text-[10px] font-medium text-grey-secondary">
             {shade.code}
           </div>
         )}
       </div>
 
-      <div className="mt-1 truncate text-[10px] font-medium text-neutral-700">{shade.code}</div>
+      <div className="mt-1 truncate text-[10px] font-medium text-grey-primary">{shade.code}</div>
 
       {showQuantities && (
         <div className="mt-1 flex items-center justify-center gap-1">
@@ -769,60 +769,60 @@ function SelectedPanel({
   return (
     <div className={`rounded-2xl border bg-white p-4 shadow-sm ${className ?? ""}`}>
       <div className="text-base font-semibold">My Colour Chart</div>
-      <div className="mt-1 text-sm text-neutral-600">Selected: {selectedCount}</div>
+      <div className="mt-1 text-sm text-grey-secondary">Selected: {selectedCount}</div>
 
-      <div className="mt-3 rounded-xl border bg-neutral-50 p-3">
-        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Balance</div>
+      <div className="mt-3 rounded-xl border border-grey-card bg-primary-50 p-3">
+        <div className="text-xs font-semibold uppercase tracking-wide text-grey-secondary">Balance</div>
         {balanceInsight.topFamilies.length ? (
           <div className="mt-2 flex flex-wrap gap-2">
             {balanceInsight.topFamilies.map((entry) => (
-              <span key={entry.family} className="rounded-full border bg-white px-2 py-1 text-[11px] text-neutral-700">
+              <span key={entry.family} className="rounded-full border border-grey-card bg-white px-2 py-1 text-[11px] text-grey-primary">
                 {entry.family} {entry.percentage}%
               </span>
             ))}
           </div>
         ) : (
-          <div className="mt-2 text-xs text-neutral-500">No balance data yet.</div>
+          <div className="mt-2 text-xs text-grey-secondary">No balance data yet.</div>
         )}
-        {balanceInsight.hint && <div className="mt-2 text-xs text-neutral-700">{balanceInsight.hint}</div>}
+        {balanceInsight.hint && <div className="mt-2 text-xs text-grey-primary">{balanceInsight.hint}</div>}
       </div>
 
       <div className="mt-4">
-        <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Family counts</div>
+        <div className="text-xs font-semibold uppercase tracking-wide text-grey-secondary">Family counts</div>
         {countsByFamily.length ? (
           <div className="mt-2 flex flex-wrap gap-2">
             {countsByFamily.map(([family, count]) => (
-              <span key={family} className="rounded-full border bg-neutral-50 px-2 py-1 text-[11px] text-neutral-700">
+              <span key={family} className="rounded-full border border-grey-card bg-primary-50 px-2 py-1 text-[11px] text-grey-primary">
                 {family}: {count}
               </span>
             ))}
           </div>
         ) : (
-          <div className="mt-2 text-xs text-neutral-500">No shades selected yet.</div>
+          <div className="mt-2 text-xs text-grey-secondary">No shades selected yet.</div>
         )}
       </div>
 
       <div className="mt-4">
         <div className="mb-2 flex items-center justify-between">
-          <div className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Selected swatches</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-grey-secondary">Selected swatches</div>
           <button
             type="button"
             onClick={onClearAll}
             disabled={interactionLocked || selectedCount === 0}
-            className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-md border border-grey-card px-2 py-1 text-[11px] text-grey-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
             Clear all
           </button>
         </div>
 
         <div className="mb-2">
-          <div className="mb-1 text-[11px] text-neutral-500">Sort</div>
-          <div className="inline-flex rounded-full border bg-neutral-50 p-1">
+          <div className="mb-1 text-[11px] text-grey-secondary">Sort</div>
+          <div className="inline-flex rounded-full border border-grey-card bg-primary-50 p-1">
             <button
               type="button"
               onClick={() => onSortModeChange("family")}
               disabled={interactionLocked}
-              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "family" ? "bg-black text-white" : "text-neutral-700"}`}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "family" ? "bg-primary text-white" : "text-grey-primary"}`}
             >
               By Family
             </button>
@@ -830,7 +830,7 @@ function SelectedPanel({
               type="button"
               onClick={() => onSortModeChange("code")}
               disabled={interactionLocked}
-              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "code" ? "bg-black text-white" : "text-neutral-700"}`}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "code" ? "bg-primary text-white" : "text-grey-primary"}`}
             >
               By Code
             </button>
@@ -838,7 +838,7 @@ function SelectedPanel({
               type="button"
               onClick={() => onSortModeChange("recent")}
               disabled={interactionLocked}
-              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "recent" ? "bg-black text-white" : "text-neutral-700"}`}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "recent" ? "bg-primary text-white" : "text-grey-primary"}`}
             >
               Recently Added
             </button>
@@ -851,7 +851,7 @@ function SelectedPanel({
             onClick={() => onGridFilterChange(gridFilter === "selected" ? "all" : "selected")}
             disabled={interactionLocked}
             className={`rounded-full border px-2 py-1 text-[11px] transition ${
-              gridFilter === "selected" ? "bg-black text-white" : "bg-neutral-50 text-neutral-700"
+              gridFilter === "selected" ? "bg-primary text-white" : "bg-primary-50 text-grey-primary"
             }`}
           >
             Show selected only
@@ -861,7 +861,7 @@ function SelectedPanel({
             onClick={() => onGridFilterChange(gridFilter === "unselected" ? "all" : "unselected")}
             disabled={interactionLocked}
             className={`rounded-full border px-2 py-1 text-[11px] transition ${
-              gridFilter === "unselected" ? "bg-black text-white" : "bg-neutral-50 text-neutral-700"
+              gridFilter === "unselected" ? "bg-primary text-white" : "bg-primary-50 text-grey-primary"
             }`}
           >
             Show unselected only
@@ -873,7 +873,7 @@ function SelectedPanel({
             type="button"
             onClick={onCopyCodes}
             disabled={interactionLocked || selectedCount === 0}
-            className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-md border border-grey-card px-2 py-1 text-[11px] text-grey-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
             {copyFeedback ? "Copied ✓" : "Copy Codes"}
           </button>
@@ -881,26 +881,26 @@ function SelectedPanel({
             type="button"
             onClick={onDownloadCsv}
             disabled={interactionLocked || selectedCount === 0}
-            className="rounded-md border px-2 py-1 text-[11px] text-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-md border border-grey-card px-2 py-1 text-[11px] text-grey-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
             Download CSV
           </button>
         </div>
 
-        <div className="mb-3 rounded-lg border bg-neutral-50 px-2 py-2">
+        <div className="mb-3 rounded-lg border border-grey-card bg-primary-50 px-2 py-2">
           <div className="flex items-center justify-between">
-            <div className="text-xs font-medium text-neutral-700">Add quantities</div>
+            <div className="text-xs font-medium text-grey-primary">Add quantities</div>
             <button
               type="button"
               onClick={onToggleQuantities}
               disabled={interactionLocked}
-              className={`rounded-full border px-2 py-0.5 text-[11px] ${showQuantities ? "bg-black text-white" : "bg-white text-neutral-700"}`}
+              className={`rounded-full border border-grey-card px-2 py-0.5 text-[11px] ${showQuantities ? "bg-primary text-white" : "bg-white text-grey-primary"}`}
             >
               {showQuantities ? "On" : "Off"}
             </button>
           </div>
-          <div className="mt-1 text-[11px] text-neutral-600">Total units: {totalSelectedUnits}</div>
-          <div className="text-[11px] text-neutral-600">Estimated production blocks: {estimatedBlocks}</div>
+          <div className="mt-1 text-[11px] text-grey-secondary">Total units: {totalSelectedUnits}</div>
+          <div className="text-[11px] text-grey-secondary">Estimated production blocks: {estimatedBlocks}</div>
         </div>
 
         {selectedShades.length ? (
@@ -908,7 +908,7 @@ function SelectedPanel({
             <div className="space-y-3">
               {groupedSelectedShades.map((group) => (
                 <div key={group.family}>
-                  <div className="mb-1 text-[11px] font-medium text-neutral-700">{group.family} ({group.shades.length})</div>
+                  <div className="mb-1 text-[11px] font-medium text-grey-primary">{group.family} ({group.shades.length})</div>
                   <div className="grid grid-cols-3 gap-2">{group.shades.map(renderSwatch)}</div>
                 </div>
               ))}
@@ -917,7 +917,7 @@ function SelectedPanel({
             <div className="grid grid-cols-3 gap-2">{selectedShades.map(renderSwatch)}</div>
           )
         ) : (
-          <div className="rounded-lg border border-dashed p-3 text-xs text-neutral-500">
+          <div className="rounded-lg border border-dashed border-grey-card p-3 text-xs text-grey-secondary">
             Tap shades in the grid to build your chart.
           </div>
         )}
@@ -1870,7 +1870,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
             <div className="mt-4 flex justify-end">
               <button
                 onClick={() => setShowThankYouPopup(false)}
-                className="rounded-xl bg-black px-4 py-2 text-xs text-white"
+                className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600"
               >
                 Close
               </button>
@@ -1882,7 +1882,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Internal Solid Colour Grid (1200)</h1>
-          <p className="text-sm text-neutral-600">Not linked anywhere — internal testing only.</p>
+          <p className="text-sm text-grey-secondary">Not linked anywhere — internal testing only.</p>
         </div>
 
         <input
@@ -1903,9 +1903,9 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
       </div>
 
       <div className="mb-6 rounded-xl border bg-white p-4 shadow-sm">
-        <div className="mb-2 text-xs text-neutral-600">Fields marked with <span className="text-red-600">*</span> are required.</div>
+        <div className="mb-2 text-xs text-grey-secondary">Fields marked with <span className="text-red-600">*</span> are required.</div>
         <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-          <label className="text-xs font-semibold text-neutral-700">Company Name or Client Name <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-grey-primary">Company Name or Client Name <span className="text-red-600">*</span>
             <input
               value={client.companyName}
               onChange={(e) => setClient((prev) => ({ ...prev, companyName: e.target.value }))}
@@ -1913,7 +1913,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-semibold text-neutral-700">Contact Name <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-grey-primary">Contact Name <span className="text-red-600">*</span>
             <input
               value={client.contactName}
               onChange={(e) => setClient((prev) => ({ ...prev, contactName: e.target.value }))}
@@ -1921,7 +1921,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-semibold text-neutral-700">Contact Number <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-grey-primary">Contact Number <span className="text-red-600">*</span>
             <input
               value={client.contactNumber}
               onChange={(e) => setClient((prev) => ({ ...prev, contactNumber: e.target.value }))}
@@ -1929,7 +1929,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-semibold text-neutral-700">Invoice Address <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-grey-primary">Invoice Address <span className="text-red-600">*</span>
             <input
               value={client.invoiceAddress}
               onChange={(e) => {
@@ -1944,7 +1944,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-semibold text-neutral-700">Invoice Region <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-grey-primary">Invoice Region <span className="text-red-600">*</span>
             <input
               value={client.invoiceRegion}
               onChange={(e) => {
@@ -1959,7 +1959,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-semibold text-neutral-700">Invoice Postal Code <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-grey-primary">Invoice Postal Code <span className="text-red-600">*</span>
             <input
               value={client.invoicePostalCode}
               onChange={(e) => {
@@ -1993,7 +1993,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
           </label>
           {!client.sameAddress && (
             <>
-              <label className="text-xs font-semibold text-neutral-700">Shipping Address <span className="text-red-600">*</span>
+              <label className="text-xs font-semibold text-grey-primary">Shipping Address <span className="text-red-600">*</span>
                 <input
                   value={client.shippingAddress}
                   onChange={(e) => setClient((prev) => ({ ...prev, shippingAddress: e.target.value }))}
@@ -2001,7 +2001,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                   className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
                 />
               </label>
-              <label className="text-xs font-semibold text-neutral-700">Shipping Region <span className="text-red-600">*</span>
+              <label className="text-xs font-semibold text-grey-primary">Shipping Region <span className="text-red-600">*</span>
                 <input
                   value={client.shippingRegion}
                   onChange={(e) => setClient((prev) => ({ ...prev, shippingRegion: e.target.value }))}
@@ -2009,7 +2009,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                   className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
                 />
               </label>
-              <label className="text-xs font-semibold text-neutral-700">Shipping Postal Code <span className="text-red-600">*</span>
+              <label className="text-xs font-semibold text-grey-primary">Shipping Postal Code <span className="text-red-600">*</span>
                 <input
                   value={client.shippingPostalCode}
                   onChange={(e) => setClient((prev) => ({ ...prev, shippingPostalCode: e.target.value }))}
@@ -2019,7 +2019,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               </label>
             </>
           )}
-          <label className="text-xs font-medium text-neutral-600">VAT (optional)
+          <label className="text-xs font-medium text-grey-secondary">VAT (optional)
             <input
               value={client.vat}
               onChange={(e) => setClient((prev) => ({ ...prev, vat: e.target.value }))}
@@ -2027,7 +2027,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-semibold text-neutral-700">Country <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-grey-primary">Country <span className="text-red-600">*</span>
             <input
               value={client.country}
               onChange={(e) => setClient((prev) => ({ ...prev, country: e.target.value }))}
@@ -2035,7 +2035,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
             />
           </label>
-          <label className="text-xs font-semibold text-neutral-700">Contact Email <span className="text-red-600">*</span>
+          <label className="text-xs font-semibold text-grey-primary">Contact Email <span className="text-red-600">*</span>
             <input
               type="email"
               value={client.email}
@@ -2052,7 +2052,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
           </div>
         )}
 
-        <div className="rounded-xl border bg-neutral-50 p-3">
+        <div className="rounded-xl border border-grey-card bg-primary-50 p-3">
           <div className="text-sm font-semibold">Order format <span className="text-red-600">*</span></div>
           <div className="mt-2 grid gap-2 text-sm">
             <label className="flex items-start gap-2">
@@ -2157,7 +2157,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
               </div>
 
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                <label className="text-xs font-medium text-neutral-600">System</label>
+                <label className="text-xs font-medium text-grey-secondary">System</label>
                 <div className="flex items-center gap-4 sm:col-span-1">
                   <label className="flex items-center gap-1 text-sm">
                     <input
@@ -2194,7 +2194,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                 <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {!SHOW_JAR_SIZE_SELECTOR || packaging.system === "bottle" ? (
                     <>
-                      <label className="text-xs font-medium text-neutral-600">
+                      <label className="text-xs font-medium text-grey-secondary">
                         Bottle Size <span className="text-red-600">*</span>
                         <select
                           value={packaging.bottle?.size || ""}
@@ -2217,7 +2217,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                         </select>
                       </label>
 
-                      <label className="text-xs font-medium text-neutral-600">
+                      <label className="text-xs font-medium text-grey-secondary">
                         Bottle Color <span className="text-red-600">*</span>
                         <select
                           value={packaging.bottle?.color || ""}
@@ -2240,7 +2240,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                         </select>
                       </label>
 
-                      <label className="text-xs font-medium text-neutral-600">
+                      <label className="text-xs font-medium text-grey-secondary">
                         Brush Shape <span className="text-red-600">*</span>
                         <select
                           value={packaging.bottle?.brushShape || ""}
@@ -2264,7 +2264,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                       </label>
 
                       {ENABLE_BRUSH_TYPE && (
-                        <label className="text-xs font-medium text-neutral-600">
+                        <label className="text-xs font-medium text-grey-secondary">
                           Brush Type <span className="text-red-600">*</span>
                           <select
                             value={packaging.bottle?.brushType || ""}
@@ -2290,7 +2290,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                     </>
                   ) : (
                     <>
-                      <label className="text-xs font-medium text-neutral-600">
+                      <label className="text-xs font-medium text-grey-secondary">
                         Jar Size <span className="text-red-600">*</span>
                         <select
                           value={packaging.jar?.size || ""}
@@ -2313,7 +2313,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
                         </select>
                       </label>
 
-                      <label className="text-xs font-medium text-neutral-600">
+                      <label className="text-xs font-medium text-grey-secondary">
                         Jar Color <span className="text-red-600">*</span>
                         <select
                           value={packaging.jar?.color || ""}
@@ -2408,7 +2408,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
           <button
             onClick={handleSubmitOrder}
             disabled={!isClientInfoComplete || isSubmitting}
-            className="rounded-xl bg-black px-4 py-2 text-xs text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "Submitting..." : "Submit Order"}
           </button>
@@ -2442,7 +2442,7 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
           />
 
           {!filteredShades.length && (
-            <div className="mt-8 rounded-xl border bg-white p-6 text-sm text-neutral-600">
+            <div className="mt-8 rounded-xl border border-grey-card bg-white p-6 text-sm text-grey-secondary">
               No results. Check that <code className="font-mono">solid-1200.json</code> exists in{" "}
               <code className="font-mono">public/data/</code>.
             </div>
@@ -2468,14 +2468,14 @@ export default function InternalSolidColourGrid({ onSelectionSync }: InternalSol
         aria-label="Open My Colour Chart"
       >
         <div className="text-sm font-semibold">My Colour Chart ({selectedCount})</div>
-        <div className="text-xs text-neutral-600">Total units: {totalSelectedUnits}</div>
+        <div className="text-xs text-grey-secondary">Total units: {totalSelectedUnits}</div>
       </button>
 
       {showBackToTop ? (
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed z-40 hidden rounded-full border bg-white px-4 py-2 text-xs font-semibold shadow-lg transition hover:bg-neutral-50 md:block"
+          className="fixed z-40 hidden rounded-full border border-grey-card bg-white px-4 py-2 text-xs font-semibold text-grey-primary shadow-lg transition hover:bg-primary-50 md:block"
           style={{ right: "1rem", bottom: "calc(max(1rem, env(safe-area-inset-bottom)) + 5.5rem)" }}
           aria-label="Back to top"
         >
