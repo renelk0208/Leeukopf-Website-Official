@@ -2,7 +2,6 @@ import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import { trackLead } from '../lib/metaPixel';
-import DistributorMap from '../components/DistributorMap';
 
 interface FormData {
   company: string;
@@ -1545,11 +1544,6 @@ export default function ClientRegistrationPage() {
           </div>
         </div>
       </form>
-
-      {/* Distributor Network Map */}
-      <div className="mt-8">
-        <DistributorMap />
-      </div>
     </PageTemplate>
   );
 }
