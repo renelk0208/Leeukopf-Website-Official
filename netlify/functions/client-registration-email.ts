@@ -509,6 +509,15 @@ const handler: Handler = async (event: HandlerEvent) => {
   try {
     const warnings: string[] = [];
 
+    // Persist registration first so Admin approvals always sees submissions
+    console.log('Persisting registration to Supabase client_registrations...');
+    try {
+      await persistClientRegistration(formData);
+    } catch (persistError) {
+      console.error('Failed to persist registration to Supabase:', persistError);
+      warnings.push('Submission accepted but failed to queue for admin approval list');
+    }
+
     // Send internal notification email
     console.log('Sending internal notification email to info@leeukopf.com');
     const internalEmailBody = generateInternalEmailBody(formData);
@@ -540,23 +549,6 @@ const handler: Handler = async (event: HandlerEvent) => {
     } catch (sheetsError) {
       console.error('Failed to append to Google Sheets:', sheetsError);
       warnings.push('Email sent but failed to log to spreadsheet');
-    }
-
-    // Persist registration for Admin Dashboard approvals
-    console.log('Persisting registration to Supabase client_registrations...');
-    try {
-      await persistClientRegistration(formData);
-    } catch (persistError) {
-      console.error('Failed to persist registration to Supabase:', persistError);
-      warnings.push('Submission accepted but failed to queue for admin approval list');
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          success: true,
-          warning: warnings.join(' | '),
-        }),
-      };
     }
 
     return {
