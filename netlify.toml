@@ -47,6 +47,12 @@
   to = "/.netlify/functions/submit-order"
   status = 200
 
+[[redirects]]
+  from = "/api/admin-client-invite"
+  to = "/.netlify/functions/admin-client-invite"
+  status = 200
+  force = true
+
 # Static HTML page redirects
 [[redirects]]
   from = "/thank-you-compliance-consultation"
