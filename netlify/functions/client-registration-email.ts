@@ -1,5 +1,6 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { Resend } from 'resend';
+import { createClient } from '@supabase/supabase-js';
 import * as jose from 'jose';
 import { webcrypto } from 'crypto';
 import { existsSync, readFileSync } from 'fs';
@@ -405,6 +406,32 @@ async function appendToGoogleSheets(formData: FormData): Promise<void> {
   }
 }
 
+async function persistClientRegistration(formData: FormData): Promise<void> {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    console.warn('[client-registration-email] Supabase persistence skipped: missing SUPABASE_URL/VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
+    return;
+  }
+
+  const supabase = createClient(supabaseUrl, serviceRoleKey);
+
+  const { error } = await supabase
+    .from('client_registrations')
+    .insert({
+      company: formData.company?.trim() || null,
+      contact: formData.contact?.trim() || null,
+      email: formData.email?.trim().toLowerCase() || null,
+      country: formData.country?.trim() || null,
+      business_type: formData.businessType?.trim() || null,
+    });
+
+  if (error) {
+    throw new Error(`Failed to persist client registration: ${error.message}`);
+  }
+}
+
 const handler: Handler = async (event: HandlerEvent) => {
   console.log('FUNCTION VERSION: prod-force-upload-2025-12-17-1016');
   
@@ -518,6 +545,22 @@ const handler: Handler = async (event: HandlerEvent) => {
         body: JSON.stringify({ 
           success: true,
           warning: 'Email sent but failed to log to spreadsheet'
+        }),
+      };
+    }
+
+    // Persist registration for Admin Dashboard approvals
+    console.log('Persisting registration to Supabase client_registrations...');
+    try {
+      await persistClientRegistration(formData);
+    } catch (persistError) {
+      console.error('Failed to persist registration to Supabase:', persistError);
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          warning: 'Submission accepted but failed to queue for admin approval list',
         }),
       };
     }
