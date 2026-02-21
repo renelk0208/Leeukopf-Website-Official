@@ -196,13 +196,31 @@ export const handler: Handler = async (event) => {
   });
 
   if (inviteError) {
+    const { data: linkData, error: linkError } = await adminSupabase.auth.admin.generateLink({
+      type: 'invite',
+      email,
+      options: {
+        redirectTo,
+        data: {
+          company: payload.company?.trim() || null,
+          contact: payload.contact?.trim() || null,
+          approvedBy: requesterEmail,
+        },
+      },
+    });
+
+    const manualInviteLink = linkData?.properties?.action_link;
+
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         success: true,
         invited: false,
-        message: `Client approved, but invite email could not be sent automatically: ${inviteError.message}`,
+        inviteLink: manualInviteLink,
+        message: manualInviteLink
+          ? `Client approved, but invite email could not be sent automatically (${inviteError.message}). Share this invite link manually: ${manualInviteLink}`
+          : `Client approved, but invite email could not be sent automatically: ${inviteError.message}${linkError?.message ? ` | Also failed to generate manual invite link: ${linkError.message}` : ''}`,
       }),
     };
   }
