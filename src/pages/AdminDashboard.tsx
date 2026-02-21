@@ -19,6 +19,38 @@ interface SiteSettings {
   accent_color: string;
 }
 
+const APPROVED_EMAILS_STORAGE_KEY = 'adminApprovedClientEmails';
+
+const getStoredApprovedEmails = (): Set<string> => {
+  if (typeof window === 'undefined') return new Set();
+
+  try {
+    const raw = window.localStorage.getItem(APPROVED_EMAILS_STORAGE_KEY);
+    if (!raw) return new Set();
+
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return new Set();
+
+    return new Set(
+      parsed
+        .map((value) => String(value).toLowerCase().trim())
+        .filter(Boolean)
+    );
+  } catch {
+    return new Set();
+  }
+};
+
+const persistApprovedEmails = (emails: Set<string>) => {
+  if (typeof window === 'undefined') return;
+
+  try {
+    window.localStorage.setItem(APPROVED_EMAILS_STORAGE_KEY, JSON.stringify(Array.from(emails)));
+  } catch {
+    // Ignore localStorage write failures
+  }
+};
+
 const DEFAULT_COLORS: SiteSettings = {
   primary_color: '#06b6d4',
   secondary_color: '#3b82f6',
@@ -33,7 +65,7 @@ export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   const [brochureRequests, setBrochureRequests] = useState<BrochureRequest[]>([]);
   const [clientRegistrations, setClientRegistrations] = useState<ClientRegistrationLead[]>([]);
-  const [approvedEmails, setApprovedEmails] = useState<Set<string>>(new Set());
+  const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [refreshingClients, setRefreshingClients] = useState(false);
   const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
@@ -109,13 +141,20 @@ export default function AdminDashboard() {
       .from('approved_clients')
       .select('email');
 
+    const stored = getStoredApprovedEmails();
+
     if (error) {
       console.error('Failed to load approved clients:', error);
+      setApprovedEmails(stored);
       return;
     }
 
-    const next = new Set((data ?? []).map((row) => String(row.email).toLowerCase()));
+    const next = new Set([
+      ...Array.from(stored),
+      ...(data ?? []).map((row) => String(row.email).toLowerCase()),
+    ]);
     setApprovedEmails(next);
+    persistApprovedEmails(next);
   }, []);
 
   useEffect(() => {
@@ -326,6 +365,7 @@ export default function AdminDashboard() {
       setApprovedEmails((prev) => {
         const next = new Set(prev);
         next.add(registration.email.toLowerCase());
+        persistApprovedEmails(next);
         return next;
       });
       setMessage(payload.message || `Client approved and invite sent to ${registration.email}.`);
