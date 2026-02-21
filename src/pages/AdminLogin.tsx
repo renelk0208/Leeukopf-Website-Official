@@ -5,7 +5,14 @@ import { Lock } from 'lucide-react';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
-  const { user, signIn, signUp } = useAuth();
+  const { user, signIn, signUp, requestPasswordReset, updatePassword } = useAuth();
+  const [isRecoveryMode, setIsRecoveryMode] = useState(() => {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    return hashParams.get('type') === 'recovery';
+  });
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,10 +22,37 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user) {
+    if (user && !isRecoveryMode) {
       navigate('/admin');
     }
-  }, [user, navigate]);
+  }, [user, isRecoveryMode, navigate]);
+
+  const clearRecoveryHash = () => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    setError('');
+    setSuccess('');
+
+    if (!email.trim()) {
+      setError('Enter your email address first');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await requestPasswordReset(email.trim());
+      setSuccess('Password reset email sent. Check your inbox for the recovery link.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Unable to send password reset email');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +61,25 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      if (isSignUp) {
+      if (isRecoveryMode) {
+        if (password !== confirmPassword) {
+          setError('Passwords do not match');
+          setLoading(false);
+          return;
+        }
+        if (password.length < 6) {
+          setError('Password must be at least 6 characters');
+          setLoading(false);
+          return;
+        }
+
+        await updatePassword(password);
+        clearRecoveryHash();
+        setIsRecoveryMode(false);
+        setPassword('');
+        setConfirmPassword('');
+        setSuccess('Password updated successfully. You can now sign in.');
+      } else if (isSignUp) {
         if (password !== confirmPassword) {
           setError('Passwords do not match');
           setLoading(false);
@@ -48,7 +100,9 @@ export default function AdminLogin() {
         await signIn(email, password);
       }
     } catch (err: unknown) {
-      if (isSignUp) {
+      if (isRecoveryMode) {
+        setError(err instanceof Error ? err.message : 'Error updating password');
+      } else if (isSignUp) {
         setError(err instanceof Error ? err.message : 'Error creating account');
       } else {
         setError('Invalid email or password');
@@ -69,10 +123,12 @@ export default function AdminLogin() {
           </div>
 
           <h2 className="text-3xl font-bold text-white text-center mb-2">
-            {isSignUp ? 'Create Admin Account' : 'Admin Login'}
+            {isRecoveryMode ? 'Reset Admin Password' : (isSignUp ? 'Create Admin Account' : 'Admin Login')}
           </h2>
           <p className="text-gray-400 text-center mb-8">
-            {isSignUp ? 'Register to manage your website' : 'Sign in to manage your website'}
+            {isRecoveryMode
+              ? 'Enter your new password to complete recovery'
+              : (isSignUp ? 'Register to manage your website' : 'Sign in to manage your website')}
           </p>
 
           {error && (
@@ -88,24 +144,26 @@ export default function AdminLogin() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"
-                placeholder="admin@leeukopf.com"
-                required
-              />
-            </div>
+            {!isRecoveryMode && (
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"
+                  placeholder="admin@leeukopf.com"
+                  required
+                />
+              </div>
+            )}
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                Password
+                {isRecoveryMode ? 'New Password' : 'Password'}
               </label>
               <input
                 type="password"
@@ -113,12 +171,12 @@ export default function AdminLogin() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"
-                placeholder={isSignUp ? 'At least 6 characters' : 'Enter your password'}
+                placeholder={isRecoveryMode ? 'At least 6 characters' : (isSignUp ? 'At least 6 characters' : 'Enter your password')}
                 required
               />
             </div>
 
-            {isSignUp && (
+            {(isSignUp || isRecoveryMode) && (
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
                   Confirm Password
@@ -140,21 +198,36 @@ export default function AdminLogin() {
               disabled={loading}
               className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-800 transition-all transform hover:scale-105 shadow-lg shadow-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? (isSignUp ? 'Creating Account...' : 'Signing In...') : (isSignUp ? 'Create Account' : 'Sign In')}
+              {loading
+                ? (isRecoveryMode ? 'Updating Password...' : (isSignUp ? 'Creating Account...' : 'Signing In...'))
+                : (isRecoveryMode ? 'Update Password' : (isSignUp ? 'Create Account' : 'Sign In'))}
             </button>
           </form>
 
           <div className="mt-6 text-center space-y-3">
-            <button
-              onClick={() => {
-                setIsSignUp(!isSignUp);
-                setError('');
-                setSuccess('');
-              }}
-              className="text-cyan-400 hover:text-cyan-300 transition-colors text-sm font-medium"
-            >
-              {isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
-            </button>
+            {!isRecoveryMode && (
+              <>
+                {!isSignUp && (
+                  <button
+                    onClick={handleForgotPassword}
+                    disabled={loading}
+                    className="text-cyan-400 hover:text-cyan-300 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Forgot password?
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    setIsSignUp(!isSignUp);
+                    setError('');
+                    setSuccess('');
+                  }}
+                  className="text-cyan-400 hover:text-cyan-300 transition-colors text-sm font-medium"
+                >
+                  {isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
+                </button>
+              </>
+            )}
             <div>
               <button
                 onClick={() => window.location.href = '/'}
