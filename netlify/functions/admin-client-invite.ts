@@ -173,7 +173,11 @@ export const handler: Handler = async (event) => {
       { onConflict: 'email' }
     );
 
-  if (upsertError) {
+  const approvedClientsTableMissing = Boolean(
+    upsertError?.message?.toLowerCase().includes("could not find the table 'public.approved_clients'")
+  );
+
+  if (upsertError && !approvedClientsTableMissing) {
     return {
       statusCode: 500,
       headers,
@@ -209,7 +213,9 @@ export const handler: Handler = async (event) => {
     body: JSON.stringify({
       success: true,
       invited: true,
-      message: `Client approved and invitation email sent to ${email}.`,
+      message: approvedClientsTableMissing
+        ? `Invitation email sent to ${email}, but approved_clients table is missing. Run the approved_clients migration to track approval status.`
+        : `Client approved and invitation email sent to ${email}.`,
     }),
   };
 };
