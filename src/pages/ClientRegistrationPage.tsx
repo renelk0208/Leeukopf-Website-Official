@@ -430,6 +430,7 @@ export default function ClientRegistrationPage() {
     e.preventDefault();
 
     if (formData.honeypot) {
+      setSubmitError('Form validation failed. Please refresh the page and submit again.');
       return;
     }
 
@@ -601,7 +602,7 @@ export default function ClientRegistrationPage() {
           onChange={handleInputChange}
           className="hidden"
           tabIndex={-1}
-          autoComplete="off"
+          autoComplete="new-password"
           aria-hidden="true"
         />
 
