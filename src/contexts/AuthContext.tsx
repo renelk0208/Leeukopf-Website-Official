@@ -2,6 +2,28 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { supabase } from '../lib/supabase';
 import type { User, Session } from '@supabase/supabase-js';
 
+const FALLBACK_SITE_URL = 'https://leeukopf.com';
+
+const getAuthRedirectBaseUrl = (): string => {
+  const configuredSiteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.trim();
+
+  if (configuredSiteUrl) {
+    return configuredSiteUrl.replace(/\/$/, '');
+  }
+
+  if (typeof window !== 'undefined') {
+    const { origin, hostname } = window.location;
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return FALLBACK_SITE_URL;
+    }
+
+    return origin.replace(/\/$/, '');
+  }
+
+  return FALLBACK_SITE_URL;
+};
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -107,9 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const requestPasswordReset = async (email: string) => {
     try {
-      const redirectTo = typeof window !== 'undefined'
-        ? `${window.location.origin}/admin/login`
-        : undefined;
+      const redirectTo = `${getAuthRedirectBaseUrl()}/admin/login`;
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo,
