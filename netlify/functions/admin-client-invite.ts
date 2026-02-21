@@ -196,6 +196,23 @@ export const handler: Handler = async (event) => {
   });
 
   if (inviteError) {
+    const inviteErrorMessage = inviteError.message || '';
+    const alreadyRegistered = inviteErrorMessage.toLowerCase().includes('already been registered');
+
+    if (alreadyRegistered) {
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          invited: false,
+          alreadyRegistered: true,
+          loginUrl: `${getAllowedOrigin(event.headers.origin)}/portal/login`,
+          message: `Client approved. This email already has an account, so no new invite email was sent. Ask them to sign in at /portal/login and use password reset if needed.`,
+        }),
+      };
+    }
+
     const { data: linkData, error: linkError } = await adminSupabase.auth.admin.generateLink({
       type: 'invite',
       email,
@@ -219,8 +236,8 @@ export const handler: Handler = async (event) => {
         invited: false,
         inviteLink: manualInviteLink,
         message: manualInviteLink
-          ? `Client approved, but invite email could not be sent automatically (${inviteError.message}). Share this invite link manually: ${manualInviteLink}`
-          : `Client approved, but invite email could not be sent automatically: ${inviteError.message}${linkError?.message ? ` | Also failed to generate manual invite link: ${linkError.message}` : ''}`,
+          ? `Client approved, but invite email could not be sent automatically (${inviteErrorMessage}). Share this invite link manually: ${manualInviteLink}`
+          : `Client approved, but invite email could not be sent automatically: ${inviteErrorMessage}${linkError?.message ? ` | Also failed to generate manual invite link: ${linkError.message}` : ''}`,
       }),
     };
   }
