@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus } from 'lucide-react';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw } from 'lucide-react';
 
 interface ClientRegistrationLead {
   id: string;
@@ -35,6 +35,7 @@ export default function AdminDashboard() {
   const [clientRegistrations, setClientRegistrations] = useState<ClientRegistrationLead[]>([]);
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(new Set());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
+  const [refreshingClients, setRefreshingClients] = useState(false);
   const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
@@ -124,6 +125,27 @@ export default function AdminDashboard() {
     loadClientRegistrations();
     loadApprovedClients();
   }, [loadCategories, loadColors, loadBrochureRequests, loadClientRegistrations, loadApprovedClients]);
+
+  const refreshClientAccess = useCallback(async () => {
+    setRefreshingClients(true);
+    try {
+      await Promise.all([loadClientRegistrations(), loadApprovedClients()]);
+    } finally {
+      setRefreshingClients(false);
+    }
+  }, [loadClientRegistrations, loadApprovedClients]);
+
+  useEffect(() => {
+    if (activeTab !== 'clients') return;
+
+    refreshClientAccess();
+
+    const intervalId = window.setInterval(() => {
+      refreshClientAccess();
+    }, 30000);
+
+    return () => window.clearInterval(intervalId);
+  }, [activeTab, refreshClientAccess]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -728,10 +750,23 @@ export default function AdminDashboard() {
 
         {activeTab === 'clients' && (
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-cyan-500/20 p-6">
-            <h2 className="text-2xl font-bold text-white mb-2">Client Access Approvals</h2>
-            <p className="text-gray-400 mb-6">
-              Approve a registration and send the portal invitation email in one click.
-            </p>
+            <div className="flex items-start justify-between gap-4 mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-2">Client Access Approvals</h2>
+                <p className="text-gray-400">
+                  Approve a registration and send the portal invitation email in one click.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={refreshClientAccess}
+                disabled={refreshingClients}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-gray-200 hover:border-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <RefreshCw size={16} className={refreshingClients ? 'animate-spin' : ''} />
+                <span>{refreshingClients ? 'Refreshing...' : 'Refresh'}</span>
+              </button>
+            </div>
 
             {clientRegistrations.length === 0 ? (
               <div className="text-center py-12">
@@ -778,13 +813,17 @@ export default function AdminDashboard() {
                             )}
                           </td>
                           <td className="py-4 px-4">
-                            <button
-                              onClick={() => handleApproveAndInvite(registration)}
-                              disabled={invitingEmail === registration.email}
-                              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              {invitingEmail === registration.email ? 'Sending...' : 'Approve + Invite'}
-                            </button>
+                            {isApproved ? (
+                              <span className="text-emerald-400 text-sm font-medium">Already approved</span>
+                            ) : (
+                              <button
+                                onClick={() => handleApproveAndInvite(registration)}
+                                disabled={invitingEmail === registration.email}
+                                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                {invitingEmail === registration.email ? 'Sending...' : 'Approve + Invite'}
+                              </button>
+                            )}
                           </td>
                         </tr>
                       );

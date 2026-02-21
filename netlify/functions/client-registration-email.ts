@@ -507,6 +507,8 @@ const handler: Handler = async (event: HandlerEvent) => {
   const resend = new Resend(resendApiKey);
 
   try {
+    const warnings: string[] = [];
+
     // Send internal notification email
     console.log('Sending internal notification email to info@leeukopf.com');
     const internalEmailBody = generateInternalEmailBody(formData);
@@ -537,16 +539,7 @@ const handler: Handler = async (event: HandlerEvent) => {
       await appendToGoogleSheets(formData);
     } catch (sheetsError) {
       console.error('Failed to append to Google Sheets:', sheetsError);
-      // Continue execution - email was sent successfully
-      // We'll still return success but log the Sheets error
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ 
-          success: true,
-          warning: 'Email sent but failed to log to spreadsheet'
-        }),
-      };
+      warnings.push('Email sent but failed to log to spreadsheet');
     }
 
     // Persist registration for Admin Dashboard approvals
@@ -555,12 +548,13 @@ const handler: Handler = async (event: HandlerEvent) => {
       await persistClientRegistration(formData);
     } catch (persistError) {
       console.error('Failed to persist registration to Supabase:', persistError);
+      warnings.push('Submission accepted but failed to queue for admin approval list');
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           success: true,
-          warning: 'Submission accepted but failed to queue for admin approval list',
+          warning: warnings.join(' | '),
         }),
       };
     }
@@ -568,7 +562,11 @@ const handler: Handler = async (event: HandlerEvent) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ success: true }),
+      body: JSON.stringify(
+        warnings.length > 0
+          ? { success: true, warning: warnings.join(' | ') }
+          : { success: true }
+      ),
     };
   } catch (err) {
     console.error('Error sending emails:', err);
