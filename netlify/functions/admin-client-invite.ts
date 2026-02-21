@@ -86,10 +86,9 @@ export const handler: Handler = async (event) => {
   }
 
   const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-  const anonKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!supabaseUrl || !anonKey || !serviceRoleKey) {
+  if (!supabaseUrl || !serviceRoleKey) {
     return {
       statusCode: 500,
       headers,
@@ -106,15 +105,17 @@ export const handler: Handler = async (event) => {
     };
   }
 
-  const clientSupabase = createClient(supabaseUrl, anonKey);
   const adminSupabase = createClient(supabaseUrl, serviceRoleKey);
 
-  const { data: authData, error: authError } = await clientSupabase.auth.getUser(token);
+  const { data: authData, error: authError } = await adminSupabase.auth.getUser(token);
   if (authError || !authData.user?.email) {
     return {
       statusCode: 401,
       headers,
-      body: JSON.stringify({ success: false, message: 'Unauthorized admin session.' }),
+      body: JSON.stringify({
+        success: false,
+        message: authError?.message ? `Unauthorized admin session: ${authError.message}` : 'Unauthorized admin session.',
+      }),
     };
   }
 
