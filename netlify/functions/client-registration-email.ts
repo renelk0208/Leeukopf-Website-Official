@@ -411,8 +411,7 @@ async function persistClientRegistration(formData: FormData): Promise<void> {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceRoleKey) {
-    console.warn('[client-registration-email] Supabase persistence skipped: missing SUPABASE_URL/VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
-    return;
+    throw new Error('Supabase persistence is not configured. Missing SUPABASE_URL/VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.');
   }
 
   const supabase = createClient(supabaseUrl, serviceRoleKey);
@@ -507,16 +506,13 @@ const handler: Handler = async (event: HandlerEvent) => {
   const resend = new Resend(resendApiKey);
 
   try {
-    const warnings: string[] = [];
-
     // Persist registration first so Admin approvals always sees submissions
     console.log('Persisting registration to Supabase client_registrations...');
-    try {
-      await persistClientRegistration(formData);
-    } catch (persistError) {
-      console.error('Failed to persist registration to Supabase:', persistError);
-      warnings.push('Submission accepted but failed to queue for admin approval list');
-    }
+    await persistClientRegistration(formData);
+
+    // Append data to Google Sheets (required)
+    console.log('Appending data to Google Sheets...');
+    await appendToGoogleSheets(formData);
 
     // Send internal notification email
     console.log('Sending internal notification email to info@leeukopf.com');
@@ -542,23 +538,10 @@ const handler: Handler = async (event: HandlerEvent) => {
     });
     console.log('Auto-reply email sent successfully:', autoReplyResult.id);
 
-    // Append data to Google Sheets
-    console.log('Appending data to Google Sheets...');
-    try {
-      await appendToGoogleSheets(formData);
-    } catch (sheetsError) {
-      console.error('Failed to append to Google Sheets:', sheetsError);
-      warnings.push('Email sent but failed to log to spreadsheet');
-    }
-
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(
-        warnings.length > 0
-          ? { success: true, warning: warnings.join(' | ') }
-          : { success: true }
-      ),
+      body: JSON.stringify({ success: true }),
     };
   } catch (err) {
     console.error('Error sending emails:', err);
