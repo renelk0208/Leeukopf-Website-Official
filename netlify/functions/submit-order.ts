@@ -262,11 +262,15 @@ async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Prom
     return;
   }
 
-  const toEmail = process.env.ORDER_NOTIFICATION_EMAIL || 'leeukopf@gmail.com';
+  const toEmail =
+    process.env.ORDER_NOTIFICATION_EMAIL ||
+    process.env.ORDERS_INBOX_EMAIL ||
+    'leeukopf@gmail.com';
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@leeukopf.com';
   const resend = new Resend(resendApiKey);
 
   await resend.emails.send({
-    from: 'Leeukopf Orders <noreply@leeukopf.com>',
+    from: `Leeukopf Orders <${fromEmail}>`,
     to: toEmail,
     subject: `New B2B Order ${orderId}`,
     html: generateOrderEmailHtml(orderId, orderData),
@@ -274,7 +278,7 @@ async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Prom
   });
 
   await resend.emails.send({
-    from: 'Leeukopf Orders <noreply@leeukopf.com>',
+    from: `Leeukopf Orders <${fromEmail}>`,
     to: orderData.customer.email,
     subject: `We received your order ${orderId}`,
     html: `
