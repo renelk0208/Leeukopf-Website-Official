@@ -31,6 +31,7 @@ const B2BClientInfoPage = lazy(() => import("./b2b/pages/B2BClientInfoPage"));
 const B2BSolidColoursPage = lazy(() => import("./b2b/pages/B2BSolidColoursPage"));
 const B2BBuilderGelsPortalPage = lazy(() => import("./b2b/pages/B2BBuilderGelsPage"));
 const B2BPolygelsPage = lazy(() => import("./b2b/pages/B2BPolygelsPage"));
+const B2BExtraStrengthBasesPage = lazy(() => import("./b2b/pages/B2BExtraStrengthBasesPage"));
 const B2BCheckoutPage = lazy(() => import("./b2b/pages/B2BCheckoutPage"));
 const LegacyB2BSolidColoursPage = lazy(() => import("./b2b/pages/LegacyB2BSolidColoursPage"));
 const LegacyB2BBuilderGelsPage = lazy(() => import("./b2b/pages/LegacyB2BBuilderGelsPage"));
@@ -117,6 +118,7 @@ function App() {
             <Route path="solid-colours" element={<B2BSolidColoursPage />} />
             <Route path="builder-gels" element={<B2BBuilderGelsPortalPage />} />
             <Route path="polygels" element={<B2BPolygelsPage />} />
+            <Route path="extra-strength-bases" element={<B2BExtraStrengthBasesPage />} />
             <Route path="checkout" element={<B2BCheckoutPage />} />
           </Route>
 

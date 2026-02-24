@@ -46,10 +46,10 @@ export const b2bCategories: B2BCategoryConfig[] = [
   },
   {
     key: "BASE",
-    label: "Base Coats",
-    routePath: "/b2b/tops-bases",
+    label: "Extra Strength Bases",
+    routePath: "/b2b/extra-strength-bases",
     defaultUnitType: "PCS",
-    enabled: false,
+    enabled: true,
   },
 ];
 
