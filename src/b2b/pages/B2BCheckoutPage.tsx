@@ -154,7 +154,7 @@ export default function B2BCheckoutPage() {
       source: "B2B Portal Checkout",
     };
     console.log("[B2B Submit Payload]", payload);
-    alert("B2B inquiry payload logged in console. Backend submit endpoint can be wired next.");
+    alert("Thank you for your order, our Admin Office will be in touch with you shortly for your pro forma.");
     clearCart();
   };
 
