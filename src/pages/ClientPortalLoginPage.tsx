@@ -82,7 +82,13 @@ export default function ClientPortalLoginPage() {
             : 'Use your approved client email and password.'}
         </p>
         <div className="mt-4 rounded-md border border-primary-100 bg-primary-50 px-3 py-2 text-sm text-grey-primary">
-          Client flow: 1) Register your company, 2) create portal account here, 3) wait for approval, 4) order stock after approval.
+          <p className="font-semibold">Client flow:</p>
+          <ul className="mt-1 list-disc space-y-0.5 pl-5">
+            <li>Register your company.</li>
+            <li>Create your portal account here.</li>
+            <li>Wait for approval from Leeukopf.</li>
+            <li>Order stock after approval.</li>
+          </ul>
         </div>
 
         {error ? (
