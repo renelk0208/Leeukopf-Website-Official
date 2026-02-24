@@ -20,6 +20,42 @@ export default function AdminLogin() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showResetShortcut, setShowResetShortcut] = useState(false);
+
+  const getErrorMessage = (err: unknown, context: 'signin' | 'signup' | 'recovery' | 'forgot-password') => {
+    const raw = err instanceof Error ? err.message : '';
+    const normalized = raw.toLowerCase();
+
+    if (normalized.includes('rate limit')) {
+      if (context === 'signup') {
+        return 'Too many account creation attempts. If this admin email already exists, use password reset instead.';
+      }
+
+      if (context === 'forgot-password') {
+        return 'Too many reset requests right now. Wait a minute and try again.';
+      }
+
+      return 'Too many attempts right now. Wait a minute and try again.';
+    }
+
+    if (context === 'signup' && normalized.includes('user already registered')) {
+      return 'This admin email already exists. Use sign in or password reset.';
+    }
+
+    if (context === 'signin') {
+      return 'Invalid email or password';
+    }
+
+    if (context === 'recovery') {
+      return raw || 'Error updating password';
+    }
+
+    if (context === 'forgot-password') {
+      return raw || 'Unable to send password reset email';
+    }
+
+    return raw || 'Something went wrong. Please try again.';
+  };
 
   useEffect(() => {
     if (user && !isRecoveryMode) {
@@ -36,6 +72,7 @@ export default function AdminLogin() {
   const handleForgotPassword = async () => {
     setError('');
     setSuccess('');
+    setShowResetShortcut(false);
 
     if (!email.trim()) {
       setError('Enter your email address first');
@@ -48,7 +85,7 @@ export default function AdminLogin() {
       await requestPasswordReset(email.trim());
       setSuccess('Password reset email sent. Check your inbox for the recovery link.');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Unable to send password reset email');
+      setError(getErrorMessage(err, 'forgot-password'));
     } finally {
       setLoading(false);
     }
@@ -58,6 +95,7 @@ export default function AdminLogin() {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setShowResetShortcut(false);
     setLoading(true);
 
     try {
@@ -101,11 +139,12 @@ export default function AdminLogin() {
       }
     } catch (err: unknown) {
       if (isRecoveryMode) {
-        setError(err instanceof Error ? err.message : 'Error updating password');
+        setError(getErrorMessage(err, 'recovery'));
       } else if (isSignUp) {
-        setError(err instanceof Error ? err.message : 'Error creating account');
+        setError(getErrorMessage(err, 'signup'));
+        setShowResetShortcut(true);
       } else {
-        setError('Invalid email or password');
+        setError(getErrorMessage(err, 'signin'));
       }
     } finally {
       setLoading(false);
@@ -227,11 +266,22 @@ export default function AdminLogin() {
                     setIsSignUp(!isSignUp);
                     setError('');
                     setSuccess('');
+                    setShowResetShortcut(false);
                   }}
                   className="text-cyan-400 hover:text-cyan-300 transition-colors text-sm font-medium"
                 >
                   {isSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
                 </button>
+
+                {showResetShortcut && isSignUp && (
+                  <button
+                    onClick={handleForgotPassword}
+                    disabled={loading || !email.trim()}
+                    className="text-cyan-400 hover:text-cyan-300 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Send password reset instead
+                  </button>
+                )}
               </>
             )}
             <div>
