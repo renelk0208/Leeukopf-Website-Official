@@ -6,11 +6,13 @@ import { getB2BCategoryLabel } from "../config/categories";
 const bottleSizes: Array<{ value: BottleSize; label: string }> = [
   { value: "10ML", label: "10ml" },
   { value: "15ML", label: "15ml" },
+  { value: "OTHER", label: "Other (discuss with us)" },
 ];
 
 const bottleColors: Array<{ value: BottleColor; label: string }> = [
   { value: "BLACK", label: "Black" },
   { value: "WHITE", label: "White" },
+  { value: "OTHER", label: "Other (discuss with us)" },
 ];
 
 const brushTypes: Array<{ value: BrushType; label: string }> = [

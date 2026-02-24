@@ -9,9 +9,9 @@ export type B2BCategory =
 export type CartUnitType = "PCS" | "KG";
 
 export type BottleBranding = "PRE_PRINTED" | "LABELS";
-export type BottleColor = "BLACK" | "WHITE";
+export type BottleColor = "BLACK" | "WHITE" | "OTHER";
 export type BrushType = "OVAL" | "FLAT";
-export type BottleSize = "10ML" | "15ML";
+export type BottleSize = "10ML" | "15ML" | "OTHER";
 
 export type BottlePackaging = {
   size: BottleSize;
