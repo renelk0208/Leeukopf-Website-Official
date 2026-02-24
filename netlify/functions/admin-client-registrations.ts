@@ -15,6 +15,20 @@ type ClientRegistrationRow = {
   created_at: string;
 };
 
+function normalizeText(value: string | null | undefined): string {
+  return String(value || '').trim().toLowerCase();
+}
+
+function getLeadSignature(row: ClientRegistrationRow): string {
+  return [
+    normalizeText(row.email),
+    normalizeText(row.company),
+    normalizeText(row.contact),
+    normalizeText(row.country),
+    normalizeText(row.business_type),
+  ].join('|');
+}
+
 function getAllowedOrigin(requestOrigin: string | undefined): string {
   const allowedOrigins = [
     'https://leeukopf.com',
@@ -154,13 +168,34 @@ export const handler: Handler = async (event) => {
     };
   }
 
+  const dedupedMap = new Map<string, ClientRegistrationRow>();
+  for (const row of (data ?? []) as ClientRegistrationRow[]) {
+    const key = getLeadSignature(row);
+    const existing = dedupedMap.get(key);
+
+    if (!existing) {
+      dedupedMap.set(key, row);
+      continue;
+    }
+
+    const existingTime = new Date(existing.created_at).getTime();
+    const nextTime = new Date(row.created_at).getTime();
+    if (!Number.isNaN(nextTime) && (Number.isNaN(existingTime) || nextTime > existingTime)) {
+      dedupedMap.set(key, row);
+    }
+  }
+
+  const deduped = Array.from(dedupedMap.values()).sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
   return {
     statusCode: 200,
     headers,
     body: JSON.stringify({
       success: true,
-      count: (data ?? []).length,
-      data: (data ?? []) as ClientRegistrationRow[],
+      count: deduped.length,
+      data: deduped,
     }),
   };
 };

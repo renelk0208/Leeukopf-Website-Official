@@ -416,18 +416,44 @@ async function persistClientRegistration(formData: FormData): Promise<void> {
 
   const supabase = createClient(supabaseUrl, serviceRoleKey);
 
+  const normalizedEmail = formData.email?.trim().toLowerCase() || '';
+  const normalizedCompany = formData.company?.trim() || '';
+  const normalizedContact = formData.contact?.trim() || '';
+  const normalizedCountry = formData.country?.trim() || '';
+  const normalizedBusinessType = formData.businessType?.trim() || '';
+
+  const duplicateWindowStart = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { data: duplicateRows, error: duplicateCheckError } = await supabase
+    .from('client_registrations')
+    .select('id')
+    .eq('email', normalizedEmail)
+    .eq('company', normalizedCompany)
+    .eq('contact', normalizedContact)
+    .eq('country', normalizedCountry)
+    .eq('business_type', normalizedBusinessType)
+    .gte('created_at', duplicateWindowStart)
+    .limit(1);
+
+  if (duplicateCheckError) {
+    throw new Error(`Failed duplicate check for client registration: ${duplicateCheckError.message}`);
+  }
+
+  if ((duplicateRows ?? []).length > 0) {
+    return;
+  }
+
   const { error } = await supabase
     .from('client_registrations')
     .insert({
-      company: formData.company?.trim() || null,
-      contact: formData.contact?.trim() || null,
+      company: normalizedCompany || null,
+      contact: normalizedContact || null,
       role: formData.role?.trim() || null,
-      email: formData.email?.trim().toLowerCase() || null,
+      email: normalizedEmail || null,
       phone: formData.phone?.trim() || null,
-      country: formData.country?.trim() || null,
+      country: normalizedCountry || null,
       website: formData.website?.trim() || null,
       instagram: formData.instagram?.trim() || null,
-      business_type: formData.businessType?.trim() || null,
+      business_type: normalizedBusinessType || null,
       interests: Array.isArray(formData.interests)
         ? formData.interests.map((item) => String(item).trim()).filter(Boolean)
         : [],
