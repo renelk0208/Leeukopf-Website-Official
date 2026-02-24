@@ -196,6 +196,12 @@ export default function ProductsPage() {
           >
             Private label options
           </Link>
+          <Link
+            to="/portal/login"
+            className="btn-primary px-6 py-3 rounded-lg font-semibold text-center"
+          >
+            ORDER NOW ON PORTAL
+          </Link>
         </div>
 
         {/* Intro Section */}

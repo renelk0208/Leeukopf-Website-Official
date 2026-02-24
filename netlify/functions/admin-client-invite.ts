@@ -63,7 +63,7 @@ function getRedirectUrl(origin: string | undefined): string {
   if (configured && configured.trim()) return configured.trim();
 
   const fallbackOrigin = getAllowedOrigin(origin);
-  return `${fallbackOrigin}/portal/login`;
+  return `${fallbackOrigin}/portal/set-password`;
 }
 
 export const handler: Handler = async (event) => {

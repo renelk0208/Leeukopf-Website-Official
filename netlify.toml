@@ -53,6 +53,18 @@
   status = 200
   force = true
 
+[[redirects]]
+  from = "/api/admin-client-registrations"
+  to = "/.netlify/functions/admin-client-registrations"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-client-registrations-backfill"
+  to = "/.netlify/functions/admin-client-registrations-backfill"
+  status = 200
+  force = true
+
 # Static HTML page redirects
 [[redirects]]
   from = "/thank-you-compliance-consultation"

@@ -35,6 +35,8 @@ const LegacyB2BBuilderGelsPage = lazy(() => import("./b2b/pages/LegacyB2BBuilder
 const ClientPortalProtectedRoute = lazy(() => import('./components/ClientPortalProtectedRoute'));
 const ClientPortalLoginPage = lazy(() => import('./pages/ClientPortalLoginPage'));
 const ClientPortalDashboardPage = lazy(() => import('./pages/ClientPortalDashboardPage'));
+const PortalPendingApprovalPage = lazy(() => import('./pages/PortalPendingApprovalPage'));
+const ClientPortalSetPasswordPage = lazy(() => import('./pages/ClientPortalSetPasswordPage'));
 
 // Product Pages
 const GelPolishPage = lazy(() => import('./pages/products/GelPolishPage'));
@@ -115,6 +117,9 @@ function App() {
           </Route>
 
           <Route path="/portal/login" element={<ClientPortalLoginPage />} />
+          <Route path="/portal/set-password" element={<ClientPortalSetPasswordPage />} />
+          <Route path="/portal/register" element={<Navigate to="/client-registration" replace />} />
+          <Route path="/portal/pending-approval" element={<PortalPendingApprovalPage />} />
           <Route
             path="/portal"
             element={

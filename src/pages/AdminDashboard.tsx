@@ -57,6 +57,11 @@ const DEFAULT_COLORS: SiteSettings = {
   accent_color: '#22d3ee',
 };
 
+function getLatestDecemberStart(referenceDate = new Date()): Date {
+  const year = referenceDate.getMonth() >= 11 ? referenceDate.getFullYear() : referenceDate.getFullYear() - 1;
+  return new Date(year, 11, 1, 0, 0, 0, 0);
+}
+
 export default function AdminDashboard() {
   const { signOut, user, session } = useAuth();
   const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients'>('products');
@@ -68,6 +73,7 @@ export default function AdminDashboard() {
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [refreshingClients, setRefreshingClients] = useState(false);
+  const [backfillingClients, setBackfillingClients] = useState(false);
   const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
@@ -79,6 +85,13 @@ export default function AdminDashboard() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [bulkFiles, setBulkFiles] = useState<FileList | null>(null);
   const [bulkUploading, setBulkUploading] = useState(false);
+  const clientRegistrationsStartDate = getLatestDecemberStart();
+  const clientRegistrationsStartIso = clientRegistrationsStartDate.toISOString();
+  const clientRegistrationsWindowLabel = clientRegistrationsStartDate.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 
   const loadCategories = useCallback(async () => {
     const { data } = await supabase
@@ -122,19 +135,68 @@ export default function AdminDashboard() {
   }, []);
 
   const loadClientRegistrations = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('client_registrations')
-      .select('id, company, contact, email, country, business_type, created_at')
-      .order('created_at', { ascending: false })
-      .limit(250);
-
-    if (error) {
-      console.error('Failed to load client registrations:', error);
+    if (!session?.access_token) {
+      console.error('Failed to load client registrations: missing admin session token');
       return;
     }
 
-    setClientRegistrations((data ?? []) as ClientRegistrationLead[]);
-  }, []);
+    try {
+      const response = await fetch(`/api/admin-client-registrations?startDate=${encodeURIComponent(clientRegistrationsStartIso)}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      const payload = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+        data?: ClientRegistrationLead[];
+      };
+
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || 'Failed to load client registrations.');
+      }
+
+      setClientRegistrations(payload.data ?? []);
+    } catch (error) {
+      console.error('Failed to load client registrations:', error);
+      setMessage(error instanceof Error ? error.message : 'Failed to load client registrations.');
+    }
+  }, [clientRegistrationsStartIso, session?.access_token]);
+
+  const handleBackfillClientRegistrations = useCallback(async () => {
+    if (!session?.access_token) {
+      setMessage('Missing admin session. Please sign in again.');
+      return;
+    }
+
+    setBackfillingClients(true);
+    try {
+      const response = await fetch(`/api/admin-client-registrations-backfill?startDate=${encodeURIComponent(clientRegistrationsStartIso)}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      const payload = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || 'Backfill failed.');
+      }
+
+      setMessage(payload.message || 'Backfill completed successfully.');
+      await loadClientRegistrations();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Backfill failed.');
+    } finally {
+      setBackfillingClients(false);
+    }
+  }, [clientRegistrationsStartIso, loadClientRegistrations, session?.access_token]);
 
   const loadApprovedClients = useCallback(async () => {
     const { data, error } = await supabase
@@ -796,16 +858,29 @@ export default function AdminDashboard() {
                 <p className="text-gray-400">
                   Approve a registration and send the portal invitation email in one click.
                 </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Showing registrations from {clientRegistrationsWindowLabel} to today.
+                </p>
               </div>
-              <button
-                type="button"
-                onClick={refreshClientAccess}
-                disabled={refreshingClients}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-gray-200 hover:border-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                <RefreshCw size={16} className={refreshingClients ? 'animate-spin' : ''} />
-                <span>{refreshingClients ? 'Refreshing...' : 'Refresh'}</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleBackfillClientRegistrations}
+                  disabled={backfillingClients || refreshingClients}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-gray-200 hover:border-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <span>{backfillingClients ? 'Backfilling...' : 'Backfill from Google Sheets'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={refreshClientAccess}
+                  disabled={refreshingClients || backfillingClients}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-gray-200 hover:border-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <RefreshCw size={16} className={refreshingClients ? 'animate-spin' : ''} />
+                  <span>{refreshingClients ? 'Refreshing...' : 'Refresh'}</span>
+                </button>
+              </div>
             </div>
 
             {clientRegistrations.length === 0 ? (

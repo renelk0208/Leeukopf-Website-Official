@@ -254,10 +254,10 @@ export default function ClientPortalDashboardPage() {
             <div className="flex gap-2">
               <button
                 type="button"
-                onClick={() => navigate('/b2b')}
+                onClick={() => navigate('/products')}
                 className="rounded-md border border-grey-card px-3 py-2 text-sm font-semibold text-grey-primary hover:bg-grey-card/30"
               >
-                Open B2B portal
+                Open products website
               </button>
               <button
                 type="button"

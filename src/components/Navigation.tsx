@@ -188,6 +188,12 @@ export default function Navigation() {
               )}
             </div>
             <div className="hidden xl:flex items-center space-x-2">
+              <Link
+                to="/portal/login"
+                className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-primary/90 transition-colors"
+              >
+                ORDER NOW ON PORTAL
+              </Link>
               <CalendlyButton size="sm" className="mr-2" />
               <SocialLinks />
             </div>
@@ -237,6 +243,14 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
+
+            <Link
+              to="/portal/login"
+              onClick={() => setIsOpen(false)}
+              className="block w-full text-center px-3 py-3 rounded-md bg-primary text-white hover:bg-primary/90 transition-colors font-semibold text-sm mt-2"
+            >
+              ORDER NOW ON PORTAL
+            </Link>
 
             <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
               <div className="px-3 mb-3">

@@ -152,8 +152,10 @@ export default function AdminLogin() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
                   className="w-full px-4 py-3 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"
                   placeholder="admin@leeukopf.com"
                   required
@@ -168,8 +170,10 @@ export default function AdminLogin() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete={isRecoveryMode || isSignUp ? 'new-password' : 'current-password'}
                 className="w-full px-4 py-3 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"
                 placeholder={isRecoveryMode ? 'At least 6 characters' : (isSignUp ? 'At least 6 characters' : 'Enter your password')}
                 required
@@ -184,8 +188,10 @@ export default function AdminLogin() {
                 <input
                   type="password"
                   id="confirmPassword"
+                  name="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  autoComplete="new-password"
                   className="w-full px-4 py-3 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"
                   placeholder="Confirm your password"
                   required

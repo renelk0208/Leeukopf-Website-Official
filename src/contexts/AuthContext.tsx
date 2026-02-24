@@ -30,6 +30,7 @@ interface AuthContextType {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
+  signInWithMagicLink: (email: string, redirectPath?: string, shouldCreateUser?: boolean) => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
   updatePassword: (password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -117,6 +118,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const signInWithMagicLink = async (
+    email: string,
+    redirectPath = '/portal',
+    shouldCreateUser = false
+  ) => {
+    try {
+      const baseUrl = getAuthRedirectBaseUrl();
+      const normalizedPath = redirectPath.startsWith('/') ? redirectPath : `/${redirectPath}`;
+      const redirectTo = `${baseUrl}${normalizedPath}`;
+
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: redirectTo,
+          shouldCreateUser,
+        },
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Magic link sign-in error:', error);
+      throw error;
+    }
+  };
+
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -152,7 +178,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signIn, signUp, requestPasswordReset, updatePassword, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, signIn, signUp, signInWithMagicLink, requestPasswordReset, updatePassword, signOut }}>
       {children}
     </AuthContext.Provider>
   );
