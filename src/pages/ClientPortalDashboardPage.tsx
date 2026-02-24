@@ -254,10 +254,10 @@ export default function ClientPortalDashboardPage() {
             <div className="flex gap-2">
               <button
                 type="button"
-                onClick={() => navigate('/products')}
+                onClick={() => navigate('/b2b/solid-colours')}
                 className="rounded-md border border-grey-card px-3 py-2 text-sm font-semibold text-grey-primary hover:bg-grey-card/30"
               >
-                Open products website
+                Open solid colour ordering sheet
               </button>
               <button
                 type="button"
