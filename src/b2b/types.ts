@@ -1,6 +1,7 @@
 export type B2BCategory =
   | "SOLID_GEL_POLISH"
   | "BUILDER_GEL"
+  | "POLYGEL"
   | "BIAB"
   | "TOP"
   | "BASE"

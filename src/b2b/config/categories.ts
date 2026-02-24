@@ -24,6 +24,13 @@ export const b2bCategories: B2BCategoryConfig[] = [
     enabled: true,
   },
   {
+    key: "POLYGEL",
+    label: "Polygels",
+    routePath: "/b2b/polygels",
+    defaultUnitType: "PCS",
+    enabled: true,
+  },
+  {
     key: "BIAB",
     label: "BIAB",
     routePath: "/b2b/biab",

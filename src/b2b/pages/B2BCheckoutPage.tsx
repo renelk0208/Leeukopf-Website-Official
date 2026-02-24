@@ -51,6 +51,11 @@ function mapPackagingCsv(value: string): string {
   return value.toLowerCase().replace(/_/g, "-");
 }
 
+function getMetaString(item: CartItem, key: string): string {
+  const value = item.meta?.[key];
+  return typeof value === "string" ? value : "";
+}
+
 function downloadCsv(content: string, filename: string) {
   const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
@@ -169,12 +174,13 @@ export default function B2BCheckoutPage() {
   const bottleUnitsRequired = getBottleUnitsRequired();
   const prePrintedMinOk = isPrePrintedMinOk();
   const hasQuantityError = items.some((item) => item.quantity <= 0);
-  const isPackagingSelected = bottlePackaging !== null;
+  const requiresBottlePackaging = items.some((item) => item.category !== "POLYGEL");
+  const isPackagingSelected = !requiresBottlePackaging || bottlePackaging !== null;
 
   const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk;
 
   const exportCsv = () => {
-    if (!bottlePackaging || !canProceed) return;
+    if (!canProceed) return;
 
     const header = [
       "category",
@@ -187,6 +193,9 @@ export default function B2BCheckoutPage() {
       "bottle_color",
       "brush_type",
       "branding",
+      "tube_size",
+      "tube_color",
+      "label_option",
     ];
 
     const rows = items.map((item) => [
@@ -196,10 +205,13 @@ export default function B2BCheckoutPage() {
       item.name ?? "",
       item.quantity,
       item.unitType ?? "PCS",
-      mapPackagingCsv(bottlePackaging.size),
-      mapPackagingCsv(bottlePackaging.color),
-      mapPackagingCsv(bottlePackaging.brush),
-      mapPackagingCsv(bottlePackaging.branding),
+      bottlePackaging ? mapPackagingCsv(bottlePackaging.size) : "",
+      bottlePackaging ? mapPackagingCsv(bottlePackaging.color) : "",
+      bottlePackaging ? mapPackagingCsv(bottlePackaging.brush) : "",
+      bottlePackaging ? mapPackagingCsv(bottlePackaging.branding) : "",
+      mapPackagingCsv(getMetaString(item, "tube_size")),
+      mapPackagingCsv(getMetaString(item, "tube_color")),
+      mapPackagingCsv(getMetaString(item, "label_option")),
     ]);
 
     const csv = [header, ...rows].map((row) => row.map((cell) => toCsvValue(cell)).join(",")).join("\n");
@@ -208,7 +220,7 @@ export default function B2BCheckoutPage() {
   };
 
   const submit = async () => {
-    if (!bottlePackaging || !canProceed) return;
+    if (!canProceed) return;
 
     const customerEmail = profile?.email?.trim() || user?.email?.trim() || "";
     const companyName = profile?.company?.trim() || "";
@@ -221,6 +233,15 @@ export default function B2BCheckoutPage() {
       });
       return;
     }
+
+    const polygelNotes = items
+      .filter((item) => item.category === "POLYGEL")
+      .map((item) => {
+        const tubeSize = getMetaString(item, "tube_size") || "";
+        const tubeColor = getMetaString(item, "tube_color") || "";
+        const labelOption = getMetaString(item, "label_option") || "";
+        return `${item.code}: size ${tubeSize || "-"}, color ${tubeColor || "-"}, label ${labelOption || "-"}`;
+      });
 
     const payload = {
       customer: {
@@ -241,13 +262,18 @@ export default function B2BCheckoutPage() {
         contactNumber: profile?.phone || "",
         orderDate: new Date().toISOString().slice(0, 10),
         signatureName: contactName || companyName,
-        notes: `Portal packaging preference: Size ${bottlePackaging.size}, Color ${bottlePackaging.color}, Brush ${bottlePackaging.brush}, Branding ${bottlePackaging.branding}`,
+        notes: [
+          bottlePackaging
+            ? `Portal bottle packaging preference: Size ${bottlePackaging.size}, Color ${bottlePackaging.color}, Brush ${bottlePackaging.brush}, Branding ${bottlePackaging.branding}`
+            : "",
+          polygelNotes.length > 0 ? `Polygel tube selections: ${polygelNotes.join(" | ")}` : "",
+        ].filter(Boolean).join("\n"),
       },
       order: {
         items: items.map((item) => ({
           groupCode: item.category,
           shadeCode: item.code,
-          packSize: bottlePackaging.size,
+          packSize: item.category === "POLYGEL" ? (getMetaString(item, "tube_size") || "") : (bottlePackaging?.size || ""),
           qty: item.quantity,
           moq: 0,
           productName: item.name,
