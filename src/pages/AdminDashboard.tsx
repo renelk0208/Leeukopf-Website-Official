@@ -13,6 +13,21 @@ interface ClientRegistrationLead {
   created_at: string;
 }
 
+interface CompletedB2BOrder {
+  order_id: string;
+  status: string;
+  order_date: string | null;
+  company_name: string;
+  contact_name: string | null;
+  contact_email: string;
+  country: string | null;
+  line_count: number;
+  total_qty: number;
+  email_sent: boolean;
+  email_error: string | null;
+  created_at: string;
+}
+
 interface SiteSettings {
   primary_color: string;
   secondary_color: string;
@@ -70,6 +85,7 @@ export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   const [brochureRequests, setBrochureRequests] = useState<BrochureRequest[]>([]);
   const [clientRegistrations, setClientRegistrations] = useState<ClientRegistrationLead[]>([]);
+  const [completedOrders, setCompletedOrders] = useState<CompletedB2BOrder[]>([]);
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [refreshingClients, setRefreshingClients] = useState(false);
@@ -219,6 +235,37 @@ export default function AdminDashboard() {
     persistApprovedEmails(next);
   }, []);
 
+  const loadCompletedOrders = useCallback(async () => {
+    if (!session?.access_token) {
+      console.error('Failed to load completed orders: missing admin session token');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/admin-b2b-orders', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      const payload = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+        data?: CompletedB2BOrder[];
+      };
+
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || 'Failed to load completed orders.');
+      }
+
+      setCompletedOrders(payload.data ?? []);
+    } catch (error) {
+      console.error('Failed to load completed orders:', error);
+      setMessage(error instanceof Error ? error.message : 'Failed to load completed orders.');
+    }
+  }, [session?.access_token]);
+
   useEffect(() => {
     loadCategories();
     loadColors();
@@ -230,11 +277,11 @@ export default function AdminDashboard() {
   const refreshClientAccess = useCallback(async () => {
     setRefreshingClients(true);
     try {
-      await Promise.all([loadClientRegistrations(), loadApprovedClients()]);
+      await Promise.all([loadClientRegistrations(), loadApprovedClients(), loadCompletedOrders()]);
     } finally {
       setRefreshingClients(false);
     }
-  }, [loadClientRegistrations, loadApprovedClients]);
+  }, [loadClientRegistrations, loadApprovedClients, loadCompletedOrders]);
 
   useEffect(() => {
     if (activeTab !== 'clients') return;
@@ -947,6 +994,62 @@ export default function AdminDashboard() {
                 </table>
               </div>
             )}
+
+            <div className="mt-10 border-t border-cyan-500/20 pt-8">
+              <h3 className="text-xl font-bold text-white mb-2">Completed B2B Orders</h3>
+              <p className="text-gray-400 mb-4">
+                Stored orders are visible here even if email delivery fails.
+              </p>
+
+              {completedOrders.length === 0 ? (
+                <div className="text-center py-10 border border-cyan-500/10 rounded-xl bg-slate-900/30">
+                  <p className="text-gray-400">No completed B2B orders yet</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-cyan-500/20">
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Submitted</th>
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Order ID</th>
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Company</th>
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Contact Email</th>
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Qty</th>
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Lines</th>
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Email Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {completedOrders.map((order) => (
+                        <tr key={order.order_id} className="border-b border-cyan-500/10 hover:bg-slate-900/30">
+                          <td className="py-4 px-4 text-gray-400 text-sm">
+                            {new Date(order.created_at).toLocaleString()}
+                          </td>
+                          <td className="py-4 px-4 text-white font-mono text-xs">{order.order_id}</td>
+                          <td className="py-4 px-4 text-gray-300">{order.company_name}</td>
+                          <td className="py-4 px-4 text-cyan-400">
+                            <a href={`mailto:${order.contact_email}`} className="hover:underline">
+                              {order.contact_email}
+                            </a>
+                          </td>
+                          <td className="py-4 px-4 text-gray-300">{order.total_qty}</td>
+                          <td className="py-4 px-4 text-gray-300">{order.line_count}</td>
+                          <td className="py-4 px-4">
+                            {order.email_sent ? (
+                              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm">Sent</span>
+                            ) : (
+                              <span className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full text-sm" title={order.email_error || undefined}>
+                                Failed
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

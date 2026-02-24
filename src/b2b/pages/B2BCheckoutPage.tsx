@@ -276,6 +276,8 @@ export default function B2BCheckoutPage() {
       const data = (await response.json().catch(() => ({}))) as {
         success?: boolean;
         order_id?: string;
+        message?: string;
+        email_sent?: boolean;
         error?: string;
       };
 
@@ -284,8 +286,8 @@ export default function B2BCheckoutPage() {
       }
 
       setSubmitMessage({
-        type: "success",
-        text: `Thank you for your order, our Admin Office will be in touch with you shortly for your pro forma. Reference: ${data.order_id || "N/A"}`,
+        type: data.email_sent === false ? "error" : "success",
+        text: `${data.message || 'Order submitted successfully'}${data.order_id ? ` Reference: ${data.order_id}` : ''}`,
       });
       clearCart();
       clearSolidColourSelectionCache();

@@ -1,6 +1,7 @@
 import type { Handler, HandlerEvent } from '@netlify/functions';
 import { randomBytes } from 'node:crypto';
 import { Resend } from 'resend';
+import { createClient } from '@supabase/supabase-js';
 
 export const config = {
   path: '/api/submit-order',
@@ -32,6 +33,12 @@ interface OrderSubmission {
   items: OrderLine[];
   order_date: string;
 }
+
+type OrderPersistResult = {
+  emailSent: boolean;
+  emailError?: string;
+  source?: string;
+};
 
 interface B2BCustomerDetails {
   companyName: string;
@@ -179,27 +186,41 @@ function validateOrderSubmission(data: OrderSubmission): { valid: boolean; error
   return { valid: true };
 }
 
-// Store order (TODO: Replace with Google Sheets integration)
-async function storeOrder(orderId: string, orderData: OrderSubmission): Promise<void> {
-  // For now, just log to console in production
-  // In development, this could write to a local file
-  
-  console.log('=== NEW ORDER RECEIVED ===');
-  console.log('Order ID:', orderId);
-  console.log('Customer:', orderData.customer.company_name);
-  console.log('Email:', orderData.customer.email);
-  console.log('Items count:', orderData.items.length);
-  console.log('Total quantity:', orderData.items.reduce((sum, item) => sum + item.quantity, 0));
-  console.log('Date:', orderData.order_date);
-  console.log('Full order data:', JSON.stringify(orderData, null, 2));
-  console.log('=========================');
+async function storeOrder(orderId: string, orderData: OrderSubmission, result: OrderPersistResult): Promise<void> {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // TODO: Implement Google Sheets integration
-  // This should:
-  // 1. Authenticate with Google Sheets API
-  // 2. Append order to a spreadsheet
-  // 3. Send confirmation email to customer
-  // 4. Send notification email to admin
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error('Order persistence is not configured. Missing SUPABASE_URL/VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.');
+  }
+
+  const adminSupabase = createClient(supabaseUrl, serviceRoleKey);
+
+  const lineCount = orderData.items.length;
+  const totalQty = orderData.items.reduce((sum, item) => sum + item.quantity, 0);
+
+  const { error } = await adminSupabase.from('b2b_orders').insert({
+    order_id: orderId,
+    status: 'completed',
+    order_date: orderData.order_date,
+    company_name: orderData.customer.company_name,
+    contact_name: orderData.customer.contact_name,
+    contact_email: orderData.customer.email,
+    contact_phone: orderData.customer.phone,
+    country: orderData.customer.country,
+    vat_number: orderData.customer.vat_number || null,
+    shipping_address: orderData.customer.shipping_address,
+    line_count: lineCount,
+    total_qty: totalQty,
+    items: orderData.items,
+    source: result.source || 'b2b_portal_checkout',
+    email_sent: result.emailSent,
+    email_error: result.emailError || null,
+  });
+
+  if (error) {
+    throw new Error(`Failed to persist order: ${error.message}`);
+  }
 }
 
 function generateOrderEmailHtml(orderId: string, orderData: OrderSubmission): string {
@@ -253,14 +274,6 @@ function generateOrderEmailHtml(orderId: string, orderData: OrderSubmission): st
         : ''
     }
   `;
-}
-
-function validateEmailConfiguration(): string | null {
-  if (!process.env.RESEND_API_KEY) {
-    return 'Order email is not configured (missing RESEND_API_KEY).';
-  }
-
-  return null;
 }
 
 async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Promise<void> {
@@ -352,21 +365,6 @@ export const handler: Handler = async (event: HandlerEvent) => {
       };
     }
 
-    const emailConfigError = validateEmailConfiguration();
-    if (emailConfigError) {
-      return {
-        statusCode: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify({
-          success: false,
-          error: emailConfigError,
-        }),
-      };
-    }
-
     // Sanitize customer data
     const sanitizedOrder: OrderSubmission = {
       customer: {
@@ -397,12 +395,26 @@ export const handler: Handler = async (event: HandlerEvent) => {
 
     // Generate order ID
     const orderId = generateOrderId();
+    const source = isB2BOrderSubmission(rawOrderData)
+      ? sanitizeString(rawOrderData.source || 'b2b_portal_checkout', 100)
+      : 'submit_order_api';
 
-    // Send emails first; if this fails we stop and report error instead of pretending success.
-    await sendOrderEmail(orderId, sanitizedOrder);
+    let emailSent = true;
+    let emailError: string | undefined;
 
-    // Store order after successful email dispatch
-    await storeOrder(orderId, sanitizedOrder);
+    try {
+      await sendOrderEmail(orderId, sanitizedOrder);
+    } catch (sendError) {
+      emailSent = false;
+      emailError = sendError instanceof Error ? sendError.message : 'Unknown email error';
+      console.error('Order email dispatch failed:', sendError);
+    }
+
+    await storeOrder(orderId, sanitizedOrder, {
+      emailSent,
+      emailError,
+      source,
+    });
 
     // Return success response
     return {
@@ -414,7 +426,10 @@ export const handler: Handler = async (event: HandlerEvent) => {
       body: JSON.stringify({
         success: true,
         order_id: orderId,
-        message: 'Order submitted successfully',
+        email_sent: emailSent,
+        message: emailSent
+          ? 'Order submitted successfully'
+          : 'Order saved successfully, but confirmation email could not be sent. Admin can still view it in completed orders.',
       }),
     };
   } catch (error) {
