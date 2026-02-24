@@ -63,6 +63,21 @@ function downloadCsv(content: string, filename: string) {
   URL.revokeObjectURL(url);
 }
 
+function clearSolidColourSelectionCache() {
+  if (typeof window === "undefined") return;
+
+  const keys = [
+    "lk_selected_solid_shades",
+    "lk_selected_solid_shades_order",
+    "lk_selected_solid_shades_qty",
+    "solidColourOrder1200",
+  ];
+
+  keys.forEach((key) => {
+    window.localStorage.removeItem(key);
+  });
+}
+
 export default function B2BCheckoutPage() {
   const { user } = useAuth();
   const {
@@ -273,6 +288,7 @@ export default function B2BCheckoutPage() {
         text: `Thank you for your order, our Admin Office will be in touch with you shortly for your pro forma. Reference: ${data.order_id || "N/A"}`,
       });
       clearCart();
+      clearSolidColourSelectionCache();
     } catch (error) {
       setSubmitMessage({
         type: "error",

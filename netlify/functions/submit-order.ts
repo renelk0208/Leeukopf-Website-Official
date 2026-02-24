@@ -255,11 +255,18 @@ function generateOrderEmailHtml(orderId: string, orderData: OrderSubmission): st
   `;
 }
 
+function validateEmailConfiguration(): string | null {
+  if (!process.env.RESEND_API_KEY) {
+    return 'Order email is not configured (missing RESEND_API_KEY).';
+  }
+
+  return null;
+}
+
 async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Promise<void> {
   const resendApiKey = process.env.RESEND_API_KEY;
   if (!resendApiKey) {
-    console.warn('RESEND_API_KEY is not set; skipping order email sending.');
-    return;
+    throw new Error('Order email is not configured (missing RESEND_API_KEY).');
   }
 
   const toEmail =
@@ -345,6 +352,21 @@ export const handler: Handler = async (event: HandlerEvent) => {
       };
     }
 
+    const emailConfigError = validateEmailConfiguration();
+    if (emailConfigError) {
+      return {
+        statusCode: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+          success: false,
+          error: emailConfigError,
+        }),
+      };
+    }
+
     // Sanitize customer data
     const sanitizedOrder: OrderSubmission = {
       customer: {
@@ -376,11 +398,11 @@ export const handler: Handler = async (event: HandlerEvent) => {
     // Generate order ID
     const orderId = generateOrderId();
 
-    // Store order
-    await storeOrder(orderId, sanitizedOrder);
-
-    // Send notification email
+    // Send emails first; if this fails we stop and report error instead of pretending success.
     await sendOrderEmail(orderId, sanitizedOrder);
+
+    // Store order after successful email dispatch
+    await storeOrder(orderId, sanitizedOrder);
 
     // Return success response
     return {
