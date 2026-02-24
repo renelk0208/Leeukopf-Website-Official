@@ -80,7 +80,7 @@ const SELECTED_SHADES_QTY_STORAGE_KEY = "lk_selected_solid_shades_qty";
 const CLIENT_DETAILS_STORAGE_KEY = "lk_solid_client_details";
 const PACKAGING_STORAGE_KEY = "lk_solid_packaging";
 const ENABLE_VIRTUAL_GRID = false;
-const QUANTITY_MOQ = 30;
+const QUANTITY_MOQ = 25;
 const QUANTITY_STEP = 5;
 const ESTIMATED_BLOCK_SIZE = 300;
 const FAMILY_ORDER = [
@@ -386,7 +386,7 @@ function violatesFinishedUnitsMoqRule(value: number): boolean {
 }
 
 function showMoqRulePopup() {
-  window.alert("MOQ is 30 units per colour and increase by increments of 5 units");
+  window.alert("MOQ is 25 units per colour and increase by increments of 5 units");
 }
 
 const codeSort = (left: string, right: string): number =>
