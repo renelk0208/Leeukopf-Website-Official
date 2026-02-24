@@ -1754,7 +1754,8 @@ export default function InternalSolidColourGrid({
   const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
   const missingClientFields = useMemo(() => getMissingRequiredClientFields(client), [client]);
   const isClientInfoComplete = missingClientFields.length === 0;
-  const interactionLocked = !disableClientInfoLock && !isClientInfoComplete;
+  const isB2BPath = typeof window !== "undefined" && window.location.pathname.startsWith("/b2b/");
+  const interactionLocked = !isB2BPath && viewMode !== "shades-only" && !disableClientInfoLock && !isClientInfoComplete;
 
   useEffect(() => {
     if ((!ALLOWS_KG_UNIT || !ALLOWS_BUCKET_PACKAGING) && orderFormat === "bulk") {

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { useB2BCart } from "../store/B2BCartContext";
 
 type CsvProduct = {
@@ -122,13 +121,6 @@ export default function B2BPolygelsPage() {
         <p className="mt-1 text-sm text-grey-secondary">
           Select tube format and quantities. MOQ is 100 pieces per colour.
         </p>
-      </div>
-
-      <div className="rounded-lg border border-primary-200 bg-primary-50 p-3 text-sm text-primary-700">
-        Tube options apply to all selected polygel colours in this inquiry.
-        <Link to="/b2b/checkout" className="ml-2 font-semibold underline">
-          Open Checkout
-        </Link>
       </div>
 
       <section className="rounded-lg border border-grey-card bg-white p-4">
