@@ -89,6 +89,9 @@ export default function AdminDashboard() {
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [manualInviteLink, setManualInviteLink] = useState('');
+  const [newAdminEmail, setNewAdminEmail] = useState('');
+  const [newAdminPassword, setNewAdminPassword] = useState('');
+  const [creatingAdmin, setCreatingAdmin] = useState(false);
   const [refreshingClients, setRefreshingClients] = useState(false);
   const [backfillingClients, setBackfillingClients] = useState(false);
   const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
@@ -493,6 +496,57 @@ export default function AdminDashboard() {
       setMessage(error instanceof Error ? error.message : 'Failed to approve and invite client.');
     } finally {
       setInvitingEmail(null);
+    }
+  };
+
+  const handleCreateAdminAccount = async () => {
+    if (!session?.access_token) {
+      setMessage('Missing admin session. Please sign in again.');
+      return;
+    }
+
+    const normalizedEmail = newAdminEmail.trim().toLowerCase();
+    if (!normalizedEmail) {
+      setMessage('Enter an email address for the new admin.');
+      return;
+    }
+
+    setCreatingAdmin(true);
+    try {
+      const response = await fetch('/api/admin-create-admin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          email: normalizedEmail,
+          password: newAdminPassword.trim() || undefined,
+        }),
+      });
+
+      const payload = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+        data?: { temporaryPassword?: string };
+      };
+
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || 'Failed to create admin account.');
+      }
+
+      const returnedPassword = payload.data?.temporaryPassword || newAdminPassword.trim();
+      setMessage(
+        returnedPassword
+          ? `${payload.message} Temporary password: ${returnedPassword}`
+          : (payload.message || 'Admin account created.')
+      );
+      setNewAdminEmail('');
+      setNewAdminPassword('');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Failed to create admin account.');
+    } finally {
+      setCreatingAdmin(false);
     }
   };
 
@@ -909,6 +963,37 @@ export default function AdminDashboard() {
 
         {activeTab === 'clients' && (
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-cyan-500/20 p-6">
+            <div className="mb-6 rounded-xl border border-cyan-500/20 bg-slate-900/40 p-4">
+              <h3 className="text-lg font-semibold text-white">Create Admin Access (No Email Required)</h3>
+              <p className="mt-1 text-sm text-gray-400">
+                Use this when invite/reset emails are rate-limited. Share the generated password securely.
+              </p>
+              <div className="mt-4 grid gap-3 md:grid-cols-3">
+                <input
+                  type="email"
+                  value={newAdminEmail}
+                  onChange={(event) => setNewAdminEmail(event.target.value)}
+                  placeholder="newadmin@leeukopf.com"
+                  className="rounded-lg border border-cyan-500/20 bg-slate-900/50 px-3 py-2 text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
+                />
+                <input
+                  type="text"
+                  value={newAdminPassword}
+                  onChange={(event) => setNewAdminPassword(event.target.value)}
+                  placeholder="Optional password (auto-generated if empty)"
+                  className="rounded-lg border border-cyan-500/20 bg-slate-900/50 px-3 py-2 text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={handleCreateAdminAccount}
+                  disabled={creatingAdmin}
+                  className="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-700 px-4 py-2 font-medium text-white hover:from-cyan-400 hover:to-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {creatingAdmin ? 'Creating...' : 'Create Admin Now'}
+                </button>
+              </div>
+            </div>
+
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-2">Client Access Approvals</h2>
