@@ -27,6 +27,7 @@ const CatalogTest = lazy(() => import("./pages/CatalogTest"));
 const CartTest = lazy(() => import("./pages/CartTest"));
 const B2BPortalShell = lazy(() => import("./b2b/B2BPortalShell"));
 const B2BDashboard = lazy(() => import("./b2b/pages/B2BDashboard"));
+const B2BClientInfoPage = lazy(() => import("./b2b/pages/B2BClientInfoPage"));
 const B2BSolidColoursPage = lazy(() => import("./b2b/pages/B2BSolidColoursPage"));
 const B2BBuilderGelsPortalPage = lazy(() => import("./b2b/pages/B2BBuilderGelsPage"));
 const B2BCheckoutPage = lazy(() => import("./b2b/pages/B2BCheckoutPage"));
@@ -111,6 +112,7 @@ function App() {
 
           <Route path="/b2b" element={<B2BPortalShell />}>
             <Route index element={<B2BDashboard />} />
+            <Route path="client-info" element={<B2BClientInfoPage />} />
             <Route path="solid-colours" element={<B2BSolidColoursPage />} />
             <Route path="builder-gels" element={<B2BBuilderGelsPortalPage />} />
             <Route path="checkout" element={<B2BCheckoutPage />} />

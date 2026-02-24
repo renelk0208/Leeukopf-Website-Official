@@ -77,6 +77,8 @@ const ALLOWS_BUCKET_PACKAGING = ALLOWED_PACKAGING.includes("bucket");
 const SELECTED_SHADES_STORAGE_KEY = "lk_selected_solid_shades";
 const SELECTED_SHADES_ORDER_STORAGE_KEY = "lk_selected_solid_shades_order";
 const SELECTED_SHADES_QTY_STORAGE_KEY = "lk_selected_solid_shades_qty";
+const CLIENT_DETAILS_STORAGE_KEY = "lk_solid_client_details";
+const PACKAGING_STORAGE_KEY = "lk_solid_packaging";
 const ENABLE_VIRTUAL_GRID = false;
 const QUANTITY_MOQ = 30;
 const QUANTITY_STEP = 5;
@@ -163,6 +165,7 @@ export type InternalSolidColourSyncItem = {
 type InternalSolidColourGridProps = {
   onSelectionSync?: (items: InternalSolidColourSyncItem[]) => void;
   disableClientInfoLock?: boolean;
+  viewMode?: "all" | "client-only" | "shades-only";
 };
 
 type ShadeTileProps = {
@@ -971,7 +974,11 @@ function MobileDrawer({ open, onClose, panelProps }: MobileDrawerProps) {
   );
 }
 
-export default function InternalSolidColourGrid({ onSelectionSync, disableClientInfoLock = false }: InternalSolidColourGridProps = {}) {
+export default function InternalSolidColourGrid({
+  onSelectionSync,
+  disableClientInfoLock = false,
+  viewMode = "all",
+}: InternalSolidColourGridProps = {}) {
   const { user } = useAuth();
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
@@ -1029,6 +1036,51 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
   const [copyFeedback, setCopyFeedback] = useState(false);
   const copyFeedbackTimeoutRef = useRef<number | null>(null);
   const hasAttemptedPrefillRef = useRef(false);
+  const showClientSection = viewMode !== "shades-only";
+  const showShadeSection = viewMode !== "client-only";
+
+  useEffect(() => {
+    const rawClient = localStorage.getItem(CLIENT_DETAILS_STORAGE_KEY);
+    if (rawClient) {
+      try {
+        const parsed = JSON.parse(rawClient) as Partial<ClientDetails>;
+        setClient((prev) => ({ ...prev, ...parsed }));
+      } catch {
+        // ignore malformed local storage payload
+      }
+    }
+
+    const rawPackaging = localStorage.getItem(PACKAGING_STORAGE_KEY);
+    if (rawPackaging) {
+      try {
+        const parsed = JSON.parse(rawPackaging) as Partial<PackagingPayload>;
+        setPackaging((prev) => ({
+          ...prev,
+          ...parsed,
+          bottle: {
+            size: typeof parsed.bottle?.size === "string" ? parsed.bottle.size : (prev.bottle?.size || ""),
+            color: typeof parsed.bottle?.color === "string" ? parsed.bottle.color : (prev.bottle?.color || ""),
+            brushShape: typeof parsed.bottle?.brushShape === "string" ? parsed.bottle.brushShape : (prev.bottle?.brushShape || ""),
+            brushType: typeof parsed.bottle?.brushType === "string" ? parsed.bottle.brushType : (prev.bottle?.brushType || ""),
+          },
+          jar: {
+            size: typeof parsed.jar?.size === "string" ? parsed.jar.size : (prev.jar?.size || ""),
+            color: typeof parsed.jar?.color === "string" ? parsed.jar.color : (prev.jar?.color || ""),
+          },
+        }));
+      } catch {
+        // ignore malformed local storage payload
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(CLIENT_DETAILS_STORAGE_KEY, JSON.stringify(client));
+  }, [client]);
+
+  useEffect(() => {
+    localStorage.setItem(PACKAGING_STORAGE_KEY, JSON.stringify(packaging));
+  }, [packaging]);
 
   useEffect(() => {
     const email = user?.email?.trim().toLowerCase();
@@ -1977,7 +2029,7 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
         </div>
       )}
 
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className={`mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${showShadeSection ? "" : "hidden"}`}>
         <div>
           <h1 className="text-2xl font-semibold">Internal Solid Colour Grid (1200)</h1>
           <p className="text-sm text-grey-secondary">Not linked anywhere — internal testing only.</p>
@@ -2000,7 +2052,12 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
         </label>
       </div>
 
-      <div className="mb-6 rounded-xl border bg-white p-4 shadow-sm">
+      <div className={showShadeSection ? "hidden" : "mb-4"}>
+        <h1 className="text-2xl font-semibold">Client Information</h1>
+        <p className="text-sm text-grey-secondary">Complete client details and packaging on this separate page.</p>
+      </div>
+
+      <div className={`mb-6 rounded-xl border bg-white p-4 shadow-sm ${showClientSection ? "" : "hidden"}`}>
         <div className="mb-2 text-xs text-grey-secondary">Fields marked with <span className="text-red-600">*</span> are required.</div>
         <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
           <label className="text-xs font-semibold text-grey-primary">Company Name or Client Name <span className="text-red-600">*</span>
@@ -2468,45 +2525,51 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
           )}
         </div>
 
-        <div className="text-sm font-semibold md:hidden">
+        <div className={`text-sm font-semibold md:hidden ${showShadeSection ? "" : "hidden"}`}>
           Selected Shades: {selectedItems.length}
         </div>
-        <div className="text-sm md:hidden">
+        <div className={`text-sm md:hidden ${showShadeSection ? "" : "hidden"}`}>
           {qtyUnit === "kg" ? "Total KG" : "Total Units"}: {totalUnits}
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <button
-            onClick={() => setOrder({})}
-            disabled={interactionLocked}
-            className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Clear
-          </button>
+        {showShadeSection ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setOrder({})}
+              disabled={interactionLocked}
+              className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Clear
+            </button>
 
-          <button
-            onClick={async () => {
-              const text = selectedItems
-                .map(([sku, qty]) => `${sku} x ${qty}${qtyUnit === "kg" ? "kg" : " pcs"}`)
-                .join("\n");
-              await navigator.clipboard.writeText(text);
-            }}
-            disabled={interactionLocked}
-            className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Copy list
-          </button>
+            <button
+              onClick={async () => {
+                const text = selectedItems
+                  .map(([sku, qty]) => `${sku} x ${qty}${qtyUnit === "kg" ? "kg" : " pcs"}`)
+                  .join("\n");
+                await navigator.clipboard.writeText(text);
+              }}
+              disabled={interactionLocked}
+              className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Copy list
+            </button>
 
-          <button
-            onClick={handleSubmitOrder}
-            disabled={isSubmitting}
-            className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isSubmitting ? "Submitting..." : "Submit Order"}
-          </button>
-        </div>
+            <button
+              onClick={handleSubmitOrder}
+              disabled={isSubmitting}
+              className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isSubmitting ? "Submitting..." : "Submit Order"}
+            </button>
+          </div>
+        ) : (
+          <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+            Client details are saved automatically.
+          </div>
+        )}
 
-        {submitMessage && (
+        {showShadeSection && submitMessage && (
           <div
             className={`mt-3 rounded-xl border px-3 py-2 text-xs ${
               submitMessage.type === "success"
@@ -2519,7 +2582,7 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
         )}
       </div>
 
-      <div className="md:grid md:grid-cols-[minmax(0,1fr)_280px] md:items-start md:gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
+      <div className={`md:grid md:grid-cols-[minmax(0,1fr)_280px] md:items-start md:gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6 ${showShadeSection ? "" : "hidden"}`}>
         <div>
           <ShadeGrid
             items={gridItems}
@@ -2550,7 +2613,7 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
 
       <button
         type="button"
-        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg disabled:cursor-not-allowed disabled:opacity-60 md:hidden"
+        className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg disabled:cursor-not-allowed disabled:opacity-60 md:hidden ${showShadeSection ? "" : "hidden"}`}
         disabled={interactionLocked}
         onClick={(event) => {
           event.preventDefault();
@@ -2563,7 +2626,7 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
         <div className="text-xs text-grey-secondary">Total units: {totalSelectedUnits}</div>
       </button>
 
-      {showBackToTop ? (
+      {showShadeSection && showBackToTop ? (
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -2575,11 +2638,13 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
         </button>
       ) : null}
 
-      <MobileDrawer
-        open={isMobileDrawerOpen}
-        onClose={() => setIsMobileDrawerOpen(false)}
-        panelProps={panelProps}
-      />
+      {showShadeSection ? (
+        <MobileDrawer
+          open={isMobileDrawerOpen}
+          onClose={() => setIsMobileDrawerOpen(false)}
+          panelProps={panelProps}
+        />
+      ) : null}
     </div>
   );
 }

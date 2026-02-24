@@ -13,6 +13,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
 
   const navItems = [
     { label: "Dashboard", path: "/b2b" },
+    { label: "Client Info", path: "/b2b/client-info" },
     ...b2bCategories
       .filter((category) => category.enabled)
       .map((category) => ({ label: category.label, path: category.routePath })),
