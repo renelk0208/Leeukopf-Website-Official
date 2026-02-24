@@ -2,6 +2,19 @@ import { useEffect, useMemo, useState } from "react";
 import { useB2BCart } from "../store/B2BCartContext";
 import type { BottleBranding, BottleColor, BottleSize, BrushType, CartItem } from "../types";
 import { getB2BCategoryLabel } from "../config/categories";
+import { useAuth } from "../../contexts/AuthContext";
+import { supabase } from "../../lib/supabase";
+
+type PortalProfile = {
+  company: string | null;
+  contact: string | null;
+  email: string | null;
+  phone: string | null;
+  country: string | null;
+  vat_eori: string | null;
+  billing_address: string | null;
+  shipping_address: string | null;
+};
 
 const bottleSizes: Array<{ value: BottleSize; label: string }> = [
   { value: "10ML", label: "10ml" },
@@ -51,6 +64,7 @@ function downloadCsv(content: string, filename: string) {
 }
 
 export default function B2BCheckoutPage() {
+  const { user } = useAuth();
   const {
     items,
     bottlePackaging,
@@ -76,6 +90,9 @@ export default function B2BCheckoutPage() {
     brush: "",
     branding: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [profile, setProfile] = useState<PortalProfile | null>(null);
 
   useEffect(() => {
     if (bottlePackaging) {
@@ -89,6 +106,37 @@ export default function B2BCheckoutPage() {
       branding: "",
     });
   }, [bottlePackaging]);
+
+  useEffect(() => {
+    const email = user?.email?.trim().toLowerCase();
+    if (!email) return;
+
+    let isActive = true;
+
+    const loadProfile = async () => {
+      const { data, error } = await supabase
+        .from("client_registrations")
+        .select("company, contact, email, phone, country, vat_eori, billing_address, shipping_address")
+        .ilike("email", email)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (!isActive) return;
+      if (error) {
+        console.error("Failed to load checkout profile:", error);
+        return;
+      }
+
+      setProfile((data as PortalProfile | null) ?? null);
+    };
+
+    void loadProfile();
+
+    return () => {
+      isActive = false;
+    };
+  }, [user?.email]);
 
   const groupedItems = useMemo(() => {
     const groups = new Map<string, CartItem[]>();
@@ -144,20 +192,95 @@ export default function B2BCheckoutPage() {
     downloadCsv(csv, `b2b-cart-${stamp}.csv`);
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (!bottlePackaging || !canProceed) return;
+
+    const customerEmail = profile?.email?.trim() || user?.email?.trim() || "";
+    const companyName = profile?.company?.trim() || "";
+    const contactName = profile?.contact?.trim() || "";
+
+    if (!customerEmail || !companyName) {
+      setSubmitMessage({
+        type: "error",
+        text: "Missing client profile details. Please complete client registration or contact support.",
+      });
+      return;
+    }
+
     const payload = {
-      items,
-      bottlePackaging,
-      totals,
-      filledUnitsTotal,
-      bottleUnitsRequired,
-      submittedAt: new Date().toISOString(),
+      customer: {
+        companyName,
+        vatNumber: profile?.vat_eori || "",
+        invoiceAddress: profile?.billing_address || "",
+        invoicePostalCode: "",
+        invoiceCity: "",
+        invoiceRegion: "",
+        invoiceCountry: profile?.country || "",
+        shippingAddress: profile?.shipping_address || profile?.billing_address || "",
+        shippingPostalCode: "",
+        shippingCity: "",
+        shippingRegion: "",
+        shippingCountry: profile?.country || "",
+        contactPerson: contactName,
+        contactEmail: customerEmail,
+        contactNumber: profile?.phone || "",
+        orderDate: new Date().toISOString().slice(0, 10),
+        signatureName: contactName || companyName,
+        notes: `Portal packaging preference: Size ${bottlePackaging.size}, Color ${bottlePackaging.color}, Brush ${bottlePackaging.brush}, Branding ${bottlePackaging.branding}`,
+      },
+      order: {
+        items: items.map((item) => ({
+          groupCode: item.category,
+          shadeCode: item.code,
+          packSize: bottlePackaging.size,
+          qty: item.quantity,
+          moq: 0,
+          productName: item.name,
+        })),
+        totals: {
+          totalItems: totals.totalLines,
+          totalUnits: totals.totalQty,
+        },
+      },
+      createdAt: new Date().toISOString(),
       source: "B2B Portal Checkout",
     };
-    console.log("[B2B Submit Payload]", payload);
-    alert("Thank you for your order, our Admin Office will be in touch with you shortly for your pro forma.");
-    clearCart();
+
+    setIsSubmitting(true);
+    setSubmitMessage(null);
+
+    try {
+      const response = await fetch("/api/submit-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = (await response.json().catch(() => ({}))) as {
+        success?: boolean;
+        order_id?: string;
+        error?: string;
+      };
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Failed to submit order.");
+      }
+
+      setSubmitMessage({
+        type: "success",
+        text: `Thank you for your order, our Admin Office will be in touch with you shortly for your pro forma. Reference: ${data.order_id || "N/A"}`,
+      });
+      clearCart();
+    } catch (error) {
+      setSubmitMessage({
+        type: "error",
+        text: error instanceof Error ? error.message : "Failed to submit order.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const setPackagingField = <K extends keyof typeof packagingDraft>(key: K, value: (typeof packagingDraft)[K]) => {
@@ -358,6 +481,18 @@ export default function B2BCheckoutPage() {
         </div>
       ) : null}
 
+      {submitMessage ? (
+        <div
+          className={`rounded-md p-3 text-sm ${
+            submitMessage.type === "success"
+              ? "border border-emerald-200 bg-emerald-50 text-emerald-800"
+              : "border border-red-200 bg-red-50 text-red-700"
+          }`}
+        >
+          {submitMessage.text}
+        </div>
+      ) : null}
+
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
@@ -369,11 +504,11 @@ export default function B2BCheckoutPage() {
         </button>
         <button
           type="button"
-          disabled={!canProceed || items.length === 0}
+          disabled={!canProceed || items.length === 0 || isSubmitting}
           onClick={submit}
           className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-primary-200"
         >
-          Submit
+          {isSubmitting ? "Submitting..." : "Submit"}
         </button>
       </div>
     </div>

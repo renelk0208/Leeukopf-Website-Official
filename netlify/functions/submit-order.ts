@@ -272,6 +272,18 @@ async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Prom
     html: generateOrderEmailHtml(orderId, orderData),
     replyTo: orderData.customer.email,
   });
+
+  await resend.emails.send({
+    from: 'Leeukopf Orders <noreply@leeukopf.com>',
+    to: orderData.customer.email,
+    subject: `We received your order ${orderId}`,
+    html: `
+      <h2>Thank you for your order</h2>
+      <p>Order ID: <strong>${orderId}</strong></p>
+      <p>Company: ${orderData.customer.company_name}</p>
+      <p>Our Admin Office will be in touch with you shortly for your pro forma.</p>
+    `,
+  });
 }
 
 export const handler: Handler = async (event: HandlerEvent) => {
