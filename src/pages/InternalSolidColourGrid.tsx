@@ -1,5 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { categories } from "../config/categories";
+import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "../lib/supabase";
 
 type Row = Record<string, string>;
 type OrderFormat = "finished_units" | "bulk";
@@ -24,6 +26,18 @@ type ClientDetails = {
   vat: string;
   country: string;
   email: string;
+};
+
+type ClientRegistrationPrefill = {
+  company: string | null;
+  contact: string | null;
+  email: string | null;
+  phone: string | null;
+  country: string | null;
+  vat_eori: string | null;
+  billing_address: string | null;
+  shipping_address: string | null;
+  created_at: string;
 };
 type BottlePackaging = {
   size: string;
@@ -958,6 +972,7 @@ function MobileDrawer({ open, onClose, panelProps }: MobileDrawerProps) {
 }
 
 export default function InternalSolidColourGrid({ onSelectionSync, disableClientInfoLock = false }: InternalSolidColourGridProps = {}) {
+  const { user } = useAuth();
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
   const [imgStatus, setImgStatus] = useState<Record<string, "OK" | "MISSING">>({});
@@ -1013,6 +1028,59 @@ export default function InternalSolidColourGrid({ onSelectionSync, disableClient
   const [gridFilter, setGridFilter] = useState<GridFilter>("all");
   const [copyFeedback, setCopyFeedback] = useState(false);
   const copyFeedbackTimeoutRef = useRef<number | null>(null);
+  const hasAttemptedPrefillRef = useRef(false);
+
+  useEffect(() => {
+    const email = user?.email?.trim().toLowerCase();
+    if (!email || hasAttemptedPrefillRef.current) return;
+
+    hasAttemptedPrefillRef.current = true;
+    let isActive = true;
+
+    const loadClientPrefill = async () => {
+      const { data, error } = await supabase
+        .from("client_registrations")
+        .select("company, contact, email, phone, country, vat_eori, billing_address, shipping_address, created_at")
+        .ilike("email", email)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (!isActive || error || !data) {
+        if (error) {
+          console.error("Failed to prefill client details:", error);
+        }
+        return;
+      }
+
+      const registration = data as ClientRegistrationPrefill;
+
+      setClient((prev) => {
+        const nextInvoiceAddress = prev.invoiceAddress || registration.billing_address || "";
+        const nextShippingAddress =
+          prev.shippingAddress || registration.shipping_address || registration.billing_address || "";
+
+        return {
+          ...prev,
+          companyName: prev.companyName || registration.company || "",
+          contactName: prev.contactName || registration.contact || "",
+          contactNumber: prev.contactNumber || registration.phone || "",
+          invoiceAddress: nextInvoiceAddress,
+          shippingAddress: nextShippingAddress,
+          vat: prev.vat || registration.vat_eori || "",
+          country: prev.country || registration.country || "",
+          email: prev.email || registration.email || email,
+          sameAddress: prev.sameAddress || (!registration.shipping_address && Boolean(nextInvoiceAddress)),
+        };
+      });
+    };
+
+    void loadClientPrefill();
+
+    return () => {
+      isActive = false;
+    };
+  }, [user?.email]);
 
   useEffect(() => {
     fetch("/data/solid-1200.json")

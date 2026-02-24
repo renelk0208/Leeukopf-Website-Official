@@ -421,9 +421,22 @@ async function persistClientRegistration(formData: FormData): Promise<void> {
     .insert({
       company: formData.company?.trim() || null,
       contact: formData.contact?.trim() || null,
+      role: formData.role?.trim() || null,
       email: formData.email?.trim().toLowerCase() || null,
+      phone: formData.phone?.trim() || null,
       country: formData.country?.trim() || null,
+      website: formData.website?.trim() || null,
+      instagram: formData.instagram?.trim() || null,
       business_type: formData.businessType?.trim() || null,
+      interests: Array.isArray(formData.interests)
+        ? formData.interests.map((item) => String(item).trim()).filter(Boolean)
+        : [],
+      monthly_volume: formData.monthlyVolume?.trim() || null,
+      vat_eori: formData.vatEori?.trim() || null,
+      billing_address: formData.billingAddress?.trim() || null,
+      shipping_address: formData.shippingAddress?.trim() || null,
+      language: formData.language?.trim() || 'EN',
+      notes: formData.notes?.trim() || null,
     });
 
   if (error) {
