@@ -143,7 +143,6 @@ export default function ClientPortalDashboardPage() {
   const [orders, setOrders] = useState<SolidOrderRecord[]>([]);
   const [accessDenied, setAccessDenied] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [reorderingOrderId, setReorderingOrderId] = useState<string | null>(null);
 
   const email = user?.email ?? '';
@@ -152,7 +151,6 @@ export default function ClientPortalDashboardPage() {
     if (!email) return;
 
     setLoading(true);
-    setError('');
     setAccessDenied(false);
 
     try {
@@ -209,11 +207,7 @@ export default function ClientPortalDashboardPage() {
         shippingAddress: latestRegistration?.shipping_address ?? '-',
       });
     } catch (loadError: unknown) {
-      if (loadError instanceof Error && loadError.message) {
-        setError(loadError.message);
-      } else {
-        setError('Unable to load portal data.');
-      }
+      console.error('Unable to load portal data:', loadError);
     } finally {
       setLoading(false);
     }
@@ -286,7 +280,6 @@ export default function ClientPortalDashboardPage() {
           </div>
 
           {loading ? <p className="text-sm text-grey-secondary">Loading...</p> : null}
-          {error ? <p className="text-sm text-red-700">{error}</p> : null}
           {accessDenied ? (
             <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
               Your login is not approved for portal access yet. Please contact Leeukopf support.
