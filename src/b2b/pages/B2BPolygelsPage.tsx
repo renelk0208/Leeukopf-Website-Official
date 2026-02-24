@@ -5,6 +5,7 @@ type CsvProduct = {
   category: string;
   product_name: string;
   code: string;
+  image_url: string;
   active: string;
 };
 
@@ -64,10 +65,27 @@ function isPolygelCategory(value: string): boolean {
   return normalized.includes("polygel") || normalized.includes("acrygel") || normalized.includes("liquid polygel");
 }
 
+function normalizeImagePath(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+}
+
+function getImageCandidates(product: CsvProduct): string[] {
+  const explicitImage = normalizeImagePath(product.image_url || "");
+  const byCode = product.code
+    ? [`/img/polygel/${product.code}.webp`, `/img/polygel/${product.code}.jpg`, `/img/polygel/${product.code}.png`]
+    : [];
+
+  return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
+}
+
 export default function B2BPolygelsPage() {
   const { items, addOrUpdateItem, removeItem } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
+  const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
   const [tubeColor, setTubeColor] = useState<TubeColor>("BLACK");
   const [tubeSize, setTubeSize] = useState<TubeSize>("30G");
   const [tubeLabel, setTubeLabel] = useState<TubeLabel>("PRINTED");
@@ -94,12 +112,14 @@ export default function B2BPolygelsPage() {
               category: row[index.category] ?? "",
               product_name: row[index.product_name] ?? "",
               code: row[index.code] ?? "",
+              image_url: row[index.image_url] ?? "",
               active: row[index.active] ?? "FALSE",
             } as CsvProduct;
           })
           .filter((item) => item.active.toUpperCase() === "TRUE" && isPolygelCategory(item.category));
 
         setProducts(parsed);
+        setImageAttemptByCode({});
       })
       .catch(() => setProducts([]));
   }, []);
@@ -182,7 +202,9 @@ export default function B2BPolygelsPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((product, index) => {
           const value = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "");
-          const image = product.code ? `/img/polygel/${product.code}.webp` : fallbackPolygelImage;
+          const imageCandidates = getImageCandidates(product);
+          const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
+          const image = imageCandidates[nextImageIndex] ?? fallbackPolygelImage;
 
           return (
             <article key={`${product.code}-${index}`} className="overflow-hidden rounded-lg border border-grey-card bg-white">
@@ -192,6 +214,15 @@ export default function B2BPolygelsPage() {
                 className="h-44 w-full object-cover"
                 onError={(event) => {
                   const target = event.currentTarget;
+                  const currentIndex = imageAttemptByCode[product.code] ?? 0;
+                  if (currentIndex < imageCandidates.length - 1) {
+                    setImageAttemptByCode((prev) => ({
+                      ...prev,
+                      [product.code]: currentIndex + 1,
+                    }));
+                    return;
+                  }
+
                   if (target.src.endsWith(fallbackPolygelImage)) return;
                   target.src = fallbackPolygelImage;
                 }}
