@@ -88,6 +88,7 @@ export default function AdminDashboard() {
   const [completedOrders, setCompletedOrders] = useState<CompletedB2BOrder[]>([]);
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
+  const [manualInviteLink, setManualInviteLink] = useState('');
   const [refreshingClients, setRefreshingClients] = useState(false);
   const [backfillingClients, setBackfillingClients] = useState(false);
   const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
@@ -452,6 +453,7 @@ export default function AdminDashboard() {
     }
 
     setInvitingEmail(registration.email);
+    setManualInviteLink('');
     try {
       const response = await fetch('/api/admin-client-invite', {
         method: 'POST',
@@ -466,9 +468,17 @@ export default function AdminDashboard() {
         }),
       });
 
-      const payload = (await response.json()) as { success?: boolean; message?: string };
+      const payload = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+        inviteLink?: string;
+      };
       if (!response.ok || !payload.success) {
         throw new Error(payload.message || 'Failed to approve and invite client.');
+      }
+
+      if (payload.inviteLink) {
+        setManualInviteLink(payload.inviteLink);
       }
 
       setApprovedEmails((prev) => {
@@ -975,17 +985,17 @@ export default function AdminDashboard() {
                             )}
                           </td>
                           <td className="py-4 px-4">
-                            {isApproved ? (
-                              <span className="text-emerald-400 text-sm font-medium">Already approved</span>
-                            ) : (
-                              <button
-                                onClick={() => handleApproveAndInvite(registration)}
-                                disabled={invitingEmail === registration.email}
-                                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                              >
-                                {invitingEmail === registration.email ? 'Processing...' : 'Approve / Activate Access'}
-                              </button>
-                            )}
+                            <button
+                              onClick={() => handleApproveAndInvite(registration)}
+                              disabled={invitingEmail === registration.email}
+                              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {invitingEmail === registration.email
+                                ? 'Processing...'
+                                : isApproved
+                                  ? 'Resend Invite / Get Manual Link'
+                                  : 'Approve / Activate Access'}
+                            </button>
                           </td>
                         </tr>
                       );
@@ -994,6 +1004,20 @@ export default function AdminDashboard() {
                 </table>
               </div>
             )}
+
+            {manualInviteLink ? (
+              <div className="mt-4 rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
+                <p className="text-amber-200 text-sm font-medium">Manual invite link generated:</p>
+                <a
+                  href={manualInviteLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 block break-all text-cyan-300 hover:text-cyan-200 text-sm"
+                >
+                  {manualInviteLink}
+                </a>
+              </div>
+            ) : null}
 
             <div className="mt-10 border-t border-cyan-500/20 pt-8">
               <h3 className="text-xl font-bold text-white mb-2">Completed B2B Orders</h3>

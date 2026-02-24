@@ -31,7 +31,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signInWithMagicLink: (email: string, redirectPath?: string, shouldCreateUser?: boolean) => Promise<void>;
-  requestPasswordReset: (email: string) => Promise<void>;
+  requestPasswordReset: (email: string, redirectPath?: string) => Promise<void>;
   updatePassword: (password: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -153,9 +153,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const requestPasswordReset = async (email: string) => {
+  const requestPasswordReset = async (email: string, redirectPath = '/admin/login') => {
     try {
-      const redirectTo = `${getAuthRedirectBaseUrl()}/admin/login`;
+      const normalizedPath = redirectPath.startsWith('/') ? redirectPath : `/${redirectPath}`;
+      const redirectTo = `${getAuthRedirectBaseUrl()}${normalizedPath}`;
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo,

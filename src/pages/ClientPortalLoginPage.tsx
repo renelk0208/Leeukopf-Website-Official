@@ -4,13 +4,24 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function ClientPortalLoginPage() {
   const navigate = useNavigate();
-  const { user, signIn, signUp, signInWithMagicLink } = useAuth();
+  const { user, signIn, signUp, signInWithMagicLink, requestPasswordReset } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const mapAuthError = (authError: unknown, fallback: string) => {
+    const raw = authError instanceof Error ? authError.message : '';
+    const normalized = raw.toLowerCase();
+
+    if (normalized.includes('rate limit')) {
+      return 'Too many email requests right now. Wait about a minute and try again, or ask admin to generate a manual invite link.';
+    }
+
+    return raw || fallback;
+  };
 
   useEffect(() => {
     if (user) {
@@ -33,11 +44,12 @@ export default function ClientPortalLoginPage() {
         await signIn(email.trim(), password);
       }
     } catch (submitError: unknown) {
-      if (submitError instanceof Error && submitError.message) {
-        setError(submitError.message);
-      } else {
-        setError(isSignUpMode ? 'Account creation failed. Please try again.' : 'Authentication failed. Please try again.');
-      }
+      setError(
+        mapAuthError(
+          submitError,
+          isSignUpMode ? 'Account creation failed. Please try again.' : 'Authentication failed. Please try again.'
+        )
+      );
     } finally {
       setLoading(false);
     }
@@ -58,11 +70,28 @@ export default function ClientPortalLoginPage() {
       await signInWithMagicLink(normalizedEmail, '/portal', false);
       setInfo('Secure login link sent. Open your email and click the link to sign in.');
     } catch (magicLinkError: unknown) {
-      if (magicLinkError instanceof Error && magicLinkError.message) {
-        setError(magicLinkError.message);
-      } else {
-        setError('Could not send login link. Please try again.');
-      }
+      setError(mapAuthError(magicLinkError, 'Could not send login link. Please try again.'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
+      setError('Enter your email first.');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setInfo('');
+
+    try {
+      await requestPasswordReset(normalizedEmail, '/portal/login');
+      setInfo('Password reset email sent. Use the link in your inbox to set a new password.');
+    } catch (resetError: unknown) {
+      setError(mapAuthError(resetError, 'Could not send password reset email. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -145,6 +174,17 @@ export default function ClientPortalLoginPage() {
               className="w-full rounded-md border border-primary-200 px-4 py-2 font-semibold text-primary transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? 'Please wait...' : 'First login? Email me a secure sign-in link'}
+            </button>
+          ) : null}
+
+          {!isSignUpMode ? (
+            <button
+              type="button"
+              onClick={() => void handleForgotPassword()}
+              disabled={loading}
+              className="w-full rounded-md border border-primary-200 px-4 py-2 font-semibold text-primary transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? 'Please wait...' : 'Forgot password? Send reset email'}
             </button>
           ) : null}
         </form>
