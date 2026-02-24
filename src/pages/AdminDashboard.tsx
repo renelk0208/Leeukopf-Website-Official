@@ -89,6 +89,9 @@ export default function AdminDashboard() {
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [manualInviteLink, setManualInviteLink] = useState('');
+  const [clientAccessEmail, setClientAccessEmail] = useState('');
+  const [clientAccessPassword, setClientAccessPassword] = useState('');
+  const [updatingClientAccess, setUpdatingClientAccess] = useState(false);
   const [newAdminEmail, setNewAdminEmail] = useState('');
   const [newAdminPassword, setNewAdminPassword] = useState('');
   const [creatingAdmin, setCreatingAdmin] = useState(false);
@@ -550,6 +553,57 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleCreateOrResetClientAccess = async () => {
+    if (!session?.access_token) {
+      setMessage('Missing admin session. Please sign in again.');
+      return;
+    }
+
+    const normalizedEmail = clientAccessEmail.trim().toLowerCase();
+    if (!normalizedEmail) {
+      setMessage('Enter a client email for access reset.');
+      return;
+    }
+
+    setUpdatingClientAccess(true);
+    try {
+      const response = await fetch('/api/admin-client-access-reset', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          email: normalizedEmail,
+          password: clientAccessPassword.trim() || undefined,
+        }),
+      });
+
+      const payload = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+        data?: { temporaryPassword?: string };
+      };
+
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || 'Failed to reset client access.');
+      }
+
+      const returnedPassword = payload.data?.temporaryPassword || clientAccessPassword.trim();
+      setMessage(
+        returnedPassword
+          ? `${payload.message} Temporary password: ${returnedPassword}`
+          : (payload.message || 'Client access updated.')
+      );
+      setClientAccessEmail('');
+      setClientAccessPassword('');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Failed to reset client access.');
+    } finally {
+      setUpdatingClientAccess(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-cyan-500/20 px-6 py-4">
@@ -963,6 +1017,37 @@ export default function AdminDashboard() {
 
         {activeTab === 'clients' && (
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-cyan-500/20 p-6">
+            <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
+              <h3 className="text-lg font-semibold text-white">Client Portal Access Recovery (No Email Required)</h3>
+              <p className="mt-1 text-sm text-gray-300">
+                Use this when client login reset emails are rate-limited. It creates or resets the client password immediately.
+              </p>
+              <div className="mt-4 grid gap-3 md:grid-cols-3">
+                <input
+                  type="email"
+                  value={clientAccessEmail}
+                  onChange={(event) => setClientAccessEmail(event.target.value)}
+                  placeholder="client@company.com"
+                  className="rounded-lg border border-cyan-500/20 bg-slate-900/50 px-3 py-2 text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
+                />
+                <input
+                  type="text"
+                  value={clientAccessPassword}
+                  onChange={(event) => setClientAccessPassword(event.target.value)}
+                  placeholder="Optional password (auto-generated if empty)"
+                  className="rounded-lg border border-cyan-500/20 bg-slate-900/50 px-3 py-2 text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={handleCreateOrResetClientAccess}
+                  disabled={updatingClientAccess}
+                  className="rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-2 font-medium text-white hover:from-amber-400 hover:to-orange-500 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {updatingClientAccess ? 'Updating...' : 'Reset Client Access Now'}
+                </button>
+              </div>
+            </div>
+
             <div className="mb-6 rounded-xl border border-cyan-500/20 bg-slate-900/40 p-4">
               <h3 className="text-lg font-semibold text-white">Create Admin Access (No Email Required)</h3>
               <p className="mt-1 text-sm text-gray-400">

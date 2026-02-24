@@ -77,6 +77,12 @@
   status = 200
   force = true
 
+[[redirects]]
+  from = "/api/admin-client-access-reset"
+  to = "/.netlify/functions/admin-client-access-reset"
+  status = 200
+  force = true
+
 # Static HTML page redirects
 [[redirects]]
   from = "/thank-you-compliance-consultation"
