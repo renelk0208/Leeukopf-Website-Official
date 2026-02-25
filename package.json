@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/report-large-images.cjs",
+    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/validate-navigation-layout.cjs && node scripts/report-large-images.cjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",

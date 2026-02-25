@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { b2bCategories } from "../config/categories";
+import B2BCategoryImageFrame from "../components/B2BCategoryImageFrame";
 import { useB2BCart } from "../store/B2BCartContext";
 
 export default function B2BDashboard() {
@@ -22,10 +23,19 @@ export default function B2BDashboard() {
             <Link
               key={category.key}
               to={category.routePath}
-              className="rounded-lg border border-grey-card p-4 transition-colors hover:border-primary-300 hover:bg-primary-50"
+              className="overflow-hidden rounded-lg border border-grey-card transition-colors hover:border-primary-300 hover:bg-primary-50"
             >
-              <h3 className="text-lg font-semibold text-grey-primary">{category.label}</h3>
-              <p className="mt-2 text-sm text-grey-secondary">Add items for {category.label.toLowerCase()}.</p>
+              {category.imageSrc ? (
+                <B2BCategoryImageFrame
+                  src={category.imageSrc}
+                  alt={category.imageAlt || category.label}
+                  frameClassName="h-44"
+                />
+              ) : null}
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-grey-primary">{category.label}</h3>
+                <p className="mt-2 text-sm text-grey-secondary">Add items for {category.label.toLowerCase()}.</p>
+              </div>
             </Link>
           ))}
 

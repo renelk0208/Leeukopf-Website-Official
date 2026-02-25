@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
+import B2BCategoryImageFrame from "../components/B2BCategoryImageFrame";
 import { useB2BCart } from "../store/B2BCartContext";
 
 type CsvProduct = {
@@ -8,6 +10,14 @@ type CsvProduct = {
   image_url: string;
   active: string;
 };
+
+function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
+  return [...products].sort((a, b) => {
+    const left = (a.product_name || a.code || "").trim();
+    const right = (b.product_name || b.code || "").trim();
+    return left.localeCompare(right, undefined, { sensitivity: "base", numeric: true });
+  });
+}
 
 type TubeColor = "BLACK" | "WHITE";
 type TubeSize = "30G" | "60G";
@@ -31,6 +41,30 @@ const tubeLabelOptions: Array<{ value: TubeLabel; label: string }> = [
 ];
 
 const fallbackPolygelImage = "/img/products/liquid polygel/liquid-polygel-category-card-image.png";
+
+const polygelCodeGroups: Array<{ prefix: string; count: number }> = [
+  { prefix: "LC-ACY-PG-", count: 18 },
+  { prefix: "LC-ACY_A-PG-", count: 26 },
+  { prefix: "LC-ACY_BA-PG-", count: 22 },
+  { prefix: "LC-ACY_H_SPG-", count: 24 },
+];
+
+function buildFallbackPolygelProducts(): CsvProduct[] {
+  return polygelCodeGroups.flatMap(({ prefix, count }) =>
+    Array.from({ length: count }, (_, index) => {
+      const sequence = String(index + 1).padStart(2, "0");
+      const code = `${prefix}${sequence}`;
+
+      return {
+        category: "Polygel",
+        product_name: `Polygel Shade ${code}`,
+        code,
+        image_url: `/img/polygel/${code}.webp`,
+        active: "TRUE",
+      } as CsvProduct;
+    })
+  );
+}
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
@@ -74,14 +108,60 @@ function normalizeImagePath(value: string): string {
 
 function getImageCandidates(product: CsvProduct): string[] {
   const explicitImage = normalizeImagePath(product.image_url || "");
-  const byCode = product.code
-    ? [`/img/polygel/${product.code}.webp`, `/img/polygel/${product.code}.jpg`, `/img/polygel/${product.code}.png`]
-    : [];
+  const byCode = product.code ? buildImageCandidatesFromCode(product.code) : [];
 
   return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
 }
 
+function buildImageCandidatesFromCode(code: string): string[] {
+  const normalized = (code || "").trim();
+  if (!normalized) return [];
+
+  const variants = new Set<string>();
+  variants.add(normalized);
+  variants.add(normalized.toUpperCase());
+  variants.add(normalized.replace(/\s+/g, "-"));
+  variants.add(normalized.replace(/\s+/g, "_"));
+  variants.add(normalized.replace(/-/g, "_"));
+  variants.add(normalized.replace(/_/g, "-"));
+
+  const withTrailingDashRemoved = normalized.replace(/([A-Za-z])-(\d{2,3})$/, "$1$2");
+  variants.add(withTrailingDashRemoved);
+  variants.add(withTrailingDashRemoved.replace(/-/g, "_"));
+
+  const withoutTrailingDash = normalized.replace(/([A-Za-z_])(\d{2,3})$/, "$1-$2");
+  variants.add(withoutTrailingDash);
+  variants.add(withoutTrailingDash.replace(/-/g, "_"));
+
+  const extensions = ["webp", "jpg", "png"];
+  const candidates: string[] = [];
+
+  Array.from(variants)
+    .filter(Boolean)
+    .forEach((variant) => {
+      extensions.forEach((extension) => {
+        candidates.push(`/img/polygel/${variant}.${extension}`);
+      });
+    });
+
+  return candidates;
+}
+
+function matchesRouteCategory(pathname: string, category: string): boolean {
+  const normalizedCategory = category.trim().toLowerCase();
+  if (pathname.includes("/liquid-polygel")) {
+    return normalizedCategory.includes("liquid polygel");
+  }
+
+  if (pathname.includes("/polygel")) {
+    return normalizedCategory.includes("polygel") && !normalizedCategory.includes("liquid polygel");
+  }
+
+  return isPolygelCategory(category);
+}
+
 export default function B2BPolygelsPage() {
+  const location = useLocation();
   const { items, addOrUpdateItem, removeItem } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
@@ -116,13 +196,18 @@ export default function B2BPolygelsPage() {
               active: row[index.active] ?? "FALSE",
             } as CsvProduct;
           })
-          .filter((item) => item.active.toUpperCase() === "TRUE" && isPolygelCategory(item.category));
+          .filter(
+            (item) =>
+              item.active.toUpperCase() === "TRUE" &&
+              isPolygelCategory(item.category) &&
+              matchesRouteCategory(location.pathname.toLowerCase(), item.category)
+          );
 
-        setProducts(parsed);
+        setProducts(sortProductsAlphabetically(parsed.length ? parsed : buildFallbackPolygelProducts()));
         setImageAttemptByCode({});
       })
-      .catch(() => setProducts([]));
-  }, []);
+      .catch(() => setProducts(sortProductsAlphabetically(buildFallbackPolygelProducts())));
+  }, [location.pathname]);
 
   const existingQtyByCode = useMemo(() => {
     const map: Record<string, number> = {};
@@ -208,10 +293,10 @@ export default function B2BPolygelsPage() {
 
           return (
             <article key={`${product.code}-${index}`} className="overflow-hidden rounded-lg border border-grey-card bg-white">
-              <img
+              <B2BCategoryImageFrame
                 src={image}
                 alt={product.product_name}
-                className="h-44 w-full object-cover"
+                frameClassName="h-44"
                 onError={(event) => {
                   const target = event.currentTarget;
                   const currentIndex = imageAttemptByCode[product.code] ?? 0;
