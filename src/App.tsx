@@ -115,10 +115,10 @@ function App() {
           <Route path="/b2b" element={<B2BPortalShell />}>
             <Route index element={<B2BDashboard />} />
             <Route path="client-info" element={<B2BClientInfoPage />} />
-            <Route path="solid-colours" element={<B2BSolidColoursPage />} />
-            <Route path="builder-gels" element={<B2BBuilderGelsPortalPage />} />
-            <Route path="polygels" element={<B2BPolygelsPage />} />
-            <Route path="extra-strength-bases" element={<B2BExtraStrengthBasesPage />} />
+            <Route path="solid-colours/*" element={<B2BSolidColoursPage />} />
+            <Route path="builder-gels/*" element={<B2BBuilderGelsPortalPage />} />
+            <Route path="polygels/*" element={<B2BPolygelsPage />} />
+            <Route path="extra-strength-bases/*" element={<B2BExtraStrengthBasesPage />} />
             <Route path="checkout" element={<B2BCheckoutPage />} />
           </Route>
 
@@ -128,6 +128,14 @@ function App() {
           <Route path="/portal/pending-approval" element={<PortalPendingApprovalPage />} />
           <Route
             path="/portal"
+            element={
+              <ClientPortalProtectedRoute>
+                <Navigate to="/b2b" replace />
+              </ClientPortalProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/dashboard"
             element={
               <ClientPortalProtectedRoute>
                 <ClientPortalDashboardPage />
