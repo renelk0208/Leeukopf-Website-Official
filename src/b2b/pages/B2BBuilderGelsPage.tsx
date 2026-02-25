@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useB2BCart } from "../store/B2BCartContext";
 
 type CsvProduct = {
   category: string;
+  subcategory: string;
   product_name: string;
   code: string;
   size: string;
@@ -11,6 +13,14 @@ type CsvProduct = {
   moq: string;
   active: string;
 };
+
+function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
+  return [...products].sort((a, b) => {
+    const left = (a.product_name || a.code || "").trim();
+    const right = (b.product_name || b.code || "").trim();
+    return left.localeCompare(right, undefined, { sensitivity: "base", numeric: true });
+  });
+}
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
@@ -40,7 +50,54 @@ function parseCSVLine(line: string): string[] {
   return result;
 }
 
+type BuilderRouteMode = "ALL" | "ACRYLICS" | "THREE_IN_ONE" | "FIBREGLASS" | "BIAB";
+
+function getBuilderRouteMode(pathname: string): BuilderRouteMode {
+  const normalized = pathname.toLowerCase();
+  if (normalized.includes("/acrylics")) return "ACRYLICS";
+  if (normalized.includes("/3-in-1-builder-gels")) return "THREE_IN_ONE";
+  if (normalized.includes("/3-in-1-fibreglass-gel")) return "FIBREGLASS";
+  if (normalized.includes("/biab")) return "BIAB";
+  return "ALL";
+}
+
+function getBuilderPageTitle(mode: BuilderRouteMode): string {
+  switch (mode) {
+    case "ACRYLICS":
+      return "Builder Gels · Acrylics";
+    case "THREE_IN_ONE":
+      return "Builder Gels · 3-in-1 Builder Gels";
+    case "FIBREGLASS":
+      return "Builder Gels · 3-in-1 Fibreglass Gel";
+    case "BIAB":
+      return "Builder Gels · BIAB";
+    default:
+      return "Builder Gels";
+  }
+}
+
+function getBuilderSearchBlob(item: Pick<CsvProduct, "category" | "subcategory" | "product_name" | "code">): string {
+  return `${item.category} ${item.subcategory} ${item.product_name} ${item.code}`.toLowerCase();
+}
+
+function isBuilderGelByRoute(item: CsvProduct, mode: BuilderRouteMode): boolean {
+  const blob = getBuilderSearchBlob(item);
+  if (!blob.includes("builder") && !blob.includes("biab") && !blob.includes("fiberglass") && !blob.includes("fibreglass") && !blob.includes("acrylic")) {
+    return false;
+  }
+
+  if (mode === "ALL") return item.category.toLowerCase() === "builder gel";
+  if (mode === "ACRYLICS") return blob.includes("acrylic");
+  if (mode === "THREE_IN_ONE") return blob.includes("3-in-1") || blob.includes("3 in 1");
+  if (mode === "FIBREGLASS") return blob.includes("fiberglass") || blob.includes("fibreglass") || blob.includes("fiber glass");
+  if (mode === "BIAB") return blob.includes("biab") || blob.includes("builder in a bottle");
+
+  return false;
+}
+
 export default function B2BBuilderGelsPage() {
+  const location = useLocation();
+  const routeMode = getBuilderRouteMode(location.pathname);
   const { items, addOrUpdateItem } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
@@ -64,6 +121,7 @@ export default function B2BBuilderGelsPage() {
             const row = parseCSVLine(line);
             return {
               category: row[index.category] ?? "",
+              subcategory: row[index.subcategory] ?? "",
               product_name: row[index.product_name] ?? "",
               code: row[index.code] ?? "",
               size: row[index.size] ?? "",
@@ -72,12 +130,12 @@ export default function B2BBuilderGelsPage() {
               active: row[index.active] ?? "FALSE",
             } as CsvProduct;
           })
-          .filter((item) => item.active.toUpperCase() === "TRUE" && item.category.toLowerCase() === "builder gel");
+          .filter((item) => item.active.toUpperCase() === "TRUE" && isBuilderGelByRoute(item, routeMode));
 
-        setProducts(parsed);
+        setProducts(sortProductsAlphabetically(parsed));
       })
       .catch(() => setProducts([]));
-  }, []);
+  }, [routeMode]);
 
   const existingQtyByCode = useMemo(() => {
     const map: Record<string, number> = {};
@@ -92,7 +150,7 @@ export default function B2BBuilderGelsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-grey-primary">Builder Gels</h2>
+        <h2 className="text-2xl font-bold text-grey-primary">{getBuilderPageTitle(routeMode)}</h2>
         <p className="mt-1 text-sm text-grey-secondary">Add builder gel products to the same shared B2B inquiry cart.</p>
       </div>
 
@@ -109,6 +167,7 @@ export default function B2BBuilderGelsPage() {
             <thead className="sticky top-0 bg-primary-50">
               <tr>
                 <th className="px-3 py-2 text-left font-semibold text-grey-primary">Code</th>
+                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Subcategory</th>
                 <th className="px-3 py-2 text-left font-semibold text-grey-primary">Product</th>
                 <th className="px-3 py-2 text-left font-semibold text-grey-primary">Size</th>
                 <th className="px-3 py-2 text-left font-semibold text-grey-primary">MOQ</th>
@@ -122,6 +181,7 @@ export default function B2BBuilderGelsPage() {
                 return (
                   <tr key={product.code} className="border-t border-grey-card/60">
                     <td className="px-3 py-2 font-mono">{product.code}</td>
+                    <td className="px-3 py-2">{product.subcategory || "Builder Gel"}</td>
                     <td className="px-3 py-2">{product.product_name}</td>
                     <td className="px-3 py-2">{product.size} {product.unit}</td>
                     <td className="px-3 py-2">{product.moq}</td>
@@ -169,6 +229,12 @@ export default function B2BBuilderGelsPage() {
           </table>
         </div>
       </div>
+
+      {products.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-grey-card p-4 text-sm text-grey-secondary">
+          No active builder gel rows found for this subcategory in products.csv.
+        </div>
+      ) : null}
     </div>
   );
 }

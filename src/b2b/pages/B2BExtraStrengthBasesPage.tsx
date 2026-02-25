@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useB2BCart } from "../store/B2BCartContext";
 
 type CsvProduct = {
@@ -10,6 +11,37 @@ type CsvProduct = {
   image_url: string;
   active: string;
 };
+
+type BaseRouteMode = "ALL" | "EXTRA_STRENGTH" | "CLASSIC" | "RUBBER";
+
+function getBaseRouteMode(pathname: string): BaseRouteMode {
+  const normalized = pathname.toLowerCase();
+  if (normalized.includes("/classic-base")) return "CLASSIC";
+  if (normalized.includes("/rubber-bases")) return "RUBBER";
+  if (normalized.includes("/extra-strength-bases")) return "EXTRA_STRENGTH";
+  return "ALL";
+}
+
+function getBasePageTitle(mode: BaseRouteMode): string {
+  switch (mode) {
+    case "CLASSIC":
+      return "Classic Bases";
+    case "RUBBER":
+      return "Rubber Bases";
+    case "EXTRA_STRENGTH":
+      return "Extra Strength Bases";
+    default:
+      return "Bases";
+  }
+}
+
+function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
+  return [...products].sort((a, b) => {
+    const left = (a.product_name || a.code || "").trim();
+    const right = (b.product_name || b.code || "").trim();
+    return left.localeCompare(right, undefined, { sensitivity: "base", numeric: true });
+  });
+}
 
 const FALLBACK_COUNT = 95;
 
@@ -59,6 +91,28 @@ function isExtraStrengthBase(item: CsvProduct): boolean {
   return joined.includes("extra strength") && joined.includes("base");
 }
 
+function isClassicBase(item: CsvProduct): boolean {
+  const joined = `${item.category} ${item.subcategory} ${item.product_name} ${item.code}`.toLowerCase();
+  return joined.includes("classic") && joined.includes("base");
+}
+
+function isRubberBase(item: CsvProduct): boolean {
+  const joined = `${item.category} ${item.subcategory} ${item.product_name} ${item.code}`.toLowerCase();
+  return joined.includes("rubber") && joined.includes("base");
+}
+
+function isAnyBase(item: CsvProduct): boolean {
+  const joined = `${item.category} ${item.subcategory} ${item.product_name} ${item.code}`.toLowerCase();
+  return joined.includes("base");
+}
+
+function matchesBaseRoute(item: CsvProduct, mode: BaseRouteMode): boolean {
+  if (mode === "EXTRA_STRENGTH") return isExtraStrengthBase(item);
+  if (mode === "CLASSIC") return isClassicBase(item);
+  if (mode === "RUBBER") return isRubberBase(item);
+  return isAnyBase(item);
+}
+
 function createFallbackProducts(): CsvProduct[] {
   return Array.from({ length: FALLBACK_COUNT }, (_, index) => {
     const id = index + 1;
@@ -78,11 +132,24 @@ function createFallbackProducts(): CsvProduct[] {
 
 function getImageCandidates(product: CsvProduct): string[] {
   const explicitImage = normalizeImagePath(product.image_url);
+  const normalizedCode = (product.code || "").trim();
+  const normalizedCodeNoDash = normalizedCode.replace(/-/g, "_");
+  const normalizedCodeDashed = normalizedCode.replace(/_/g, "-");
+
   const byCode = product.code
     ? [
       `/img/tops-bases/Extra Strength Base Coat/${product.code}.png`,
-      `/img/tops-bases/Extra Strength Base Coat/${product.code}.webp`,
       `/img/tops-bases/Extra Strength Base Coat/${product.code}.jpg`,
+      `/img/tops-bases/Extra Strength Base Coat/${product.code}.webp`,
+      `/img/tops-bases/Extra Strength Base Coat/${normalizedCodeNoDash}.png`,
+      `/img/tops-bases/Extra Strength Base Coat/${normalizedCodeDashed}.png`,
+      `/img/products/tops-and-bases/base-coat-category-card-image.png`,
+      `/img/products/tops-and-bases/Bases/${normalizedCode}.png`,
+      `/img/products/tops-and-bases/Bases/${normalizedCodeNoDash}.png`,
+      `/img/products/tops-and-bases/Bases/${normalizedCodeDashed}.png`,
+      `/img/products/tops-and-bases/rubber-bases/${normalizedCode}.png`,
+      `/img/products/tops-and-bases/rubber-bases/${normalizedCodeNoDash}.png`,
+      `/img/products/tops-and-bases/rubber-bases/${normalizedCodeDashed}.png`,
     ]
     : [];
 
@@ -92,6 +159,8 @@ function getImageCandidates(product: CsvProduct): string[] {
 const fallbackCategoryImage = "/img/products/tops-and-bases/base-coat-category-card-image.png";
 
 export default function B2BExtraStrengthBasesPage() {
+  const location = useLocation();
+  const routeMode = getBaseRouteMode(location.pathname);
   const { items, addOrUpdateItem, removeItem } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
@@ -104,7 +173,7 @@ export default function B2BExtraStrengthBasesPage() {
       .then((csv) => {
         const lines = csv.split(/\r?\n/).filter((line) => line.trim().length > 0);
         if (!lines.length) {
-          setProducts(createFallbackProducts());
+          setProducts(sortProductsAlphabetically(createFallbackProducts()));
           return;
         }
 
@@ -125,15 +194,17 @@ export default function B2BExtraStrengthBasesPage() {
               active: row[index.active] ?? "FALSE",
             } as CsvProduct;
           })
-          .filter((item) => item.active.toUpperCase() === "TRUE" && isExtraStrengthBase(item));
+          .filter((item) => item.active.toUpperCase() === "TRUE" && matchesBaseRoute(item, routeMode));
 
-        setProducts(parsed.length > 0 ? parsed : createFallbackProducts());
+        const fallbackProducts = routeMode === "EXTRA_STRENGTH" ? createFallbackProducts() : [];
+        setProducts(sortProductsAlphabetically(parsed.length > 0 ? parsed : fallbackProducts));
         setImageAttemptByCode({});
       })
       .catch(() => {
-        setProducts(createFallbackProducts());
+        const fallbackProducts = routeMode === "EXTRA_STRENGTH" ? createFallbackProducts() : [];
+        setProducts(sortProductsAlphabetically(fallbackProducts));
       });
-  }, []);
+  }, [routeMode]);
 
   const existingQtyByCode = useMemo(() => {
     const map: Record<string, number> = {};
@@ -148,9 +219,9 @@ export default function B2BExtraStrengthBasesPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-2xl font-bold text-grey-primary">Extra Strength Bases</h2>
+        <h2 className="text-2xl font-bold text-grey-primary">{getBasePageTitle(routeMode)}</h2>
         <p className="mt-1 text-sm text-grey-secondary">
-          Add extra strength base shades and quantities to your shared B2B inquiry cart.
+          Add base shades and quantities to your shared B2B inquiry cart.
         </p>
       </div>
 
@@ -170,29 +241,32 @@ export default function B2BExtraStrengthBasesPage() {
 
           return (
             <article key={`${product.code}-${index}`} className="overflow-hidden rounded-lg border border-grey-card bg-white">
-              <img
-                src={image}
-                alt={product.product_name || product.code || "Extra Strength Base"}
-                className="h-44 w-full object-cover"
-                onError={(event) => {
-                  const target = event.currentTarget;
-                  const currentIndex = imageAttemptByCode[product.code] ?? 0;
-                  if (currentIndex < imageCandidates.length - 1) {
-                    setImageAttemptByCode((prev) => ({
-                      ...prev,
-                      [product.code]: currentIndex + 1,
-                    }));
-                    return;
-                  }
+              <div className="flex aspect-[4/3] w-full items-center justify-center bg-grey-100 p-2">
+                <img
+                  src={image}
+                  alt={product.product_name || product.code || "Extra Strength Base"}
+                  className="max-h-full max-w-full object-contain object-center"
+                  onError={(event) => {
+                    const target = event.currentTarget;
+                    const currentIndex = imageAttemptByCode[product.code] ?? 0;
+                    if (currentIndex < imageCandidates.length - 1) {
+                      setImageAttemptByCode((prev) => ({
+                        ...prev,
+                        [product.code]: currentIndex + 1,
+                      }));
+                      return;
+                    }
 
-                  if (target.src.endsWith(fallbackCategoryImage)) return;
-                  target.src = fallbackCategoryImage;
-                }}
-              />
+                    if (target.src.endsWith(fallbackCategoryImage)) return;
+                    target.src = fallbackCategoryImage;
+                  }}
+                />
+              </div>
               <div className="space-y-3 p-4">
                 <div>
                   <p className="text-xs font-semibold text-grey-secondary">{product.code || "BASE"}</p>
                   <h4 className="text-base font-semibold text-grey-primary">{product.product_name || "Extra Strength Base"}</h4>
+                  <p className="mt-1 text-xs text-grey-secondary">{product.subcategory || "Base Coats"}</p>
                   <p className="mt-1 text-xs text-grey-secondary">MOQ: {moq} pcs</p>
                 </div>
 
@@ -266,6 +340,12 @@ export default function B2BExtraStrengthBasesPage() {
           );
         })}
       </div>
+
+      {products.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-grey-card p-4 text-sm text-grey-secondary">
+          No active base rows found for this subcategory in products.csv.
+        </div>
+      ) : null}
     </div>
   );
 }
