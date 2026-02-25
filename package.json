@@ -7,9 +7,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "predev": "node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs",
+    "predev": "node scripts/generate-builder-gels-manifest.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs",
     "dev": "vite",
-    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/validate-navigation-layout.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs && node scripts/report-large-images.cjs",
+    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/generate-builder-gels-manifest.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/validate-navigation-layout.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs && node scripts/report-large-images.cjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -27,7 +27,8 @@
     "solid:pilot80": "node scripts/csv-to-json.mjs",
     "solid:hex": "node scripts/hex-from-swatches.mjs",
     "solid:hex:python": ".\\.venv\\Scripts\\python.exe extract_colour_data.py",
-    "backfill:client-registrations": "node scripts/backfill-client-registrations.mjs"
+    "backfill:client-registrations": "node scripts/backfill-client-registrations.mjs",
+    "generate:builder-gels-manifest": "node scripts/generate-builder-gels-manifest.cjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",

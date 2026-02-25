@@ -16,6 +16,18 @@ type CsvProduct = {
   active: string;
 };
 
+type BuilderGelManifestItem = {
+  category?: string;
+  subcategory?: string;
+  product_name?: string;
+  code?: string;
+  size?: string;
+  unit?: string;
+  moq?: string;
+  image_url?: string;
+  active?: string;
+};
+
 const fallbackProductImage = "/img/placeholders/category-placeholder.jpg";
 
 function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
@@ -52,6 +64,20 @@ function parseCSVLine(line: string): string[] {
 
   result.push(current.trim());
   return result;
+}
+
+function normalizeProductRecord(input: Partial<CsvProduct>): CsvProduct {
+  return {
+    category: input.category ?? "",
+    subcategory: input.subcategory ?? "",
+    product_name: input.product_name ?? "",
+    code: input.code ?? "",
+    size: input.size ?? "",
+    unit: input.unit ?? "",
+    moq: input.moq ?? "1",
+    image_url: input.image_url ?? "",
+    active: input.active ?? "TRUE",
+  };
 }
 
 function normalizeImagePath(value: string): string {
@@ -148,23 +174,31 @@ export default function B2BBuilderGelsPage() {
   const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    fetch("/products.csv")
-      .then((response) => response.text())
-      .then((csv) => {
+    Promise.all([
+      fetch("/products.csv").then((response) => response.text()),
+      fetch("/data/builder-gels-manifest.json")
+        .then((response) => (response.ok ? response.json() : []))
+        .catch(() => [] as BuilderGelManifestItem[]),
+    ])
+      .then(([csv, manifestRows]) => {
         const lines = csv.split(/\r?\n/).filter((line) => line.trim().length > 0);
         if (!lines.length) {
-          setProducts([]);
+          const fromManifest = (Array.isArray(manifestRows) ? manifestRows : [])
+            .map((item) => normalizeProductRecord(item))
+            .filter((item) => item.active.toUpperCase() === "TRUE" && isBuilderGelByRoute(item, routeMode));
+
+          setProducts(sortProductsAlphabetically(fromManifest));
           return;
         }
 
         const header = parseCSVLine(lines[0]);
         const index = Object.fromEntries(header.map((value, columnIndex) => [value.toLowerCase(), columnIndex]));
 
-        const parsed = lines
+        const parsedCsv = lines
           .slice(1)
           .map((line) => {
             const row = parseCSVLine(line);
-            return {
+            return normalizeProductRecord({
               category: row[index.category] ?? "",
               subcategory: row[index.subcategory] ?? "",
               product_name: row[index.product_name] ?? "",
@@ -174,12 +208,23 @@ export default function B2BBuilderGelsPage() {
               moq: row[index.moq] ?? "",
               image_url: row[index.image_url] ?? "",
               active: row[index.active] ?? "FALSE",
-            } as CsvProduct;
+            });
           })
           .filter((item) => item.active.toUpperCase() === "TRUE" && isBuilderGelByRoute(item, routeMode));
 
-        setProducts(sortProductsAlphabetically(parsed));
-          setImageAttemptByCode({});
+        const parsedManifest = (Array.isArray(manifestRows) ? manifestRows : [])
+          .map((item) => normalizeProductRecord(item))
+          .filter((item) => item.active.toUpperCase() === "TRUE" && isBuilderGelByRoute(item, routeMode));
+
+        const mergedByCode = new Map<string, CsvProduct>();
+        parsedCsv.forEach((item) => mergedByCode.set(item.code, item));
+        parsedManifest.forEach((item) => {
+          if (!item.code || mergedByCode.has(item.code)) return;
+          mergedByCode.set(item.code, item);
+        });
+
+        setProducts(sortProductsAlphabetically(Array.from(mergedByCode.values())));
+        setImageAttemptByCode({});
       })
       .catch(() => setProducts([]));
   }, [routeMode]);
