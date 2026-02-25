@@ -14,7 +14,7 @@ type CsvProduct = {
   active: string;
 };
 
-const fallbackProductImage = "/img/placeholders/category-placeholder.jpg";
+const fallbackProductImage = "/img/placeholders/product-missing.svg";
 
 const routeKeywords: Record<string, string[]> = {
   "cat-eye": ["cat eye", "cat-eye", "cateye"],
@@ -59,6 +59,13 @@ function normalizeImagePath(value: string): string {
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
 
+function getCategoryScopedExplicitImage(value: string): string {
+  const normalized = normalizeImagePath(value);
+  if (!normalized) return "";
+  if (/^https?:\/\//i.test(normalized)) return "";
+  return normalized.startsWith("/img/products/gel_polishes/") ? normalized : "";
+}
+
 function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
   return [...products].sort((a, b) => {
     const left = (a.product_name || a.code || "").trim();
@@ -81,7 +88,7 @@ function matchesColourSubcategoryRoute(product: CsvProduct, routeKey: string): b
 }
 
 function getImageCandidates(product: CsvProduct): string[] {
-  const explicit = normalizeImagePath(product.image_url || "");
+  const explicit = getCategoryScopedExplicitImage(product.image_url || "");
   const code = (product.code || "").trim();
   const noDash = code.replace(/-/g, "_");
   const dashed = code.replace(/_/g, "-");

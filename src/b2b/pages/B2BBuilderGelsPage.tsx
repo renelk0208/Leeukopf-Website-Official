@@ -28,7 +28,7 @@ type BuilderGelManifestItem = {
   active?: string;
 };
 
-const fallbackProductImage = "/img/placeholders/category-placeholder.jpg";
+const fallbackProductImage = "/img/placeholders/product-missing.svg";
 
 function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
   return [...products].sort((a, b) => {
@@ -87,8 +87,15 @@ function normalizeImagePath(value: string): string {
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
 
+function getCategoryScopedExplicitImage(value: string): string {
+  const normalized = normalizeImagePath(value);
+  if (!normalized) return "";
+  if (/^https?:\/\//i.test(normalized)) return "";
+  return normalized.startsWith("/img/builder-gels/") ? normalized : "";
+}
+
 function getImageCandidates(product: CsvProduct): string[] {
-  const explicitImage = normalizeImagePath(product.image_url || "");
+  const explicitImage = getCategoryScopedExplicitImage(product.image_url || "");
   const normalizedCode = (product.code || "").trim();
   const normalizedCodeNoDash = normalizedCode.replace(/-/g, "_");
   const normalizedCodeDashed = normalizedCode.replace(/_/g, "-");
@@ -104,15 +111,6 @@ function getImageCandidates(product: CsvProduct): string[] {
       `/img/builder-gels/${normalizedCodeDashed}.webp`,
       `/img/builder-gels/${normalizedCodeDashed}.jpg`,
       `/img/builder-gels/${normalizedCodeDashed}.png`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCode}.webp`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCode}.jpg`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCode}.png`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCodeNoDash}.webp`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCodeNoDash}.jpg`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCodeNoDash}.png`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCodeDashed}.webp`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCodeDashed}.jpg`,
-      `/img/products/builder-systems/Builder Gels/${normalizedCodeDashed}.png`,
     ]
     : [];
 

@@ -81,6 +81,16 @@ function normalizeImagePath(value: string): string {
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
 
+function getCategoryScopedExplicitImage(value: string): string {
+  const normalized = normalizeImagePath(value);
+  if (!normalized) return "";
+  if (/^https?:\/\//i.test(normalized)) return "";
+
+  if (normalized.startsWith("/img/tops-bases/")) return normalized;
+  if (normalized.startsWith("/img/products/tops-and-bases/")) return normalized;
+  return "";
+}
+
 function toNumber(value: string, fallbackValue: number): number {
   const parsed = Number.parseInt(value, 10);
   if (!Number.isFinite(parsed) || parsed < 0) return fallbackValue;
@@ -132,7 +142,7 @@ function createFallbackProducts(): CsvProduct[] {
 }
 
 function getImageCandidates(product: CsvProduct): string[] {
-  const explicitImage = normalizeImagePath(product.image_url);
+  const explicitImage = getCategoryScopedExplicitImage(product.image_url);
   const normalizedCode = (product.code || "").trim();
   const normalizedCodeNoDash = normalizedCode.replace(/-/g, "_");
   const normalizedCodeDashed = normalizedCode.replace(/_/g, "-");
@@ -156,7 +166,7 @@ function getImageCandidates(product: CsvProduct): string[] {
   return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
 }
 
-const fallbackProductImage = "/img/placeholders/category-placeholder.jpg";
+const fallbackProductImage = "/img/placeholders/product-missing.svg";
 
 export default function B2BExtraStrengthBasesPage() {
   const location = useLocation();

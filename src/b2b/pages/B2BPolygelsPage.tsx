@@ -41,7 +41,7 @@ const tubeLabelOptions: Array<{ value: TubeLabel; label: string }> = [
   { value: "OWN_LABELS", label: "Own labels" },
 ];
 
-const fallbackProductImage = "/img/placeholders/category-placeholder.jpg";
+const fallbackProductImage = "/img/placeholders/product-missing.svg";
 
 const polygelCodeGroups: Array<{ prefix: string; count: number }> = [
   { prefix: "LC-ACY-PG-", count: 18 },
@@ -136,8 +136,20 @@ function normalizeImagePath(value: string): string {
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
 
+function getRouteScopedExplicitImage(value: string, isLiquidRoute: boolean): string {
+  const normalized = normalizeImagePath(value);
+  if (!normalized) return "";
+  if (/^https?:\/\//i.test(normalized)) return "";
+
+  if (isLiquidRoute) {
+    return normalized.startsWith("/img/liquid-polygel/") ? normalized : "";
+  }
+
+  return normalized.startsWith("/img/polygel/") ? normalized : "";
+}
+
 function getImageCandidates(product: CsvProduct, isLiquidRoute: boolean): string[] {
-  const explicitImage = normalizeImagePath(product.image_url || "");
+  const explicitImage = getRouteScopedExplicitImage(product.image_url || "", isLiquidRoute);
   const byCode = product.code ? buildImageCandidatesFromCode(product.code, isLiquidRoute) : [];
 
   return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
@@ -164,7 +176,7 @@ function buildImageCandidatesFromCode(code: string, isLiquidRoute: boolean): str
   variants.add(withoutTrailingDash.replace(/-/g, "_"));
 
   const extensions = ["webp", "jpg", "png"];
-  const baseDirs = isLiquidRoute ? ["/img/liquid-polygel", "/img/polygel"] : ["/img/polygel", "/img/liquid-polygel"];
+  const baseDirs = isLiquidRoute ? ["/img/liquid-polygel"] : ["/img/polygel"];
   const candidates: string[] = [];
 
   Array.from(variants)
