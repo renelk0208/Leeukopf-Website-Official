@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 export default function ClientPortalLoginPage() {
   const navigate = useNavigate();
   const { user, signIn, signUp, signInWithMagicLink, requestPasswordReset } = useAuth();
+  const [showRegistrationGate, setShowRegistrationGate] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUpMode, setIsSignUpMode] = useState(false);
@@ -99,6 +100,34 @@ export default function ClientPortalLoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10 sm:py-14">
+      {showRegistrationGate ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="w-full max-w-lg rounded-2xl border border-grey-card bg-white p-6 shadow-xl sm:p-8">
+            <h2 className="text-2xl font-bold text-grey-primary">Portal Access Requirements</h2>
+            <p className="mt-3 text-sm text-grey-secondary">
+              To access the B2B portal, your client registration form must be completed and submitted.
+            </p>
+            <p className="mt-2 text-sm text-grey-secondary">
+              New registrations are reviewed by Leeukopf before portal access is approved.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <Link
+                to="/client-registration"
+                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 font-semibold text-white transition hover:bg-primary/90"
+              >
+                Complete Registration Form
+              </Link>
+              <button
+                type="button"
+                onClick={() => setShowRegistrationGate(false)}
+                className="inline-flex items-center justify-center rounded-md border border-grey-card px-4 py-2 font-semibold text-grey-primary transition hover:bg-gray-50"
+              >
+                I have already submitted
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
       <div className="mx-auto max-w-xl rounded-2xl border border-grey-card bg-white p-6 shadow-sm sm:p-8">
         <div className="mb-5 text-center">
           <h1 className="text-3xl font-bold text-grey-primary">Leeukopf Client Portal</h1>

@@ -112,7 +112,14 @@ function App() {
           <Route path="/b2b-solid-colour" element={<LegacyB2BSolidColoursPage />} />
           <Route path="/b2b-builder-gels" element={<LegacyB2BBuilderGelsPage />} />
 
-          <Route path="/b2b" element={<B2BPortalShell />}>
+          <Route
+            path="/b2b"
+            element={
+              <ClientPortalProtectedRoute>
+                <B2BPortalShell />
+              </ClientPortalProtectedRoute>
+            }
+          >
             <Route index element={<B2BDashboard />} />
             <Route path="client-info" element={<B2BClientInfoPage />} />
             <Route path="solid-colours/*" element={<B2BSolidColoursPage />} />
