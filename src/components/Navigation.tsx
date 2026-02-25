@@ -4,7 +4,11 @@ import { Menu, Search, X } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 import CalendlyButton from './CalendlyButton';
 
-const SocialLinks = () => {
+interface SocialLinksProps {
+  vertical?: boolean;
+}
+
+const SocialLinks = ({ vertical = false }: SocialLinksProps) => {
   const socialMedia = [
     { name: 'LinkedIn', url: 'https://www.linkedin.com/company/thermitek-ltd', icon: (
       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -29,7 +33,7 @@ const SocialLinks = () => {
   ];
 
   return (
-    <div className="flex items-center gap-2">
+    <div className={vertical ? 'flex flex-col items-center gap-2' : 'flex items-center gap-2'}>
       {socialMedia.map((social) => (
         <a
           key={social.name}
@@ -42,7 +46,9 @@ const SocialLinks = () => {
           <span className="text-[#444444] group-hover:text-[#A3005A] transition-colors">
             {social.icon}
           </span>
-          <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-[#444444] text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+          <span className={vertical
+            ? 'absolute left-12 top-1/2 -translate-y-1/2 bg-[#444444] text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none'
+            : 'absolute -bottom-8 left-1/2 -translate-x-1/2 bg-[#444444] text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none'}>
             {social.name}
           </span>
         </a>
@@ -77,7 +83,6 @@ export default function Navigation() {
     { label: 'Gelitup Distribution', path: '/our-brands' },
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
     { label: 'FAQ', path: '/faq-starting-a-gel-polish-brand' },
-    { label: 'Client Registration', path: '/client-registration' },
   ];
 
   const isActive = (path: string) => {
@@ -188,14 +193,7 @@ export default function Navigation() {
               )}
             </div>
             <div className="hidden xl:flex items-center space-x-1.5">
-              <Link
-                to="/portal/login"
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-2.5 py-2 text-xs font-semibold text-white hover:bg-primary/90 transition-colors whitespace-nowrap"
-              >
-                PORTAL
-              </Link>
               <CalendlyButton size="sm" />
-              <SocialLinks />
             </div>
             <div className="xl:hidden">
               <button
@@ -209,6 +207,25 @@ export default function Navigation() {
             </div>
           </div>
         </div>
+
+        <div className="hidden xl:flex justify-center items-center gap-2 pb-3">
+          <Link
+            to="/portal/login"
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white hover:bg-primary/90 transition-colors whitespace-nowrap"
+          >
+            PORTAL
+          </Link>
+          <Link
+            to="/client-registration"
+            className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold text-[#444444] hover:text-[#A3005A] hover:border-primary transition-colors whitespace-nowrap"
+          >
+            CLIENT REGISTRATION
+          </Link>
+        </div>
+      </div>
+
+      <div className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-[60] rounded-xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-md p-2">
+        <SocialLinks vertical />
       </div>
 
       {/* Mobile Navigation */}
@@ -250,6 +267,14 @@ export default function Navigation() {
               className="block w-full text-center px-3 py-3 rounded-md bg-primary text-white hover:bg-primary/90 transition-colors font-semibold text-sm mt-2"
             >
               ORDER NOW ON PORTAL
+            </Link>
+
+            <Link
+              to="/client-registration"
+              onClick={() => setIsOpen(false)}
+              className="block w-full text-center px-3 py-3 rounded-md border border-gray-300 text-[#444444] hover:text-[#A3005A] hover:border-primary transition-colors font-semibold text-sm mt-2"
+            >
+              CLIENT REGISTRATION
             </Link>
 
             <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
