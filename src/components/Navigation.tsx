@@ -117,12 +117,12 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <nav className="hidden xl:flex flex-1 items-center justify-center min-w-0" aria-label="Main navigation">
-            <ul className="flex items-center justify-center flex-wrap gap-x-0.5 gap-y-1">
+            <ul className="flex items-center justify-center flex-nowrap gap-x-0 min-w-0">
               {navItems.map((item) => (
-                <li key={item.path} className="nav-item">
+                <li key={item.path} className="nav-item shrink-0">
                   <Link
                     to={item.path}
-                    className={`block px-3 py-2 md:text-base lg:text-lg font-medium transition-colors whitespace-nowrap ${
+                    className={`block px-1.5 2xl:px-2 py-2 text-xs 2xl:text-sm font-medium transition-colors whitespace-nowrap ${
                       isActive(item.path)
                         ? 'text-[#A3005A] border-b-2 border-[#A3005A]'
                         : 'text-[#444444] hover:text-[#A3005A]'
@@ -187,14 +187,14 @@ export default function Navigation() {
                 </button>
               )}
             </div>
-            <div className="hidden xl:flex items-center space-x-2">
+            <div className="hidden xl:flex items-center space-x-1.5">
               <Link
                 to="/portal/login"
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center justify-center rounded-lg bg-primary px-2.5 py-2 text-xs font-semibold text-white hover:bg-primary/90 transition-colors whitespace-nowrap"
               >
-                ORDER NOW ON PORTAL
+                PORTAL
               </Link>
-              <CalendlyButton size="sm" className="mr-2" />
+              <CalendlyButton size="sm" />
               <SocialLinks />
             </div>
             <div className="xl:hidden">
