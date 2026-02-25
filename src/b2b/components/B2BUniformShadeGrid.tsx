@@ -107,9 +107,9 @@ export default function B2BUniformShadeGrid({
                 </div>
 
                 <div className="mt-3 space-y-2">
-                  <p className="text-base font-semibold text-grey-primary">{item.code}</p>
-                  <p className="text-xs text-grey-secondary">{item.name}</p>
-                  <p className="text-xs text-grey-secondary">{item.family}</p>
+                  <p className="text-sm font-semibold leading-tight text-grey-primary break-words [overflow-wrap:anywhere]">{item.code}</p>
+                  <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.name}</p>
+                  <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.family}</p>
                   <p className="text-xs text-grey-secondary">MOQ: {item.moq}</p>
 
                   <input

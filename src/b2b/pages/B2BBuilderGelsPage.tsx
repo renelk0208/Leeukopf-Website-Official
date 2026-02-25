@@ -12,8 +12,11 @@ type CsvProduct = {
   size: string;
   unit: string;
   moq: string;
+  image_url: string;
   active: string;
 };
+
+const fallbackProductImage = "/img/placeholders/category-placeholder.jpg";
 
 function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
   return [...products].sort((a, b) => {
@@ -49,6 +52,45 @@ function parseCSVLine(line: string): string[] {
 
   result.push(current.trim());
   return result;
+}
+
+function normalizeImagePath(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+}
+
+function getImageCandidates(product: CsvProduct): string[] {
+  const explicitImage = normalizeImagePath(product.image_url || "");
+  const normalizedCode = (product.code || "").trim();
+  const normalizedCodeNoDash = normalizedCode.replace(/-/g, "_");
+  const normalizedCodeDashed = normalizedCode.replace(/_/g, "-");
+
+  const byCode = normalizedCode
+    ? [
+      `/img/builder-gels/${normalizedCode}.webp`,
+      `/img/builder-gels/${normalizedCode}.jpg`,
+      `/img/builder-gels/${normalizedCode}.png`,
+      `/img/builder-gels/${normalizedCodeNoDash}.webp`,
+      `/img/builder-gels/${normalizedCodeNoDash}.jpg`,
+      `/img/builder-gels/${normalizedCodeNoDash}.png`,
+      `/img/builder-gels/${normalizedCodeDashed}.webp`,
+      `/img/builder-gels/${normalizedCodeDashed}.jpg`,
+      `/img/builder-gels/${normalizedCodeDashed}.png`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCode}.webp`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCode}.jpg`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCode}.png`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCodeNoDash}.webp`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCodeNoDash}.jpg`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCodeNoDash}.png`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCodeDashed}.webp`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCodeDashed}.jpg`,
+      `/img/products/builder-systems/Builder Gels/${normalizedCodeDashed}.png`,
+    ]
+    : [];
+
+  return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
 }
 
 type BuilderRouteMode = "ALL" | "ACRYLICS" | "THREE_IN_ONE" | "FIBREGLASS" | "BIAB";
@@ -103,6 +145,7 @@ export default function B2BBuilderGelsPage() {
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
+  const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
 
   useEffect(() => {
     fetch("/products.csv")
@@ -129,12 +172,14 @@ export default function B2BBuilderGelsPage() {
               size: row[index.size] ?? "",
               unit: row[index.unit] ?? "",
               moq: row[index.moq] ?? "",
+              image_url: row[index.image_url] ?? "",
               active: row[index.active] ?? "FALSE",
             } as CsvProduct;
           })
           .filter((item) => item.active.toUpperCase() === "TRUE" && isBuilderGelByRoute(item, routeMode));
 
         setProducts(sortProductsAlphabetically(parsed));
+          setImageAttemptByCode({});
       })
       .catch(() => setProducts([]));
   }, [routeMode]);
@@ -151,6 +196,9 @@ export default function B2BBuilderGelsPage() {
 
   const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
     return products.map((product, index) => {
+      const imageCandidates = getImageCandidates(product);
+      const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
+      const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
       const quantityValue = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "");
       return {
         id: `${product.code}-${index}`,
@@ -159,12 +207,27 @@ export default function B2BBuilderGelsPage() {
         family: product.subcategory || "Builder Gel",
         moq: Number.parseInt(product.moq || "1", 10) || 1,
         quantityValue,
-        imageSrc: "/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg",
+        imageSrc: image,
         imageAlt: product.product_name || product.code,
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
+        isMissingImage: image === fallbackProductImage,
+        onImageError: (event) => {
+          const target = event.currentTarget;
+          const currentIndex = imageAttemptByCode[product.code] ?? 0;
+          if (currentIndex < imageCandidates.length - 1) {
+            setImageAttemptByCode((prev) => ({
+              ...prev,
+              [product.code]: currentIndex + 1,
+            }));
+            return;
+          }
+
+          if (target.src.endsWith(fallbackProductImage)) return;
+          target.src = fallbackProductImage;
+        },
       };
     });
-  }, [draftQty, existingQtyByCode, products]);
+  }, [draftQty, existingQtyByCode, imageAttemptByCode, products]);
 
   return (
     <div className="space-y-4">
@@ -212,6 +275,7 @@ export default function B2BBuilderGelsPage() {
             quantity: qty,
             unitType: "PCS",
             meta: {
+              image: uniformItems.find((entry) => entry.id === id)?.imageSrc || null,
               size: product.size,
               unit: product.unit,
               subcategory: product.subcategory,

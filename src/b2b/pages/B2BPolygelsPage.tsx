@@ -41,8 +41,7 @@ const tubeLabelOptions: Array<{ value: TubeLabel; label: string }> = [
   { value: "OWN_LABELS", label: "Own labels" },
 ];
 
-const fallbackPolygelImage = "/img/products/liquid polygel/liquid-polygel-category-card-image.png";
-const fallbackLiquidPolygelImage = "/img/products/liquid polygel/liquid-polygel-category-card-image.png";
+const fallbackProductImage = "/img/placeholders/category-placeholder.jpg";
 
 const polygelCodeGroups: Array<{ prefix: string; count: number }> = [
   { prefix: "LC-ACY-PG-", count: 18 },
@@ -267,7 +266,7 @@ export default function B2BPolygelsPage() {
     return products.map((product, index) => {
       const imageCandidates = getImageCandidates(product, isLiquidRoute);
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
-      const fallbackImage = isLiquidRoute ? fallbackLiquidPolygelImage : fallbackPolygelImage;
+      const fallbackImage = fallbackProductImage;
       const image = imageCandidates[nextImageIndex] ?? fallbackImage;
 
       return {
@@ -280,6 +279,7 @@ export default function B2BPolygelsPage() {
         imageSrc: image,
         imageAlt: product.product_name || product.code,
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
+        isMissingImage: image === fallbackImage,
         onImageError: (event) => {
           const target = event.currentTarget;
           const currentIndex = imageAttemptByCode[product.code] ?? 0;

@@ -144,7 +144,6 @@ function getImageCandidates(product: CsvProduct): string[] {
       `/img/tops-bases/Extra Strength Base Coat/${product.code}.webp`,
       `/img/tops-bases/Extra Strength Base Coat/${normalizedCodeNoDash}.png`,
       `/img/tops-bases/Extra Strength Base Coat/${normalizedCodeDashed}.png`,
-      `/img/products/tops-and-bases/base-coat-category-card-image.png`,
       `/img/products/tops-and-bases/Bases/${normalizedCode}.png`,
       `/img/products/tops-and-bases/Bases/${normalizedCodeNoDash}.png`,
       `/img/products/tops-and-bases/Bases/${normalizedCodeDashed}.png`,
@@ -157,7 +156,7 @@ function getImageCandidates(product: CsvProduct): string[] {
   return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
 }
 
-const fallbackCategoryImage = "/img/products/tops-and-bases/base-coat-category-card-image.png";
+const fallbackProductImage = "/img/placeholders/category-placeholder.jpg";
 
 export default function B2BExtraStrengthBasesPage() {
   const location = useLocation();
@@ -221,7 +220,7 @@ export default function B2BExtraStrengthBasesPage() {
     return products.map((product, index) => {
       const imageCandidates = getImageCandidates(product);
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
-      const image = imageCandidates[nextImageIndex] ?? fallbackCategoryImage;
+      const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
       const moq = toNumber(product.moq, 1);
 
       return {
@@ -234,6 +233,7 @@ export default function B2BExtraStrengthBasesPage() {
         imageSrc: image,
         imageAlt: product.product_name || product.code || "Base",
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
+        isMissingImage: image === fallbackProductImage,
         onImageError: (event) => {
           const target = event.currentTarget;
           const currentIndex = imageAttemptByCode[product.code] ?? 0;
@@ -245,8 +245,8 @@ export default function B2BExtraStrengthBasesPage() {
             return;
           }
 
-          if (target.src.endsWith(fallbackCategoryImage)) return;
-          target.src = fallbackCategoryImage;
+          if (target.src.endsWith(fallbackProductImage)) return;
+          target.src = fallbackProductImage;
         },
       };
     });
@@ -291,7 +291,7 @@ export default function B2BExtraStrengthBasesPage() {
           quantity: qty,
           unitType: "PCS",
           meta: {
-            image: item?.imageSrc || fallbackCategoryImage,
+            image: item?.imageSrc || null,
             subcategory: match.subcategory,
           },
         });
