@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
 
 type CsvProduct = {
@@ -98,9 +99,10 @@ function isBuilderGelByRoute(item: CsvProduct, mode: BuilderRouteMode): boolean 
 export default function B2BBuilderGelsPage() {
   const location = useLocation();
   const routeMode = getBuilderRouteMode(location.pathname);
-  const { items, addOrUpdateItem } = useB2BCart();
+  const { items, addOrUpdateItem, removeItem } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
+  const [validationMessage, setValidationMessage] = useState<string>("");
 
   useEffect(() => {
     fetch("/products.csv")
@@ -147,94 +149,83 @@ export default function B2BBuilderGelsPage() {
     return map;
   }, [items]);
 
+  const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
+    return products.map((product, index) => {
+      const quantityValue = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "");
+      return {
+        id: `${product.code}-${index}`,
+        code: product.code,
+        name: product.product_name,
+        family: product.subcategory || "Builder Gel",
+        moq: Number.parseInt(product.moq || "1", 10) || 1,
+        quantityValue,
+        imageSrc: "/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg",
+        imageAlt: product.product_name || product.code,
+        isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
+      };
+    });
+  }, [draftQty, existingQtyByCode, products]);
+
   return (
     <div className="space-y-4">
-      <div>
-        <h2 className="text-2xl font-bold text-grey-primary">{getBuilderPageTitle(routeMode)}</h2>
-        <p className="mt-1 text-sm text-grey-secondary">Add builder gel products to the same shared B2B inquiry cart.</p>
-      </div>
-
       <div className="rounded-lg border border-primary-200 bg-primary-50 p-3 text-sm text-primary-700">
         Add items here first, then set bottle packaging in Checkout before export/submit.
-          <Link to="/b2b/checkout" className="ml-2 font-semibold underline">
-            Open Checkout
-          </Link>
+        <Link to="/b2b/checkout" className="ml-2 font-semibold underline">
+          Open Checkout
+        </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-grey-card">
-        <div className="max-h-[68vh] overflow-auto">
-          <table className="w-full text-sm">
-            <thead className="sticky top-0 bg-primary-50">
-              <tr>
-                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Code</th>
-                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Subcategory</th>
-                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Product</th>
-                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Size</th>
-                <th className="px-3 py-2 text-left font-semibold text-grey-primary">MOQ</th>
-                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Qty</th>
-                <th className="px-3 py-2 text-left font-semibold text-grey-primary">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => {
-                const value = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? product.moq ?? "");
-                return (
-                  <tr key={product.code} className="border-t border-grey-card/60">
-                    <td className="px-3 py-2 font-mono">{product.code}</td>
-                    <td className="px-3 py-2">{product.subcategory || "Builder Gel"}</td>
-                    <td className="px-3 py-2">{product.product_name}</td>
-                    <td className="px-3 py-2">{product.size} {product.unit}</td>
-                    <td className="px-3 py-2">{product.moq}</td>
-                    <td className="px-3 py-2">
-                      <input
-                        type="number"
-                        min={0}
-                        step={1}
-                        value={value}
-                        onChange={(event) => {
-                          setDraftQty((prev) => ({
-                            ...prev,
-                            [product.code]: event.target.value,
-                          }));
-                        }}
-                        className="w-24 rounded-md border border-grey-card px-2 py-1 text-grey-primary"
-                      />
-                    </td>
-                    <td className="px-3 py-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const qty = Number.parseInt((draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "0")).trim(), 10);
-                          addOrUpdateItem({
-                            category: "BUILDER_GEL",
-                            code: product.code,
-                            name: product.product_name,
-                            quantity: Number.isFinite(qty) ? qty : 0,
-                            unitType: "PCS",
-                            meta: {
-                              size: product.size,
-                              unit: product.unit,
-                            },
-                          });
-                        }}
-                        className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-600"
-                      >
-                        Save
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <B2BUniformShadeGrid
+        title={getBuilderPageTitle(routeMode)}
+        description="Uniform product layout with shared colour chart panel."
+        items={uniformItems}
+        validationMessage={validationMessage}
+        onQuantityChange={(id, value) => {
+          const product = uniformItems.find((entry) => entry.id === id);
+          if (!product) return;
+          setDraftQty((prev) => ({ ...prev, [product.code]: value }));
+        }}
+        onSave={(id) => {
+          const product = products.find((_, index) => `${products[index].code}-${index}` === id);
+          if (!product) return;
 
-      {products.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-grey-card p-4 text-sm text-grey-secondary">
-          No active builder gel rows found for this subcategory in products.csv.
-        </div>
-      ) : null}
+          const raw = (draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "0")).trim();
+          const qty = Number.parseInt(raw, 10);
+          const moq = Number.parseInt(product.moq || "1", 10) || 1;
+
+          if (!Number.isFinite(qty) || qty < 0) {
+            setValidationMessage(`Please enter a valid quantity for ${product.product_name || product.code}.`);
+            return;
+          }
+
+          if (qty > 0 && qty < moq) {
+            setValidationMessage(`MOQ for ${product.product_name || product.code} is ${moq} pieces.`);
+            return;
+          }
+
+          setValidationMessage("");
+
+          addOrUpdateItem({
+            category: "BUILDER_GEL",
+            code: product.code,
+            name: product.product_name,
+            quantity: qty,
+            unitType: "PCS",
+            meta: {
+              size: product.size,
+              unit: product.unit,
+              subcategory: product.subcategory,
+            },
+          });
+        }}
+        onClear={(id) => {
+          const product = products.find((_, index) => `${products[index].code}-${index}` === id);
+          if (!product) return;
+          setValidationMessage("");
+          removeItem("BUILDER_GEL", product.code);
+          setDraftQty((prev) => ({ ...prev, [product.code]: "" }));
+        }}
+      />
     </div>
   );
 }

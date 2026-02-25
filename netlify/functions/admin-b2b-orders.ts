@@ -20,6 +20,47 @@ type AdminB2BOrder = {
   created_at: string;
 };
 
+function isMissingTableError(error: unknown): boolean {
+  if (!error || typeof error !== 'object') return false;
+
+  const candidate = error as { code?: string; message?: string };
+  const message = (candidate.message || '').toLowerCase();
+
+  return (
+    candidate.code === '42P01' ||
+    candidate.code === 'PGRST205' ||
+    message.includes('could not find the table') ||
+    message.includes('relation') && message.includes('does not exist')
+  );
+}
+
+function mapLegacySolidOrderToAdminOrder(row: {
+  order_id: string;
+  order_date: string | null;
+  company_name: string | null;
+  contact_name: string | null;
+  contact_email: string | null;
+  country: string | null;
+  line_count: number | null;
+  total_qty: number | null;
+  created_at: string;
+}): AdminB2BOrder {
+  return {
+    order_id: row.order_id,
+    status: 'completed',
+    order_date: row.order_date,
+    company_name: row.company_name || '-',
+    contact_name: row.contact_name,
+    contact_email: row.contact_email || '-',
+    country: row.country,
+    line_count: row.line_count || 0,
+    total_qty: row.total_qty || 0,
+    email_sent: true,
+    email_error: null,
+    created_at: row.created_at,
+  };
+}
+
 function getAllowedOrigin(requestOrigin: string | undefined): string {
   const allowedOrigins = [
     'https://leeukopf.com',
@@ -136,11 +177,53 @@ export const handler: Handler = async (event) => {
     .order('created_at', { ascending: false })
     .limit(300);
 
-  if (error) {
+  if (error && !isMissingTableError(error)) {
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ success: false, message: `Failed to load completed orders: ${error.message}` }),
+    };
+  }
+
+  if (error && isMissingTableError(error)) {
+    const { data: legacyData, error: legacyError } = await adminSupabase
+      .from('solid_colour_orders')
+      .select('order_id, order_date, company_name, contact_name, contact_email, country, line_count, total_qty, created_at')
+      .order('created_at', { ascending: false })
+      .limit(300);
+
+    if (legacyError) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ success: false, message: `Failed to load completed orders: ${legacyError.message}` }),
+      };
+    }
+
+    const mappedLegacy = (legacyData ?? []).map((row) =>
+      mapLegacySolidOrderToAdminOrder(
+        row as {
+          order_id: string;
+          order_date: string | null;
+          company_name: string | null;
+          contact_name: string | null;
+          contact_email: string | null;
+          country: string | null;
+          line_count: number | null;
+          total_qty: number | null;
+          created_at: string;
+        }
+      )
+    );
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        success: true,
+        count: mappedLegacy.length,
+        data: mappedLegacy,
+      }),
     };
   }
 

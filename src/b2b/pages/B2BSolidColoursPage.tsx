@@ -3,12 +3,12 @@ import InternalSolidColourGrid, { type InternalSolidColourSyncItem } from "../..
 import { useB2BCart } from "../store/B2BCartContext";
 
 function toSolidOrderCode(code: string, internalSku?: string): string {
-  const source = (internalSku || code || "").trim();
-  const match = source.match(/^LC-GP-(\d+)$/i);
-  if (match) {
-    return "Solid Gel Polish";
+  const normalizedInternalSku = (internalSku || "").trim();
+  if (normalizedInternalSku) {
+    return normalizedInternalSku;
   }
-  return code;
+
+  return (code || "").trim();
 }
 
 export default function B2BSolidColoursPage() {

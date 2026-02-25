@@ -11,13 +11,77 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
   const { getTotals } = useB2BCart();
   const totals = getTotals();
 
-  const navItems = [
-    { label: "Dashboard", path: "/b2b" },
-    { label: "Client Info", path: "/b2b/client-info" },
-    ...b2bCategories
-      .filter((category) => category.enabled)
-      .map((category) => ({ label: category.label, path: category.routePath })),
-    { label: "Checkout", path: "/b2b/checkout" },
+  type NavLinkEntry = { type: "link"; label: string; path: string; isSubcategory?: boolean };
+  type NavEntry =
+    | NavLinkEntry
+    | { type: "group"; label: string };
+
+  const standaloneLinks: NavLinkEntry[] = [];
+  const groupedLinks = new Map<string, NavLinkEntry[]>();
+
+  b2bCategories
+    .filter((category) => category.enabled)
+    .forEach((category) => {
+      if (category.navChildren?.length) {
+        const nextGroup = groupedLinks.get(category.label) ?? [];
+
+        category.navChildren.forEach((child) => {
+          nextGroup.push({
+            type: "link",
+            label: child.label,
+            path: child.routePath,
+            isSubcategory: true,
+          });
+        });
+
+        groupedLinks.set(category.label, nextGroup);
+        return;
+      }
+
+      if (category.parentLabel) {
+        const nextGroup = groupedLinks.get(category.parentLabel) ?? [];
+
+        nextGroup.push({
+          type: "link",
+          label: category.label,
+          path: category.routePath,
+          isSubcategory: true,
+        });
+
+        groupedLinks.set(category.parentLabel, nextGroup);
+        return;
+      }
+
+      standaloneLinks.push({
+        type: "link",
+        label: category.label,
+        path: category.routePath,
+      });
+    });
+
+  const sortByLabel = (a: { label: string }, b: { label: string }) =>
+    a.label.localeCompare(b.label, undefined, { sensitivity: "base" });
+
+  const categoryEntries: NavEntry[] = [];
+
+  standaloneLinks
+    .sort(sortByLabel)
+    .forEach((link) => categoryEntries.push(link));
+
+  [...groupedLinks.entries()]
+    .sort(([groupA], [groupB]) => groupA.localeCompare(groupB, undefined, { sensitivity: "base" }))
+    .forEach(([groupLabel, links]) => {
+      categoryEntries.push({ type: "group", label: groupLabel });
+      links
+        .sort(sortByLabel)
+        .forEach((link) => categoryEntries.push(link));
+    });
+
+  const navItems: NavEntry[] = [
+    { type: "link", label: "Dashboard", path: "/b2b" },
+    { type: "link", label: "Client Info", path: "/b2b/client-info" },
+    ...categoryEntries,
+    { type: "link", label: "Checkout", path: "/b2b/checkout" },
   ];
 
   return (
@@ -41,23 +105,32 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
         <aside className="h-fit rounded-xl border border-grey-card bg-white p-3 lg:sticky lg:top-24">
           <nav className="space-y-1" aria-label="B2B portal navigation">
             {navItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                end={item.path === "/b2b"}
-                className={({ isActive }) =>
-                  `flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    isActive ? "bg-primary text-white" : "text-grey-primary hover:bg-primary-50"
-                  }`
-                }
-              >
-                <span>{item.label}</span>
-                {item.path === "/b2b/checkout" && totals.totalLines > 0 ? (
-                  <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-white">
-                    {totals.totalLines}
-                  </span>
-                ) : null}
-              </NavLink>
+              item.type === "group" ? (
+                <div
+                  key={`group-${item.label}`}
+                  className="px-3 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-grey-secondary"
+                >
+                  {item.label}
+                </div>
+              ) : (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.path === "/b2b"}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                      item.isSubcategory ? "ml-3" : ""
+                    } ${isActive ? "bg-primary text-white" : "text-grey-primary hover:bg-primary-50"}`
+                  }
+                >
+                  <span>{item.label}</span>
+                  {item.path === "/b2b/checkout" && totals.totalLines > 0 ? (
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-white">
+                      {totals.totalLines}
+                    </span>
+                  ) : null}
+                </NavLink>
+              )
             ))}
           </nav>
         </aside>

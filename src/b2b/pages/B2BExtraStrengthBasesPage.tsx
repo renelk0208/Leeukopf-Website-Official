@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
 
 type CsvProduct = {
@@ -216,136 +217,92 @@ export default function B2BExtraStrengthBasesPage() {
     return map;
   }, [items]);
 
+  const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
+    return products.map((product, index) => {
+      const imageCandidates = getImageCandidates(product);
+      const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
+      const image = imageCandidates[nextImageIndex] ?? fallbackCategoryImage;
+      const moq = toNumber(product.moq, 1);
+
+      return {
+        id: `${product.code}-${index}`,
+        code: product.code,
+        name: product.product_name || "Base shade",
+        family: product.subcategory || "Base Coats",
+        moq,
+        quantityValue: draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? ""),
+        imageSrc: image,
+        imageAlt: product.product_name || product.code || "Base",
+        isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
+        onImageError: (event) => {
+          const target = event.currentTarget;
+          const currentIndex = imageAttemptByCode[product.code] ?? 0;
+          if (currentIndex < imageCandidates.length - 1) {
+            setImageAttemptByCode((prev) => ({
+              ...prev,
+              [product.code]: currentIndex + 1,
+            }));
+            return;
+          }
+
+          if (target.src.endsWith(fallbackCategoryImage)) return;
+          target.src = fallbackCategoryImage;
+        },
+      };
+    });
+  }, [draftQty, existingQtyByCode, imageAttemptByCode, products]);
+
   return (
-    <div className="space-y-5">
-      <div>
-        <h2 className="text-2xl font-bold text-grey-primary">{getBasePageTitle(routeMode)}</h2>
-        <p className="mt-1 text-sm text-grey-secondary">
-          Add base shades and quantities to your shared B2B inquiry cart.
-        </p>
-      </div>
+    <B2BUniformShadeGrid
+      title={getBasePageTitle(routeMode)}
+      description="Uniform product layout with shared colour chart panel."
+      items={uniformItems}
+      validationMessage={validationMessage}
+      onQuantityChange={(id, value) => {
+        const item = uniformItems.find((entry) => entry.id === id);
+        if (!item) return;
+        setDraftQty((prev) => ({ ...prev, [item.code]: value }));
+      }}
+      onSave={(id) => {
+        const match = products.find((product, index) => `${product.code}-${index}` === id);
+        if (!match) return;
 
-      {validationMessage ? (
-        <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          {validationMessage}
-        </div>
-      ) : null}
+        const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
+        const qty = Number.parseInt(raw, 10);
+        const moq = toNumber(match.moq, 1);
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product, index) => {
-          const value = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "");
-          const imageCandidates = getImageCandidates(product);
-          const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
-          const image = imageCandidates[nextImageIndex] ?? fallbackCategoryImage;
-          const moq = toNumber(product.moq, 1);
+        if (!Number.isFinite(qty) || qty < 0) {
+          setValidationMessage(`Please enter a valid quantity for ${match.product_name || match.code}.`);
+          return;
+        }
 
-          return (
-            <article key={`${product.code}-${index}`} className="overflow-hidden rounded-lg border border-grey-card bg-white">
-              <div className="flex aspect-[4/3] w-full items-center justify-center bg-grey-100 p-2">
-                <img
-                  src={image}
-                  alt={product.product_name || product.code || "Extra Strength Base"}
-                  className="max-h-full max-w-full object-contain object-center"
-                  onError={(event) => {
-                    const target = event.currentTarget;
-                    const currentIndex = imageAttemptByCode[product.code] ?? 0;
-                    if (currentIndex < imageCandidates.length - 1) {
-                      setImageAttemptByCode((prev) => ({
-                        ...prev,
-                        [product.code]: currentIndex + 1,
-                      }));
-                      return;
-                    }
+        if (qty > 0 && qty < moq) {
+          setValidationMessage(`MOQ for ${match.product_name || match.code} is ${moq} pieces.`);
+          return;
+        }
 
-                    if (target.src.endsWith(fallbackCategoryImage)) return;
-                    target.src = fallbackCategoryImage;
-                  }}
-                />
-              </div>
-              <div className="space-y-3 p-4">
-                <div>
-                  <p className="text-xs font-semibold text-grey-secondary">{product.code || "BASE"}</p>
-                  <h4 className="text-base font-semibold text-grey-primary">{product.product_name || "Extra Strength Base"}</h4>
-                  <p className="mt-1 text-xs text-grey-secondary">{product.subcategory || "Base Coats"}</p>
-                  <p className="mt-1 text-xs text-grey-secondary">MOQ: {moq} pcs</p>
-                </div>
+        setValidationMessage("");
 
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-grey-primary">Quantity (pcs)</label>
-                  <input
-                    type="number"
-                    min={0}
-                    step={1}
-                    value={value}
-                    onChange={(event) => {
-                      setDraftQty((prev) => ({
-                        ...prev,
-                        [product.code]: event.target.value,
-                      }));
-                    }}
-                    className="w-full rounded-md border border-grey-card px-2 py-1.5 text-grey-primary"
-                    placeholder="0"
-                  />
-                </div>
-
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const raw = (draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "0")).trim();
-                      const qty = Number.parseInt(raw, 10);
-
-                      if (!Number.isFinite(qty) || qty < 0) {
-                        setValidationMessage(`Please enter a valid quantity for ${product.product_name || product.code}.`);
-                        return;
-                      }
-
-                      if (qty > 0 && qty < moq) {
-                        setValidationMessage(`MOQ for ${product.product_name || product.code} is ${moq} pieces.`);
-                        return;
-                      }
-
-                      setValidationMessage("");
-
-                      addOrUpdateItem({
-                        category: "BASE",
-                        code: product.code,
-                        name: product.product_name,
-                        quantity: qty,
-                        unitType: "PCS",
-                        meta: {
-                          image,
-                        },
-                      });
-                    }}
-                    className="flex-1 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-600"
-                  >
-                    Save
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setValidationMessage("");
-                      removeItem("BASE", product.code);
-                      setDraftQty((prev) => ({ ...prev, [product.code]: "" }));
-                    }}
-                    className="rounded-md border border-grey-card px-3 py-1.5 text-xs font-semibold text-grey-primary hover:bg-grey-100"
-                  >
-                    Clear
-                  </button>
-                </div>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-
-      {products.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-grey-card p-4 text-sm text-grey-secondary">
-          No active base rows found for this subcategory in products.csv.
-        </div>
-      ) : null}
-    </div>
+        const item = uniformItems.find((entry) => entry.id === id);
+        addOrUpdateItem({
+          category: "BASE",
+          code: match.code,
+          name: match.product_name,
+          quantity: qty,
+          unitType: "PCS",
+          meta: {
+            image: item?.imageSrc || fallbackCategoryImage,
+            subcategory: match.subcategory,
+          },
+        });
+      }}
+      onClear={(id) => {
+        const match = products.find((product, index) => `${product.code}-${index}` === id);
+        if (!match) return;
+        setValidationMessage("");
+        removeItem("BASE", match.code);
+        setDraftQty((prev) => ({ ...prev, [match.code]: "" }));
+      }}
+    />
   );
 }

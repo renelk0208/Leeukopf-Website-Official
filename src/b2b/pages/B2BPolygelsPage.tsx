@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import B2BCategoryImageFrame from "../components/B2BCategoryImageFrame";
+import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
 
 type CsvProduct = {
@@ -263,6 +263,41 @@ export default function B2BPolygelsPage() {
     return map;
   }, [items]);
 
+  const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
+    return products.map((product, index) => {
+      const imageCandidates = getImageCandidates(product, isLiquidRoute);
+      const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
+      const fallbackImage = isLiquidRoute ? fallbackLiquidPolygelImage : fallbackPolygelImage;
+      const image = imageCandidates[nextImageIndex] ?? fallbackImage;
+
+      return {
+        id: `${product.code}-${index}`,
+        code: product.code,
+        name: product.product_name || "Polygel shade",
+        family: product.subcategory || (isLiquidRoute ? "Liquid Polygel" : "Polygel"),
+        moq: POLYGEL_MOQ,
+        quantityValue: draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? ""),
+        imageSrc: image,
+        imageAlt: product.product_name || product.code,
+        isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
+        onImageError: (event) => {
+          const target = event.currentTarget;
+          const currentIndex = imageAttemptByCode[product.code] ?? 0;
+          if (currentIndex < imageCandidates.length - 1) {
+            setImageAttemptByCode((prev) => ({
+              ...prev,
+              [product.code]: currentIndex + 1,
+            }));
+            return;
+          }
+
+          if (target.src.endsWith(fallbackImage)) return;
+          target.src = fallbackImage;
+        },
+      };
+    });
+  }, [draftQty, existingQtyByCode, imageAttemptByCode, isLiquidRoute, products]);
+
   return (
     <div className="space-y-5">
       <div>
@@ -324,127 +359,63 @@ export default function B2BPolygelsPage() {
         </div>
       </section>
 
-      {validationMessage ? (
-        <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          {validationMessage}
-        </div>
-      ) : null}
+      <B2BUniformShadeGrid
+        title={isLiquidRoute ? "Liquid Polygels" : "Polygels"}
+        description={
+          isLiquidRoute
+            ? "Uniform product layout with shared colour chart panel for Liquid Polygel."
+            : "Uniform product layout with shared colour chart panel for Polygel."
+        }
+        items={uniformItems}
+        validationMessage={validationMessage}
+        onQuantityChange={(id, value) => {
+          const item = uniformItems.find((entry) => entry.id === id);
+          if (!item) return;
+          setDraftQty((prev) => ({ ...prev, [item.code]: value }));
+        }}
+        onSave={(id) => {
+          const match = products.find((product, index) => `${product.code}-${index}` === id);
+          if (!match) return;
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product, index) => {
-          const value = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "");
-          const imageCandidates = getImageCandidates(product, isLiquidRoute);
-          const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
-          const fallbackImage = isLiquidRoute ? fallbackLiquidPolygelImage : fallbackPolygelImage;
-          const image = imageCandidates[nextImageIndex] ?? fallbackImage;
+          const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
+          const qty = Number.parseInt(raw, 10);
 
-          return (
-            <article key={`${product.code}-${index}`} className="overflow-hidden rounded-lg border border-grey-card bg-white">
-              <B2BCategoryImageFrame
-                src={image}
-                alt={product.product_name}
-                frameClassName="h-44"
-                onError={(event) => {
-                  const target = event.currentTarget;
-                  const currentIndex = imageAttemptByCode[product.code] ?? 0;
-                  if (currentIndex < imageCandidates.length - 1) {
-                    setImageAttemptByCode((prev) => ({
-                      ...prev,
-                      [product.code]: currentIndex + 1,
-                    }));
-                    return;
-                  }
+          if (!Number.isFinite(qty) || qty < 0) {
+            setValidationMessage(`Please enter a valid quantity for ${match.product_name || match.code}.`);
+            return;
+          }
 
-                  if (target.src.endsWith(fallbackImage)) return;
-                  target.src = fallbackImage;
-                }}
-              />
-              <div className="space-y-3 p-4">
-                <div>
-                  <p className="text-xs font-semibold text-grey-secondary">{product.code || "POLYGEL"}</p>
-                  <h4 className="text-base font-semibold text-grey-primary">{product.product_name || "Polygel shade"}</h4>
-                  <p className="mt-1 text-xs text-grey-secondary">MOQ: {POLYGEL_MOQ} pcs per colour</p>
-                </div>
+          if (qty > 0 && qty < POLYGEL_MOQ) {
+            setValidationMessage(`MOQ for polygel is ${POLYGEL_MOQ} pieces per colour.`);
+            return;
+          }
 
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-grey-primary">Quantity (pcs)</label>
-                  <input
-                    type="number"
-                    min={0}
-                    step={1}
-                    value={value}
-                    onChange={(event) => {
-                      setDraftQty((prev) => ({
-                        ...prev,
-                        [product.code]: event.target.value,
-                      }));
-                    }}
-                    className="w-full rounded-md border border-grey-card px-2 py-1.5 text-grey-primary"
-                    placeholder="0"
-                  />
-                </div>
+          setValidationMessage("");
 
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const raw = (draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "0")).trim();
-                      const qty = Number.parseInt(raw, 10);
-
-                      if (!Number.isFinite(qty) || qty < 0) {
-                        setValidationMessage(`Please enter a valid quantity for ${product.product_name || product.code}.`);
-                        return;
-                      }
-
-                      if (qty > 0 && qty < POLYGEL_MOQ) {
-                        setValidationMessage(`MOQ for polygel is ${POLYGEL_MOQ} pieces per colour.`);
-                        return;
-                      }
-
-                      setValidationMessage("");
-
-                      addOrUpdateItem({
-                        category: "POLYGEL",
-                        code: product.code,
-                        name: product.product_name,
-                        quantity: qty,
-                        unitType: "PCS",
-                        meta: {
-                          tube_color: tubeColor,
-                          tube_size: tubeSize,
-                          label_option: tubeLabel,
-                          image,
-                        },
-                      });
-                    }}
-                    className="flex-1 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-600"
-                  >
-                    Save
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setValidationMessage("");
-                      removeItem("POLYGEL", product.code);
-                      setDraftQty((prev) => ({ ...prev, [product.code]: "" }));
-                    }}
-                    className="rounded-md border border-grey-card px-3 py-1.5 text-xs font-semibold text-grey-primary hover:bg-grey-100"
-                  >
-                    Clear
-                  </button>
-                </div>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-
-      {products.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-grey-card p-4 text-sm text-grey-secondary">
-          No active polygel rows found in products.csv.
-        </div>
-      ) : null}
+          const item = uniformItems.find((entry) => entry.id === id);
+          addOrUpdateItem({
+            category: "POLYGEL",
+            code: match.code,
+            name: match.product_name,
+            quantity: qty,
+            unitType: "PCS",
+            meta: {
+              tube_color: tubeColor,
+              tube_size: tubeSize,
+              label_option: tubeLabel,
+              image: item?.imageSrc || null,
+              subcategory: match.subcategory,
+            },
+          });
+        }}
+        onClear={(id) => {
+          const match = products.find((product, index) => `${product.code}-${index}` === id);
+          if (!match) return;
+          setValidationMessage("");
+          removeItem("POLYGEL", match.code);
+          setDraftQty((prev) => ({ ...prev, [match.code]: "" }));
+        }}
+      />
     </div>
   );
 }
