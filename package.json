@@ -7,9 +7,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "predev": "node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-order-flow.cjs",
+    "predev": "node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs",
     "dev": "vite",
-    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/validate-navigation-layout.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-order-flow.cjs && node scripts/report-large-images.cjs",
+    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/validate-navigation-layout.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs && node scripts/report-large-images.cjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -20,6 +20,8 @@
     "generate:sitemap": "node scripts/generate-sitemap.cjs",
     "report:images": "node scripts/report-large-images.cjs",
     "validate:b2b-categories": "node scripts/validate-b2b-category-images.cjs",
+    "validate:b2b-image-quality": "node scripts/validate-b2b-image-quality.cjs",
+    "validate:b2b-subcategory-routes": "node scripts/validate-b2b-subcategory-routes.cjs",
     "validate:b2b-order-flow": "node scripts/validate-b2b-order-flow.cjs",
     "generate:pwa-icons": "node scripts/generate-pwa-icons.mjs",
     "solid:pilot80": "node scripts/csv-to-json.mjs",

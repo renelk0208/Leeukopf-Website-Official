@@ -36,3 +36,7 @@ category,subcategory,product_name,code,size,unit,moq,price,image_url,notes,activ
 "Accessories","Tools","Crystal Nail File","ACC-FILE-001","1","pc","12","0","","Professional glass file","TRUE"
 "Accessories","Tools","Buffer Block 4-Way","ACC-BUFF-001","1","pc","24","0","","4-sided buffer block","TRUE"
 "Accessories","Brushes","Detail Art Brush Set","ACC-BRS-SET","1","set","6","0","","Professional art brush set","TRUE"
+"Builder Gel","Acrylics","Acrylic Builder Clear","ACY-CLR-30","30","ml","1","0","","Acrylic builder gel for B2B category routing","TRUE"
+"Polygel","Polygel","Polygel Neutral","LC-ACY-PG-01","30","g","100","0","/img/polygel/LC-ACY-PG-01.webp","Polygel catalogue routing seed row","TRUE"
+"Builder Gel","Liquid Polygel","Liquid Polygel Clear","LC_UGL01","30","g","100","0","/img/liquid-polygel/LC_UGL01.webp","Liquid polygel routing seed row","TRUE"
+"Top & Base","Extra Strength Base","Extra Strength Base 01","LC-Extra_Strength_Base01","15","ml","1","0","/img/tops-bases/Extra Strength Base Coat/LC-Extra_Strength_Base01.png","Extra strength base routing seed row","TRUE"
