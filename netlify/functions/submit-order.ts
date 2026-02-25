@@ -177,10 +177,22 @@ function validateOrderSubmission(data: OrderSubmission): { valid: boolean; error
   }
 
   // Validate each item
+  const seenLineKeys = new Set<string>();
   for (const item of data.items) {
     if (!item.code || !item.product_name || !item.quantity || item.quantity <= 0) {
       return { valid: false, error: 'Invalid order item data' };
     }
+
+    const lineKey = `${item.code}`.trim().toLowerCase();
+    if (!lineKey) {
+      return { valid: false, error: 'Invalid order item code' };
+    }
+
+    if (seenLineKeys.has(lineKey)) {
+      return { valid: false, error: `Duplicate order line detected for code: ${item.code}` };
+    }
+
+    seenLineKeys.add(lineKey);
   }
 
   return { valid: true };

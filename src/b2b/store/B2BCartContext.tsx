@@ -53,6 +53,19 @@ function normalizeQuantity(quantity: number): number {
   return Math.max(0, safeQuantity);
 }
 
+function normalizeItemCode(item: Pick<CartItem, "category" | "code" | "internalSku" | "name">): string {
+  const explicitCode = (item.code || "").trim();
+  if (explicitCode) return explicitCode;
+
+  const internalSku = (item.internalSku || "").trim();
+  if (internalSku) return internalSku;
+
+  const fallbackName = (item.name || "").trim();
+  if (!fallbackName) return "";
+
+  return `${item.category}-${fallbackName}`;
+}
+
 function findItemIndex(items: CartItem[], category: CartItem["category"], code: string): number {
   return items.findIndex((item) => item.category === category && item.code === code);
 }
@@ -61,8 +74,14 @@ function reducer(state: B2BCartState, action: B2BCartAction): B2BCartState {
   switch (action.type) {
     case "ADD_OR_UPDATE": {
       const normalizedQty = normalizeQuantity(action.payload.quantity);
+      const normalizedCode = normalizeItemCode(action.payload);
+      if (!normalizedCode) {
+        return state;
+      }
+
       const nextItem = {
         ...action.payload,
+        code: normalizedCode,
         quantity: normalizedQty,
       };
       const existingIndex = findItemIndex(state.items, nextItem.category, nextItem.code);
@@ -164,9 +183,10 @@ function readStoredState(): B2BCartState {
         .filter((item) => typeof item?.category === "string" && typeof item?.code === "string")
         .map((item) => ({
           ...item,
+          code: normalizeItemCode(item),
           quantity: normalizeQuantity(item.quantity),
         }))
-        .filter((item) => item.quantity > 0),
+        .filter((item) => item.quantity > 0 && item.code.length > 0),
       bottlePackaging: hasValidBottlePackaging ? parsed.bottlePackaging : null,
     };
   } catch {

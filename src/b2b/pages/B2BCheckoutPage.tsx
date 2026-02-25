@@ -272,11 +272,11 @@ export default function B2BCheckoutPage() {
       order: {
         items: items.map((item) => ({
           groupCode: item.category,
-          shadeCode: item.code,
+          shadeCode: item.internalSku || item.code,
           packSize: item.category === "POLYGEL" ? (getMetaString(item, "tube_size") || "") : (bottlePackaging?.size || ""),
           qty: item.quantity,
           moq: 0,
-          productName: item.name,
+          productName: item.name || item.code,
         })),
         totals: {
           totalItems: totals.totalLines,
