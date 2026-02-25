@@ -97,48 +97,61 @@ export default function B2BUniformShadeGrid({
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
             {filteredItems.map((item) => (
               <article key={item.id} className="rounded-2xl border border-grey-card bg-white p-3">
-                <div className="flex h-40 items-center justify-center rounded-xl bg-grey-100 p-2">
-                  <img
-                    src={item.imageSrc}
-                    alt={item.imageAlt}
-                    className="max-h-full max-w-full object-contain"
-                    onError={item.onImageError}
-                  />
-                </div>
+                {(() => {
+                  const normalizedCode = item.code.trim().toLowerCase();
+                  const normalizedName = item.name.trim().toLowerCase();
+                  const normalizedFamily = item.family.trim().toLowerCase();
 
-                <div className="mt-3 space-y-2">
-                  <p className="text-sm font-semibold leading-tight text-grey-primary break-words [overflow-wrap:anywhere]">{item.code}</p>
-                  <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.name}</p>
-                  <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.family}</p>
-                  <p className="text-xs text-grey-secondary">MOQ: {item.moq}</p>
+                  const showName = normalizedName.length > 0 && normalizedName !== normalizedCode;
+                  const showFamily = normalizedFamily.length > 0 && normalizedFamily !== normalizedCode && normalizedFamily !== normalizedName;
 
-                  <input
-                    type="number"
-                    min={0}
-                    step={1}
-                    value={item.quantityValue}
-                    onChange={(event) => onQuantityChange(item.id, event.target.value)}
-                    placeholder="Qty"
-                    className="w-full rounded-md border border-grey-card px-2 py-1.5 text-sm text-grey-primary"
-                  />
+                  return (
+                    <>
+                      <div className="flex h-40 items-center justify-center rounded-xl bg-grey-100 p-2">
+                        <img
+                          src={item.imageSrc}
+                          alt={item.imageAlt}
+                          className="max-h-full max-w-full object-contain"
+                          onError={item.onImageError}
+                        />
+                      </div>
 
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => onSave(item.id)}
-                      className="flex-1 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-600"
-                    >
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => onClear(item.id)}
-                      className="rounded-md border border-grey-card px-3 py-1.5 text-xs font-semibold text-grey-primary hover:bg-grey-100"
-                    >
-                      Clear
-                    </button>
-                  </div>
-                </div>
+                      <div className="mt-3 space-y-2">
+                        <p className="text-sm font-semibold leading-tight text-grey-primary break-words [overflow-wrap:anywhere]">{item.code}</p>
+                        {showName ? <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.name}</p> : null}
+                        {showFamily ? <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.family}</p> : null}
+                        <p className="text-xs text-grey-secondary">MOQ: {item.moq}</p>
+
+                        <input
+                          type="number"
+                          min={0}
+                          step={1}
+                          value={item.quantityValue}
+                          onChange={(event) => onQuantityChange(item.id, event.target.value)}
+                          placeholder="Qty"
+                          className="w-full rounded-md border border-grey-card px-2 py-1.5 text-sm text-grey-primary"
+                        />
+
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => onSave(item.id)}
+                            className="flex-1 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-600"
+                          >
+                            Save
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => onClear(item.id)}
+                            className="rounded-md border border-grey-card px-3 py-1.5 text-xs font-semibold text-grey-primary hover:bg-grey-100"
+                          >
+                            Clear
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })()}
               </article>
             ))}
           </div>

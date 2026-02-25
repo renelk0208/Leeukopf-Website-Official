@@ -1,0 +1,55 @@
+name: Hourly Image & Category Scan
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hourly-image-category-scan
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Regenerate builder gels manifest
+        run: npm run generate:builder-gels-manifest
+
+      - name: Ensure manifest is up to date
+        run: |
+          if [[ -n "$(git status --porcelain public/data/builder-gels-manifest.json)" ]]; then
+            echo "❌ builder-gels manifest drift detected."
+            echo "Run: npm run generate:builder-gels-manifest and commit the updated manifest."
+            git --no-pager diff -- public/data/builder-gels-manifest.json
+            exit 1
+          fi
+          echo "✅ builder-gels manifest is up to date."
+
+      - name: Validate B2B category images
+        run: npm run validate:b2b-categories
+
+      - name: Validate B2B image quality
+        run: npm run validate:b2b-image-quality
+
+      - name: Validate B2B subcategory routes
+        run: npm run validate:b2b-subcategory-routes
+
+      - name: Validate B2B order flow
+        run: npm run validate:b2b-order-flow
