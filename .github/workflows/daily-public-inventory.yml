@@ -1,0 +1,36 @@
+name: Daily Public Folder Inventory
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  archive-public-inventory:
+    name: Archive public file inventory
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build public inventory report
+        run: |
+          mkdir -p artifacts
+          REPORT="artifacts/public-inventory-$(date -u +%Y-%m-%d).tsv"
+          echo -e "path\tsize_bytes\tsha256" > "$REPORT"
+
+          while IFS= read -r file; do
+            size=$(stat -c%s "$file")
+            hash=$(sha256sum "$file" | awk '{print $1}')
+            echo -e "$file\t$size\t$hash" >> "$REPORT"
+          done < <(git ls-files public | sort)
+
+          echo "Generated inventory report: $REPORT"
+
+      - name: Upload inventory artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-inventory-${{ github.run_id }}
+          path: artifacts/public-inventory-*.tsv
+          retention-days: 30
