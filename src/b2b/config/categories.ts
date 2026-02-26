@@ -19,7 +19,7 @@ export const b2bCategories: B2BCategoryConfig[] = [
     routePath: "/b2b/solid-colours",
     defaultUnitType: "PCS",
     enabled: true,
-    imageSrc: "/img/products/gel_polishes/gel_polish_category_category-card-image-1.jpeg",
+    imageSrc: "/img/b2b/categories/solid-colours-category.jpeg",
     imageAlt: "Gel polish colours",
     navChildren: [
       { label: "Solid Colours", routePath: "/b2b/solid-colours/solid-colours" },
@@ -36,7 +36,7 @@ export const b2bCategories: B2BCategoryConfig[] = [
     routePath: "/b2b/builder-gels",
     defaultUnitType: "PCS",
     enabled: true,
-    imageSrc: "/img/products/builder-systems/Builder Gels/builder_gels_category_2.jpg",
+    imageSrc: "/img/b2b/categories/builder-gels-category.jpg",
     imageAlt: "Builder gel systems",
     navChildren: [
       { label: "Acrylics", routePath: "/b2b/builder-gels/acrylics" },
@@ -75,7 +75,7 @@ export const b2bCategories: B2BCategoryConfig[] = [
     routePath: "/b2b/extra-strength-bases",
     defaultUnitType: "PCS",
     enabled: true,
-    imageSrc: "/img/products/tops-and-bases/base-coat-category-card-image.png",
+    imageSrc: "/img/b2b/categories/bases-category.png",
     imageAlt: "Base coats",
     navChildren: [
       { label: "Rubber Bases", routePath: "/b2b/extra-strength-bases/rubber-bases" },

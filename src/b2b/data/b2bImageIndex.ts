@@ -19,7 +19,8 @@ export function getIndexedCandidates(
   const candidates = imageIndexByCode[key] ?? [];
   if (!allowedPrefixes.length) return candidates;
 
-  return candidates.filter((candidate) => allowedPrefixes.some((prefix) => candidate.startsWith(prefix)));
+  const filtered = candidates.filter((candidate) => allowedPrefixes.some((prefix) => candidate.startsWith(prefix)));
+  return filtered.length > 0 ? filtered : candidates;
 }
 
 export async function loadB2BImageIndex(): Promise<B2BImageIndex> {

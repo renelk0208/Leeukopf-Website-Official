@@ -5,16 +5,25 @@ const repoRoot = path.join(__dirname, '..')
 const publicRoot = path.join(repoRoot, 'public')
 const outputPath = path.join(publicRoot, 'data', 'b2b-image-index.json')
 
-const B2B_IMAGE_DIRS = [
-  path.join(publicRoot, 'img', 'builder-gels'),
-  path.join(publicRoot, 'img', 'brush-on-builder'),
-  path.join(publicRoot, 'img', 'polygel'),
-  path.join(publicRoot, 'img', 'liquid-polygel'),
-  path.join(publicRoot, 'img', 'solid-colour'),
-  path.join(publicRoot, 'img', 'tops-bases'),
-  path.join(publicRoot, 'img', 'products', 'gel_polishes'),
-  path.join(publicRoot, 'img', 'products', 'tops-and-bases'),
-]
+const B2B_IMAGE_ROOT = path.join(publicRoot, 'img')
+
+const EXCLUDED_TOP_LEVEL_DIRS = new Set([
+  'brands',
+  'certifications',
+  'Certifications-And-Compliance',
+  'factory',
+  'Header',
+  'hero',
+  'instagram',
+  'instagram-fallback',
+  'Logos',
+  'mixing',
+  'placeholders',
+  'private-label',
+  'season',
+  'source',
+  'videos',
+])
 
 function toPosix(value) {
   return value.split(path.sep).join('/')
@@ -28,6 +37,14 @@ function normalizeCodeKey(value) {
   return (value || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '')
 }
 
+function shouldSkipDirectory(absoluteDirPath) {
+  const relPath = path.relative(B2B_IMAGE_ROOT, absoluteDirPath)
+  if (!relPath || relPath.startsWith('..')) return false
+
+  const [topLevelSegment] = relPath.split(path.sep)
+  return EXCLUDED_TOP_LEVEL_DIRS.has(topLevelSegment)
+}
+
 function walkFiles(rootDir, currentDir = rootDir) {
   if (!fs.existsSync(currentDir)) return []
 
@@ -37,6 +54,7 @@ function walkFiles(rootDir, currentDir = rootDir) {
   entries.forEach((entry) => {
     const fullPath = path.join(currentDir, entry.name)
     if (entry.isDirectory()) {
+      if (shouldSkipDirectory(fullPath)) return
       files.push(...walkFiles(rootDir, fullPath))
       return
     }
@@ -52,25 +70,23 @@ function main() {
   const byCode = {}
   let totalImages = 0
 
-  B2B_IMAGE_DIRS.forEach((dirPath) => {
-    const imageFiles = walkFiles(dirPath)
-    imageFiles.forEach((absoluteFilePath) => {
-      const relFromPublic = toPosix(path.relative(publicRoot, absoluteFilePath))
-      const urlPath = `/${relFromPublic}`
-      const baseName = path.basename(absoluteFilePath, path.extname(absoluteFilePath))
-      const codeKey = normalizeCodeKey(baseName)
-      if (!codeKey) return
+  const imageFiles = walkFiles(B2B_IMAGE_ROOT)
+  imageFiles.forEach((absoluteFilePath) => {
+    const relFromPublic = toPosix(path.relative(publicRoot, absoluteFilePath))
+    const urlPath = `/${relFromPublic}`
+    const baseName = path.basename(absoluteFilePath, path.extname(absoluteFilePath))
+    const codeKey = normalizeCodeKey(baseName)
+    if (!codeKey) return
 
-      if (!byCode[codeKey]) {
-        byCode[codeKey] = []
-      }
+    if (!byCode[codeKey]) {
+      byCode[codeKey] = []
+    }
 
-      if (!byCode[codeKey].includes(urlPath)) {
-        byCode[codeKey].push(urlPath)
-      }
+    if (!byCode[codeKey].includes(urlPath)) {
+      byCode[codeKey].push(urlPath)
+    }
 
-      totalImages += 1
-    })
+    totalImages += 1
   })
 
   Object.keys(byCode).forEach((key) => {
