@@ -26,6 +26,7 @@ type TubeSize = "30G" | "60G";
 type TubeLabel = "PRINTED" | "OWN_LABELS";
 
 const POLYGEL_MOQ = 100;
+const LIQUID_POLYGEL_MOQ = 25;
 
 const tubeColorOptions: Array<{ value: TubeColor; label: string }> = [
   { value: "BLACK", label: "Black" },
@@ -216,6 +217,7 @@ function matchesRouteCategory(pathname: string, item: Pick<CsvProduct, "category
 export default function B2BPolygelsPage() {
   const location = useLocation();
   const isLiquidRoute = isLiquidPolygelRoute(location.pathname.toLowerCase());
+  const activeMoq = isLiquidRoute ? LIQUID_POLYGEL_MOQ : POLYGEL_MOQ;
   const { items, addOrUpdateItem, removeItem } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
@@ -296,14 +298,19 @@ export default function B2BPolygelsPage() {
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const fallbackImage = fallbackProductImage;
       const image = imageCandidates[nextImageIndex] ?? fallbackImage;
+      const draftedQty = draftQty[product.code];
+      const existingQty = existingQtyByCode[product.code] ?? 0;
 
       return {
         id: `${product.code}-${index}`,
         code: product.code,
         name: product.product_name || "Polygel shade",
         family: product.subcategory || (isLiquidRoute ? "Liquid Polygel" : "Polygel"),
-        moq: POLYGEL_MOQ,
-        quantityValue: draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? ""),
+        moq: activeMoq,
+        quantityValue:
+          draftedQty !== undefined && draftedQty.trim().length > 0
+            ? draftedQty
+            : String(existingQty > 0 ? existingQty : activeMoq),
         imageSrc: image,
         imageAlt: product.product_name || product.code,
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
@@ -324,7 +331,7 @@ export default function B2BPolygelsPage() {
         },
       };
     });
-  }, [draftQty, existingQtyByCode, imageAttemptByCode, imageIndexByCode, isLiquidRoute, products]);
+  }, [activeMoq, draftQty, existingQtyByCode, imageAttemptByCode, imageIndexByCode, isLiquidRoute, products]);
 
   return (
     <div className="space-y-5">
@@ -332,60 +339,62 @@ export default function B2BPolygelsPage() {
         <h2 className="text-2xl font-bold text-grey-primary">Polygels</h2>
         <p className="mt-1 text-sm text-grey-secondary">
           {isLiquidRoute
-            ? "Select liquid polygel shades and quantities. MOQ is 100 pieces per colour."
+            ? "Select liquid polygel shades and quantities. MOQ is 25 pieces per colour."
             : "Select tube format and quantities. MOQ is 100 pieces per colour."}
         </p>
       </div>
 
-      <section className="rounded-lg border border-grey-card bg-white p-4">
-        <h3 className="text-lg font-semibold text-grey-primary">Tube Configuration</h3>
-        <div className="mt-3 grid gap-4 md:grid-cols-3">
-          <label className="text-sm font-medium text-grey-primary">
-            Tube colour
-            <select
-              value={tubeColor}
-              onChange={(event) => setTubeColor(event.target.value as TubeColor)}
-              className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-            >
-              {tubeColorOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
+      {!isLiquidRoute && (
+        <section className="rounded-lg border border-grey-card bg-white p-4">
+          <h3 className="text-lg font-semibold text-grey-primary">Tube Configuration</h3>
+          <div className="mt-3 grid gap-4 md:grid-cols-3">
+            <label className="text-sm font-medium text-grey-primary">
+              Tube colour
+              <select
+                value={tubeColor}
+                onChange={(event) => setTubeColor(event.target.value as TubeColor)}
+                className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                {tubeColorOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          <label className="text-sm font-medium text-grey-primary">
-            Tube size
-            <select
-              value={tubeSize}
-              onChange={(event) => setTubeSize(event.target.value as TubeSize)}
-              className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-            >
-              {tubeSizeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
+            <label className="text-sm font-medium text-grey-primary">
+              Tube size
+              <select
+                value={tubeSize}
+                onChange={(event) => setTubeSize(event.target.value as TubeSize)}
+                className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                {tubeSizeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          <label className="text-sm font-medium text-grey-primary">
-            Label option
-            <select
-              value={tubeLabel}
-              onChange={(event) => setTubeLabel(event.target.value as TubeLabel)}
-              className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-            >
-              {tubeLabelOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      </section>
+            <label className="text-sm font-medium text-grey-primary">
+              Label option
+              <select
+                value={tubeLabel}
+                onChange={(event) => setTubeLabel(event.target.value as TubeLabel)}
+                className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                {tubeLabelOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </section>
+      )}
 
       <B2BUniformShadeGrid
         title={isLiquidRoute ? "Liquid Polygels" : "Polygels"}
@@ -405,35 +414,39 @@ export default function B2BPolygelsPage() {
           const match = products.find((product, index) => `${product.code}-${index}` === id);
           if (!match) return;
 
-          const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
+          const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? activeMoq)).trim();
           const qty = Number.parseInt(raw, 10);
 
-          if (!Number.isFinite(qty) || qty < 0) {
-            setValidationMessage(`Please enter a valid quantity for ${match.product_name || match.code}.`);
-            return;
-          }
-
-          if (qty > 0 && qty < POLYGEL_MOQ) {
-            setValidationMessage(`MOQ for polygel is ${POLYGEL_MOQ} pieces per colour.`);
+          if (!Number.isFinite(qty) || qty < activeMoq) {
+            setValidationMessage(
+              `MOQ for ${isLiquidRoute ? "liquid polygel" : "polygel"} is ${activeMoq} pieces per colour. Use Clear to remove.`
+            );
             return;
           }
 
           setValidationMessage("");
 
           const item = uniformItems.find((entry) => entry.id === id);
+          const meta = {
+            image: item?.imageSrc || null,
+            subcategory: match.subcategory,
+            moq: activeMoq,
+            ...(isLiquidRoute
+              ? {}
+              : {
+                  tube_color: tubeColor,
+                  tube_size: tubeSize,
+                  label_option: tubeLabel,
+                }),
+          };
+
           addOrUpdateItem({
             category: "POLYGEL",
             code: match.code,
             name: match.product_name,
             quantity: qty,
             unitType: "PCS",
-            meta: {
-              tube_color: tubeColor,
-              tube_size: tubeSize,
-              label_option: tubeLabel,
-              image: item?.imageSrc || null,
-              subcategory: match.subcategory,
-            },
+            meta,
           });
         }}
         onClear={(id) => {
@@ -441,7 +454,11 @@ export default function B2BPolygelsPage() {
           if (!match) return;
           setValidationMessage("");
           removeItem("POLYGEL", match.code);
-          setDraftQty((prev) => ({ ...prev, [match.code]: "" }));
+          setDraftQty((prev) => {
+            const next = { ...prev };
+            delete next[match.code];
+            return next;
+          });
         }}
       />
     </div>

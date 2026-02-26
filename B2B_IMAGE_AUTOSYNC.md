@@ -9,7 +9,7 @@ Use this folder structure for all future B2B uploads:
 Examples:
 
 - `public/img/b2b/builder-gels/biab/LC-BIAB-011.webp`
-- `public/img/b2b/polygels/liquid-polygel/LC_UGL01.webp`
+- `public/img/b2b/liquid-polygel/LC_UGL01.webp`
 - `public/img/b2b/solid-colours/cat-eye/LC-CAT-001.webp`
 
 You can still keep legacy images in existing folders (`/img/builder-gels`, `/img/polygel`, etc), but new uploads should go into `public/img/b2b/**`.

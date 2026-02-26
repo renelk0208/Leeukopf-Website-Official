@@ -78,8 +78,8 @@ function walkFiles(dir) {
 function inferCategoryData(relativePath) {
   const normalizedPath = relativePath.split(path.sep).join('/').toLowerCase()
 
-  if (normalizedPath.startsWith('polygels/liquid-polygel/')) {
-    return { category: 'Builder Gel', subcategory: 'Liquid Polygel', size: '30', unit: 'g', moq: '100' }
+  if (normalizedPath.startsWith('polygels/liquid-polygel/') || normalizedPath.startsWith('liquid-polygel/')) {
+    return { category: 'Polygel', subcategory: 'Liquid Polygel', size: '15', unit: 'ml', moq: '25' }
   }
 
   if (normalizedPath.startsWith('polygels/polygel/')) {
@@ -127,6 +127,33 @@ function inferCategoryData(relativePath) {
 
 function rowKey(row) {
   return `${(row.category || '').trim().toUpperCase()}::${(row.code || '').trim().toUpperCase()}`
+}
+
+function enforceBuilderGelPackagingRules(row) {
+  if ((row.category || '').trim() !== 'Builder Gel') return row
+
+  const normalizedUnit = (row.unit || '').trim().toLowerCase()
+  const normalizedSize = String(row.size || '').trim()
+
+  if (normalizedUnit === 'ml' && (normalizedSize === '10' || normalizedSize === '15')) {
+    return {
+      ...row,
+      unit: 'ml',
+      size: normalizedSize,
+      moq: '25',
+    }
+  }
+
+  if (normalizedUnit === 'g') {
+    return {
+      ...row,
+      unit: 'g',
+      size: '30',
+      moq: '25',
+    }
+  }
+
+  return row
 }
 
 function readCsvRows() {
@@ -265,12 +292,10 @@ function main() {
   preservedRows.forEach((row) => mergedByKey.set(rowKey(row), row))
   generatedRows.forEach((row) => mergedByKey.set(rowKey(row), row))
   routeSeedRows.forEach((row) => {
-    if (!mergedByKey.has(rowKey(row))) {
-      mergedByKey.set(rowKey(row), row)
-    }
+    mergedByKey.set(rowKey(row), row)
   })
 
-  const merged = Array.from(mergedByKey.values())
+  const merged = Array.from(mergedByKey.values()).map(enforceBuilderGelPackagingRules)
   writeCsv(header, merged)
 
   console.log(`✅ Generated ${generatedRows.length} B2B product rows from public/img/b2b into public/products.csv`) 
