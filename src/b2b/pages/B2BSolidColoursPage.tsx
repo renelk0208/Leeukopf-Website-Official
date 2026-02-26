@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import InternalSolidColourGrid, { type InternalSolidColourSyncItem } from "../../pages/InternalSolidColourGrid";
+import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
 
@@ -23,6 +24,8 @@ const routeKeywords: Record<string, string[]> = {
   platinum: ["platinum"],
   "cream-collection": ["cream"],
 };
+
+const solidImagePrefixes = ["/img/solid-colour/", "/img/products/gel_polishes/"];
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
@@ -144,6 +147,7 @@ export default function B2BSolidColoursPage() {
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
   const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
+  const [imageIndexByCode, setImageIndexByCode] = useState<B2BImageIndex>({});
 
   const normalizedPath = location.pathname.toLowerCase();
   const routeSuffix = normalizedPath.replace("/b2b/solid-colours", "").replace(/^\/+/, "");
@@ -156,6 +160,12 @@ export default function B2BSolidColoursPage() {
     .join(" ")
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase()) || "This subcategory";
+
+  useEffect(() => {
+    loadB2BImageIndex()
+      .then((index) => setImageIndexByCode(index))
+      .catch(() => setImageIndexByCode({}));
+  }, []);
 
   useEffect(() => {
     if (isSolidColoursRoute || !isKnownColourSubcategoryRoute) {
@@ -264,7 +274,8 @@ export default function B2BSolidColoursPage() {
 
   const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
     return products.map((product, index) => {
-      const imageCandidates = getImageCandidates(product);
+      const indexedCandidates = getIndexedCandidates(imageIndexByCode, product.code, solidImagePrefixes);
+      const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
       const moq = Number.parseInt(product.moq || "1", 10) || 1;
@@ -296,7 +307,7 @@ export default function B2BSolidColoursPage() {
         },
       };
     });
-  }, [draftQty, existingQtyByCode, imageAttemptByCode, products, routeSuffix]);
+  }, [draftQty, existingQtyByCode, imageAttemptByCode, imageIndexByCode, products, routeSuffix]);
 
   if (!isSolidColoursRoute) {
     if (isKnownColourSubcategoryRoute) {

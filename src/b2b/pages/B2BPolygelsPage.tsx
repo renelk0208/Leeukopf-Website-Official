@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
 
@@ -73,6 +74,9 @@ const liquidPolygelCodeGroups: Array<{ prefix: string; count: number }> = [
   { prefix: "LC_UGL-M", count: 24 },
   { prefix: "LC_UGL_LP_P", count: 62 },
 ];
+
+const polygelImagePrefixes = ["/img/polygel/"];
+const liquidPolygelImagePrefixes = ["/img/liquid-polygel/"];
 
 function buildFallbackLiquidPolygelProducts(): CsvProduct[] {
   return liquidPolygelCodeGroups.flatMap(({ prefix, count }) =>
@@ -220,6 +224,13 @@ export default function B2BPolygelsPage() {
   const [tubeSize, setTubeSize] = useState<TubeSize>("30G");
   const [tubeLabel, setTubeLabel] = useState<TubeLabel>("PRINTED");
   const [validationMessage, setValidationMessage] = useState<string>("");
+  const [imageIndexByCode, setImageIndexByCode] = useState<B2BImageIndex>({});
+
+  useEffect(() => {
+    loadB2BImageIndex()
+      .then((index) => setImageIndexByCode(index))
+      .catch(() => setImageIndexByCode({}));
+  }, []);
 
   useEffect(() => {
     fetch("/products.csv")
@@ -276,7 +287,12 @@ export default function B2BPolygelsPage() {
 
   const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
     return products.map((product, index) => {
-      const imageCandidates = getImageCandidates(product, isLiquidRoute);
+      const indexedCandidates = getIndexedCandidates(
+        imageIndexByCode,
+        product.code,
+        isLiquidRoute ? liquidPolygelImagePrefixes : polygelImagePrefixes
+      );
+      const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product, isLiquidRoute)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const fallbackImage = fallbackProductImage;
       const image = imageCandidates[nextImageIndex] ?? fallbackImage;
@@ -308,7 +324,7 @@ export default function B2BPolygelsPage() {
         },
       };
     });
-  }, [draftQty, existingQtyByCode, imageAttemptByCode, isLiquidRoute, products]);
+  }, [draftQty, existingQtyByCode, imageAttemptByCode, imageIndexByCode, isLiquidRoute, products]);
 
   return (
     <div className="space-y-5">

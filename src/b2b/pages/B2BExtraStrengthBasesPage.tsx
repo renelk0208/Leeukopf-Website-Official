@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
 
@@ -45,6 +46,7 @@ function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
 }
 
 const FALLBACK_COUNT = 95;
+const baseImagePrefixes = ["/img/tops-bases/", "/img/products/tops-and-bases/"];
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
@@ -176,6 +178,13 @@ export default function B2BExtraStrengthBasesPage() {
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
   const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
+  const [imageIndexByCode, setImageIndexByCode] = useState<B2BImageIndex>({});
+
+  useEffect(() => {
+    loadB2BImageIndex()
+      .then((index) => setImageIndexByCode(index))
+      .catch(() => setImageIndexByCode({}));
+  }, []);
 
   useEffect(() => {
     fetch("/products.csv")
@@ -228,7 +237,8 @@ export default function B2BExtraStrengthBasesPage() {
 
   const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
     return products.map((product, index) => {
-      const imageCandidates = getImageCandidates(product);
+      const indexedCandidates = getIndexedCandidates(imageIndexByCode, product.code, baseImagePrefixes);
+      const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
       const moq = toNumber(product.moq, 1);
@@ -260,7 +270,7 @@ export default function B2BExtraStrengthBasesPage() {
         },
       };
     });
-  }, [draftQty, existingQtyByCode, imageAttemptByCode, products]);
+  }, [draftQty, existingQtyByCode, imageAttemptByCode, imageIndexByCode, products]);
 
   return (
     <B2BUniformShadeGrid

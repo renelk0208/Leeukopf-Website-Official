@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
 
@@ -117,6 +118,8 @@ function getImageCandidates(product: CsvProduct): string[] {
   return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
 }
 
+const builderImagePrefixes = ["/img/builder-gels/"];
+
 type BuilderRouteMode = "ALL" | "ACRYLICS" | "THREE_IN_ONE" | "FIBREGLASS" | "BIAB";
 
 function getBuilderRouteMode(pathname: string): BuilderRouteMode {
@@ -170,6 +173,13 @@ export default function B2BBuilderGelsPage() {
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
   const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
+  const [imageIndexByCode, setImageIndexByCode] = useState<B2BImageIndex>({});
+
+  useEffect(() => {
+    loadB2BImageIndex()
+      .then((index) => setImageIndexByCode(index))
+      .catch(() => setImageIndexByCode({}));
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -255,7 +265,8 @@ export default function B2BBuilderGelsPage() {
 
   const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
     return products.map((product, index) => {
-      const imageCandidates = getImageCandidates(product);
+      const indexedCandidates = getIndexedCandidates(imageIndexByCode, product.code, builderImagePrefixes);
+      const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
       const quantityValue = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "");
@@ -286,7 +297,7 @@ export default function B2BBuilderGelsPage() {
         },
       };
     });
-  }, [draftQty, existingQtyByCode, imageAttemptByCode, products]);
+  }, [draftQty, existingQtyByCode, imageAttemptByCode, imageIndexByCode, products]);
 
   return (
     <div className="space-y-4">

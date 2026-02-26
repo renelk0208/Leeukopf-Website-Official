@@ -7,9 +7,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "predev": "node scripts/generate-builder-gels-manifest.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs",
+    "predev": "node scripts/generate-builder-gels-manifest.cjs && node scripts/generate-b2b-image-index.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs",
     "dev": "vite",
-    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/generate-builder-gels-manifest.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/validate-navigation-layout.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs && node scripts/report-large-images.cjs",
+    "prebuild": "node scripts/update-version.cjs && node scripts/generate-sitemap.cjs && node scripts/generate-builder-gels-manifest.cjs && node scripts/generate-b2b-image-index.cjs && node scripts/validate-instagram-placeholders.cjs && node scripts/validate-navigation-layout.cjs && node scripts/validate-b2b-category-images.cjs && node scripts/validate-b2b-image-quality.cjs && node scripts/validate-b2b-subcategory-routes.cjs && node scripts/validate-b2b-order-flow.cjs && node scripts/report-large-images.cjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
