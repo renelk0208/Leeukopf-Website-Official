@@ -84,6 +84,10 @@ const routeChecks = [
     test: (blob) => blob.includes('classic') && blob.includes('base'),
   },
   {
+    routePath: '/b2b/extra-strength-bases/extra-strength-base',
+    test: (blob) => blob.includes('extra strength') && blob.includes('base'),
+  },
+  {
     routePath: '/b2b/extra-strength-bases',
     test: (blob) => blob.includes('extra strength') && blob.includes('base'),
   },

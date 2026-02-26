@@ -78,6 +78,7 @@ export const b2bCategories: B2BCategoryConfig[] = [
     imageSrc: "/img/b2b/categories/bases-category.png",
     imageAlt: "Base coats",
     navChildren: [
+      { label: "Extra Strength Base", routePath: "/b2b/extra-strength-bases/extra-strength-base" },
       { label: "Rubber Bases", routePath: "/b2b/extra-strength-bases/rubber-bases" },
       { label: "Classic Base", routePath: "/b2b/extra-strength-bases/classic-base" },
     ],
