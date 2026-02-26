@@ -217,8 +217,24 @@ export default function B2BBuilderGelsPage() {
         const mergedByCode = new Map<string, CsvProduct>();
         parsedCsv.forEach((item) => mergedByCode.set(item.code, item));
         parsedManifest.forEach((item) => {
-          if (!item.code || mergedByCode.has(item.code)) return;
-          mergedByCode.set(item.code, item);
+          if (!item.code) return;
+
+          const existing = mergedByCode.get(item.code);
+          if (!existing) {
+            mergedByCode.set(item.code, item);
+            return;
+          }
+
+          const manifestImage = getCategoryScopedExplicitImage(item.image_url || "");
+          const existingImage = getCategoryScopedExplicitImage(existing.image_url || "");
+
+          mergedByCode.set(item.code, {
+            ...existing,
+            category: existing.category || item.category,
+            subcategory: item.subcategory || existing.subcategory,
+            product_name: existing.product_name || item.product_name,
+            image_url: manifestImage || existingImage || existing.image_url || item.image_url,
+          });
         });
 
         setProducts(sortProductsAlphabetically(Array.from(mergedByCode.values())));

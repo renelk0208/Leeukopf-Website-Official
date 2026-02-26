@@ -63,7 +63,9 @@ function getCategoryScopedExplicitImage(value: string): string {
   const normalized = normalizeImagePath(value);
   if (!normalized) return "";
   if (/^https?:\/\//i.test(normalized)) return "";
-  return normalized.startsWith("/img/products/gel_polishes/") ? normalized : "";
+  if (normalized.startsWith("/img/products/gel_polishes/")) return normalized;
+  if (normalized.startsWith("/img/solid-colour/")) return normalized;
+  return "";
 }
 
 function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
@@ -104,6 +106,15 @@ function getImageCandidates(product: CsvProduct): string[] {
       `/img/products/gel_polishes/${dashed}.webp`,
       `/img/products/gel_polishes/${dashed}.jpg`,
       `/img/products/gel_polishes/${dashed}.png`,
+      `/img/solid-colour/${code}.webp`,
+      `/img/solid-colour/${code}.jpg`,
+      `/img/solid-colour/${code}.png`,
+      `/img/solid-colour/${noDash}.webp`,
+      `/img/solid-colour/${noDash}.jpg`,
+      `/img/solid-colour/${noDash}.png`,
+      `/img/solid-colour/${dashed}.webp`,
+      `/img/solid-colour/${dashed}.jpg`,
+      `/img/solid-colour/${dashed}.png`,
     ]
     : [];
 
