@@ -193,6 +193,18 @@ export const handler: Handler = async (event) => {
       .limit(300);
 
     if (legacyError) {
+      if (isMissingTableError(legacyError)) {
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            success: true,
+            count: 0,
+            data: [],
+          }),
+        };
+      }
+
       return {
         statusCode: 500,
         headers,

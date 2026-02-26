@@ -2,12 +2,15 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+const PORTAL_REMEMBER_EMAIL_KEY = 'leeukopf.portal.rememberedEmail';
+
 export default function ClientPortalLoginPage() {
   const navigate = useNavigate();
   const { user, signIn, signUp, signInWithMagicLink, requestPasswordReset } = useAuth();
   const [showRegistrationGate, setShowRegistrationGate] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
@@ -25,10 +28,31 @@ export default function ClientPortalLoginPage() {
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const rememberedEmail = window.localStorage.getItem(PORTAL_REMEMBER_EMAIL_KEY) ?? '';
+    if (rememberedEmail) {
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (user) {
       navigate('/portal');
     }
   }, [navigate, user]);
+
+  const persistRememberedEmail = (normalizedEmail: string) => {
+    if (typeof window === 'undefined') return;
+
+    if (rememberMe) {
+      window.localStorage.setItem(PORTAL_REMEMBER_EMAIL_KEY, normalizedEmail);
+      return;
+    }
+
+    window.localStorage.removeItem(PORTAL_REMEMBER_EMAIL_KEY);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,9 +64,12 @@ export default function ClientPortalLoginPage() {
       if (isSignUpMode) {
         const normalizedEmail = email.trim().toLowerCase();
         await signUp(normalizedEmail, password);
+        persistRememberedEmail(normalizedEmail);
         navigate(`/portal/pending-approval?email=${encodeURIComponent(normalizedEmail)}`);
       } else {
-        await signIn(email.trim(), password);
+        const normalizedEmail = email.trim().toLowerCase();
+        await signIn(normalizedEmail, password);
+        persistRememberedEmail(normalizedEmail);
       }
     } catch (submitError: unknown) {
       setError(
@@ -167,6 +194,7 @@ export default function ClientPortalLoginPage() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
+              autoComplete="email"
               className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary focus:border-primary focus:outline-none"
               placeholder="name@company.com"
             />
@@ -182,10 +210,21 @@ export default function ClientPortalLoginPage() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
+              autoComplete={isSignUpMode ? 'new-password' : 'current-password'}
               className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary focus:border-primary focus:outline-none"
               placeholder="Enter password"
             />
           </div>
+
+          <label className="flex items-center gap-2 text-sm text-grey-secondary">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(event) => setRememberMe(event.target.checked)}
+              className="h-4 w-4 rounded border-grey-card text-primary focus:ring-primary"
+            />
+            Remember my email
+          </label>
 
           <button
             type="submit"
