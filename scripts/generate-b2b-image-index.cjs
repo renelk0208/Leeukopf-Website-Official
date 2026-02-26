@@ -7,6 +7,7 @@ const outputPath = path.join(publicRoot, 'data', 'b2b-image-index.json')
 
 const B2B_IMAGE_DIRS = [
   path.join(publicRoot, 'img', 'builder-gels'),
+  path.join(publicRoot, 'img', 'brush-on-builder'),
   path.join(publicRoot, 'img', 'polygel'),
   path.join(publicRoot, 'img', 'liquid-polygel'),
   path.join(publicRoot, 'img', 'solid-colour'),

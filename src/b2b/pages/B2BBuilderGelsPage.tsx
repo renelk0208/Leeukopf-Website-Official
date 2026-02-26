@@ -92,7 +92,9 @@ function getCategoryScopedExplicitImage(value: string): string {
   const normalized = normalizeImagePath(value);
   if (!normalized) return "";
   if (/^https?:\/\//i.test(normalized)) return "";
-  return normalized.startsWith("/img/builder-gels/") ? normalized : "";
+  return normalized.startsWith("/img/builder-gels/") || normalized.startsWith("/img/brush-on-builder/")
+    ? normalized
+    : "";
 }
 
 function getImageCandidates(product: CsvProduct): string[] {
@@ -112,13 +114,22 @@ function getImageCandidates(product: CsvProduct): string[] {
       `/img/builder-gels/${normalizedCodeDashed}.webp`,
       `/img/builder-gels/${normalizedCodeDashed}.jpg`,
       `/img/builder-gels/${normalizedCodeDashed}.png`,
+      `/img/brush-on-builder/${normalizedCode}.webp`,
+      `/img/brush-on-builder/${normalizedCode}.jpg`,
+      `/img/brush-on-builder/${normalizedCode}.png`,
+      `/img/brush-on-builder/${normalizedCodeNoDash}.webp`,
+      `/img/brush-on-builder/${normalizedCodeNoDash}.jpg`,
+      `/img/brush-on-builder/${normalizedCodeNoDash}.png`,
+      `/img/brush-on-builder/${normalizedCodeDashed}.webp`,
+      `/img/brush-on-builder/${normalizedCodeDashed}.jpg`,
+      `/img/brush-on-builder/${normalizedCodeDashed}.png`,
     ]
     : [];
 
   return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
 }
 
-const builderImagePrefixes = ["/img/builder-gels/"];
+const builderImagePrefixes = ["/img/builder-gels/", "/img/brush-on-builder/"];
 
 type BuilderRouteMode = "ALL" | "ACRYLICS" | "THREE_IN_ONE" | "FIBREGLASS" | "BIAB";
 
