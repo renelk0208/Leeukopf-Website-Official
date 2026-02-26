@@ -34,16 +34,17 @@ export default function B2BUniformShadeGrid({
   onClear,
 }: B2BUniformShadeGridProps) {
   const [search, setSearch] = useState("");
-  const [showMissingOnly, setShowMissingOnly] = useState(false);
+  const [hiddenItemIds, setHiddenItemIds] = useState<Record<string, true>>({});
 
   const filteredItems = useMemo(() => {
     const query = search.trim().toLowerCase();
     return items.filter((item) => {
-      if (showMissingOnly && !item.isMissingImage) return false;
+      if (item.isMissingImage) return false;
+      if (hiddenItemIds[item.id]) return false;
       if (!query) return true;
       return `${item.code} ${item.name} ${item.family}`.toLowerCase().includes(query);
     });
-  }, [items, search, showMissingOnly]);
+  }, [hiddenItemIds, items, search]);
 
   const selectedItems = useMemo(() => items.filter((item) => item.isSelected), [items]);
 
@@ -83,15 +84,6 @@ export default function B2BUniformShadeGrid({
               placeholder="Search by SKU / code / name..."
               className="w-full rounded-lg border border-grey-card px-3 py-2 text-sm text-grey-primary sm:max-w-md"
             />
-            <label className="inline-flex items-center gap-2 text-sm text-grey-primary">
-              <input
-                type="checkbox"
-                checked={showMissingOnly}
-                onChange={(event) => setShowMissingOnly(event.target.checked)}
-                className="h-4 w-4 rounded border-grey-card"
-              />
-              Show missing only
-            </label>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
@@ -112,7 +104,17 @@ export default function B2BUniformShadeGrid({
                           src={item.imageSrc}
                           alt={item.imageAlt}
                           className="max-h-full max-w-full object-contain"
-                          onError={item.onImageError}
+                          onError={(event) => {
+                            item.onImageError?.(event);
+                            if (!event.currentTarget.src.endsWith("/img/placeholders/product-missing.svg")) return;
+                            setHiddenItemIds((prev) => {
+                              if (prev[item.id]) return prev;
+                              return {
+                                ...prev,
+                                [item.id]: true,
+                              };
+                            });
+                          }}
                         />
                       </div>
 

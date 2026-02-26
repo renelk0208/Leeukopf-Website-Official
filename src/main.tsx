@@ -14,6 +14,20 @@ import CanonicalTag from './components/CanonicalTag.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import './index.css';
 
+if (typeof window !== 'undefined' && import.meta.env.VITE_ENABLE_PWA !== 'true') {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      void navigator.serviceWorker.getRegistrations().then((registrations) =>
+        Promise.all(registrations.map((registration) => registration.unregister()))
+      );
+    });
+  }
+
+  if ('caches' in window) {
+    void caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key))));
+  }
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>

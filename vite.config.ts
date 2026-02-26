@@ -2,11 +2,15 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const enablePwa = process.env.VITE_ENABLE_PWA === 'true';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    VitePWA({
+    ...(enablePwa
+      ? [
+          VitePWA({
       selfDestroying: true,
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'robots.txt'],
@@ -99,6 +103,8 @@ export default defineConfig({
         enabled: false
       }
     })
+        ]
+      : [])
   ],
   optimizeDeps: {
     exclude: ['lucide-react'],
