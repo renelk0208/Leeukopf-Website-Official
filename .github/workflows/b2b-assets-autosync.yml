@@ -1,0 +1,61 @@
+name: B2B Assets Auto Sync
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "public/img/**"
+      - "public/products.csv"
+      - "src/b2b/config/categories.ts"
+      - "scripts/generate-b2b-image-index.cjs"
+      - "scripts/validate-b2b-category-images.cjs"
+      - "scripts/validate-b2b-image-quality.cjs"
+      - "scripts/validate-b2b-subcategory-routes.cjs"
+      - "scripts/validate-b2b-order-flow.cjs"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: b2b-assets-autosync-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  autosync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run B2B autosync command
+        run: npm run sync:b2b-assets
+
+      - name: Commit regenerated B2B index if changed
+        run: |
+          if git diff --quiet -- public/data/b2b-image-index.json; then
+            echo "No B2B index changes detected."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/b2b-image-index.json
+          git commit -m "chore(b2b): auto-sync generated image index"
+          git push

@@ -28,6 +28,18 @@ This command will:
 4. Validate B2B subcategory routes
 5. Validate B2B order-flow invariants
 
+## Automatic GitHub run (already enabled)
+
+The workflow [b2b-assets-autosync.yml](.github/workflows/b2b-assets-autosync.yml) now runs automatically on pushes to `main` when B2B-relevant files change.
+
+It will:
+
+1. Run `npm run sync:b2b-assets`
+2. Auto-commit `public/data/b2b-image-index.json` if it changed
+3. Push that update back to `main`
+
+This means Netlify receives a synced B2B image index without you manually regenerating it.
+
 ## Netlify safety
 
 The same B2B index generation + validations run in build hooks (`prebuild`), so pushing to GitHub/Netlify will re-check everything automatically.
