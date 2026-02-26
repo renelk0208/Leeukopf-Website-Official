@@ -22,11 +22,12 @@ Run:
 
 This command will:
 
-1. Regenerate `public/data/b2b-image-index.json`
-2. Validate B2B category images
-3. Validate B2B image quality
-4. Validate B2B subcategory routes
-5. Validate B2B order-flow invariants
+1. Regenerate B2B rows in `public/products.csv` from `public/img/b2b/**`
+2. Regenerate `public/data/b2b-image-index.json`
+3. Validate B2B category images
+4. Validate B2B image quality
+5. Validate B2B subcategory routes
+6. Validate B2B order-flow invariants
 
 ## Automatic GitHub run (already enabled)
 
@@ -35,7 +36,7 @@ The workflow [b2b-assets-autosync.yml](.github/workflows/b2b-assets-autosync.yml
 It will:
 
 1. Run `npm run sync:b2b-assets`
-2. Auto-commit `public/data/b2b-image-index.json` if it changed
+2. Auto-commit generated B2B files (`public/products.csv` and `public/data/b2b-image-index.json`) if changed
 3. Push that update back to `main`
 
 This means Netlify receives a synced B2B image index without you manually regenerating it.
