@@ -1,8 +1,18 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { supabase } from '../lib/supabase';
+import { isSupabaseConfigured, supabase, supabaseConfigErrorMessage } from '../lib/supabase';
 import type { User, Session } from '@supabase/supabase-js';
 
 const FALLBACK_SITE_URL = 'https://leeukopf.com';
+
+const isTrustedPublicOrigin = (origin: string): boolean => {
+  try {
+    const { hostname, protocol } = new URL(origin);
+    if (protocol !== 'https:') return false;
+    return hostname === 'leeukopf.com' || hostname === 'www.leeukopf.com';
+  } catch {
+    return false;
+  }
+};
 
 const getAuthRedirectBaseUrl = (): string => {
   const configuredSiteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.trim();
@@ -12,16 +22,19 @@ const getAuthRedirectBaseUrl = (): string => {
   }
 
   if (typeof window !== 'undefined') {
-    const { origin, hostname } = window.location;
-
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return FALLBACK_SITE_URL;
+    const { origin } = window.location;
+    if (isTrustedPublicOrigin(origin)) {
+      return origin.replace(/\/$/, '');
     }
-
-    return origin.replace(/\/$/, '');
   }
 
   return FALLBACK_SITE_URL;
+};
+
+const ensureAuthConfigured = () => {
+  if (!isSupabaseConfigured) {
+    throw new Error(supabaseConfigErrorMessage);
+  }
 };
 
 interface AuthContextType {
@@ -94,6 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
+      ensureAuthConfigured();
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -107,6 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string) => {
     try {
+      ensureAuthConfigured();
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -124,6 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     shouldCreateUser = false
   ) => {
     try {
+      ensureAuthConfigured();
       const baseUrl = getAuthRedirectBaseUrl();
       const normalizedPath = redirectPath.startsWith('/') ? redirectPath : `/${redirectPath}`;
       const redirectTo = `${baseUrl}${normalizedPath}`;
@@ -155,6 +171,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const requestPasswordReset = async (email: string, redirectPath = '/admin/login') => {
     try {
+      ensureAuthConfigured();
       const normalizedPath = redirectPath.startsWith('/') ? redirectPath : `/${redirectPath}`;
       const redirectTo = `${getAuthRedirectBaseUrl()}${normalizedPath}`;
 
@@ -170,6 +187,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updatePassword = async (password: string) => {
     try {
+      ensureAuthConfigured();
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
     } catch (error) {

@@ -24,6 +24,14 @@ export default function AdminLogin() {
     const raw = err instanceof Error ? err.message : '';
     const normalized = raw.toLowerCase();
 
+    if (normalized.includes('not configured') || normalized.includes('placeholder.supabase.co')) {
+      return 'Authentication is not configured in this deployment. Please check Netlify environment variables for Supabase.';
+    }
+
+    if (normalized.includes('failed to fetch') || normalized.includes('network')) {
+      return 'Authentication service is unreachable right now. Check your internet connection and try again.';
+    }
+
     if (normalized.includes('rate limit')) {
       if (context === 'forgot-password') {
         return 'Too many reset requests right now. Wait a minute and try again.';
@@ -33,6 +41,9 @@ export default function AdminLogin() {
     }
 
     if (context === 'signin') {
+      if (normalized.includes('invalid login credentials')) {
+        return 'Invalid email or password';
+      }
       return 'Invalid email or password';
     }
 

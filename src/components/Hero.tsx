@@ -10,7 +10,7 @@ export default function Hero() {
   const categoryLinkClass = "group block w-full max-w-xs mx-auto bg-white/90 backdrop-blur-sm rounded-lg px-6 py-6 shadow-md hover:shadow-xl hover:bg-white transition-all duration-300 border-2 border-transparent hover:border-primary";
 
   return (
-    <section id="home" className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-start justify-center">
       {/* Hero background image - optimized for LCP */}
       <SmartImage
         src="/img/hero/home-page-hero.jpg"

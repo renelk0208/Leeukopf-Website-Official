@@ -3,6 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 const rawSupabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const rawSupabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
+export const supabaseConfigErrorMessage =
+  'Authentication service is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your deployment environment.';
+
 const isValidSupabaseUrl = (value: string): boolean => {
   if (!value) return false;
   try {
@@ -18,10 +21,11 @@ const supabaseUrl = isValidSupabaseUrl(rawSupabaseUrl)
   : 'https://placeholder.supabase.co';
 
 const supabaseAnonKey = rawSupabaseAnonKey || 'placeholder-key';
+export const isSupabaseConfigured = isValidSupabaseUrl(rawSupabaseUrl) && Boolean(rawSupabaseAnonKey);
 
-if (!isValidSupabaseUrl(rawSupabaseUrl) || !rawSupabaseAnonKey) {
+if (!isSupabaseConfigured) {
   console.warn(
-    'Supabase environment variables are missing or invalid - Supabase features will be degraded until VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are fixed.'
+    `${supabaseConfigErrorMessage} Supabase features will be degraded until fixed.`
   );
 }
 
