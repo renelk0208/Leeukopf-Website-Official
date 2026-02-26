@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { useB2BCart } from "../store/B2BCartContext";
+<<<<<<< HEAD
 import type { BottleBranding, BottleColor, BottleSize, BrushType, CartItem } from "../types";
+=======
+import type {
+  BottleBranding,
+  BottleColor,
+  BottleSize,
+  BrushType,
+  BuilderJarColor,
+  CartItem,
+} from "../types";
+>>>>>>> 1687569 (feat(b2b): enforce 30g white/black jars and 25 MOQ for builder gels)
 import { getB2BCategoryLabel } from "../config/categories";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
@@ -38,6 +49,14 @@ const brandings: Array<{ value: BottleBranding; label: string }> = [
   { value: "LABELS", label: "Labels" },
 ];
 
+<<<<<<< HEAD
+=======
+const builderJarColors: Array<{ value: BuilderJarColor; label: string }> = [
+  { value: "WHITE", label: "White" },
+  { value: "BLACK", label: "Black" },
+];
+
+>>>>>>> 1687569 (feat(b2b): enforce 30g white/black jars and 25 MOQ for builder gels)
 function toCsvValue(input: string | number | undefined): string {
   if (input === undefined) return "";
   const value = String(input);
@@ -113,6 +132,14 @@ export default function B2BCheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [profile, setProfile] = useState<PortalProfile | null>(null);
+<<<<<<< HEAD
+=======
+  const [builderJarDraft, setBuilderJarDraft] = useState<{
+    color: BuilderJarColor | "";
+  }>({
+    color: "",
+  });
+>>>>>>> 1687569 (feat(b2b): enforce 30g white/black jars and 25 MOQ for builder gels)
 
   useEffect(() => {
     if (bottlePackaging) {
@@ -128,6 +155,20 @@ export default function B2BCheckoutPage() {
   }, [bottlePackaging]);
 
   useEffect(() => {
+<<<<<<< HEAD
+=======
+    if (builderJarPackaging) {
+      setBuilderJarDraft({ color: builderJarPackaging.color });
+      return;
+    }
+
+    setBuilderJarDraft({
+      color: "",
+    });
+  }, [builderJarPackaging]);
+
+  useEffect(() => {
+>>>>>>> 1687569 (feat(b2b): enforce 30g white/black jars and 25 MOQ for builder gels)
     const email = user?.email?.trim().toLowerCase();
     if (!email) return;
 
@@ -348,6 +389,23 @@ export default function B2BCheckoutPage() {
     clearBottlePackaging();
   };
 
+<<<<<<< HEAD
+=======
+  const setBuilderJarColor = (color: BuilderJarColor | "") => {
+    setBuilderJarDraft({ color });
+
+    if (!color) {
+      clearBuilderJarPackaging();
+      return;
+    }
+
+    setBuilderJarPackaging({
+      size: "30G",
+      color,
+    });
+  };
+
+>>>>>>> 1687569 (feat(b2b): enforce 30g white/black jars and 25 MOQ for builder gels)
   return (
     <div className="space-y-6">
       <section>
@@ -357,6 +415,43 @@ export default function B2BCheckoutPage() {
 
       <section className="rounded-lg border border-grey-card p-4">
         <div className="mb-3 flex items-center justify-between">
+<<<<<<< HEAD
+=======
+          <h3 className="text-lg font-semibold text-grey-primary">Builder Gel Jar Packaging (Required)</h3>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-grey-primary">Jar size</label>
+            <div className="w-full rounded-md border border-grey-card bg-grey-background px-3 py-2 text-grey-primary">
+              30g (fixed)
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-grey-primary">Jar color</label>
+            <select
+              value={builderJarDraft.color}
+              onChange={(event) => {
+                const value = event.target.value as BuilderJarColor;
+                setBuilderJarColor(value || "");
+              }}
+              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+            >
+              <option value="">Select jar color</option>
+              {builderJarColors.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-lg border border-grey-card p-4">
+        <div className="mb-3 flex items-center justify-between">
+>>>>>>> 1687569 (feat(b2b): enforce 30g white/black jars and 25 MOQ for builder gels)
           <h3 className="text-lg font-semibold text-grey-primary">Bottle Packaging (Required)</h3>
         </div>
 
@@ -519,6 +614,15 @@ export default function B2BCheckoutPage() {
         </div>
       ) : null}
 
+<<<<<<< HEAD
+=======
+      {!isBuilderJarSelected ? (
+        <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+          Select Builder Gel jar color (white or black). Jar size is fixed at 30g.
+        </div>
+      ) : null}
+
+>>>>>>> 1687569 (feat(b2b): enforce 30g white/black jars and 25 MOQ for builder gels)
       {hasQuantityError ? (
         <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
           Quantities must be greater than zero for all lines.

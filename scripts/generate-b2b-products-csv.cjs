@@ -88,22 +88,22 @@ function inferCategoryData(relativePath) {
 
   if (normalizedPath.startsWith('builder-gels/') || normalizedPath.startsWith('brush-on-builder/')) {
     if (normalizedPath.includes('fiberglass') || normalizedPath.includes('fibreglass') || normalizedPath.includes('fiber-glass')) {
-      return { category: 'Builder Gel', subcategory: 'Fiberglass', size: '15', unit: 'ml', moq: '1' }
+      return { category: 'Builder Gel', subcategory: 'Fiberglass', size: '15', unit: 'ml', moq: '25' }
     }
 
     if (normalizedPath.includes('biab') || normalizedPath.startsWith('brush-on-builder/')) {
-      return { category: 'Builder Gel', subcategory: 'BIAB', size: '15', unit: 'ml', moq: '1' }
+      return { category: 'Builder Gel', subcategory: 'BIAB', size: '15', unit: 'ml', moq: '25' }
     }
 
     if (normalizedPath.includes('acrylic')) {
-      return { category: 'Builder Gel', subcategory: 'Acrylics', size: '15', unit: 'ml', moq: '1' }
+      return { category: 'Builder Gel', subcategory: 'Acrylics', size: '15', unit: 'ml', moq: '25' }
     }
 
     if (normalizedPath.includes('3-in-1') || normalizedPath.includes('3 in 1')) {
-      return { category: 'Builder Gel', subcategory: '3-in-1', size: '15', unit: 'ml', moq: '1' }
+      return { category: 'Builder Gel', subcategory: '3-in-1', size: '15', unit: 'ml', moq: '25' }
     }
 
-    return { category: 'Builder Gel', subcategory: 'Builder Gel', size: '15', unit: 'ml', moq: '1' }
+    return { category: 'Builder Gel', subcategory: 'Builder Gel', size: '15', unit: 'ml', moq: '25' }
   }
 
   if (normalizedPath.startsWith('bases/') || normalizedPath.startsWith('tops-bases/')) {
@@ -214,7 +214,7 @@ function main() {
       code: 'AUTO-ACY-ROUTE-01',
       size: '15',
       unit: 'ml',
-      moq: '1',
+      moq: '25',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',
@@ -227,7 +227,7 @@ function main() {
       code: 'AUTO-FG-ROUTE-01',
       size: '15',
       unit: 'ml',
-      moq: '1',
+      moq: '25',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',

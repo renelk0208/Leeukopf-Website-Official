@@ -30,6 +30,7 @@ type BuilderGelManifestItem = {
 };
 
 const fallbackProductImage = "/img/placeholders/product-missing.svg";
+const BUILDER_GEL_MIN_MOQ = 25;
 
 function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
   return [...products].sort((a, b) => {
@@ -286,7 +287,7 @@ export default function B2BBuilderGelsPage() {
         code: product.code,
         name: product.product_name,
         family: product.subcategory || "Builder Gel",
-        moq: Number.parseInt(product.moq || "1", 10) || 1,
+        moq: Math.max(Number.parseInt(product.moq || "1", 10) || 1, BUILDER_GEL_MIN_MOQ),
         quantityValue,
         imageSrc: image,
         imageAlt: product.product_name || product.code,
@@ -335,7 +336,7 @@ export default function B2BBuilderGelsPage() {
 
           const raw = (draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "0")).trim();
           const qty = Number.parseInt(raw, 10);
-          const moq = Number.parseInt(product.moq || "1", 10) || 1;
+          const moq = Math.max(Number.parseInt(product.moq || "1", 10) || 1, BUILDER_GEL_MIN_MOQ);
 
           if (!Number.isFinite(qty) || qty < 0) {
             setValidationMessage(`Please enter a valid quantity for ${product.product_name || product.code}.`);

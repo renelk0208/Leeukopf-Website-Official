@@ -13,6 +13,11 @@ export type BottleBranding = "PRE_PRINTED" | "LABELS";
 export type BottleColor = "BLACK" | "WHITE" | "OTHER";
 export type BrushType = "OVAL" | "FLAT";
 export type BottleSize = "10ML" | "15ML" | "OTHER";
+<<<<<<< HEAD
+=======
+export type BuilderJarColor = "BLACK" | "WHITE";
+export type BuilderJarSize = "30G";
+>>>>>>> 1687569 (feat(b2b): enforce 30g white/black jars and 25 MOQ for builder gels)
 
 export type BottlePackaging = {
   size: BottleSize;
