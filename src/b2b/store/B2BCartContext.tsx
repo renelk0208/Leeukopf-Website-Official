@@ -46,7 +46,14 @@ const initialState: B2BCartState = {
   bottlePackaging: null,
 };
 
-const GEL_POLISH_CATEGORIES = new Set<CartItem["category"]>(["SOLID_GEL_POLISH"]);
+const BOTTLE_PACKAGING_CATEGORIES = new Set<CartItem["category"]>([
+  "SOLID_GEL_POLISH",
+  "BUILDER_GEL",
+  "BIAB",
+  "TOP",
+  "BASE",
+  "OTHER",
+]);
 
 function normalizeQuantity(quantity: number): number {
   const safeQuantity = Number.isFinite(quantity) ? Math.floor(quantity) : 0;
@@ -237,7 +244,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
 
   const getFilledUnitsTotal = useCallback((): number => {
     return state.items.reduce((sum, item) => {
-      if (!GEL_POLISH_CATEGORIES.has(item.category)) return sum;
+      if (!BOTTLE_PACKAGING_CATEGORIES.has(item.category)) return sum;
       return sum + normalizeQuantity(item.quantity);
     }, 0);
   }, [state.items]);
