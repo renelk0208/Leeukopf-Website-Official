@@ -228,7 +228,11 @@ export const handler: Handler = async (event) => {
     .from('approved_clients')
     .select('email');
 
-  if (approvedError) {
+  const approvedTableMissing = Boolean(
+    approvedError?.message?.toLowerCase().includes("could not find the table 'public.approved_clients'")
+  );
+
+  if (approvedError && !approvedTableMissing) {
     return {
       statusCode: 500,
       headers,
@@ -293,6 +297,9 @@ export const handler: Handler = async (event) => {
       success: true,
       count: merged.length,
       data: merged,
+      warning: approvedTableMissing
+        ? "approved_clients table is missing; showing registrations/signups without approval-state filtering."
+        : undefined,
     }),
   };
 };

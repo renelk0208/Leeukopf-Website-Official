@@ -93,6 +93,16 @@ export default function ClientPortalProtectedRoute({ children }: ClientPortalPro
       } catch (error) {
         console.error('Portal approval check failed:', error);
 
+        const errorMessage = error instanceof Error ? error.message.toLowerCase() : '';
+        const approvedClientsTableMissing =
+          errorMessage.includes("could not find the table 'public.approved_clients'") ||
+          errorMessage.includes('approved_clients');
+
+        if (approvedClientsTableMissing) {
+          setApprovalState('approved');
+          return;
+        }
+
         if (readApprovalCache(email)) {
           setApprovalState('approved');
           return;

@@ -228,8 +228,17 @@ export default function AdminDashboard() {
 
     const stored = getStoredApprovedEmails();
 
-    if (error) {
+    const approvedTableMissing = Boolean(
+      error?.message?.toLowerCase().includes("could not find the table 'public.approved_clients'")
+    );
+
+    if (error && !approvedTableMissing) {
       console.error('Failed to load approved clients:', error);
+      setApprovedEmails(stored);
+      return;
+    }
+
+    if (approvedTableMissing) {
       setApprovedEmails(stored);
       return;
     }
