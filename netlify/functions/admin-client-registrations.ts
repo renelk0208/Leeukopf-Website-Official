@@ -15,6 +15,17 @@ type ClientRegistrationRow = {
   created_at: string;
 };
 
+type AuthAdminUser = {
+  id: string;
+  email?: string;
+  created_at?: string;
+  user_metadata?: {
+    company?: string;
+    contact?: string;
+    full_name?: string;
+  };
+};
+
 function normalizeText(value: string | null | undefined): string {
   return String(value || '').trim().toLowerCase();
 }
@@ -77,6 +88,28 @@ function parseStartDate(value: string | null): string | null {
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) return null;
   return parsed.toISOString();
+}
+
+async function listAuthUsers(adminSupabase: ReturnType<typeof createClient>): Promise<AuthAdminUser[]> {
+  const perPage = 200;
+  const maxPages = 20;
+  const users: AuthAdminUser[] = [];
+
+  for (let page = 1; page <= maxPages; page += 1) {
+    const { data, error } = await adminSupabase.auth.admin.listUsers({ page, perPage });
+    if (error) {
+      throw new Error(`Failed to load auth users: ${error.message}`);
+    }
+
+    const pageUsers = (data?.users ?? []) as AuthAdminUser[];
+    users.push(...pageUsers);
+
+    if (pageUsers.length < perPage) {
+      break;
+    }
+  }
+
+  return users;
 }
 
 export const handler: Handler = async (event) => {
@@ -189,13 +222,77 @@ export const handler: Handler = async (event) => {
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   );
 
+  const existingRegistrationEmails = new Set(deduped.map((row) => normalizeEmail(row.email)));
+
+  const { data: approvedRows, error: approvedError } = await adminSupabase
+    .from('approved_clients')
+    .select('email');
+
+  if (approvedError) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ success: false, message: `Failed to load approved clients: ${approvedError.message}` }),
+    };
+  }
+
+  const approvedEmails = new Set((approvedRows ?? []).map((row) => normalizeEmail(String(row.email || ''))));
+
+  let authUsers: AuthAdminUser[] = [];
+  try {
+    authUsers = await listAuthUsers(adminSupabase);
+  } catch (authUsersError) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({
+        success: false,
+        message: authUsersError instanceof Error ? authUsersError.message : 'Failed to load auth users.',
+      }),
+    };
+  }
+
+  const authOnlyRows: ClientRegistrationRow[] = authUsers
+    .map((authUser) => {
+      const email = normalizeEmail(authUser.email || '');
+      const createdAt = authUser.created_at || '';
+
+      if (!email || !createdAt) return null;
+      if (approvedAdminList.includes(email)) return null;
+      if (existingRegistrationEmails.has(email)) return null;
+      if (approvedEmails.has(email)) return null;
+
+      if (startDateIso) {
+        const createdTime = new Date(createdAt).getTime();
+        const startTime = new Date(startDateIso).getTime();
+        if (Number.isNaN(createdTime) || createdTime < startTime) {
+          return null;
+        }
+      }
+
+      return {
+        id: `auth:${authUser.id}`,
+        company: authUser.user_metadata?.company?.trim() || 'Portal-only signup',
+        contact: authUser.user_metadata?.contact?.trim() || authUser.user_metadata?.full_name?.trim() || '-',
+        email,
+        country: '-',
+        business_type: 'Portal signup',
+        created_at: createdAt,
+      };
+    })
+    .filter((row): row is ClientRegistrationRow => row !== null);
+
+  const merged = [...deduped, ...authOnlyRows].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
   return {
     statusCode: 200,
     headers,
     body: JSON.stringify({
       success: true,
-      count: deduped.length,
-      data: deduped,
+      count: merged.length,
+      data: merged,
     }),
   };
 };

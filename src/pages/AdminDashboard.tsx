@@ -1083,10 +1083,10 @@ export default function AdminDashboard() {
               <div>
                 <h2 className="text-2xl font-bold text-white mb-2">Client Access Approvals</h2>
                 <p className="text-gray-400">
-                  Approve a registration and send the portal invitation email in one click.
+                  Approve registrations and direct portal signups from one place.
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  Showing registrations from {clientRegistrationsWindowLabel} to today.
+                  Showing registrations and portal signups from {clientRegistrationsWindowLabel} to today.
                 </p>
               </div>
               <div className="flex items-center gap-2">
