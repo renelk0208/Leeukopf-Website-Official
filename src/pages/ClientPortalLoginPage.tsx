@@ -172,7 +172,25 @@ export default function ClientPortalLoginPage() {
 
       throw lastError ?? new Error('Could not send login link.');
     } catch (magicLinkError: unknown) {
-      setError(mapAuthError(magicLinkError, 'Could not send login link. Please try again.'));
+      try {
+        let resetFallbackError: unknown = null;
+
+        for (const redirectPath of ['/portal/set-password', '/portal/login']) {
+          try {
+            await requestPasswordReset(normalizedEmail, redirectPath);
+            setInfo(
+              'Magic link is temporarily unavailable. We sent a password reset email instead so you can still access your portal account.'
+            );
+            return;
+          } catch (resetError: unknown) {
+            resetFallbackError = resetError;
+          }
+        }
+
+        throw resetFallbackError ?? magicLinkError;
+      } catch {
+        setError(mapAuthError(magicLinkError, 'Could not send login link. Please try again.'));
+      }
     } finally {
       setLoading(false);
     }
