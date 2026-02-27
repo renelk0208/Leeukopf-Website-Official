@@ -1,8 +1,15 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { isSupabaseConfigured } from '../lib/supabase';
 
 const PORTAL_REMEMBER_EMAIL_KEY = 'leeukopf.portal.rememberedEmail';
+
+function getAuthHashType(): string {
+  if (typeof window === 'undefined') return '';
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  return (hashParams.get('type') || '').toLowerCase();
+}
 
 export default function ClientPortalLoginPage() {
   const navigate = useNavigate();
@@ -20,6 +27,26 @@ export default function ClientPortalLoginPage() {
     const raw = authError instanceof Error ? authError.message : '';
     const normalized = raw.toLowerCase();
 
+    if (normalized.includes('not configured') || normalized.includes('placeholder.supabase.co')) {
+      return 'Portal authentication is not configured in this deployment. Please contact support immediately.';
+    }
+
+    if (normalized.includes('failed to fetch') || normalized.includes('network')) {
+      return 'Authentication service is unreachable right now. Check your internet connection and try again.';
+    }
+
+    if (normalized.includes('redirect') && normalized.includes('not allowed')) {
+      return 'Portal login link configuration is incomplete. Please contact support to update the auth redirect URLs.';
+    }
+
+    if (normalized.includes('email rate limit exceeded')) {
+      return 'Too many email requests were sent. Wait about a minute and try again.';
+    }
+
+    if (normalized.includes('email provider is disabled')) {
+      return 'Email login is currently unavailable due to email provider configuration. Please contact support.';
+    }
+
     if (normalized.includes('rate limit')) {
       return 'Too many email requests right now. Wait about a minute and try again, or ask admin to generate a manual invite link.';
     }
@@ -34,6 +61,16 @@ export default function ClientPortalLoginPage() {
     if (rememberedEmail) {
       setEmail(rememberedEmail);
       setRememberMe(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const authHashType = getAuthHashType();
+    if (authHashType === 'recovery' || authHashType === 'invite') {
+      const targetUrl = `/portal/set-password${window.location.search}${window.location.hash}`;
+      window.location.replace(targetUrl);
     }
   }, []);
 
@@ -58,6 +95,12 @@ export default function ClientPortalLoginPage() {
     event.preventDefault();
     setError('');
     setInfo('');
+
+    if (!isSupabaseConfigured) {
+      setError('Portal login is temporarily unavailable due to backend configuration. Please contact support.');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -90,13 +133,37 @@ export default function ClientPortalLoginPage() {
       return;
     }
 
+    if (!isSupabaseConfigured) {
+      setError('Portal login is temporarily unavailable due to backend configuration. Please contact support.');
+      return;
+    }
+
     setLoading(true);
     setError('');
     setInfo('');
 
     try {
-      await signInWithMagicLink(normalizedEmail, '/portal', false);
-      setInfo('Secure login link sent. Open your email and click the link to sign in.');
+      let lastError: unknown = null;
+      for (const redirectPath of ['/portal', '/portal/login']) {
+        try {
+          await signInWithMagicLink(normalizedEmail, redirectPath, false);
+          setInfo('Secure login link sent. Open your email and click the link to sign in.');
+          return;
+        } catch (magicLinkError: unknown) {
+          lastError = magicLinkError;
+
+          const message =
+            magicLinkError instanceof Error ? magicLinkError.message.toLowerCase() : '';
+          const isRedirectConfigIssue =
+            message.includes('redirect') || message.includes('not allowed') || message.includes('invalid redirect');
+
+          if (!isRedirectConfigIssue) {
+            throw magicLinkError;
+          }
+        }
+      }
+
+      throw lastError ?? new Error('Could not send login link.');
     } catch (magicLinkError: unknown) {
       setError(mapAuthError(magicLinkError, 'Could not send login link. Please try again.'));
     } finally {
@@ -111,13 +178,36 @@ export default function ClientPortalLoginPage() {
       return;
     }
 
+    if (!isSupabaseConfigured) {
+      setError('Portal login is temporarily unavailable due to backend configuration. Please contact support.');
+      return;
+    }
+
     setLoading(true);
     setError('');
     setInfo('');
 
     try {
-      await requestPasswordReset(normalizedEmail, '/portal/login');
-      setInfo('Password reset email sent. Use the link in your inbox to set a new password.');
+      let lastError: unknown = null;
+      for (const redirectPath of ['/portal/set-password', '/portal/login']) {
+        try {
+          await requestPasswordReset(normalizedEmail, redirectPath);
+          setInfo('Password reset email sent. Use the link in your inbox to set a new password.');
+          return;
+        } catch (resetError: unknown) {
+          lastError = resetError;
+
+          const message = resetError instanceof Error ? resetError.message.toLowerCase() : '';
+          const isRedirectConfigIssue =
+            message.includes('redirect') || message.includes('not allowed') || message.includes('invalid redirect');
+
+          if (!isRedirectConfigIssue) {
+            throw resetError;
+          }
+        }
+      }
+
+      throw lastError ?? new Error('Could not send password reset email.');
     } catch (resetError: unknown) {
       setError(mapAuthError(resetError, 'Could not send password reset email. Please try again.'));
     } finally {

@@ -162,7 +162,11 @@ function readCsvRows() {
   }
 
   const content = fs.readFileSync(productsCsvPath, 'utf8')
-  const lines = content.split(/\r?\n/).filter((line) => line.trim().length > 0)
+  const lines = content
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .filter((line) => !line.startsWith('<<<<<<<') && !line.startsWith('=======') && !line.startsWith('>>>>>>>'))
   if (lines.length === 0) {
     throw new Error('public/products.csv is empty')
   }
@@ -249,9 +253,48 @@ function main() {
     },
     {
       category: 'Builder Gel',
+      subcategory: '3-in-1',
+      product_name: '3-in-1 Builder Gel Seed',
+      code: 'AUTO-3IN1-ROUTE-01',
+      size: '15',
+      unit: 'ml',
+      moq: '25',
+      price: '0',
+      image_url: '',
+      notes: 'AUTO_B2B_ROUTE_SEED',
+      active: 'TRUE',
+    },
+    {
+      category: 'Builder Gel',
+      subcategory: 'BIAB',
+      product_name: 'Builder In A Bottle Seed',
+      code: 'AUTO-BIAB-ROUTE-01',
+      size: '15',
+      unit: 'ml',
+      moq: '25',
+      price: '0',
+      image_url: '',
+      notes: 'AUTO_B2B_ROUTE_SEED',
+      active: 'TRUE',
+    },
+    {
+      category: 'Builder Gel',
       subcategory: 'Fiberglass',
       product_name: 'Fiberglass Builder Seed',
       code: 'AUTO-FG-ROUTE-01',
+      size: '15',
+      unit: 'ml',
+      moq: '25',
+      price: '0',
+      image_url: '',
+      notes: 'AUTO_B2B_ROUTE_SEED',
+      active: 'TRUE',
+    },
+    {
+      category: 'Polygel',
+      subcategory: 'Liquid Polygel',
+      product_name: 'Liquid Polygel Seed',
+      code: 'AUTO-LPG-ROUTE-01',
       size: '15',
       unit: 'ml',
       moq: '25',
@@ -265,6 +308,19 @@ function main() {
       subcategory: 'Rubber Bases',
       product_name: 'Rubber Base Seed',
       code: 'AUTO-RB-ROUTE-01',
+      size: '15',
+      unit: 'ml',
+      moq: '1',
+      price: '0',
+      image_url: '',
+      notes: 'AUTO_B2B_ROUTE_SEED',
+      active: 'TRUE',
+    },
+    {
+      category: 'Top & Base',
+      subcategory: 'Extra Strength Base',
+      product_name: 'Extra Strength Base Seed',
+      code: 'AUTO-ESB-ROUTE-01',
       size: '15',
       unit: 'ml',
       moq: '1',
