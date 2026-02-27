@@ -47,6 +47,10 @@ export default function ClientPortalLoginPage() {
       return 'Email login is currently unavailable due to email provider configuration. Please contact support.';
     }
 
+    if (normalized.includes('error sending magic link email')) {
+      return 'Unable to send login email right now. Please try again in one minute. If this keeps happening, use password reset or contact support to verify your account setup.';
+    }
+
     if (normalized.includes('rate limit')) {
       return 'Too many email requests right now. Wait about a minute and try again, or ask admin to generate a manual invite link.';
     }
@@ -144,21 +148,24 @@ export default function ClientPortalLoginPage() {
 
     try {
       let lastError: unknown = null;
-      for (const redirectPath of ['/portal', '/portal/login']) {
-        try {
-          await signInWithMagicLink(normalizedEmail, redirectPath, false);
-          setInfo('Secure login link sent. Open your email and click the link to sign in.');
-          return;
-        } catch (magicLinkError: unknown) {
-          lastError = magicLinkError;
+      for (const shouldCreateUser of [false, true]) {
+        for (const redirectPath of ['/portal', '/portal/login']) {
+          try {
+            await signInWithMagicLink(normalizedEmail, redirectPath, shouldCreateUser);
+            setInfo('Secure login link sent. Open your email and click the link to sign in.');
+            return;
+          } catch (magicLinkError: unknown) {
+            lastError = magicLinkError;
 
-          const message =
-            magicLinkError instanceof Error ? magicLinkError.message.toLowerCase() : '';
-          const isRedirectConfigIssue =
-            message.includes('redirect') || message.includes('not allowed') || message.includes('invalid redirect');
+            const message =
+              magicLinkError instanceof Error ? magicLinkError.message.toLowerCase() : '';
+            const isRedirectConfigIssue =
+              message.includes('redirect') || message.includes('not allowed') || message.includes('invalid redirect');
+            const isSendFailure = message.includes('error sending magic link email');
 
-          if (!isRedirectConfigIssue) {
-            throw magicLinkError;
+            if (!isRedirectConfigIssue && !isSendFailure) {
+              throw magicLinkError;
+            }
           }
         }
       }
