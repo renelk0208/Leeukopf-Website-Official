@@ -13,11 +13,18 @@ export type BottleBranding = "PRE_PRINTED" | "LABELS";
 export type BottleColor = "BLACK" | "WHITE" | "OTHER";
 export type BrushType = "OVAL" | "FLAT";
 export type BottleSize = "10ML" | "15ML" | "OTHER";
+export type JarSize = "30G" | "40G" | "OTHER";
 
 export type BottlePackaging = {
   size: BottleSize;
   color: BottleColor;
   brush: BrushType;
+  branding: BottleBranding;
+};
+
+export type JarPackaging = {
+  size: JarSize;
+  color: BottleColor;
   branding: BottleBranding;
 };
 

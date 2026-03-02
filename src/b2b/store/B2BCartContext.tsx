@@ -7,11 +7,12 @@ import {
   useReducer,
   type ReactNode,
 } from "react";
-import type { BottlePackaging, CartItem, CartTotals } from "../types";
+import type { BottlePackaging, CartItem, CartTotals, JarPackaging } from "../types";
 
 type B2BCartState = {
   items: CartItem[];
   bottlePackaging: BottlePackaging | null;
+  jarPackaging: JarPackaging | null;
 };
 
 type AddOrUpdatePayload = CartItem;
@@ -22,16 +23,21 @@ type B2BCartAction =
   | { type: "SET_QUANTITY"; payload: { category: CartItem["category"]; code: string; quantity: number } }
   | { type: "SET_BOTTLE_PACKAGING"; payload: BottlePackaging }
   | { type: "CLEAR_BOTTLE_PACKAGING" }
+  | { type: "SET_JAR_PACKAGING"; payload: JarPackaging }
+  | { type: "CLEAR_JAR_PACKAGING" }
   | { type: "CLEAR" };
 
 type B2BCartContextValue = {
   items: CartItem[];
   bottlePackaging: BottlePackaging | null;
+  jarPackaging: JarPackaging | null;
   addOrUpdateItem: (item: CartItem) => void;
   removeItem: (category: CartItem["category"], code: string) => void;
   setQuantity: (category: CartItem["category"], code: string, quantity: number) => void;
   setBottlePackaging: (packaging: BottlePackaging) => void;
   clearBottlePackaging: () => void;
+  setJarPackaging: (packaging: JarPackaging) => void;
+  clearJarPackaging: () => void;
   clearCart: () => void;
   getTotals: () => CartTotals;
   getFilledUnitsTotal: () => number;
@@ -44,15 +50,19 @@ const B2B_CART_STORAGE_KEY = "leeukopf_b2b_cart_v1";
 const initialState: B2BCartState = {
   items: [],
   bottlePackaging: null,
+  jarPackaging: null,
 };
 
 const BOTTLE_PACKAGING_CATEGORIES = new Set<CartItem["category"]>([
   "SOLID_GEL_POLISH",
-  "BUILDER_GEL",
   "BIAB",
   "TOP",
   "BASE",
   "OTHER",
+]);
+
+const JAR_PACKAGING_CATEGORIES = new Set<CartItem["category"]>([
+  "BUILDER_GEL",
 ]);
 
 function normalizeQuantity(quantity: number): number {
@@ -119,10 +129,10 @@ function reducer(state: B2BCartState, action: B2BCartAction): B2BCartState {
 
     case "REMOVE": {
       return {
+        ...state,
         items: state.items.filter(
           (item) => !(item.category === action.payload.category && item.code === action.payload.code)
         ),
-        bottlePackaging: state.bottlePackaging,
       };
     }
 
@@ -133,8 +143,8 @@ function reducer(state: B2BCartState, action: B2BCartAction): B2BCartState {
 
       if (quantity <= 0) {
         return {
+          ...state,
           items: state.items.filter((_, index) => index !== existingIndex),
-          bottlePackaging: state.bottlePackaging,
         };
       }
 
@@ -144,7 +154,7 @@ function reducer(state: B2BCartState, action: B2BCartAction): B2BCartState {
         quantity,
       };
 
-      return { items: updatedItems, bottlePackaging: state.bottlePackaging };
+      return { ...state, items: updatedItems };
     }
 
     case "CLEAR":
@@ -160,6 +170,18 @@ function reducer(state: B2BCartState, action: B2BCartAction): B2BCartState {
       return {
         ...state,
         bottlePackaging: null,
+      };
+
+    case "SET_JAR_PACKAGING":
+      return {
+        ...state,
+        jarPackaging: action.payload,
+      };
+
+    case "CLEAR_JAR_PACKAGING":
+      return {
+        ...state,
+        jarPackaging: null,
       };
 
     default:
@@ -185,6 +207,14 @@ function readStoredState(): B2BCartState {
       typeof parsed.bottlePackaging.brush === "string" &&
       typeof parsed.bottlePackaging.branding === "string";
 
+    const storedJar = (parsed as B2BCartState & { jarPackaging?: JarPackaging | null }).jarPackaging;
+    const hasValidJarPackaging =
+      storedJar &&
+      typeof storedJar === "object" &&
+      typeof storedJar.size === "string" &&
+      typeof storedJar.color === "string" &&
+      typeof storedJar.branding === "string";
+
     return {
       items: parsed.items
         .filter((item) => typeof item?.category === "string" && typeof item?.code === "string")
@@ -195,6 +225,7 @@ function readStoredState(): B2BCartState {
         }))
         .filter((item) => item.quantity > 0 && item.code.length > 0),
       bottlePackaging: hasValidBottlePackaging ? parsed.bottlePackaging : null,
+      jarPackaging: hasValidJarPackaging ? storedJar : null,
     };
   } catch {
     return initialState;
@@ -231,6 +262,14 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "CLEAR_BOTTLE_PACKAGING" });
   }, []);
 
+  const setJarPackaging = useCallback((packaging: JarPackaging) => {
+    dispatch({ type: "SET_JAR_PACKAGING", payload: packaging });
+  }, []);
+
+  const clearJarPackaging = useCallback(() => {
+    dispatch({ type: "CLEAR_JAR_PACKAGING" });
+  }, []);
+
   const clearCart = useCallback(() => {
     dispatch({ type: "CLEAR" });
   }, []);
@@ -244,7 +283,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
 
   const getFilledUnitsTotal = useCallback((): number => {
     return state.items.reduce((sum, item) => {
-      if (!BOTTLE_PACKAGING_CATEGORIES.has(item.category)) return sum;
+      if (!BOTTLE_PACKAGING_CATEGORIES.has(item.category) && !JAR_PACKAGING_CATEGORIES.has(item.category)) return sum;
       return sum + normalizeQuantity(item.quantity);
     }, 0);
   }, [state.items]);
@@ -262,11 +301,14 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
     () => ({
       items: state.items,
       bottlePackaging: state.bottlePackaging,
+      jarPackaging: state.jarPackaging,
       addOrUpdateItem,
       removeItem,
       setQuantity,
       setBottlePackaging,
       clearBottlePackaging,
+      setJarPackaging,
+      clearJarPackaging,
       clearCart,
       getTotals,
       getFilledUnitsTotal,
@@ -276,11 +318,14 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
     [
       state.items,
       state.bottlePackaging,
+      state.jarPackaging,
       addOrUpdateItem,
       removeItem,
       setQuantity,
       setBottlePackaging,
       clearBottlePackaging,
+      setJarPackaging,
+      clearJarPackaging,
       clearCart,
       getTotals,
       getFilledUnitsTotal,

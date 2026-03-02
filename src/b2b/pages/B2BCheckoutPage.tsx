@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useB2BCart } from "../store/B2BCartContext";
-import type { BottleBranding, BottleColor, BottleSize, BrushType, CartItem } from "../types";
+import type { BottleBranding, BottleColor, BottleSize, BrushType, CartItem, JarPackaging, JarSize } from "../types";
 import { getB2BCategoryLabel } from "../config/categories";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
@@ -36,6 +36,18 @@ const brushTypes: Array<{ value: BrushType; label: string }> = [
 const brandings: Array<{ value: BottleBranding; label: string }> = [
   { value: "PRE_PRINTED", label: "Pre-printed" },
   { value: "LABELS", label: "Labels" },
+];
+
+const jarSizes: Array<{ value: JarSize; label: string }> = [
+  { value: "30G", label: "30g" },
+  { value: "40G", label: "40g" },
+  { value: "OTHER", label: "Other (discuss with us)" },
+];
+
+const jarColors: Array<{ value: BottleColor; label: string }> = [
+  { value: "WHITE", label: "White" },
+  { value: "BLACK", label: "Black" },
+  { value: "OTHER", label: "Other (discuss with us)" },
 ];
 function toCsvValue(input: string | number | undefined): string {
   if (input === undefined) return "";
@@ -87,8 +99,11 @@ export default function B2BCheckoutPage() {
   const {
     items,
     bottlePackaging,
+    jarPackaging,
     setBottlePackaging,
     clearBottlePackaging,
+    setJarPackaging,
+    clearJarPackaging,
     clearCart,
     removeItem,
     setQuantity,
@@ -109,6 +124,16 @@ export default function B2BCheckoutPage() {
     brush: "",
     branding: "",
   });
+
+  const [jarDraft, setJarDraft] = useState<{
+    size: JarSize | "";
+    color: BottleColor | "";
+    branding: BottleBranding | "";
+  }>({
+    size: "",
+    color: "",
+    branding: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [profile, setProfile] = useState<PortalProfile | null>(null);
@@ -125,6 +150,14 @@ export default function B2BCheckoutPage() {
       branding: "",
     });
   }, [bottlePackaging]);
+
+  useEffect(() => {
+    if (jarPackaging) {
+      setJarDraft(jarPackaging);
+      return;
+    }
+    setJarDraft({ size: "", color: "", branding: "" });
+  }, [jarPackaging]);
 
   useEffect(() => {
     const email = user?.email?.trim().toLowerCase();
@@ -173,8 +206,13 @@ export default function B2BCheckoutPage() {
   const bottleUnitsRequired = getBottleUnitsRequired();
   const prePrintedMinOk = isPrePrintedMinOk();
   const hasQuantityError = items.some((item) => item.quantity <= 0);
-  const requiresBottlePackaging = items.some((item) => item.category !== "POLYGEL");
-  const isPackagingSelected = !requiresBottlePackaging || bottlePackaging !== null;
+  const hasBuilderGelItems = items.some((item) => item.category === "BUILDER_GEL");
+  const hasBottleItems = items.some((item) => item.category !== "BUILDER_GEL" && item.category !== "POLYGEL");
+  const requiresBottlePackaging = hasBottleItems;
+  const requiresJarPackaging = hasBuilderGelItems;
+  const isPackagingSelected =
+    (!requiresBottlePackaging || bottlePackaging !== null) &&
+    (!requiresJarPackaging || jarPackaging !== null);
 
   const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk;
 
@@ -192,26 +230,39 @@ export default function B2BCheckoutPage() {
       "bottle_color",
       "brush_type",
       "branding",
+      "jar_size",
+      "jar_colour",
+      "jar_branding",
       "tube_size",
       "tube_color",
       "label_option",
     ];
 
-    const rows = items.map((item) => [
-      getB2BCategoryLabel(item.category),
-      item.code,
-      item.internalSku ?? "",
-      item.name ?? "",
-      item.quantity,
-      item.unitType ?? "PCS",
-      bottlePackaging ? mapPackagingCsv(bottlePackaging.size) : "",
-      bottlePackaging ? mapPackagingCsv(bottlePackaging.color) : "",
-      bottlePackaging ? mapPackagingCsv(bottlePackaging.brush) : "",
-      bottlePackaging ? mapPackagingCsv(bottlePackaging.branding) : "",
-      mapPackagingCsv(getMetaString(item, "tube_size")),
-      mapPackagingCsv(getMetaString(item, "tube_color")),
-      mapPackagingCsv(getMetaString(item, "label_option")),
-    ]);
+    const rows = items.map((item) => {
+      const isJar = item.category === "BUILDER_GEL";
+      const isPolygel = item.category === "POLYGEL";
+      return [
+        getB2BCategoryLabel(item.category),
+        item.code,
+        item.internalSku ?? "",
+        item.name ?? "",
+        item.quantity,
+        item.unitType ?? "PCS",
+        // bottle columns
+        !isJar && !isPolygel && bottlePackaging ? mapPackagingCsv(bottlePackaging.size) : "",
+        !isJar && !isPolygel && bottlePackaging ? mapPackagingCsv(bottlePackaging.color) : "",
+        !isJar && !isPolygel && bottlePackaging ? mapPackagingCsv(bottlePackaging.brush) : "",
+        !isJar && !isPolygel && bottlePackaging ? mapPackagingCsv(bottlePackaging.branding) : "",
+        // jar columns
+        isJar && jarPackaging ? mapPackagingCsv(jarPackaging.size) : "",
+        isJar && jarPackaging ? mapPackagingCsv(jarPackaging.color) : "",
+        isJar && jarPackaging ? mapPackagingCsv(jarPackaging.branding) : "",
+        // polygel columns
+        isPolygel ? mapPackagingCsv(getMetaString(item, "tube_size")) : "",
+        isPolygel ? mapPackagingCsv(getMetaString(item, "tube_color")) : "",
+        isPolygel ? mapPackagingCsv(getMetaString(item, "label_option")) : "",
+      ];
+    });
 
     const csv = [header, ...rows].map((row) => row.map((cell) => toCsvValue(cell)).join(",")).join("\n");
     const stamp = new Date().toISOString().slice(0, 10);
@@ -265,6 +316,9 @@ export default function B2BCheckoutPage() {
           bottlePackaging
             ? `Portal bottle packaging preference: Size ${bottlePackaging.size}, Color ${bottlePackaging.color}, Brush ${bottlePackaging.brush}, Branding ${bottlePackaging.branding}`
             : "",
+          jarPackaging
+            ? `Builder gel jar packaging preference: Size ${jarPackaging.size}, Colour ${jarPackaging.color}, Branding ${jarPackaging.branding}`
+            : "",
           polygelNotes.length > 0 ? `Polygel tube selections: ${polygelNotes.join(" | ")}` : "",
         ].filter(Boolean).join("\n"),
       },
@@ -272,7 +326,7 @@ export default function B2BCheckoutPage() {
         items: items.map((item) => ({
           groupCode: item.category,
           shadeCode: item.internalSku || item.code,
-          packSize: item.category === "POLYGEL" ? (getMetaString(item, "tube_size") || "") : (bottlePackaging?.size || ""),
+          packSize: item.category === "POLYGEL" ? (getMetaString(item, "tube_size") || "") : item.category === "BUILDER_GEL" ? (jarPackaging?.size || "") : (bottlePackaging?.size || ""),
           qty: item.quantity,
           moq: 0,
           productName: item.name || item.code,
@@ -346,6 +400,16 @@ export default function B2BCheckoutPage() {
 
     clearBottlePackaging();
   };
+
+  const setJarField = <K extends keyof typeof jarDraft>(key: K, value: (typeof jarDraft)[K]) => {
+    const nextDraft = { ...jarDraft, [key]: value };
+    setJarDraft(nextDraft);
+    if (nextDraft.size && nextDraft.color && nextDraft.branding) {
+      setJarPackaging(nextDraft as JarPackaging);
+      return;
+    }
+    clearJarPackaging();
+  };
   return (
     <div className="space-y-6">
       <section>
@@ -353,104 +417,177 @@ export default function B2BCheckoutPage() {
         <p className="mt-1 text-sm text-grey-secondary">Review all categories, set packaging, export CSV, and submit inquiry.</p>
       </section>
 
-      <section className="rounded-lg border border-grey-card p-4">
-        <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-grey-primary">Bottle Packaging (Required)</h3>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-grey-primary">Size</label>
-            <select
-              value={packagingDraft.size}
-              onChange={(event) => {
-                const value = event.target.value as BottleSize;
-                if (!value) return;
-                setPackagingField("size", value);
-              }}
-              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-            >
-              <option value="">Select size</option>
-              {bottleSizes.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+      {requiresBottlePackaging ? (
+        <section className="rounded-lg border border-grey-card p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-grey-primary">Bottle Packaging (Required)</h3>
           </div>
 
-          <div>
-            <label className="mb-1 block text-sm font-medium text-grey-primary">Color</label>
-            <select
-              value={packagingDraft.color}
-              onChange={(event) => {
-                const value = event.target.value as BottleColor;
-                if (!value) return;
-                setPackagingField("color", value);
-              }}
-              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-            >
-              <option value="">Select color</option>
-              {bottleColors.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Size</label>
+              <select
+                value={packagingDraft.size}
+                onChange={(event) => {
+                  const value = event.target.value as BottleSize;
+                  if (!value) return;
+                  setPackagingField("size", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select size</option>
+                {bottleSizes.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Color</label>
+              <select
+                value={packagingDraft.color}
+                onChange={(event) => {
+                  const value = event.target.value as BottleColor;
+                  if (!value) return;
+                  setPackagingField("color", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select color</option>
+                {bottleColors.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Brush</label>
+              <select
+                value={packagingDraft.brush}
+                onChange={(event) => {
+                  const value = event.target.value as BrushType;
+                  if (!value) return;
+                  setPackagingField("brush", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select brush</option>
+                {brushTypes.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Branding</label>
+              <select
+                value={packagingDraft.branding}
+                onChange={(event) => {
+                  const value = event.target.value as BottleBranding;
+                  if (!value) return;
+                  setPackagingField("branding", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select branding</option>
+                {brandings.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          <div>
-            <label className="mb-1 block text-sm font-medium text-grey-primary">Brush</label>
-            <select
-              value={packagingDraft.brush}
-              onChange={(event) => {
-                const value = event.target.value as BrushType;
-                if (!value) return;
-                setPackagingField("brush", value);
-              }}
-              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-            >
-              <option value="">Select brush</option>
-              {brushTypes.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          <div className="mt-3 rounded-md border border-grey-card bg-primary-50 p-3 text-sm text-grey-primary">
+            <div>Filled units: {filledUnitsTotal}</div>
+            <div>Bottles required: {bottleUnitsRequired}</div>
           </div>
 
-          <div>
-            <label className="mb-1 block text-sm font-medium text-grey-primary">Branding</label>
-            <select
-              value={packagingDraft.branding}
-              onChange={(event) => {
-                const value = event.target.value as BottleBranding;
-                if (!value) return;
-                setPackagingField("branding", value);
-              }}
-              className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-            >
-              <option value="">Select branding</option>
-              {brandings.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+          {bottlePackaging?.branding === "PRE_PRINTED" && !prePrintedMinOk ? (
+            <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+              Pre-printed bottles require a minimum of 5000 bottles. Add more units or switch to Labels.
+            </div>
+          ) : null}
+        </section>
+      ) : null}
 
-        <div className="mt-3 rounded-md border border-grey-card bg-primary-50 p-3 text-sm text-grey-primary">
-          <div>Filled units: {filledUnitsTotal}</div>
-          <div>Bottles required: {bottleUnitsRequired}</div>
-        </div>
-
-        {bottlePackaging?.branding === "PRE_PRINTED" && !prePrintedMinOk ? (
-          <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-            Pre-printed bottles require a minimum of 5000 bottles. Add more units or switch to Labels.
+      {requiresJarPackaging ? (
+        <section className="rounded-lg border border-grey-card p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-grey-primary">Jar Packaging — Builder Gels (Required)</h3>
           </div>
-        ) : null}
-      </section>
+          <p className="mb-3 text-sm text-grey-secondary">Builder gels are filled into jars. Select your preferred jar size and colour.</p>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Jar Size</label>
+              <select
+                value={jarDraft.size}
+                onChange={(event) => {
+                  const value = event.target.value as JarSize;
+                  if (!value) return;
+                  setJarField("size", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select jar size</option>
+                {jarSizes.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Jar Colour</label>
+              <select
+                value={jarDraft.color}
+                onChange={(event) => {
+                  const value = event.target.value as BottleColor;
+                  if (!value) return;
+                  setJarField("color", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select jar colour</option>
+                {jarColors.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Branding</label>
+              <select
+                value={jarDraft.branding}
+                onChange={(event) => {
+                  const value = event.target.value as BottleBranding;
+                  if (!value) return;
+                  setJarField("branding", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select branding</option>
+                {brandings.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="rounded-lg border border-grey-card p-4">
         <h3 className="text-lg font-semibold text-grey-primary">Cart Items</h3>
