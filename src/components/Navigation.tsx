@@ -76,7 +76,7 @@ export default function Navigation() {
 
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: "Valentine's", path: '/valentines' },
+    // { label: "Valentine's", path: '/valentines' }, // hidden until seasonal colours are updated
     { label: 'About Us', path: '/about' },
     { label: 'Our Products', path: '/products' },
     { label: 'Private Label', path: '/private-label' },

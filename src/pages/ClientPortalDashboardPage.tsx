@@ -239,6 +239,23 @@ export default function ClientPortalDashboardPage() {
           <p className="mt-1 text-sm text-grey-secondary">Your saved profile details and previous orders.</p>
         </section>
 
+        {/* Buy Now CTA - primary entry point to the ordering catalogue */}
+        <section className="rounded-2xl border border-primary/30 bg-primary/5 p-5 shadow-sm sm:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-grey-primary">Ready to place an order?</h2>
+              <p className="mt-1 text-sm text-grey-secondary">Browse the full product catalogue and add items to your cart.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/b2b')}
+              className="rounded-md bg-primary px-5 py-2.5 font-semibold text-white hover:bg-primary/90"
+            >
+              Buy Now
+            </button>
+          </div>
+        </section>
+
         <section className="rounded-2xl border border-grey-card bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
