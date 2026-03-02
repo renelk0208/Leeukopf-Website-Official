@@ -103,7 +103,8 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="w-full max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0 mr-2">
@@ -224,10 +225,6 @@ export default function Navigation() {
         </div>
       </div>
 
-      <div className="hidden md:flex fixed right-3 top-1/2 -translate-y-1/2 z-[60] rounded-xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-md p-2">
-        <SocialLinks vertical />
-      </div>
-
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="xl:hidden bg-white border-t border-gray-200 shadow-lg max-h-[calc(100vh-5rem)] overflow-y-auto">
@@ -292,5 +289,9 @@ export default function Navigation() {
         </div>
       )}
     </nav>
+    <div className="hidden md:flex fixed right-3 top-1/2 -translate-y-1/2 z-[60] rounded-xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-md p-2">
+      <SocialLinks vertical />
+    </div>
+    </>
   );
 }
