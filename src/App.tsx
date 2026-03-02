@@ -33,6 +33,7 @@ const B2BBuilderGelsPortalPage = lazy(() => import("./b2b/pages/B2BBuilderGelsPa
 const B2BPolygelsPage = lazy(() => import("./b2b/pages/B2BPolygelsPage"));
 const B2BExtraStrengthBasesPage = lazy(() => import("./b2b/pages/B2BExtraStrengthBasesPage"));
 const B2BCheckoutPage = lazy(() => import("./b2b/pages/B2BCheckoutPage"));
+const B2BOrdersPage = lazy(() => import("./b2b/pages/B2BOrdersPage"));
 const LegacyB2BSolidColoursPage = lazy(() => import("./b2b/pages/LegacyB2BSolidColoursPage"));
 const LegacyB2BBuilderGelsPage = lazy(() => import("./b2b/pages/LegacyB2BBuilderGelsPage"));
 const ClientPortalProtectedRoute = lazy(() => import('./components/ClientPortalProtectedRoute'));
