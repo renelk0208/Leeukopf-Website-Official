@@ -93,9 +93,10 @@ function isValidEmail(email: string): boolean {
 
 // Generate order reference ID
 function generateOrderId(): string {
-  const timestamp = Date.now().toString(36);
-  const random = randomBytes(4).toString('hex').toUpperCase();
-  return `ORD-${timestamp}-${random}`;
+  const now = new Date();
+  const date = now.toISOString().slice(0, 10).replace(/-/g, '');
+  const random = randomBytes(3).toString('hex').toUpperCase().slice(0, 4);
+  return `ORD-${date}-${random}`;
 }
 
 function isB2BOrderSubmission(data: unknown): data is B2BOrderSubmission {
