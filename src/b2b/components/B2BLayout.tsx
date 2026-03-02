@@ -80,6 +80,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
   const navItems: NavEntry[] = [
     { type: "link", label: "Dashboard", path: "/b2b" },
     { type: "link", label: "Client Info", path: "/b2b/client-info" },
+    { type: "link", label: "My Orders", path: "/b2b/orders" },
     ...categoryEntries,
     { type: "link", label: "Checkout", path: "/b2b/checkout" },
   ];

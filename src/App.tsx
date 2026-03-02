@@ -127,6 +127,7 @@ function App() {
             <Route path="polygels/*" element={<B2BPolygelsPage />} />
             <Route path="extra-strength-bases/*" element={<B2BExtraStrengthBasesPage />} />
             <Route path="checkout" element={<B2BCheckoutPage />} />
+            <Route path="orders" element={<B2BOrdersPage />} />
           </Route>
 
           <Route path="/portal/login" element={<ClientPortalLoginPage />} />

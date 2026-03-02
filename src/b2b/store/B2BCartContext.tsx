@@ -105,26 +105,16 @@ function reducer(state: B2BCartState, action: B2BCartAction): B2BCartState {
 
       if (normalizedQty <= 0) {
         if (existingIndex === -1) return state;
-        return {
-          items: state.items.filter((_, index) => index !== existingIndex),
-          bottlePackaging: state.bottlePackaging,
-        };
+        return { ...state, items: state.items.filter((_, index) => index !== existingIndex) };
       }
 
       if (existingIndex === -1) {
-        return {
-          items: [...state.items, nextItem],
-          bottlePackaging: state.bottlePackaging,
-        };
+        return { ...state, items: [...state.items, nextItem] };
       }
 
       const updatedItems = [...state.items];
-      updatedItems[existingIndex] = {
-        ...updatedItems[existingIndex],
-        ...nextItem,
-      };
-
-      return { items: updatedItems, bottlePackaging: state.bottlePackaging };
+      updatedItems[existingIndex] = { ...updatedItems[existingIndex], ...nextItem };
+      return { ...state, items: updatedItems };
     }
 
     case "REMOVE": {
@@ -272,6 +262,10 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => {
     dispatch({ type: "CLEAR" });
+    // Also clear synchronously so navigation doesn't race the state effect
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(B2B_CART_STORAGE_KEY);
+    }
   }, []);
 
   const getTotals = useCallback((): CartTotals => {
