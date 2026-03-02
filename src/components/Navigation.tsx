@@ -224,7 +224,7 @@ export default function Navigation() {
         </div>
       </div>
 
-      <div className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-[60] rounded-xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-md p-2">
+      <div className="hidden md:flex fixed right-3 top-1/2 -translate-y-1/2 z-[60] rounded-xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-md p-2">
         <SocialLinks vertical />
       </div>
 
