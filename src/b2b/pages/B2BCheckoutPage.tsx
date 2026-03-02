@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useB2BCart } from "../store/B2BCartContext";
 import type { BottleBranding, BottleColor, BottleSize, BrushType, CartItem, JarPackaging, JarSize } from "../types";
 import { getB2BCategoryLabel } from "../config/categories";
@@ -96,6 +97,7 @@ function clearSolidColourSelectionCache() {
 
 export default function B2BCheckoutPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const {
     items,
     bottlePackaging,
@@ -364,12 +366,12 @@ export default function B2BCheckoutPage() {
         throw new Error(data.error || "Failed to submit order.");
       }
 
-      setSubmitMessage({
-        type: data.email_sent === false ? "error" : "success",
-        text: `${data.message || 'Order submitted successfully'}${data.order_id ? ` Reference: ${data.order_id}` : ''}`,
-      });
       clearCart();
       clearSolidColourSelectionCache();
+      navigate("/b2b", {
+        replace: true,
+        state: { orderId: data.order_id, orderSuccess: true },
+      });
     } catch (error) {
       setSubmitMessage({
         type: "error",

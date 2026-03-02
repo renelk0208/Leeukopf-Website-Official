@@ -423,11 +423,15 @@ export const handler: Handler = async (event: HandlerEvent) => {
       console.error('Order email dispatch failed:', sendError);
     }
 
-    await storeOrder(orderId, sanitizedOrder, {
-      emailSent,
-      emailError,
-      source,
-    });
+    try {
+      await storeOrder(orderId, sanitizedOrder, {
+        emailSent,
+        emailError,
+        source,
+      });
+    } catch (storeError) {
+      console.error('Order persistence failed (non-fatal):', storeError);
+    }
 
     // Return success response
     return {
