@@ -60,7 +60,6 @@ const pages = [
   
   // Nail Art Subcategories
   { url: '/products/nail-art/nail-art-products', priority: '0.6', changefreq: 'monthly' },
-  { url: '/products/nail-art/solid-mirror-powders', priority: '0.6', changefreq: 'monthly' },
   
   // Private Label
   { url: '/private-label', priority: '0.9', changefreq: 'monthly' },

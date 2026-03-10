@@ -34,7 +34,7 @@ export const categoryHero: Record<string, string> = {
   'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
   'spring-summer-26': '/img/products/gel_polishes/spring-summer-26/spring-summer-26 category.jpg',
   'glow-in-the-dark': '/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polish-category-card-image.png',
-  'platinum-gel-polish': '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.webp',
+  'platinum-gel-polish': '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.png',
   'thermo-mood-changing': '/img/products/gel_polishes/Thermo Mood Changing/thermo-mood-changing-gel-polish-category-image.png',
   
   // Builder Systems
@@ -73,7 +73,6 @@ export const categoryHero: Record<string, string> = {
   // Nail Art
   'nail-art': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp',
   '3d-multifunctional-gel': '/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp',
-  'solid-mirror-powders': '/img/products/nail-art/Solid Mirror Powders/webp/solid-mirror-category-card.webp',
   
   // Lamps
   'lamps': '/img/products/Lamps/lamps_category_card-1.jpg',
@@ -112,15 +111,18 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/spring-summer-26/spring-summer-6.jpg',
     ],
     'cat-eye-collection': [
-      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg',
-      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (2).jpg',
       '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (3).jpg',
-      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (4).jpg',
-      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (5).jpg',
+      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (6).jpg',
+      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (7).jpg',
+      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (8).jpg',
+      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (10).jpg',
+      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (11).jpg',
+      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (12).jpg',
+      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (13).jpg',
+      '/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (14).jpg',
     ],
     'cream-collection': [
       '/img/products/gel_polishes/Cream Collection/solid-cream-collection-full-colour-charts (1).jpg',
-      '/img/products/gel_polishes/Cream Collection/solid-cream-collection-full-colour-charts (2).jpg',
     ],
     'glitters-collection': [
       '/img/products/gel_polishes/Glitters Collection/glitter-images.jpg',
@@ -128,16 +130,9 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/Glitters Collection/glitter-images3.jpg',
       '/img/products/gel_polishes/Glitters Collection/glitter-images4.jpg',
       '/img/products/gel_polishes/Glitters Collection/glitter-images-4.jpg',
-      '/img/products/gel_polishes/Glitters Collection/glitter-images5.jpg',
       '/img/products/gel_polishes/Glitters Collection/glitter-images6.jpg',
-      '/img/products/gel_polishes/Glitters Collection/glitter-images7.jpg',
-      '/img/products/gel_polishes/Glitters Collection/glitter-image8.jpg',
-      '/img/products/gel_polishes/Glitters Collection/glitter-images9.jpg',
-      '/img/products/gel_polishes/Glitters Collection/glitter-images10.jpg',
       '/img/products/gel_polishes/Glitters Collection/glitter-images11.jpg',
-      '/img/products/gel_polishes/Glitters Collection/glitter-images12.jpg',
       '/img/products/gel_polishes/Glitters Collection/glitter-images13.jpg',
-      '/img/products/gel_polishes/Glitters Collection/glitter-images14.jpg',
     ],
     'solid-colour-collection': [
       '/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-images (4).jpg',
@@ -171,12 +166,8 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polsih (6).jpg',
     ],
     'platinum-gel-polish': [
-      '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (1).jpg',
-      '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (2).jpg',
       '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (3).jpg',
-      '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (4).jpg',
       '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (5).jpg',
-      '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (6).jpg',
     ],
     'thermo-mood-changing': [
       '/img/products/gel_polishes/Thermo Mood Changing/thermo-mood-changing-gel-polish (1).jpg',
@@ -305,17 +296,8 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/liquids-&-solutions/primer-liquid-images-7.jpg',
     ],
   },
-  'nail-art': {
-    'solid-mirror-powders': [
-      '/img/products/nail-art/Solid Mirror Powders/solid mirror powders (1).jpg',
-      '/img/products/nail-art/Solid Mirror Powders/solid mirror powders (2).jpg',
-      '/img/products/nail-art/Solid Mirror Powders/solid mirror powders (3).jpg',
-      '/img/products/nail-art/Solid Mirror Powders/solid mirror powders (4).jpg',
-      '/img/products/nail-art/Solid Mirror Powders/solid mirror powders (5).jpg',
-      '/img/products/nail-art/Solid Mirror Powders/solid mirror powders (6).jpg',
-      '/img/products/nail-art/Solid Mirror Powders/solid mirror powders (7).jpg',
-    ],
-  },
+  'nail-art': {},
+
   'lamps': {
     'comfort-plus-l3': [
       '/img/products/Lamps/Comfort PlusL3/webp/comfort-plus-product-image (1).webp',

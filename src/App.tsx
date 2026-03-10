@@ -80,7 +80,6 @@ const QuickCureG1Page = lazy(() => import('./pages/products/lamps/QuickCureG1Pag
 
 // Nail Art Subcategories
 const NailArtProductsPage = lazy(() => import('./pages/products/nail-art/NailArtProductsPage'));
-const SolidMirrorPowdersPage = lazy(() => import('./pages/products/nail-art/SolidMirrorPowdersPage'));
 
 // Legacy Product Pages
 const TopsBasesPrimersPage = lazy(() => import('./pages/products/TopsBasesPrimersPage'));
@@ -192,7 +191,6 @@ function App() {
           <Route path="/products/liquids-and-solutions" element={<LiquidsAndSolutionsPage />} />
           <Route path="/products/nail-art" element={<NailArtPage />} />
           <Route path="/products/nail-art/nail-art-products" element={<NailArtProductsPage />} />
-          <Route path="/products/nail-art/solid-mirror-powders" element={<SolidMirrorPowdersPage />} />
           <Route path="/products/accessories" element={<AccessoriesPage />} />
 
           {/* Legacy Product Routes (for backwards compatibility) */}

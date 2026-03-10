@@ -12,13 +12,6 @@ export default function NailArtPage() {
       description: 'Creative gels, glitters, and specialty products for professional nail art services.',
       image: categoryHero['nail-art'],
     },
-    {
-      key: 'solid-mirror-powders',
-      title: 'Solid Mirror Powders',
-      path: '/products/nail-art/solid-mirror-powders',
-      description: 'Ultra-fine chrome and mirror powders for stunning metallic finishes.',
-      image: categoryHero['solid-mirror-powders'],
-    },
   ];
 
   return (
