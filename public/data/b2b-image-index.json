@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-10T14:33:07.202Z",
-  "keys": 2694,
-  "totalImages": 4666,
+  "generatedAt": "2026-03-10T15:15:11.787Z",
+  "keys": 2696,
+  "totalImages": 4668,
   "byCode": {
     "LCCOVRBCLEAR": [
       "/img/b2b/bases/Cover rubber base/LC-COVRB-Clear.webp"
@@ -9224,6 +9224,9 @@
     "LIQUIDPOLYGEL3": [
       "/img/products/Liquid Polygel/liquid-polygel (3).jpg"
     ],
+    "LIQUIDPOLYGELCATEGORYHEROIMAGE": [
+      "/img/products/Liquid Polygel/liquid-polygel-category-hero-image.webp"
+    ],
     "3IN1BUILDERGELMAINCATEGORYIMAGE": [
       "/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gel-main-category-image.webp"
     ],
@@ -9320,6 +9323,9 @@
     ],
     "BIABBRUSHONBUILDERCATEGORYCARDIMAGE": [
       "/img/products/builder-systems/BIAB builder-in-a-bottle/BIAB-brush-on-builder-category-card-image.jpg"
+    ],
+    "BRUSHONBUILDERCATEGORYHEROIMAGE": [
+      "/img/products/builder-systems/BIAB builder-in-a-bottle/brush-on-builder-category-hero-image.webp"
     ],
     "3IN1BUILDERGELSCATEGORY3": [
       "/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg"
