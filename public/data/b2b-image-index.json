@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-10T08:36:07.649Z",
-  "keys": 2903,
-  "totalImages": 5146,
+  "generatedAt": "2026-03-10T10:13:43.655Z",
+  "keys": 2904,
+  "totalImages": 5147,
   "byCode": {
     "LCCOVRBCLEAR": [
       "/img/b2b/bases/Cover rubber base/LC-COVRB-Clear.webp"
@@ -10179,6 +10179,9 @@
     ],
     "POLYGELBLACKCOLOR": [
       "/img/products/builder-systems/Acrygel-Polygel/polygel-carousel/polygel_black_color.jpg"
+    ],
+    "POLYGELCATEGORY3": [
+      "/img/products/builder-systems/Acrygel-Polygel/polygel_category_3.webp"
     ],
     "ACRYLICFASTSLOWLIQUID1": [
       "/img/products/builder-systems/Acrylic/acrylic-fast-slow-liquid-1.jpg"
