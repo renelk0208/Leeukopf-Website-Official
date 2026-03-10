@@ -166,7 +166,10 @@ function readCsvRows() {
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
-    .filter((line) => !line.startsWith('<<<<<<<') && !line.startsWith('=======') && !line.startsWith('>>>>>>>'))
+    .filter((line) => {
+      const stripped = line.replace(/^"|"$/, '')
+      return !stripped.startsWith('<<<<<<<') && stripped !== '=======' && !stripped.startsWith('>>>>>>>')
+    })
   if (lines.length === 0) {
     throw new Error('public/products.csv is empty')
   }
@@ -285,6 +288,19 @@ function main() {
       size: '15',
       unit: 'ml',
       moq: '25',
+      price: '0',
+      image_url: '',
+      notes: 'AUTO_B2B_ROUTE_SEED',
+      active: 'TRUE',
+    },
+    {
+      category: 'Polygel',
+      subcategory: 'Polygel',
+      product_name: 'Polygel Seed',
+      code: 'AUTO-PG-ROUTE-01',
+      size: '30',
+      unit: 'g',
+      moq: '100',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',
