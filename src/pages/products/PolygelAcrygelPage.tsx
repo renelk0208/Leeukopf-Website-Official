@@ -6,10 +6,10 @@ import PolygelCarousel from '../../components/PolygelCarousel';
 import { categoryHero } from '../../config/imageMap';
 
 /**
- * Use Vite's import.meta.glob to dynamically load all polygel/acrygel product images
+ * Use Vite's import.meta.glob to dynamically load all polygel product images
  */
 const imageModules = import.meta.glob<{ default: string }>(
-  '/public/img/products/{builder-systems/Acrygel-Polygel,Liquid Polygel}/**/*.{jpg,JPG,jpeg,JPEG,png,PNG}',
+  '/public/img/polygel/*.{jpg,JPG,jpeg,JPEG,png,PNG,webp,WEBP}',
   { eager: true }
 );
 
@@ -21,43 +21,52 @@ const carouselImageModules = import.meta.glob<{ default: string }>(
   { eager: true }
 );
 
+/** Extract a display name from a polygel filename.
+ *  e.g. "polygel_baby_blue_color.webp" → "Baby Blue"
+ *       "polygel_pinkIII_color.webp"    → "Pink III"
+ *       "polygel_cover_ll_color.jpg"    → "Cover II"
+ */
+function extractPolygelName(filename: string): string {
+  let name = filename
+    .replace(/^polygel_/i, '')                          // remove "polygel_" prefix
+    .replace(/_color\.(webp|jpg|jpeg|png)$/i, '')       // remove "_color.ext"
+    .replace(/\.(webp|jpg|jpeg|png)$/i, '')             // remove bare extension
+    .replace(/([a-z])([A-Z])/g, '$1 $2')               // split camelCase (pinkIII → pink III)
+    .replace(/_/g, ' ')                                 // underscores → spaces
+    .trim();
+
+  return name
+    .split(' ')
+    .map(word => {
+      if (word.toLowerCase() === 'll') return 'II';     // ll → II (roman numeral)
+      if (word.toUpperCase() === 'III') return 'III';
+      if (word.toUpperCase() === 'II') return 'II';
+      if (word.toUpperCase() === 'IV') return 'IV';
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
+
 /** Build gallery images from the glob results */
-function buildPolygelImages(): { src: string; alt: string }[] {
-  const images: { src: string; alt: string }[] = [];
+function buildPolygelImages(): { src: string; alt: string; name: string }[] {
+  const images: { src: string; alt: string; name: string }[] = [];
 
   Object.keys(imageModules).forEach((path) => {
-    // Skip if not an image file
-    if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
-
-    // Skip the category image
-    if (path.toLowerCase().includes('category')) return;
-
-    // Exclude Liquid Polygel images (only show Acrygel-Polygel)
-    if (path.match(/liquid[\s-]*polygel/i)) return;
-
-    // Exclude carousel images from the gallery
-    if (path.includes('polygel-carousel')) return;
+    if (!path.match(/\.(jpg|jpeg|png|webp)$/i)) return;
 
     const filename = path.split('/').pop() || '';
-    
-    // Convert the public path to a URL path (remove /public prefix)
     const imageSrc = path.replace('/public', '');
-
-    // Generate a readable alt text from the filename
-    const altText = filename
-      .replace(/\.(jpg|jpeg|png)$/i, '')
-      .replace(/[-_]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
+    const name = extractPolygelName(filename);
 
     images.push({
       src: imageSrc,
-      alt: `Polygel / AcryGel - ${altText}`,
+      alt: `Polygel - ${name}`,
+      name,
     });
   });
 
-  // Sort images by filename for consistent ordering
-  images.sort((a, b) => a.src.localeCompare(b.src));
+  // Sort alphabetically by name for consistent ordering
+  images.sort((a, b) => a.name.localeCompare(b.name));
 
   return images;
 }
@@ -73,6 +82,9 @@ function buildPolygelCarouselImages(): { src: string; alt: string; name: string 
     if (!path.match(/\.(jpg|jpeg|png)$/i)) return;
 
     const filename = path.split('/').pop() || '';
+
+    // Exclude black from the carousel
+    if (/polygel_black/i.test(filename)) return;
     
     // Convert the public path to a URL path (remove /public prefix)
     const imageSrc = path.replace('/public', '');

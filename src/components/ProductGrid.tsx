@@ -4,6 +4,7 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 interface ProductImage {
   src: string;
   alt: string;
+  name?: string;
 }
 
 interface ProductGridProps {
@@ -267,13 +268,19 @@ export default function ProductGrid({ title, description, images, showProductNum
                   />
                 )}
               </button>
-              {productNumber && (
+              {image.name ? (
+                <div className="text-center mt-2 px-1">
+                  <span className="text-xs sm:text-sm font-medium text-gray-700 leading-tight">
+                    {image.name}
+                  </span>
+                </div>
+              ) : productNumber ? (
                 <div className="text-center mt-2">
                   <span className="text-sm font-medium text-gray-700">
                     {productNumber === 'Clear' ? productNumber : `No. ${productNumber}`}
                   </span>
                 </div>
-              )}
+              ) : null}
             </div>
           );
         })}

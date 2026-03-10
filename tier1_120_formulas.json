@@ -1,0 +1,1903 @@
+[
+  {
+    "id": "f001",
+    "sl_code": "SL0179",
+    "name": "Deep Red 01",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#401010",
+    "mixed_hex": "#CF322F",
+    "delta_e": 56.95,
+    "drops": {
+      "S1": 2,
+      "S10": 5,
+      "S15": 13
+    },
+    "sort_order": 1
+  },
+  {
+    "id": "f002",
+    "sl_code": "SL0357",
+    "name": "Deep Red 02",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#503038",
+    "mixed_hex": "#C27283",
+    "delta_e": 37.78,
+    "drops": {
+      "S1": 9,
+      "S10": 6,
+      "S15": 5
+    },
+    "sort_order": 2
+  },
+  {
+    "id": "f003",
+    "sl_code": "SL0345",
+    "name": "Deep Red 03",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#602028",
+    "mixed_hex": "#C04050",
+    "delta_e": 33.51,
+    "drops": {
+      "S1": 4,
+      "S10": 7,
+      "S15": 9
+    },
+    "sort_order": 3
+  },
+  {
+    "id": "f004",
+    "sl_code": "SL0647",
+    "name": "Deep Red 04",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#583030",
+    "mixed_hex": "#D17273",
+    "delta_e": 39.74,
+    "drops": {
+      "S1": 9,
+      "S10": 4,
+      "S15": 8
+    },
+    "sort_order": 4
+  },
+  {
+    "id": "f005",
+    "sl_code": "SL0360",
+    "name": "Deep Red 05",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#702830",
+    "mixed_hex": "#C04050",
+    "delta_e": 28.04,
+    "drops": {
+      "S1": 4,
+      "S10": 7,
+      "S15": 9
+    },
+    "sort_order": 5
+  },
+  {
+    "id": "f006",
+    "sl_code": "SL0194",
+    "name": "Deep Red 06",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#902028",
+    "mixed_hex": "#C12E39",
+    "delta_e": 17.23,
+    "drops": {
+      "S1": 2,
+      "S10": 7,
+      "S15": 11
+    },
+    "sort_order": 6
+  },
+  {
+    "id": "f007",
+    "sl_code": "SL0368",
+    "name": "Red 01",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#705048",
+    "mixed_hex": "#E7A492",
+    "delta_e": 38.31,
+    "drops": {
+      "S1": 13,
+      "S15": 7
+    },
+    "sort_order": 7
+  },
+  {
+    "id": "f008",
+    "sl_code": "SL0448",
+    "name": "Red 02",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#903848",
+    "mixed_hex": "#B84860",
+    "delta_e": 13.5,
+    "drops": {
+      "S1": 5,
+      "S10": 8,
+      "S15": 7
+    },
+    "sort_order": 8
+  },
+  {
+    "id": "f009",
+    "sl_code": "SL0171",
+    "name": "Red 03",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#B01828",
+    "mixed_hex": "#BC1928",
+    "delta_e": 5.36,
+    "drops": {
+      "S10": 8,
+      "S15": 12
+    },
+    "sort_order": 9
+  },
+  {
+    "id": "f010",
+    "sl_code": "SL0144",
+    "name": "Red 04",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#C01828",
+    "mixed_hex": "#BC1826",
+    "delta_e": 1.7,
+    "drops": {
+      "S7": 1,
+      "S10": 7,
+      "S15": 11
+    },
+    "sort_order": 10
+  },
+  {
+    "id": "f011",
+    "sl_code": "SL0127",
+    "name": "Red 05",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#C01820",
+    "mixed_hex": "#BE1721",
+    "delta_e": 1.27,
+    "drops": {
+      "S7": 3,
+      "S10": 6,
+      "S15": 12
+    },
+    "sort_order": 11
+  },
+  {
+    "id": "f012",
+    "sl_code": "SL0151",
+    "name": "Red 06",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#D01010",
+    "mixed_hex": "#BE1211",
+    "delta_e": 7.75,
+    "drops": {
+      "S7": 11,
+      "S15": 9
+    },
+    "sort_order": 12
+  },
+  {
+    "id": "f013",
+    "sl_code": "SL0638",
+    "name": "Red 07",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#C82048",
+    "mixed_hex": "#AE1E3D",
+    "delta_e": 9.12,
+    "drops": {
+      "S1": 1,
+      "S10": 10,
+      "S15": 9
+    },
+    "sort_order": 13
+  },
+  {
+    "id": "f014",
+    "sl_code": "SL0599",
+    "name": "Red 08",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#B85848",
+    "mixed_hex": "#E56C58",
+    "delta_e": 14.6,
+    "drops": {
+      "S1": 7,
+      "S10": 1,
+      "S15": 11
+    },
+    "sort_order": 14
+  },
+  {
+    "id": "f015",
+    "sl_code": "SL0605",
+    "name": "Red 09",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#A85868",
+    "mixed_hex": "#C36878",
+    "delta_e": 8.54,
+    "drops": {
+      "S1": 8,
+      "S10": 6,
+      "S15": 6
+    },
+    "sort_order": 15
+  },
+  {
+    "id": "f016",
+    "sl_code": "SL1120",
+    "name": "Red 10",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#E05028",
+    "mixed_hex": "#EE582B",
+    "delta_e": 4.81,
+    "drops": {
+      "S1": 4,
+      "S14": 2,
+      "S15": 15
+    },
+    "sort_order": 16
+  },
+  {
+    "id": "f017",
+    "sl_code": "SL0216",
+    "name": "Red 11",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#D83850",
+    "mixed_hex": "#BA354A",
+    "delta_e": 11.72,
+    "drops": {
+      "S1": 3,
+      "S10": 8,
+      "S15": 9
+    },
+    "sort_order": 17
+  },
+  {
+    "id": "f018",
+    "sl_code": "SL1084",
+    "name": "Red 12",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#F03030",
+    "mixed_hex": "#C92629",
+    "delta_e": 14.64,
+    "drops": {
+      "S1": 1,
+      "S10": 6,
+      "S15": 13
+    },
+    "sort_order": 18
+  },
+  {
+    "id": "f019",
+    "sl_code": "SL0592",
+    "name": "Red 13",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#C07068",
+    "mixed_hex": "#DC837A",
+    "delta_e": 8.66,
+    "drops": {
+      "S1": 10,
+      "S10": 2,
+      "S15": 8
+    },
+    "sort_order": 19
+  },
+  {
+    "id": "f020",
+    "sl_code": "SL0222",
+    "name": "Red 14",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#E05070",
+    "mixed_hex": "#B64059",
+    "delta_e": 13.27,
+    "drops": {
+      "S1": 4,
+      "S10": 8,
+      "S15": 7
+    },
+    "sort_order": 20
+  },
+  {
+    "id": "f021",
+    "sl_code": "SL0437",
+    "name": "Red 15",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#D08070",
+    "mixed_hex": "#E38A7A",
+    "delta_e": 5.47,
+    "drops": {
+      "S1": 11,
+      "S10": 1,
+      "S15": 9
+    },
+    "sort_order": 21
+  },
+  {
+    "id": "f022",
+    "sl_code": "SL0379",
+    "name": "Red 16",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#B88890",
+    "mixed_hex": "#CC9CA6",
+    "delta_e": 7.34,
+    "drops": {
+      "S1": 13,
+      "S10": 4,
+      "S15": 3
+    },
+    "sort_order": 22
+  },
+  {
+    "id": "f023",
+    "sl_code": "SL0380",
+    "name": "Red 17",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#B89090",
+    "mixed_hex": "#D9A9A7",
+    "delta_e": 10.32,
+    "drops": {
+      "S1": 14,
+      "S10": 2,
+      "S15": 4
+    },
+    "sort_order": 23
+  },
+  {
+    "id": "f024",
+    "sl_code": "SL0539",
+    "name": "Red 18",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#C88880",
+    "mixed_hex": "#DA9690",
+    "delta_e": 5.87,
+    "drops": {
+      "S1": 12,
+      "S10": 2,
+      "S15": 6
+    },
+    "sort_order": 24
+  },
+  {
+    "id": "f025",
+    "sl_code": "SL0469",
+    "name": "Red 19",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#C08890",
+    "mixed_hex": "#CD929A",
+    "delta_e": 4.16,
+    "drops": {
+      "S1": 12,
+      "S10": 4,
+      "S15": 4
+    },
+    "sort_order": 25
+  },
+  {
+    "id": "f026",
+    "sl_code": "SL0080",
+    "name": "Light Red 01",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#F86860",
+    "mixed_hex": "#D95C52",
+    "delta_e": 10.01,
+    "drops": {
+      "S1": 6,
+      "S10": 3,
+      "S15": 11
+    },
+    "sort_order": 26
+  },
+  {
+    "id": "f027",
+    "sl_code": "SL0857",
+    "name": "Light Red 02",
+    "tier": 1,
+    "colour_family": "Red",
+    "hex": "#D0B8B8",
+    "mixed_hex": "#D7BCBD",
+    "delta_e": 2.12,
+    "drops": {
+      "S1": 16,
+      "S10": 2,
+      "S15": 2
+    },
+    "sort_order": 27
+  },
+  {
+    "id": "f028",
+    "sl_code": "SL0334",
+    "name": "Deep Pink 01",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#401840",
+    "mixed_hex": "#993997",
+    "delta_e": 39.32,
+    "drops": {
+      "S2": 14,
+      "S9": 5,
+      "S10": 1
+    },
+    "sort_order": 28
+  },
+  {
+    "id": "f029",
+    "sl_code": "SL0285",
+    "name": "Deep Pink 02",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#382040",
+    "mixed_hex": "#683A77",
+    "delta_e": 23.6,
+    "drops": {
+      "S1": 4,
+      "S19": 6,
+      "S10": 9
+    },
+    "sort_order": 29
+  },
+  {
+    "id": "f030",
+    "sl_code": "SL0338",
+    "name": "Deep Pink 03",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#602040",
+    "mixed_hex": "#9E3669",
+    "delta_e": 22.2,
+    "drops": {
+      "S1": 4,
+      "S10": 12,
+      "S15": 4
+    },
+    "sort_order": 30
+  },
+  {
+    "id": "f031",
+    "sl_code": "SL0490",
+    "name": "Deep Pink 04",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#683860",
+    "mixed_hex": "#B15DA4",
+    "delta_e": 27.53,
+    "drops": {
+      "S1": 4,
+      "S2": 10,
+      "S9": 6
+    },
+    "sort_order": 31
+  },
+  {
+    "id": "f032",
+    "sl_code": "SL0686",
+    "name": "Pink 01",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#704078",
+    "mixed_hex": "#9B58AA",
+    "delta_e": 18.76,
+    "drops": {
+      "S1": 3,
+      "S2": 14,
+      "S9": 2
+    },
+    "sort_order": 32
+  },
+  {
+    "id": "f033",
+    "sl_code": "SL0325",
+    "name": "Pink 02",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#982050",
+    "mixed_hex": "#A02352",
+    "delta_e": 2.57,
+    "drops": {
+      "S1": 2,
+      "S10": 12,
+      "S15": 6
+    },
+    "sort_order": 33
+  },
+  {
+    "id": "f034",
+    "sl_code": "SL0326",
+    "name": "Pink 03",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#A02050",
+    "mixed_hex": "#A02352",
+    "delta_e": 1.47,
+    "drops": {
+      "S1": 2,
+      "S10": 12,
+      "S15": 6
+    },
+    "sort_order": 34
+  },
+  {
+    "id": "f035",
+    "sl_code": "SL0310",
+    "name": "Pink 04",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#B01040",
+    "mixed_hex": "#9F0E3A",
+    "delta_e": 6.55,
+    "drops": {
+      "S7": 2,
+      "S10": 11,
+      "S15": 7
+    },
+    "sort_order": 35
+  },
+  {
+    "id": "f036",
+    "sl_code": "SL0487",
+    "name": "Pink 05",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#805060",
+    "mixed_hex": "#BD758C",
+    "delta_e": 19.72,
+    "drops": {
+      "S1": 10,
+      "S10": 7,
+      "S15": 4
+    },
+    "sort_order": 36
+  },
+  {
+    "id": "f037",
+    "sl_code": "SL0309",
+    "name": "Pink 06",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#C80840",
+    "mixed_hex": "#96062F",
+    "delta_e": 18.03,
+    "drops": {
+      "S7": 11,
+      "S10": 6,
+      "S15": 3
+    },
+    "sort_order": 37
+  },
+  {
+    "id": "f038",
+    "sl_code": "SL0297",
+    "name": "Pink 07",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#B02048",
+    "mixed_hex": "#A71C42",
+    "delta_e": 2.9,
+    "drops": {
+      "S1": 1,
+      "S10": 11,
+      "S15": 8
+    },
+    "sort_order": 38
+  },
+  {
+    "id": "f039",
+    "sl_code": "SL0687",
+    "name": "Pink 08",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#905078",
+    "mixed_hex": "#A8608C",
+    "delta_e": 7.85,
+    "drops": {
+      "S1": 8,
+      "S10": 10,
+      "S15": 2
+    },
+    "sort_order": 39
+  },
+  {
+    "id": "f040",
+    "sl_code": "SL0263",
+    "name": "Pink 09",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#C03868",
+    "mixed_hex": "#A62F59",
+    "delta_e": 8.87,
+    "drops": {
+      "S1": 3,
+      "S10": 11,
+      "S15": 6
+    },
+    "sort_order": 40
+  },
+  {
+    "id": "f041",
+    "sl_code": "SL0289",
+    "name": "Pink 10",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#D82878",
+    "mixed_hex": "#992157",
+    "delta_e": 22.4,
+    "drops": {
+      "S1": 2,
+      "S10": 13,
+      "S15": 5
+    },
+    "sort_order": 41
+  },
+  {
+    "id": "f042",
+    "sl_code": "SL0712",
+    "name": "Pink 11",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#A86098",
+    "mixed_hex": "#BA6EAA",
+    "delta_e": 6.1,
+    "drops": {
+      "S1": 6,
+      "S2": 8,
+      "S9": 6
+    },
+    "sort_order": 42
+  },
+  {
+    "id": "f043",
+    "sl_code": "SL0266",
+    "name": "Pink 12",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#D03878",
+    "mixed_hex": "#9F2D5E",
+    "delta_e": 16.77,
+    "drops": {
+      "S1": 3,
+      "S10": 12,
+      "S15": 5
+    },
+    "sort_order": 43
+  },
+  {
+    "id": "f044",
+    "sl_code": "SL0474",
+    "name": "Pink 13",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#B07888",
+    "mixed_hex": "#C08599",
+    "delta_e": 5.85,
+    "drops": {
+      "S1": 11,
+      "S10": 6,
+      "S15": 3
+    },
+    "sort_order": 44
+  },
+  {
+    "id": "f045",
+    "sl_code": "SL0274",
+    "name": "Pink 14",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#D858A0",
+    "mixed_hex": "#9D4074",
+    "delta_e": 19.82,
+    "drops": {
+      "S1": 5,
+      "S10": 12,
+      "S15": 3
+    },
+    "sort_order": 45
+  },
+  {
+    "id": "f046",
+    "sl_code": "SL0503",
+    "name": "Pink 15",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#B088A0",
+    "mixed_hex": "#BD93AD",
+    "delta_e": 4.41,
+    "drops": {
+      "S1": 12,
+      "S10": 6,
+      "S15": 1
+    },
+    "sort_order": 46
+  },
+  {
+    "id": "f047",
+    "sl_code": "SL0382",
+    "name": "Pink 16",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#B090A0",
+    "mixed_hex": "#C5A3B6",
+    "delta_e": 7.31,
+    "drops": {
+      "S1": 14,
+      "S10": 5,
+      "S15": 1
+    },
+    "sort_order": 47
+  },
+  {
+    "id": "f048",
+    "sl_code": "SL0270",
+    "name": "Light Pink 01",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#F878B0",
+    "mixed_hex": "#AD547A",
+    "delta_e": 24.16,
+    "drops": {
+      "S1": 7,
+      "S10": 10,
+      "S15": 4
+    },
+    "sort_order": 48
+  },
+  {
+    "id": "f049",
+    "sl_code": "SL0231",
+    "name": "Light Pink 02",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#F878A0",
+    "mixed_hex": "#B65B76",
+    "delta_e": 20.63,
+    "drops": {
+      "S1": 7,
+      "S10": 8,
+      "S15": 5
+    },
+    "sort_order": 49
+  },
+  {
+    "id": "f050",
+    "sl_code": "SL0040",
+    "name": "Light Pink 03",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#F8A8C8",
+    "mixed_hex": "#BC7E97",
+    "delta_e": 18.78,
+    "drops": {
+      "S1": 11,
+      "S10": 7,
+      "S15": 3
+    },
+    "sort_order": 50
+  },
+  {
+    "id": "f051",
+    "sl_code": "SL0016",
+    "name": "Light Pink 04",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#F8B0C8",
+    "mixed_hex": "#C08599",
+    "delta_e": 17.83,
+    "drops": {
+      "S1": 11,
+      "S10": 6,
+      "S15": 3
+    },
+    "sort_order": 51
+  },
+  {
+    "id": "f052",
+    "sl_code": "SL0011",
+    "name": "Light Pink 05",
+    "tier": 1,
+    "colour_family": "Pink",
+    "hex": "#F8C0E8",
+    "mixed_hex": "#CEA1C0",
+    "delta_e": 13.99,
+    "drops": {
+      "S1": 12,
+      "S2": 4,
+      "S9": 4
+    },
+    "sort_order": 52
+  },
+  {
+    "id": "f053",
+    "sl_code": "SL0564",
+    "name": "Deep Orange 01",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#503830",
+    "mixed_hex": "#E7A087",
+    "delta_e": 50.43,
+    "drops": {
+      "S1": 12,
+      "S14": 1,
+      "S15": 7
+    },
+    "sort_order": 53
+  },
+  {
+    "id": "f054",
+    "sl_code": "SL0553",
+    "name": "Deep Orange 02",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#804020",
+    "mixed_hex": "#EC753A",
+    "delta_e": 38.64,
+    "drops": {
+      "S1": 5,
+      "S14": 5,
+      "S15": 10
+    },
+    "sort_order": 54
+  },
+  {
+    "id": "f055",
+    "sl_code": "SL0619",
+    "name": "Orange 01",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#C05028",
+    "mixed_hex": "#EE602E",
+    "delta_e": 16.7,
+    "drops": {
+      "S1": 4,
+      "S14": 3,
+      "S15": 13
+    },
+    "sort_order": 55
+  },
+  {
+    "id": "f056",
+    "sl_code": "SL1132",
+    "name": "Orange 02",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#B86838",
+    "mixed_hex": "#EB8446",
+    "delta_e": 17.43,
+    "drops": {
+      "S1": 6,
+      "S14": 6,
+      "S15": 8
+    },
+    "sort_order": 56
+  },
+  {
+    "id": "f057",
+    "sl_code": "SL1076",
+    "name": "Orange 03",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#F86838",
+    "mixed_hex": "#ED6439",
+    "delta_e": 4.44,
+    "drops": {
+      "S1": 5,
+      "S14": 2,
+      "S15": 13
+    },
+    "sort_order": 57
+  },
+  {
+    "id": "f058",
+    "sl_code": "SL1065",
+    "name": "Light Orange 01",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#F88858",
+    "mixed_hex": "#EB8154",
+    "delta_e": 4.5,
+    "drops": {
+      "S1": 7,
+      "S14": 3,
+      "S15": 9
+    },
+    "sort_order": 58
+  },
+  {
+    "id": "f059",
+    "sl_code": "SL0429",
+    "name": "Light Orange 02",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#F8A888",
+    "mixed_hex": "#E89C7C",
+    "delta_e": 5.12,
+    "drops": {
+      "S1": 11,
+      "S14": 2,
+      "S15": 7
+    },
+    "sort_order": 59
+  },
+  {
+    "id": "f060",
+    "sl_code": "SL1050",
+    "name": "Light Orange 03",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#F8C898",
+    "mixed_hex": "#E6B788",
+    "delta_e": 6.16,
+    "drops": {
+      "S1": 12,
+      "S14": 5,
+      "S15": 3
+    },
+    "sort_order": 60
+  },
+  {
+    "id": "f061",
+    "sl_code": "SL0420",
+    "name": "Light Orange 04",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#F0C8A8",
+    "mixed_hex": "#E5BF9E",
+    "delta_e": 3.68,
+    "drops": {
+      "S1": 14,
+      "S14": 3,
+      "S15": 3
+    },
+    "sort_order": 61
+  },
+  {
+    "id": "f062",
+    "sl_code": "SL0533",
+    "name": "Light Orange 05",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#E8C8B8",
+    "mixed_hex": "#E4C6B4",
+    "delta_e": 1.64,
+    "drops": {
+      "S1": 16,
+      "S14": 1,
+      "S15": 3
+    },
+    "sort_order": 62
+  },
+  {
+    "id": "f063",
+    "sl_code": "SL0519",
+    "name": "Light Orange 06",
+    "tier": 1,
+    "colour_family": "Orange",
+    "hex": "#F0D8C8",
+    "mixed_hex": "#E3CFBF",
+    "delta_e": 3.88,
+    "drops": {
+      "S1": 17,
+      "S14": 1,
+      "S15": 2
+    },
+    "sort_order": 63
+  },
+  {
+    "id": "f064",
+    "sl_code": "SL0979",
+    "name": "Deep Yellow 01",
+    "tier": 1,
+    "colour_family": "Yellow",
+    "hex": "#585838",
+    "mixed_hex": "#A4A569",
+    "delta_e": 32.5,
+    "drops": {
+      "S1": 8,
+      "S11": 6,
+      "S14": 7
+    },
+    "sort_order": 64
+  },
+  {
+    "id": "f065",
+    "sl_code": "SL1130",
+    "name": "Yellow 01",
+    "tier": 1,
+    "colour_family": "Yellow",
+    "hex": "#B09058",
+    "mixed_hex": "#E6BB74",
+    "delta_e": 18.57,
+    "drops": {
+      "S1": 10,
+      "S14": 9,
+      "S15": 1
+    },
+    "sort_order": 65
+  },
+  {
+    "id": "f066",
+    "sl_code": "SL1037",
+    "name": "Yellow 02",
+    "tier": 1,
+    "colour_family": "Yellow",
+    "hex": "#F8D040",
+    "mixed_hex": "#AF932B",
+    "delta_e": 28.49,
+    "drops": {
+      "S1": 2,
+      "S11": 5,
+      "S14": 13
+    },
+    "sort_order": 66
+  },
+  {
+    "id": "f067",
+    "sl_code": "SL0901",
+    "name": "Light Yellow 01",
+    "tier": 1,
+    "colour_family": "Yellow",
+    "hex": "#D0C098",
+    "mixed_hex": "#E4D4AA",
+    "delta_e": 6.81,
+    "drops": {
+      "S1": 15,
+      "S14": 5
+    },
+    "sort_order": 67
+  },
+  {
+    "id": "f068",
+    "sl_code": "SL1053",
+    "name": "Light Yellow 02",
+    "tier": 1,
+    "colour_family": "Yellow",
+    "hex": "#E8C088",
+    "mixed_hex": "#E6BB83",
+    "delta_e": 2.05,
+    "drops": {
+      "S1": 12,
+      "S14": 7,
+      "S15": 2
+    },
+    "sort_order": 68
+  },
+  {
+    "id": "f069",
+    "sl_code": "SL1014",
+    "name": "Light Yellow 03",
+    "tier": 1,
+    "colour_family": "Yellow",
+    "hex": "#F8E880",
+    "mixed_hex": "#ADA156",
+    "delta_e": 28.05,
+    "drops": {
+      "S1": 6,
+      "S11": 5,
+      "S14": 9
+    },
+    "sort_order": 69
+  },
+  {
+    "id": "f070",
+    "sl_code": "SL0967",
+    "name": "Deep Green 01",
+    "tier": 1,
+    "colour_family": "Green",
+    "hex": "#204020",
+    "mixed_hex": "#316731",
+    "delta_e": 20.32,
+    "drops": {
+      "S11": 15,
+      "S14": 4
+    },
+    "sort_order": 70
+  },
+  {
+    "id": "f071",
+    "sl_code": "SL0986",
+    "name": "Green 01",
+    "tier": 1,
+    "colour_family": "Green",
+    "hex": "#708830",
+    "mixed_hex": "#5E7427",
+    "delta_e": 9.53,
+    "drops": {
+      "S11": 12,
+      "S14": 8
+    },
+    "sort_order": 71
+  },
+  {
+    "id": "f072",
+    "sl_code": "SL0994",
+    "name": "Green 02",
+    "tier": 1,
+    "colour_family": "Green",
+    "hex": "#808860",
+    "mixed_hex": "#A0A979",
+    "delta_e": 12.95,
+    "drops": {
+      "S1": 9,
+      "S11": 6,
+      "S14": 5
+    },
+    "sort_order": 72
+  },
+  {
+    "id": "f073",
+    "sl_code": "SL0916",
+    "name": "Green 03",
+    "tier": 1,
+    "colour_family": "Green",
+    "hex": "#40F870",
+    "mixed_hex": "#226033",
+    "delta_e": 72.87,
+    "drops": {
+      "S11": 17,
+      "S12": 3
+    },
+    "sort_order": 73
+  },
+  {
+    "id": "f074",
+    "sl_code": "SL0909",
+    "name": "Light Green 01",
+    "tier": 1,
+    "colour_family": "Green",
+    "hex": "#A8C0A0",
+    "mixed_hex": "#9BB295",
+    "delta_e": 5.67,
+    "drops": {
+      "S1": 11,
+      "S11": 6,
+      "S14": 2
+    },
+    "sort_order": 74
+  },
+  {
+    "id": "f075",
+    "sl_code": "SL0920",
+    "name": "Light Green 02",
+    "tier": 1,
+    "colour_family": "Green",
+    "hex": "#C0E898",
+    "mixed_hex": "#7E9460",
+    "delta_e": 32.1,
+    "drops": {
+      "S1": 6,
+      "S11": 9,
+      "S14": 5
+    },
+    "sort_order": 75
+  },
+  {
+    "id": "f076",
+    "sl_code": "SL1010",
+    "name": "Light Green 03",
+    "tier": 1,
+    "colour_family": "Green",
+    "hex": "#E8F0A0",
+    "mixed_hex": "#A0A66E",
+    "delta_e": 28.51,
+    "drops": {
+      "S1": 8,
+      "S11": 6,
+      "S14": 6
+    },
+    "sort_order": 76
+  },
+  {
+    "id": "f077",
+    "sl_code": "SL0927",
+    "name": "Light Green 04",
+    "tier": 1,
+    "colour_family": "Green",
+    "hex": "#D0F0A0",
+    "mixed_hex": "#839866",
+    "delta_e": 34.13,
+    "drops": {
+      "S1": 7,
+      "S11": 9,
+      "S14": 5
+    },
+    "sort_order": 77
+  },
+  {
+    "id": "f078",
+    "sl_code": "SL0972",
+    "name": "Deep Teal 01",
+    "tier": 1,
+    "colour_family": "Teal",
+    "hex": "#203028",
+    "mixed_hex": "#66957B",
+    "delta_e": 41.53,
+    "drops": {
+      "S1": 8,
+      "S11": 11,
+      "S14": 1
+    },
+    "sort_order": 78
+  },
+  {
+    "id": "f079",
+    "sl_code": "SL0958",
+    "name": "Deep Teal 02",
+    "tier": 1,
+    "colour_family": "Teal",
+    "hex": "#087890",
+    "mixed_hex": "#093C46",
+    "delta_e": 26.93,
+    "drops": {
+      "S19": 10,
+      "S11": 10
+    },
+    "sort_order": 79
+  },
+  {
+    "id": "f080",
+    "sl_code": "SL0965",
+    "name": "Teal 01",
+    "tier": 1,
+    "colour_family": "Teal",
+    "hex": "#00B870",
+    "mixed_hex": "#00593C",
+    "delta_e": 44.32,
+    "drops": {
+      "S11": 20
+    },
+    "sort_order": 80
+  },
+  {
+    "id": "f081",
+    "sl_code": "SL0959",
+    "name": "Teal 02",
+    "tier": 1,
+    "colour_family": "Teal",
+    "hex": "#10B8A8",
+    "mixed_hex": "#054941",
+    "delta_e": 44.97,
+    "drops": {
+      "S19": 5,
+      "S11": 14
+    },
+    "sort_order": 81
+  },
+  {
+    "id": "f082",
+    "sl_code": "SL0942",
+    "name": "Light Teal 01",
+    "tier": 1,
+    "colour_family": "Teal",
+    "hex": "#88E0D0",
+    "mixed_hex": "#518178",
+    "delta_e": 35.4,
+    "drops": {
+      "S1": 6,
+      "S2": 2,
+      "S11": 12
+    },
+    "sort_order": 82
+  },
+  {
+    "id": "f083",
+    "sl_code": "SL0889",
+    "name": "Light Teal 02",
+    "tier": 1,
+    "colour_family": "Teal",
+    "hex": "#A8E0E0",
+    "mixed_hex": "#628685",
+    "delta_e": 32.66,
+    "drops": {
+      "S1": 7,
+      "S2": 3,
+      "S11": 10
+    },
+    "sort_order": 83
+  },
+  {
+    "id": "f084",
+    "sl_code": "SL0936",
+    "name": "Light Teal 03",
+    "tier": 1,
+    "colour_family": "Teal",
+    "hex": "#C0E0D8",
+    "mixed_hex": "#99B3AC",
+    "delta_e": 16.02,
+    "drops": {
+      "S1": 13,
+      "S2": 1,
+      "S11": 6
+    },
+    "sort_order": 84
+  },
+  {
+    "id": "f085",
+    "sl_code": "SL0803",
+    "name": "Deep Blue 01",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#203840",
+    "mixed_hex": "#335864",
+    "delta_e": 13.85,
+    "drops": {
+      "S1": 1,
+      "S2": 6,
+      "S11": 13
+    },
+    "sort_order": 85
+  },
+  {
+    "id": "f086",
+    "sl_code": "SL0801",
+    "name": "Deep Blue 02",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#183848",
+    "mixed_hex": "#1A4052",
+    "delta_e": 3.83,
+    "drops": {
+      "S2": 3,
+      "S19": 7,
+      "S11": 10
+    },
+    "sort_order": 86
+  },
+  {
+    "id": "f087",
+    "sl_code": "SL0780",
+    "name": "Blue 01",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#302890",
+    "mixed_hex": "#1B1B51",
+    "delta_e": 30.82,
+    "drops": {
+      "S19": 18,
+      "S10": 2
+    },
+    "sort_order": 87
+  },
+  {
+    "id": "f088",
+    "sl_code": "SL0795",
+    "name": "Blue 02",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#2838A0",
+    "mixed_hex": "#161C50",
+    "delta_e": 33.02,
+    "drops": {
+      "S19": 19,
+      "S10": 1
+    },
+    "sort_order": 88
+  },
+  {
+    "id": "f089",
+    "sl_code": "SL0810",
+    "name": "Blue 03",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#4868A0",
+    "mixed_hex": "#2F4263",
+    "delta_e": 20.6,
+    "drops": {
+      "S1": 3,
+      "S19": 15,
+      "S11": 2
+    },
+    "sort_order": 89
+  },
+  {
+    "id": "f090",
+    "sl_code": "SL0779",
+    "name": "Blue 04",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#2858C0",
+    "mixed_hex": "#10244D",
+    "delta_e": 41.9,
+    "drops": {
+      "S19": 18,
+      "S11": 2
+    },
+    "sort_order": 90
+  },
+  {
+    "id": "f091",
+    "sl_code": "SL0778",
+    "name": "Blue 05",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#3050B8",
+    "mixed_hex": "#11214E",
+    "delta_e": 39.0,
+    "drops": {
+      "S19": 19,
+      "S11": 1
+    },
+    "sort_order": 91
+  },
+  {
+    "id": "f092",
+    "sl_code": "SL0765",
+    "name": "Blue 06",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#4848A0",
+    "mixed_hex": "#2C2C63",
+    "delta_e": 23.05,
+    "drops": {
+      "S2": 5,
+      "S19": 13,
+      "S11": 2
+    },
+    "sort_order": 92
+  },
+  {
+    "id": "f093",
+    "sl_code": "SL0823",
+    "name": "Blue 07",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#6888A8",
+    "mixed_hex": "#465C72",
+    "delta_e": 18.36,
+    "drops": {
+      "S1": 5,
+      "S19": 11,
+      "S11": 3
+    },
+    "sort_order": 93
+  },
+  {
+    "id": "f094",
+    "sl_code": "SL0770",
+    "name": "Blue 08",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#6090C8",
+    "mixed_hex": "#2E4562",
+    "delta_e": 33.44,
+    "drops": {
+      "S1": 3,
+      "S19": 14,
+      "S11": 3
+    },
+    "sort_order": 94
+  },
+  {
+    "id": "f095",
+    "sl_code": "SL0832",
+    "name": "Blue 09",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#60B0E8",
+    "mixed_hex": "#26465C",
+    "delta_e": 45.43,
+    "drops": {
+      "S2": 5,
+      "S19": 4,
+      "S11": 10
+    },
+    "sort_order": 95
+  },
+  {
+    "id": "f096",
+    "sl_code": "SL0839",
+    "name": "Light Blue 01",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#80A8E0",
+    "mixed_hex": "#445671",
+    "delta_e": 35.28,
+    "drops": {
+      "S1": 5,
+      "S19": 13,
+      "S11": 2
+    },
+    "sort_order": 96
+  },
+  {
+    "id": "f097",
+    "sl_code": "SL0844",
+    "name": "Light Blue 02",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#A0A0C8",
+    "mixed_hex": "#787997",
+    "delta_e": 16.27,
+    "drops": {
+      "S1": 6,
+      "S2": 8,
+      "S11": 6
+    },
+    "sort_order": 97
+  },
+  {
+    "id": "f098",
+    "sl_code": "SL0743",
+    "name": "Light Blue 03",
+    "tier": 1,
+    "colour_family": "Blue",
+    "hex": "#A8A0D8",
+    "mixed_hex": "#737194",
+    "delta_e": 21.94,
+    "drops": {
+      "S1": 5,
+      "S2": 9,
+      "S11": 6
+    },
+    "sort_order": 98
+  },
+  {
+    "id": "f099",
+    "sl_code": "SL0673",
+    "name": "Deep Purple 01",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#501870",
+    "mixed_hex": "#3F0F5A",
+    "delta_e": 9.56,
+    "drops": {
+      "S19": 10,
+      "S10": 10
+    },
+    "sort_order": 99
+  },
+  {
+    "id": "f100",
+    "sl_code": "SL0798",
+    "name": "Purple 01",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#503888",
+    "mixed_hex": "#443075",
+    "delta_e": 7.61,
+    "drops": {
+      "S2": 9,
+      "S19": 10,
+      "S11": 1
+    },
+    "sort_order": 100
+  },
+  {
+    "id": "f101",
+    "sl_code": "SL0680",
+    "name": "Purple 02",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#603090",
+    "mixed_hex": "#4D2775",
+    "delta_e": 11.49,
+    "drops": {
+      "S2": 8,
+      "S19": 9,
+      "S10": 3
+    },
+    "sort_order": 101
+  },
+  {
+    "id": "f102",
+    "sl_code": "SL0691",
+    "name": "Purple 03",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#9870B8",
+    "mixed_hex": "#6B5181",
+    "delta_e": 19.97,
+    "drops": {
+      "S1": 6,
+      "S19": 8,
+      "S10": 6
+    },
+    "sort_order": 102
+  },
+  {
+    "id": "f103",
+    "sl_code": "SL0747",
+    "name": "Purple 04",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#8878B8",
+    "mixed_hex": "#6B5E8F",
+    "delta_e": 13.47,
+    "drops": {
+      "S1": 3,
+      "S2": 12,
+      "S11": 6
+    },
+    "sort_order": 103
+  },
+  {
+    "id": "f104",
+    "sl_code": "SL0746",
+    "name": "Purple 05",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#9078B8",
+    "mixed_hex": "#7C669C",
+    "delta_e": 9.4,
+    "drops": {
+      "S1": 4,
+      "S2": 12,
+      "S11": 4
+    },
+    "sort_order": 104
+  },
+  {
+    "id": "f105",
+    "sl_code": "SL0690",
+    "name": "Purple 06",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#A068D0",
+    "mixed_hex": "#744B98",
+    "delta_e": 19.6,
+    "drops": {
+      "S1": 1,
+      "S2": 16,
+      "S11": 3
+    },
+    "sort_order": 105
+  },
+  {
+    "id": "f106",
+    "sl_code": "SL0705",
+    "name": "Purple 07",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#A088B8",
+    "mixed_hex": "#9C84B2",
+    "delta_e": 1.98,
+    "drops": {
+      "S1": 8,
+      "S2": 10,
+      "S11": 2
+    },
+    "sort_order": 106
+  },
+  {
+    "id": "f107",
+    "sl_code": "SL0732",
+    "name": "Light Purple 01",
+    "tier": 1,
+    "colour_family": "Purple",
+    "hex": "#D8B8F0",
+    "mixed_hex": "#867096",
+    "delta_e": 30.1,
+    "drops": {
+      "S1": 9,
+      "S19": 6,
+      "S10": 5
+    },
+    "sort_order": 107
+  },
+  {
+    "id": "f108",
+    "sl_code": "SL0656",
+    "name": "Deep Grey 01",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#403030",
+    "mixed_hex": "#D39EA1",
+    "delta_e": 49.89,
+    "drops": {
+      "S1": 13,
+      "S10": 3,
+      "S15": 4
+    },
+    "sort_order": 108
+  },
+  {
+    "id": "f109",
+    "sl_code": "SL1197",
+    "name": "Deep Grey 02",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#504858",
+    "mixed_hex": "#B09CC0",
+    "delta_e": 36.77,
+    "drops": {
+      "S1": 11,
+      "S2": 8,
+      "S11": 1
+    },
+    "sort_order": 109
+  },
+  {
+    "id": "f110",
+    "sl_code": "SL0976",
+    "name": "Deep Grey 03",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#506050",
+    "mixed_hex": "#93AD91",
+    "delta_e": 29.84,
+    "drops": {
+      "S1": 11,
+      "S11": 7,
+      "S14": 2
+    },
+    "sort_order": 110
+  },
+  {
+    "id": "f111",
+    "sl_code": "SL1181",
+    "name": "Grey 01",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#685868",
+    "mixed_hex": "#C6A5C5",
+    "delta_e": 33.28,
+    "drops": {
+      "S1": 13,
+      "S2": 6,
+      "S9": 2
+    },
+    "sort_order": 111
+  },
+  {
+    "id": "f112",
+    "sl_code": "SL1160",
+    "name": "Grey 02",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#808088",
+    "mixed_hex": "#B8B6C4",
+    "delta_e": 20.81,
+    "drops": {
+      "S1": 14,
+      "S2": 4,
+      "S11": 2
+    },
+    "sort_order": 112
+  },
+  {
+    "id": "f113",
+    "sl_code": "SL0912",
+    "name": "Grey 03",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#90A0A8",
+    "mixed_hex": "#8C9CA4",
+    "delta_e": 1.92,
+    "drops": {
+      "S1": 12,
+      "S19": 6,
+      "S11": 2
+    },
+    "sort_order": 113
+  },
+  {
+    "id": "f114",
+    "sl_code": "SL0529",
+    "name": "Light Grey 01",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#B8A0B0",
+    "mixed_hex": "#D3B5C9",
+    "delta_e": 8.83,
+    "drops": {
+      "S1": 15,
+      "S2": 3,
+      "S9": 3
+    },
+    "sort_order": 114
+  },
+  {
+    "id": "f115",
+    "sl_code": "SL0862",
+    "name": "Light Grey 02",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#C0B0C0",
+    "mixed_hex": "#CEBCCF",
+    "delta_e": 4.94,
+    "drops": {
+      "S1": 15,
+      "S2": 4,
+      "S9": 1
+    },
+    "sort_order": 115
+  },
+  {
+    "id": "f116",
+    "sl_code": "SL0872",
+    "name": "Light Grey 03",
+    "tier": 1,
+    "colour_family": "Grey/Neutral",
+    "hex": "#D0D0D0",
+    "mixed_hex": "#DCDEDD",
+    "delta_e": 4.57,
+    "drops": {
+      "S1": 19,
+      "S2": 1
+    },
+    "sort_order": 116
+  },
+  {
+    "id": "f117",
+    "sl_code": "SL0865",
+    "name": "Light White 01",
+    "tier": 1,
+    "colour_family": "White/Sheer",
+    "hex": "#E8E0E0",
+    "mixed_hex": "#DCD1CF",
+    "delta_e": 5.52,
+    "drops": {
+      "S1": 18,
+      "S10": 1,
+      "S15": 1
+    },
+    "sort_order": 117
+  },
+  {
+    "id": "f118",
+    "sl_code": "SL0513",
+    "name": "Light White 02",
+    "tier": 1,
+    "colour_family": "White/Sheer",
+    "hex": "#F0E8E0",
+    "mixed_hex": "#E2DDD5",
+    "delta_e": 4.59,
+    "drops": {
+      "S1": 19,
+      "S15": 1
+    },
+    "sort_order": 118
+  },
+  {
+    "id": "f119",
+    "sl_code": "SL0001",
+    "name": "Deep Black 01",
+    "tier": 1,
+    "colour_family": "Black/Deep",
+    "hex": "#181818",
+    "mixed_hex": "#DCDEDD",
+    "delta_e": 79.79,
+    "drops": {
+      "S1": 19,
+      "S2": 1
+    },
+    "sort_order": 119
+  },
+  {
+    "id": "f120",
+    "sl_code": "SL0971",
+    "name": "Deep Black 02",
+    "tier": 1,
+    "colour_family": "Black/Deep",
+    "hex": "#183020",
+    "mixed_hex": "#39754F",
+    "delta_e": 31.18,
+    "drops": {
+      "S1": 3,
+      "S11": 15,
+      "S14": 2
+    },
+    "sort_order": 120
+  }
+]
