@@ -3,7 +3,6 @@ import ApplicationCuring from '../../components/ApplicationCuring';
 import ProductSEO from '../../components/ProductSEO';
 import ProductGrid from '../../components/ProductGrid';
 import PolygelCarousel from '../../components/PolygelCarousel';
-import { categoryHero } from '../../config/imageMap';
 
 /**
  * Use Vite's import.meta.glob to dynamically load all polygel product images
@@ -140,10 +139,10 @@ export default function PolygelAcrygelPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src={categoryHero['polygel-acrygel']}
+            src="/img/polygel/builder-gel-systems.hero.image.webp"
             alt="Polygel / AcryGel"
-            width="1600"
-            height="400"
+            width="1200"
+            height="675"
             className="category-hero"
           />
         </div>
