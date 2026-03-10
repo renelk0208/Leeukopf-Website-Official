@@ -13,7 +13,7 @@ const PRODUCT_IMAGE_DIR_RULES = [
     minHeight: 300,
     targetAspect: 1,
     aspectTolerance: 0.02,
-    enforceUniformDimensions: true,
+    enforceUniformDimensions: false,
   },
   {
     label: 'Liquid polygel images',
