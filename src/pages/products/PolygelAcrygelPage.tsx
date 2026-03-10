@@ -139,7 +139,7 @@ export default function PolygelAcrygelPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/polygel/builder-gel-systems.hero.image.webp"
+            src="/img/polygel/builder-gel-systems-hero-image.webp"
             alt="Polygel / AcryGel"
             width="1200"
             height="675"

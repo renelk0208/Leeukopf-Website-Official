@@ -127,7 +127,7 @@ async function validateProductImageDirectory(rule) {
   const files = fs
     .readdirSync(rule.dir)
     .filter((file) => /\.(webp|png|jpe?g)$/i.test(file))
-    .filter((file) => !file.includes('.hero.'))
+    .filter((file) => !file.includes('-hero-'))
 
   if (files.length === 0) {
     errors.push(`${rule.label}: no image files found in ${path.relative(repoRoot, rule.dir)}`)
