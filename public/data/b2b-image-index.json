@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-10T15:15:11.787Z",
-  "keys": 2696,
-  "totalImages": 4668,
+  "generatedAt": "2026-03-10T15:52:46.971Z",
+  "keys": 2632,
+  "totalImages": 4601,
   "byCode": {
     "LCCOVRBCLEAR": [
       "/img/b2b/bases/Cover rubber base/LC-COVRB-Clear.webp"
@@ -9414,9 +9414,6 @@
     "CATEYECATEGOTYCARDIMAGE": [
       "/img/products/gel_polishes/Cat Eye Collection/cat-eye_categoty_card-image.png"
     ],
-    "LEEUKOPCATEYECOLLECTION1": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (1).jpg"
-    ],
     "LEEUKOPCATEYECOLLECTION10": [
       "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (10).jpg"
     ],
@@ -9432,38 +9429,8 @@
     "LEEUKOPCATEYECOLLECTION14": [
       "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (14).jpg"
     ],
-    "LEEUKOPCATEYECOLLECTION15": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (15).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION16": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (16).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION17": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (17).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION18": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (18).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION19": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (19).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION2": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (2).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION20": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (20).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION21": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (21).jpg"
-    ],
     "LEEUKOPCATEYECOLLECTION3": [
       "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (3).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION4": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (4).jpg"
-    ],
-    "LEEUKOPCATEYECOLLECTION5": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (5).jpg"
     ],
     "LEEUKOPCATEYECOLLECTION6": [
       "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (6).jpg"
@@ -9474,17 +9441,11 @@
     "LEEUKOPCATEYECOLLECTION8": [
       "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (8).jpg"
     ],
-    "LEEUKOPCATEYECOLLECTION9": [
-      "/img/products/gel_polishes/Cat Eye Collection/leeukop-cat-eye-collection (9).jpg"
-    ],
     "SOLIDCREAMCATEGORYCARDIMAGE": [
       "/img/products/gel_polishes/Cream Collection/solid-cream-category-card-image.jpg"
     ],
     "SOLIDCREAMCOLLECTIONFULLCOLOURCHARTS1": [
       "/img/products/gel_polishes/Cream Collection/solid-cream-collection-full-colour-charts (1).jpg"
-    ],
-    "SOLIDCREAMCOLLECTIONFULLCOLOURCHARTS2": [
-      "/img/products/gel_polishes/Cream Collection/solid-cream-collection-full-colour-charts (2).jpg"
     ],
     "FRENCHCOLLECTIONCATEGORYCARDIMAGE": [
       "/img/products/gel_polishes/French Collection/french-collection-category-card-image.png"
@@ -9501,9 +9462,6 @@
     "FRENCHCOLLECTIONGELPOLISH5": [
       "/img/products/gel_polishes/French Collection/french-collection-gel-polish (5).jpg"
     ],
-    "GLITTERIMAGE8": [
-      "/img/products/gel_polishes/Glitters Collection/glitter-image8.jpg"
-    ],
     "GLITTERIMAGES4": [
       "/img/products/gel_polishes/Glitters Collection/glitter-images-4.jpg",
       "/img/products/gel_polishes/Glitters Collection/glitter-images4.jpg"
@@ -9511,20 +9469,11 @@
     "GLITTERIMAGES": [
       "/img/products/gel_polishes/Glitters Collection/glitter-images.jpg"
     ],
-    "GLITTERIMAGES10": [
-      "/img/products/gel_polishes/Glitters Collection/glitter-images10.jpg"
-    ],
     "GLITTERIMAGES11": [
       "/img/products/gel_polishes/Glitters Collection/glitter-images11.jpg"
     ],
-    "GLITTERIMAGES12": [
-      "/img/products/gel_polishes/Glitters Collection/glitter-images12.jpg"
-    ],
     "GLITTERIMAGES13": [
       "/img/products/gel_polishes/Glitters Collection/glitter-images13.jpg"
-    ],
-    "GLITTERIMAGES14": [
-      "/img/products/gel_polishes/Glitters Collection/glitter-images14.jpg"
     ],
     "GLITTERIMAGES2": [
       "/img/products/gel_polishes/Glitters Collection/glitter-images2.jpg"
@@ -9532,21 +9481,8 @@
     "GLITTERIMAGES3": [
       "/img/products/gel_polishes/Glitters Collection/glitter-images3.jpg"
     ],
-    "GLITTERIMAGES5": [
-      "/img/products/gel_polishes/Glitters Collection/glitter-images5.jpg"
-    ],
     "GLITTERIMAGES6": [
       "/img/products/gel_polishes/Glitters Collection/glitter-images6.jpg"
-    ],
-    "GLITTERIMAGES7": [
-      "/img/products/gel_polishes/Glitters Collection/glitter-images7.jpg"
-    ],
-    "GLITTERIMAGES9": [
-      "/img/products/gel_polishes/Glitters Collection/glitter-images9.jpg"
-    ],
-    "GLITTERSIMAGECATEGORYCARD": [
-      "/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.png",
-      "/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp"
     ],
     "GLOWINTHEDARKGELPOLISHCATEGORYCARDIMAGE": [
       "/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polish-category-card-image.png"
@@ -9569,27 +9505,14 @@
     "GLOWINTHEDARKGELPOLSIH6": [
       "/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polsih (6).jpg"
     ],
-    "PLATINUMGELPOLISHCOLLECTIONGELPOLISH1": [
-      "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (1).jpg"
-    ],
-    "PLATINUMGELPOLISHCOLLECTIONGELPOLISH2": [
-      "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (2).jpg"
-    ],
     "PLATINUMGELPOLISHCOLLECTIONGELPOLISH3": [
       "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (3).jpg"
-    ],
-    "PLATINUMGELPOLISHCOLLECTIONGELPOLISH4": [
-      "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (4).jpg"
     ],
     "PLATINUMGELPOLISHCOLLECTIONGELPOLISH5": [
       "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (5).jpg"
     ],
-    "PLATINUMGELPOLISHCOLLECTIONGELPOLISH6": [
-      "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (6).jpg"
-    ],
     "PLATINUMGELPOLISHCOLLECTIONGELPOLISHCATEGORYCARDIMAGE": [
-      "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.png",
-      "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.webp"
+      "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.png"
     ],
     "SOLIDCOLOURCOLLECTIONCATEGORYCARDIMAGE": [
       "/img/products/gel_polishes/Solid Colour Collection/solid-colour-collection-category card image.jpg"
@@ -9744,65 +9667,11 @@
     "ACRYGELTUBEWHITE30G": [
       "/img/products/jars-and-tubes/acrygel-tube-white-30g.jpg"
     ],
-    "WEBSITELEEUKOPFACRYLICJAR1": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR10": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_10.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR11": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_11.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR2": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_2.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR3": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_3.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR4": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_4.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR41": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_1.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR42": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_2.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR43": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_3.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR44": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_4.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR45": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_5.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR46": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_6.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR47": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_4_7.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR6": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_6.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR7": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_7.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR8": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_8.jpg"
-    ],
-    "WEBSITELEEUKOPFACRYLICJAR9": [
-      "/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_9.jpg"
-    ],
     "WEBSITELEEUKOPFBLACKJAR1": [
       "/img/products/jars-and-tubes/website_leeukopf_black_jar_1.jpg"
     ],
     "WEBSITELEEUKOPFBLACKJAR2": [
       "/img/products/jars-and-tubes/website_leeukopf_black_jar_2.jpg"
-    ],
-    "WEBSITELEEUKOPFBLACKJAR4": [
-      "/img/products/jars-and-tubes/website_leeukopf_black_jar_4.jpg"
     ],
     "WEBSITELEEUKOPFCOLOREDJAR1": [
       "/img/products/jars-and-tubes/website_leeukopf_colored_jar_1.jpg"
@@ -9825,14 +9694,8 @@
     "WEBSITELEEUKOPFCOLOREDJAR17": [
       "/img/products/jars-and-tubes/website_leeukopf_colored_jar_1_7.jpg"
     ],
-    "WEBSITELEEUKOPFHEXAGONALJAR1": [
-      "/img/products/jars-and-tubes/website_leeukopf_hexagonal_jar_1.jpg"
-    ],
     "WEBSITELEEUKOPFWHITEJAR1": [
       "/img/products/jars-and-tubes/website_leeukopf_white_jar_1.jpg"
-    ],
-    "WEBSITELEEUKOPFWHITEJAR2": [
-      "/img/products/jars-and-tubes/website_leeukopf_white_jar_2.jpg"
     ],
     "LIQUIDPOLYGELCATEGORYCARDIMAGE": [
       "/img/products/liquid polygel/liquid-polygel-category-card-image.png"
@@ -9863,35 +9726,11 @@
     "NAILARTIMAGES1": [
       "/img/products/nail-art/Nail Art/nail-art-images (1).jpg"
     ],
-    "NAILARTIMAGES10": [
-      "/img/products/nail-art/Nail Art/nail-art-images (10).jpg"
-    ],
-    "NAILARTIMAGES11": [
-      "/img/products/nail-art/Nail Art/nail-art-images (11).jpg"
-    ],
-    "NAILARTIMAGES12": [
-      "/img/products/nail-art/Nail Art/nail-art-images (12).jpg"
-    ],
-    "NAILARTIMAGES13": [
-      "/img/products/nail-art/Nail Art/nail-art-images (13).jpg"
-    ],
-    "NAILARTIMAGES14": [
-      "/img/products/nail-art/Nail Art/nail-art-images (14).jpg"
-    ],
-    "NAILARTIMAGES15": [
-      "/img/products/nail-art/Nail Art/nail-art-images (15).jpg"
-    ],
     "NAILARTIMAGES16": [
       "/img/products/nail-art/Nail Art/nail-art-images (16).jpg"
     ],
-    "NAILARTIMAGES17": [
-      "/img/products/nail-art/Nail Art/nail-art-images (17).jpg"
-    ],
     "NAILARTIMAGES2": [
       "/img/products/nail-art/Nail Art/nail-art-images (2).jpg"
-    ],
-    "NAILARTIMAGES3": [
-      "/img/products/nail-art/Nail Art/nail-art-images (3).jpg"
     ],
     "NAILARTIMAGES4": [
       "/img/products/nail-art/Nail Art/nail-art-images (4).jpg"
@@ -9899,42 +9738,8 @@
     "NAILARTIMAGES5": [
       "/img/products/nail-art/Nail Art/nail-art-images (5).jpg"
     ],
-    "NAILARTIMAGES6": [
-      "/img/products/nail-art/Nail Art/nail-art-images (6).jpg"
-    ],
-    "NAILARTIMAGES7": [
-      "/img/products/nail-art/Nail Art/nail-art-images (7).jpg"
-    ],
     "NAILARTIMAGES8": [
       "/img/products/nail-art/Nail Art/nail-art-images (8).jpg"
-    ],
-    "NAILARTIMAGES9": [
-      "/img/products/nail-art/Nail Art/nail-art-images (9).jpg"
-    ],
-    "SOLIDMIRRORPOWDERS1": [
-      "/img/products/nail-art/Solid Mirror Powders/solid mirror powders (1).jpg"
-    ],
-    "SOLIDMIRRORPOWDERS2": [
-      "/img/products/nail-art/Solid Mirror Powders/solid mirror powders (2).jpg"
-    ],
-    "SOLIDMIRRORPOWDERS3": [
-      "/img/products/nail-art/Solid Mirror Powders/solid mirror powders (3).jpg"
-    ],
-    "SOLIDMIRRORPOWDERS4": [
-      "/img/products/nail-art/Solid Mirror Powders/solid mirror powders (4).jpg"
-    ],
-    "SOLIDMIRRORPOWDERS5": [
-      "/img/products/nail-art/Solid Mirror Powders/solid mirror powders (5).jpg"
-    ],
-    "SOLIDMIRRORPOWDERS6": [
-      "/img/products/nail-art/Solid Mirror Powders/solid mirror powders (6).jpg"
-    ],
-    "SOLIDMIRRORPOWDERS7": [
-      "/img/products/nail-art/Solid Mirror Powders/solid mirror powders (7).jpg"
-    ],
-    "SOLIDMIRRORCATEGORYCARD": [
-      "/img/products/nail-art/Solid Mirror Powders/solid-mirror-category-card.jpg",
-      "/img/products/nail-art/Solid Mirror Powders/webp/solid-mirror-category-card.webp"
     ],
     "BASECOATCATEGORYCARDIMAGE": [
       "/img/products/tops-and-bases/base-coat-category-card-image.png",
