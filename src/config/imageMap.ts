@@ -40,9 +40,9 @@ export const categoryHero: Record<string, string> = {
   // Builder Systems
   'builder-systems': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
   'builder-gels': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
-  'three-phase-builder': '/img/products/builder-systems/Builder Gels/3-phase-builder_gels_category_4.jpg',
-  'three-in-one-builder': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
-  'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/1-premium-builder-gels-category-card-image.jpg',
+  'three-phase-builder': '/img/products/builder-systems/3-phase-builder-gel/3-phase-builder-gel-category-hero-image.webp',
+  'three-in-one-builder': '/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gel-main-category-image.webp',
+  'premium-builder-gels': '/img/products/builder-systems/Premium Builder Gels/premium-builder-gel-hero-category-image.webp',
   'colour-builder-gels': '/img/products/builder-systems/Builder Gels/colour-builder_gels_category_1_2.jpg',
   'polygel-acrygel': '/img/products/builder-systems/Acrygel-Polygel/polygel_category_3.webp',
   'liquid-polygel': '/img/products/liquid polygel/liquid-polygel-category-card-image.png',
@@ -60,10 +60,10 @@ export const categoryHero: Record<string, string> = {
   'effects-top-coats': '/img/products/tops-and-bases/tops/Effects Top Coats/effect-tops-category-card.jpg',
   'superior-base-coat': '/img/products/tops-and-bases/Superior Base Coat/superior-base-coat-category-card-image.jpg',
   'classic-base': '/img/products/tops-and-bases/Bases/base-coat-category-card-image.png',
-  'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card.jpg',
+  'no-heat-spike-builder-gel': '/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-image.webp',
   'brush-on-builder': '/img/products/builder-systems/BIAB builder-in-a-bottle/BIAB-brush-on-builder-category-card-image.jpg',
   'biab-builder-in-a-bottle': '/img/products/builder-systems/BIAB builder-in-a-bottle/BIAB-brush-on-builder-category-card-image.jpg',
-  'thixotropic-gel': '/img/products/builder-systems/thixotropic-gel/thixotropic-gel-category-image.png',
+  'thixotropic-gel': '/img/products/builder-systems/thixotropic-gel/thixotropic-gl-hero-category-image.webp',
   
   // Primers & Liquids
   'primers-liquids': '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',
