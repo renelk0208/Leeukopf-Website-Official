@@ -14,6 +14,7 @@ function getAuthHashType(): string {
 export default function ClientPortalLoginPage() {
   const navigate = useNavigate();
   const { user, signIn, signUp, signInWithMagicLink, requestPasswordReset } = useAuth();
+  const [showRegistrationGate, setShowRegistrationGate] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -78,9 +79,8 @@ export default function ClientPortalLoginPage() {
   }, []);
 
   useEffect(() => {
-    // Always redirect to /portal - never use query params to avoid admin route hijacking
     if (user) {
-      navigate('/portal', { replace: true });
+      navigate('/portal');
     }
   }, [navigate, user]);
 
@@ -109,46 +109,14 @@ export default function ClientPortalLoginPage() {
 
     try {
       if (isSignUpMode) {
-        // Create Account is a fallback path - sign up and go straight to portal
         const normalizedEmail = email.trim().toLowerCase();
         await signUp(normalizedEmail, password);
         persistRememberedEmail(normalizedEmail);
-        // Don't redirect to pending-approval for clients; navigate directly to portal
-        navigate('/portal', { replace: true });
+        navigate(`/portal/pending-approval?email=${encodeURIComponent(normalizedEmail)}`);
       } else {
         const normalizedEmail = email.trim().toLowerCase();
-        try {
-          await signIn(normalizedEmail, password);
-          persistRememberedEmail(normalizedEmail);
-        } catch (signInError: unknown) {
-          // On invalid credentials, auto-provision the account for non-distributor clients
-          const signInMsg = signInError instanceof Error ? signInError.message.toLowerCase() : '';
-          const isInvalidCreds =
-            signInMsg.includes('invalid login credentials') ||
-            signInMsg.includes('invalid email or password') ||
-            signInMsg.includes('email not confirmed');
-
-          if (!isInvalidCreds) {
-            throw signInError;
-          }
-
-          // Auto-provision: create account then sign in immediately
-          try {
-            await signUp(normalizedEmail, password);
-          } catch (signUpError: unknown) {
-            // User already registered but password may differ — let signIn throw below
-            const signUpMsg = signUpError instanceof Error ? signUpError.message.toLowerCase() : '';
-            if (
-              !signUpMsg.includes('user already registered') &&
-              !signUpMsg.includes('already registered')
-            ) {
-              throw signUpError;
-            }
-          }
-
-          await signIn(normalizedEmail, password);
-          persistRememberedEmail(normalizedEmail);
-        }
+        await signIn(normalizedEmail, password);
+        persistRememberedEmail(normalizedEmail);
       }
     } catch (submitError: unknown) {
       setError(
@@ -274,6 +242,34 @@ export default function ClientPortalLoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10 sm:py-14">
+      {showRegistrationGate ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="w-full max-w-lg rounded-2xl border border-grey-card bg-white p-6 shadow-xl sm:p-8">
+            <h2 className="text-2xl font-bold text-grey-primary">Portal Access Requirements</h2>
+            <p className="mt-3 text-sm text-grey-secondary">
+              To access the B2B portal, your client registration form must be completed and submitted.
+            </p>
+            <p className="mt-2 text-sm text-grey-secondary">
+              New registrations are reviewed by Leeukopf before portal access is approved.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <Link
+                to="/client-registration"
+                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 font-semibold text-white transition hover:bg-primary/90"
+              >
+                Complete Registration Form
+              </Link>
+              <button
+                type="button"
+                onClick={() => setShowRegistrationGate(false)}
+                className="inline-flex items-center justify-center rounded-md border border-grey-card px-4 py-2 font-semibold text-grey-primary transition hover:bg-gray-50"
+              >
+                I have already submitted
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
       <div className="mx-auto max-w-xl rounded-2xl border border-grey-card bg-white p-6 shadow-sm sm:p-8">
         <div className="mb-5 text-center">
           <h1 className="text-3xl font-bold text-grey-primary">Leeukopf Client Portal</h1>
@@ -282,9 +278,18 @@ export default function ClientPortalLoginPage() {
         <h2 className="text-2xl font-bold text-grey-primary">{isSignUpMode ? 'Create account' : 'Sign in'}</h2>
         <p className="mt-1 text-sm text-grey-secondary">
           {isSignUpMode
-            ? 'Create a new account. You can sign in immediately after.'
-            : 'Enter your email and password to access the portal.'}
+            ? 'Create your login first. Your account is activated only after admin approval.'
+            : 'Use your approved client email and password.'}
         </p>
+        <div className="mt-4 rounded-md border border-primary-100 bg-primary-50 px-3 py-2 text-sm text-grey-primary">
+          <p className="font-semibold">Client flow:</p>
+          <ul className="mt-1 list-disc space-y-0.5 pl-5">
+            <li>Register your company.</li>
+            <li>Create your portal account here.</li>
+            <li>Wait for approval from Leeukopf.</li>
+            <li>Order stock after approval.</li>
+          </ul>
+        </div>
 
         {error ? (
           <div className="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
@@ -374,15 +379,12 @@ export default function ClientPortalLoginPage() {
               setIsSignUpMode((prev) => !prev);
               setError('');
             }}
-            className="font-medium text-grey-secondary hover:text-grey-primary"
+            className="font-medium text-primary hover:text-primary-700"
           >
-            {isSignUpMode ? 'Already have an account? Sign in' : 'Need to create a new account?'}
+            {isSignUpMode ? 'Already have an account? Sign in' : 'New client? Create account'}
           </button>
-          <Link to="/portal/register" className="font-medium text-grey-secondary hover:text-grey-primary">
+          <Link to="/portal/register" className="font-medium text-primary hover:text-primary-700">
             Submit company registration
-          </Link>
-          <Link to="/our-brands" className="font-medium text-grey-secondary hover:text-grey-primary">
-            Distributor inquiry
           </Link>
         </div>
       </div>
