@@ -59,6 +59,19 @@ export default function BiabBuilderInABottlePage() {
         { label: 'BIAB (Builder in a Bottle)' }
       ]}
     >
+      {/* Hero Image */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
+          <img
+            src="/img/products/builder-systems/BIAB builder-in-a-bottle/brush-on-builder-category-hero-image.webp"
+            alt="BIAB Builder in a Bottle"
+            width="1600"
+            height="400"
+            className="category-hero"
+          />
+        </div>
+      </div>
+
       {/* Hero Description */}
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">

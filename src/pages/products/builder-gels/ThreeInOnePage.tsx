@@ -32,7 +32,7 @@ export default function ThreeInOnePage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg"
+            src="/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gel-main-category-image.webp"
             alt="3-in-1 Builder Gels"
             width="1600"
             height="400"
