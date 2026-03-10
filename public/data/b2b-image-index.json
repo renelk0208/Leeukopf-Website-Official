@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-10T08:27:55.119Z",
-  "keys": 2902,
-  "totalImages": 5145,
+  "generatedAt": "2026-03-10T08:36:07.649Z",
+  "keys": 2903,
+  "totalImages": 5146,
   "byCode": {
     "LCCOVRBCLEAR": [
       "/img/b2b/bases/Cover rubber base/LC-COVRB-Clear.webp"
@@ -9889,6 +9889,9 @@
     "LCEXTRASTRENGTHBASE07": [
       "/img/b2b/tops-bases/Extra Strength Base Coat/LC-Extra_Strength_Base07.png",
       "/img/tops-bases/Extra Strength Base Coat/LC-Extra_Strength_Base07.png"
+    ],
+    "BUILDERGELSYSTEMSHEROIMAGE": [
+      "/img/polygel/builder-gel-systems-hero-image.webp"
     ],
     "POLYGELBABYBLUECOLOR": [
       "/img/polygel/polygel_baby_blue_color.webp"
