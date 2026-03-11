@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { b2bCategories } from "../config/categories";
 import { useB2BCart } from "../store/B2BCartContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 type B2BLayoutProps = {
   children: ReactNode;
@@ -9,8 +10,17 @@ type B2BLayoutProps = {
 
 export default function B2BLayout({ children }: B2BLayoutProps) {
   const { getTotals, buyerType, clearBuyerType, clearCart } = useB2BCart();
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
   const totals = getTotals();
   const [showChangeBuyerModal, setShowChangeBuyerModal] = useState(false);
+
+  const handleLogout = async () => {
+    clearCart();
+    clearBuyerType();
+    await signOut();
+    navigate("/login");
+  };
 
   const buyerLabel = buyerType === "finished_goods" ? "Finished Goods" : buyerType === "bulk" ? "Bulk" : null;
 
@@ -145,6 +155,15 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
                   ) : null}
                 </NavLink>
             ))}
+            <div className="mt-2 border-t border-grey-card pt-2">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center rounded-md px-3 py-2 text-sm font-medium text-grey-secondary hover:bg-red-50 hover:text-red-600 transition-colors"
+              >
+                Log out
+              </button>
+            </div>
           </nav>
         </aside>
 
