@@ -86,7 +86,7 @@ function GalleryModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="gallery-title"
-      className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[70] bg-black/95 flex flex-col items-center justify-center"
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
