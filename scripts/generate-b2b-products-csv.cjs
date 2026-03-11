@@ -159,7 +159,7 @@ function inferCategoryData(relativePath) {
   }
 
   if (normalizedPath.startsWith('solid cream/') || normalizedPath.startsWith('solid-cream/')) {
-    return { category: 'Gel Polish', subcategory: 'Cream Collection', size: '10', unit: 'ml', moq: '6' }
+    return { category: 'Gel Polish', subcategory: 'Cream Collection', size: '10', unit: 'ml', moq: '200' }
   }
 
   return null
