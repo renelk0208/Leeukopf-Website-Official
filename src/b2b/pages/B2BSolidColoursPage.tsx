@@ -31,6 +31,11 @@ const solidImagePrefixes = [
   "/img/b2b/solid-colours/",
   "/img/b2b/french-colours/",
   "/img/b2b/glitters/",
+  "/img/b2b/cat eyes/",
+  "/img/b2b/cat-eyes/",
+  "/img/b2b/platinum/",
+  "/img/b2b/solid cream/",
+  "/img/b2b/solid-cream/",
 ];
 
 function parseCSVLine(line: string): string[] {
@@ -77,6 +82,9 @@ function getCategoryScopedExplicitImage(value: string): string {
   if (normalized.startsWith("/img/b2b/solid-colours/")) return normalized;
   if (normalized.startsWith("/img/b2b/french-colours/")) return normalized;
   if (normalized.startsWith("/img/b2b/glitters/")) return normalized;
+  if (normalized.startsWith("/img/b2b/cat eyes/") || normalized.startsWith("/img/b2b/cat-eyes/")) return normalized;
+  if (normalized.startsWith("/img/b2b/platinum/")) return normalized;
+  if (normalized.startsWith("/img/b2b/solid cream/") || normalized.startsWith("/img/b2b/solid-cream/")) return normalized;
   return "";
 }
 

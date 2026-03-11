@@ -150,6 +150,18 @@ function inferCategoryData(relativePath) {
     return { category: 'Gel Polish', subcategory: 'Glitters', size: '10', unit: 'ml', moq: '6' }
   }
 
+  if (normalizedPath.startsWith('cat eyes/') || normalizedPath.startsWith('cat-eyes/') || normalizedPath.startsWith('cat eye/')) {
+    return { category: 'Gel Polish', subcategory: 'Cat Eye', size: '10', unit: 'ml', moq: '6' }
+  }
+
+  if (normalizedPath.startsWith('platinum/')) {
+    return { category: 'Gel Polish', subcategory: 'Platinum', size: '10', unit: 'ml', moq: '6' }
+  }
+
+  if (normalizedPath.startsWith('solid cream/') || normalizedPath.startsWith('solid-cream/')) {
+    return { category: 'Gel Polish', subcategory: 'Cream Collection', size: '10', unit: 'ml', moq: '6' }
+  }
+
   return null
 }
 
@@ -234,7 +246,7 @@ function buildGeneratedRows() {
     const isDescriptivePolygel = relFromB2BPosix.startsWith('polygels/polygel/')
     const isDescriptiveTopsBase = relFromB2BPosix.startsWith('tops-bases/') || relFromB2BPosix.startsWith('bases/') || relFromB2BPosix.startsWith('brush-on-builder/')
     const isDescriptiveBuilderGel = relFromB2BPosix.startsWith('builder-gels/')
-    const isDescriptiveColour = relFromB2BPosix.startsWith('french-colours/') || relFromB2BPosix.startsWith('french-collection/') || relFromB2BPosix.startsWith('glitters/')
+    const isDescriptiveColour = relFromB2BPosix.startsWith('french-colours/') || relFromB2BPosix.startsWith('french-collection/') || relFromB2BPosix.startsWith('glitters/') || relFromB2BPosix.startsWith('cat eyes/') || relFromB2BPosix.startsWith('cat-eyes/') || relFromB2BPosix.startsWith('cat eye/') || relFromB2BPosix.startsWith('platinum/') || relFromB2BPosix.startsWith('solid cream/') || relFromB2BPosix.startsWith('solid-cream/')
     const code = normalizeCodeFromFileName(absolutePath, !isDescriptivePolygel && !isDescriptiveTopsBase && !isDescriptiveBuilderGel && !isDescriptiveColour)
     if (!code) return
 
