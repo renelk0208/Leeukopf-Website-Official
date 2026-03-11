@@ -1,4 +1,5 @@
-import { useMemo, useState, type SyntheticEvent } from "react";
+import { useMemo, useState, useEffect, type SyntheticEvent } from "react";
+import { X } from "lucide-react";
 
 export type B2BUniformShadeItem = {
   id: string;
@@ -35,6 +36,16 @@ export default function B2BUniformShadeGrid({
 }: B2BUniformShadeGridProps) {
   const [search, setSearch] = useState("");
   const [hiddenItemIds, setHiddenItemIds] = useState<Record<string, true>>({});
+  const [lightboxItem, setLightboxItem] = useState<{ src: string; alt: string; code: string } | null>(null);
+
+  useEffect(() => {
+    if (!lightboxItem) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setLightboxItem(null); };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
+  }, [lightboxItem]);
 
   const filteredItems = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -99,11 +110,16 @@ export default function B2BUniformShadeGrid({
 
                   return (
                     <>
-                      <div className="flex h-40 items-center justify-center rounded-xl bg-grey-100 p-2">
+                      <button
+                        type="button"
+                        aria-label={`Enlarge image for ${item.code}`}
+                        onClick={() => setLightboxItem({ src: item.imageSrc, alt: item.imageAlt, code: item.code })}
+                        className="group relative flex h-40 w-full cursor-zoom-in items-center justify-center rounded-xl bg-grey-100 p-2 hover:bg-grey-200 transition-colors"
+                      >
                         <img
                           src={item.imageSrc}
                           alt={item.imageAlt}
-                          className="max-h-full max-w-full object-contain"
+                          className="max-h-full max-w-full object-contain transition-transform duration-200 group-hover:scale-105"
                           onError={(event) => {
                             item.onImageError?.(event);
                             if (!event.currentTarget.src.endsWith("/img/placeholders/product-missing.svg")) return;
@@ -116,7 +132,10 @@ export default function B2BUniformShadeGrid({
                             });
                           }}
                         />
-                      </div>
+                        <span className="pointer-events-none absolute right-2 top-2 rounded-full bg-black/30 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                        </span>
+                      </button>
 
                       <div className="mt-3 space-y-2">
                         <p className="text-sm font-semibold leading-tight text-grey-primary break-words [overflow-wrap:anywhere]">{item.code}</p>
@@ -204,6 +223,32 @@ export default function B2BUniformShadeGrid({
           </div>
         </aside>
       </div>
+      {lightboxItem ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Enlarged image: ${lightboxItem.code}`}
+          className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-black/90"
+          onClick={() => setLightboxItem(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setLightboxItem(null)}
+            className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+            aria-label="Close"
+          >
+            <X size={22} />
+          </button>
+          <div className="flex max-h-[85vh] max-w-[85vw] flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={lightboxItem.src}
+              alt={lightboxItem.alt}
+              className="max-h-[78vh] max-w-full rounded-xl object-contain shadow-2xl"
+            />
+            <p className="text-sm font-semibold text-white/90">{lightboxItem.code}</p>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
