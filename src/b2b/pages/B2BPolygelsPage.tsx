@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { AlertTriangle } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
@@ -358,9 +359,12 @@ export default function B2BPolygelsPage() {
       )}
 
       {!isLiquidRoute && buyerType === "finished_goods" && (
-        <section className="rounded-lg border border-grey-card bg-white p-4">
-          <h3 className="text-lg font-semibold text-grey-primary">Tube Configuration</h3>
-          <div className="mt-3 grid gap-4 md:grid-cols-3">
+        <section className="rounded-lg border-2 border-orange-400 bg-white p-4 shadow-sm">
+          <div className="-mx-4 -mt-4 mb-4 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-bold uppercase tracking-wide text-white">Action Required — Tube Configuration</span>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
             <label className="text-sm font-medium text-grey-primary">
               Tube colour
               <select

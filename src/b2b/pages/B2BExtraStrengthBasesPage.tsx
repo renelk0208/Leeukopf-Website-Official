@@ -271,7 +271,9 @@ export default function B2BExtraStrengthBasesPage() {
         name: product.product_name || "Base shade",
         family: product.subcategory || "Base Coats",
         moq,
-        quantityValue: draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? ""),
+        quantityValue: draftQty[product.code] !== undefined
+          ? draftQty[product.code]
+          : String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : (Number.parseInt(product.moq || "25", 10) || 25)),
         imageSrc: image,
         imageAlt: product.product_name || product.code || "Base",
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,

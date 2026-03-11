@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useB2BCart } from "../store/B2BCartContext";
 import type { BottleBranding, BottleColor, BottleSize, BrushType, CartItem, JarPackaging, JarSize } from "../types";
@@ -440,9 +441,10 @@ export default function B2BCheckoutPage() {
       )}
 
       {requiresBottlePackaging ? (
-        <section className="rounded-lg border border-grey-card p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-grey-primary">Bottle Packaging (Required)</h3>
+        <section className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+          <div className="-mx-4 -mt-4 mb-4 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-bold uppercase tracking-wide text-white">Action Required — Bottle Packaging</span>
           </div>
 
           {hasSmallBottleItems && (
@@ -547,9 +549,10 @@ export default function B2BCheckoutPage() {
       ) : null}
 
       {requiresJarPackaging ? (
-        <section className="rounded-lg border border-grey-card p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-grey-primary">Jar Packaging — Builder Gels (Required)</h3>
+        <section className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+          <div className="-mx-4 -mt-4 mb-4 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-bold uppercase tracking-wide text-white">Action Required — Jar Packaging</span>
           </div>
           <p className="mb-3 text-sm text-grey-secondary">Builder gels are filled into jars. Select your preferred jar size and colour.</p>
 

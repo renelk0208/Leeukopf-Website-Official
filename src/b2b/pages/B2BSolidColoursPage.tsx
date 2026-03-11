@@ -329,7 +329,9 @@ export default function B2BSolidColoursPage() {
         name: product.product_name || product.code,
         family: product.subcategory || toRouteLabel(routeSuffix),
         moq,
-        quantityValue: draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? ""),
+        quantityValue: draftQty[product.code] !== undefined
+          ? draftQty[product.code]
+          : String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : (buyerType === "bulk" && !isCreamCollection ? 1 : (Number.parseInt(product.moq || "25", 10) || 25))),
         imageSrc: image,
         imageAlt: product.product_name || product.code,
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
@@ -414,6 +416,10 @@ export default function B2BSolidColoursPage() {
       );
     }
 
+    if (isColourFamilyRoute) {
+      return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" familyFilter={colourFamilyRoutes[routeSuffix]} />;
+    }
+
     return (
       <div className="space-y-4">
         <div>
@@ -430,5 +436,5 @@ export default function B2BSolidColoursPage() {
     );
   }
 
-  return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" familyFilter={isColourFamilyRoute ? colourFamilyRoutes[routeSuffix] : undefined} />;
+  return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" />;
 }
