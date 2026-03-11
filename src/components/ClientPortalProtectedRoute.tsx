@@ -93,7 +93,14 @@ export default function ClientPortalProtectedRoute({ children }: ClientPortalPro
       } catch (error) {
         console.error('Portal approval check failed:', error);
 
-        const errorMessage = error instanceof Error ? error.message.toLowerCase() : '';
+        // PostgrestError is a plain object (not an Error instance) — check .message directly
+        const rawMessage =
+          error instanceof Error
+            ? error.message
+            : typeof error === 'object' && error !== null && 'message' in error
+              ? String((error as { message: unknown }).message)
+              : String(error);
+        const errorMessage = rawMessage.toLowerCase();
         const approvedClientsTableMissing =
           errorMessage.includes("could not find the table 'public.approved_clients'") ||
           errorMessage.includes('approved_clients');
