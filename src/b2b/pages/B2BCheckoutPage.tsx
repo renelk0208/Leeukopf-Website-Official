@@ -100,6 +100,7 @@ export default function B2BCheckoutPage() {
   const navigate = useNavigate();
   const {
     items,
+    buyerType,
     bottlePackaging,
     jarPackaging,
     setBottlePackaging,
@@ -212,8 +213,9 @@ export default function B2BCheckoutPage() {
   const hasQuantityError = items.some((item) => item.quantity <= 0);
   const hasBuilderGelItems = items.some((item) => item.category === "BUILDER_GEL");
   const hasBottleItems = items.some((item) => item.category !== "BUILDER_GEL" && item.category !== "POLYGEL");
-  const requiresBottlePackaging = hasBottleItems;
-  const requiresJarPackaging = hasBuilderGelItems;
+  const hasSmallBottleItems = items.some((item) => item.category === "BASE" || item.category === "TOP");
+  const requiresBottlePackaging = hasBottleItems && buyerType === "finished_goods";
+  const requiresJarPackaging = hasBuilderGelItems && buyerType === "finished_goods";
   const isPackagingSelected =
     (!requiresBottlePackaging || bottlePackaging !== null) &&
     (!requiresJarPackaging || jarPackaging !== null);
@@ -442,6 +444,12 @@ export default function B2BCheckoutPage() {
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-grey-primary">Bottle Packaging (Required)</h3>
           </div>
+
+          {hasSmallBottleItems && (
+            <div className="mb-4 rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+              <span className="font-semibold">Note:</span> Top coats, bases (classic, rubber, extra strength) and bonders are typically filled into <span className="font-semibold">15ml bottles</span>. Please select 15ml below for these products.
+            </div>
+          )}
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>

@@ -26,6 +26,22 @@ const routeKeywords: Record<string, string[]> = {
   "cream-collection": ["cream"],
 };
 
+const colourFamilyRoutes: Record<string, string> = {
+  blues: "Blues",
+  greens: "Greens",
+  reds: "Reds",
+  pinks: "Pinks",
+  purples: "Purples",
+  oranges: "Oranges",
+  yellows: "Yellows",
+  teals: "Teals",
+  browns: "Browns",
+  "nudes-beiges": "Nudes/Beiges",
+  whites: "Whites",
+  blacks: "Blacks",
+  greys: "Greys",
+};
+
 const solidImagePrefixes = [
   "/img/solid-colour/",
   "/img/products/gel_polishes/",
@@ -172,6 +188,7 @@ export default function B2BSolidColoursPage() {
   const routeSuffix = normalizedPath.replace("/b2b/solid-colours", "").replace(/^\/+/, "");
   const isSolidColoursRoute = routeSuffix.length === 0 || routeSuffix === "solid-colours";
   const isKnownColourSubcategoryRoute = Boolean(routeKeywords[routeSuffix]);
+  const isColourFamilyRoute = Boolean(colourFamilyRoutes[routeSuffix]);
   const isCreamCollection = routeSuffix === "cream-collection";
 
   // Pricing: use the route label as subcategory key (matches b2b_price_tiers table)
@@ -194,7 +211,7 @@ export default function B2BSolidColoursPage() {
   }, []);
 
   useEffect(() => {
-    if (isSolidColoursRoute || !isKnownColourSubcategoryRoute) {
+    if (isSolidColoursRoute || isColourFamilyRoute || !isKnownColourSubcategoryRoute) {
       setProducts([]);
       return;
     }
@@ -236,7 +253,7 @@ export default function B2BSolidColoursPage() {
         setImageAttemptByCode({});
       })
       .catch(() => setProducts([]));
-  }, [isKnownColourSubcategoryRoute, isSolidColoursRoute, routeSuffix]);
+  }, [isKnownColourSubcategoryRoute, isColourFamilyRoute, isSolidColoursRoute, routeSuffix]);
 
   const handleSelectionSync = useCallback((selectedItems: InternalSolidColourSyncItem[]) => {
     const normalizedSelectedItems = selectedItems.map((item) => {
@@ -413,5 +430,5 @@ export default function B2BSolidColoursPage() {
     );
   }
 
-  return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" />;
+  return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" familyFilter={isColourFamilyRoute ? colourFamilyRoutes[routeSuffix] : undefined} />;
 }

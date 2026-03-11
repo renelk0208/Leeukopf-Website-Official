@@ -166,6 +166,7 @@ type InternalSolidColourGridProps = {
   onSelectionSync?: (items: InternalSolidColourSyncItem[]) => void;
   disableClientInfoLock?: boolean;
   viewMode?: "all" | "client-only" | "shades-only";
+  familyFilter?: string;
 };
 
 type ShadeTileProps = {
@@ -978,6 +979,7 @@ export default function InternalSolidColourGrid({
   onSelectionSync,
   disableClientInfoLock = false,
   viewMode = "all",
+  familyFilter,
 }: InternalSolidColourGridProps = {}) {
   const { user } = useAuth();
   const [rows, setRows] = useState<Row[]>([]);
@@ -1332,6 +1334,10 @@ export default function InternalSolidColourGrid({
     const query = q.trim().toLowerCase();
     let out = rows;
 
+    if (familyFilter) {
+      out = out.filter((r) => getRowFamily(r) === familyFilter);
+    }
+
     if (query) {
       out = out.filter((r) => {
         const sku = (r["Internal_SKU"] || "").toLowerCase();
@@ -1349,7 +1355,7 @@ export default function InternalSolidColourGrid({
     }
 
     return out;
-  }, [rows, q, onlyMissing, imgStatus]);
+  }, [rows, q, onlyMissing, imgStatus, familyFilter]);
 
   const rowById = useMemo(() => {
     const map = new Map<string, Row>();

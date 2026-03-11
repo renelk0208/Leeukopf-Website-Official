@@ -351,7 +351,13 @@ export default function B2BPolygelsPage() {
         </p>
       </div>
 
-      {!isLiquidRoute && (
+      {!isLiquidRoute && buyerType !== "finished_goods" && (
+        <div className="rounded-md border border-grey-card bg-grey-50 p-3 text-sm text-grey-secondary">
+          Bulk polygel is supplied as raw material — no tube configuration is required.
+        </div>
+      )}
+
+      {!isLiquidRoute && buyerType === "finished_goods" && (
         <section className="rounded-lg border border-grey-card bg-white p-4">
           <h3 className="text-lg font-semibold text-grey-primary">Tube Configuration</h3>
           <div className="mt-3 grid gap-4 md:grid-cols-3">
