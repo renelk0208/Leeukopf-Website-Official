@@ -331,7 +331,7 @@ export default function B2BSolidColoursPage() {
       return (
         <B2BUniformShadeGrid
           title={toRouteLabel(routeSuffix)}
-          description="Only products assigned to this collection are shown here."
+          description=""
           items={uniformItems}
           validationMessage={validationMessage}
           onQuantityChange={(id, value) => {

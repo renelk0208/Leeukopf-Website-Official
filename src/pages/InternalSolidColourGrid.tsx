@@ -2032,8 +2032,6 @@ export default function InternalSolidColourGrid({
 
       <div className={`mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${showShadeSection ? "" : "hidden"}`}>
         <div>
-          <h1 className="text-2xl font-semibold">Internal Solid Colour Grid (1200)</h1>
-          <p className="text-sm text-grey-secondary">Not linked anywhere — internal testing only.</p>
         </div>
 
         <input

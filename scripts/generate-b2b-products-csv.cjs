@@ -139,23 +139,23 @@ function inferCategoryData(relativePath) {
   }
 
   if (normalizedPath.startsWith('solid-colours/')) {
-    return { category: 'Gel Polish', subcategory: 'Solid Colours', size: '10', unit: 'ml', moq: '6' }
+    return { category: 'Gel Polish', subcategory: 'Solid Colours', size: '10', unit: 'ml', moq: '5' }
   }
 
   if (normalizedPath.startsWith('french-colours/') || normalizedPath.startsWith('french-collection/')) {
-    return { category: 'Gel Polish', subcategory: 'French Collection', size: '10', unit: 'ml', moq: '6' }
+    return { category: 'Gel Polish', subcategory: 'French Collection', size: '10', unit: 'ml', moq: '5' }
   }
 
   if (normalizedPath.startsWith('glitters/')) {
-    return { category: 'Gel Polish', subcategory: 'Glitters', size: '10', unit: 'ml', moq: '6' }
+    return { category: 'Gel Polish', subcategory: 'Glitters', size: '10', unit: 'ml', moq: '5' }
   }
 
   if (normalizedPath.startsWith('cat eyes/') || normalizedPath.startsWith('cat-eyes/') || normalizedPath.startsWith('cat eye/')) {
-    return { category: 'Gel Polish', subcategory: 'Cat Eye', size: '10', unit: 'ml', moq: '6' }
+    return { category: 'Gel Polish', subcategory: 'Cat Eye', size: '10', unit: 'ml', moq: '5' }
   }
 
   if (normalizedPath.startsWith('platinum/')) {
-    return { category: 'Gel Polish', subcategory: 'Platinum', size: '10', unit: 'ml', moq: '6' }
+    return { category: 'Gel Polish', subcategory: 'Platinum', size: '10', unit: 'ml', moq: '5' }
   }
 
   if (normalizedPath.startsWith('solid cream/') || normalizedPath.startsWith('solid-cream/')) {

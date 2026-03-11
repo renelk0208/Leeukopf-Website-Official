@@ -5,15 +5,29 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useState,
   type ReactNode,
 } from "react";
-import type { BottlePackaging, CartItem, CartTotals, JarPackaging } from "../types";
+import type { BottlePackaging, BuyerType, CartItem, CartTotals, JarPackaging } from "../types";
 
 type B2BCartState = {
   items: CartItem[];
   bottlePackaging: BottlePackaging | null;
   jarPackaging: JarPackaging | null;
 };
+
+const B2B_BUYER_TYPE_STORAGE_KEY = "leeukopf_b2b_buyer_type_v1";
+
+function readStoredBuyerType(): BuyerType | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(B2B_BUYER_TYPE_STORAGE_KEY);
+    if (raw === "finished_goods" || raw === "bulk") return raw;
+  } catch {
+    // ignore
+  }
+  return null;
+}
 
 type AddOrUpdatePayload = CartItem;
 
@@ -31,6 +45,7 @@ type B2BCartContextValue = {
   items: CartItem[];
   bottlePackaging: BottlePackaging | null;
   jarPackaging: JarPackaging | null;
+  buyerType: BuyerType | null;
   addOrUpdateItem: (item: CartItem) => void;
   removeItem: (category: CartItem["category"], code: string) => void;
   setQuantity: (category: CartItem["category"], code: string, quantity: number) => void;
@@ -38,6 +53,7 @@ type B2BCartContextValue = {
   clearBottlePackaging: () => void;
   setJarPackaging: (packaging: JarPackaging) => void;
   clearJarPackaging: () => void;
+  setBuyerType: (type: BuyerType) => void;
   clearCart: () => void;
   getTotals: () => CartTotals;
   getFilledUnitsTotal: () => number;
@@ -226,6 +242,16 @@ const B2BCartContext = createContext<B2BCartContextValue | null>(null);
 
 export function B2BCartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, readStoredState);
+  const [buyerType, setBuyerTypeState] = useState<BuyerType | null>(readStoredBuyerType);
+
+  const setBuyerType = useCallback((type: BuyerType) => {
+    setBuyerTypeState(type);
+    try {
+      window.localStorage.setItem(B2B_BUYER_TYPE_STORAGE_KEY, type);
+    } catch {
+      // ignore
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -296,6 +322,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       items: state.items,
       bottlePackaging: state.bottlePackaging,
       jarPackaging: state.jarPackaging,
+      buyerType,
       addOrUpdateItem,
       removeItem,
       setQuantity,
@@ -303,6 +330,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       clearBottlePackaging,
       setJarPackaging,
       clearJarPackaging,
+      setBuyerType,
       clearCart,
       getTotals,
       getFilledUnitsTotal,
@@ -313,6 +341,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       state.items,
       state.bottlePackaging,
       state.jarPackaging,
+      buyerType,
       addOrUpdateItem,
       removeItem,
       setQuantity,
@@ -320,6 +349,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       clearBottlePackaging,
       setJarPackaging,
       clearJarPackaging,
+      setBuyerType,
       clearCart,
       getTotals,
       getFilledUnitsTotal,

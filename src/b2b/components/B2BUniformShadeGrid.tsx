@@ -17,7 +17,7 @@ export type B2BUniformShadeItem = {
 
 type B2BUniformShadeGridProps = {
   title: string;
-  description: string;
+  description?: string;
   items: B2BUniformShadeItem[];
   validationMessage?: string;
   onQuantityChange: (id: string, value: string) => void;
@@ -76,7 +76,7 @@ export default function B2BUniformShadeGrid({
     <div className="space-y-4">
       <div>
         <h2 className="text-2xl font-bold text-grey-primary">{title}</h2>
-        <p className="mt-1 text-sm text-grey-secondary">{description}</p>
+        {description ? <p className="mt-1 text-sm text-grey-secondary">{description}</p> : null}
       </div>
 
       {validationMessage ? (

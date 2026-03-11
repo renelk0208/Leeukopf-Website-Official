@@ -33,13 +33,6 @@ const BULK_PRODUCTS: BulkProduct[] = [
     alt: '1 kg black flask for bulk gel products'
   },
   {
-    id: 'bulk-500g-flask',
-    name: '500 g Flask',
-    description: 'Ideal for pilot launches, training centres or smaller production runs with professional volumes.',
-    src: '/img/private-label/bulk/bulk-500g-flask.jpg',
-    alt: '500 g black flask for bulk nail products'
-  },
-  {
     id: 'bulk-1kg-bucket',
     name: '1 kg Bucket',
     description: 'Compact, easy-to-store option for premium gels supplied to salons, academies and labs.',

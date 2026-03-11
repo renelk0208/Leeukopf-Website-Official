@@ -7,6 +7,8 @@ export type B2BCategory =
   | "BASE"
   | "OTHER";
 
+export type BuyerType = "finished_goods" | "bulk";
+
 export type CartUnitType = "PCS" | "KG";
 
 export type BottleBranding = "PRE_PRINTED" | "LABELS";

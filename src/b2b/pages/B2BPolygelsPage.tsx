@@ -400,8 +400,8 @@ export default function B2BPolygelsPage() {
         title={isLiquidRoute ? "Liquid Polygels" : "Polygels"}
         description={
           isLiquidRoute
-            ? "Uniform product layout with shared colour chart panel for Liquid Polygel."
-            : "Uniform product layout with shared colour chart panel for Polygel."
+            ? ""
+            : ""
         }
         items={uniformItems}
         validationMessage={validationMessage}

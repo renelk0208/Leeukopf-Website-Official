@@ -14,10 +14,11 @@ type CsvProduct = {
   active: string;
 };
 
-type BaseRouteMode = "ALL" | "EXTRA_STRENGTH" | "CLASSIC" | "RUBBER";
+type BaseRouteMode = "ALL" | "EXTRA_STRENGTH" | "CLASSIC" | "RUBBER" | "TOP_COAT";
 
 function getBaseRouteMode(pathname: string): BaseRouteMode {
   const normalized = pathname.toLowerCase();
+  if (normalized.includes("/top-coat")) return "TOP_COAT";
   if (normalized.includes("/classic-base")) return "CLASSIC";
   if (normalized.includes("/rubber-bases")) return "RUBBER";
   if (normalized.includes("/extra-strength-bases")) return "EXTRA_STRENGTH";
@@ -26,6 +27,8 @@ function getBaseRouteMode(pathname: string): BaseRouteMode {
 
 function getBasePageTitle(mode: BaseRouteMode): string {
   switch (mode) {
+    case "TOP_COAT":
+      return "Top Coat";
     case "CLASSIC":
       return "Classic Bases";
     case "RUBBER":
@@ -119,7 +122,13 @@ function isAnyBase(item: CsvProduct): boolean {
   return joined.includes("base");
 }
 
+function isTopCoat(item: CsvProduct): boolean {
+  const joined = `${item.category} ${item.subcategory} ${item.product_name} ${item.code}`.toLowerCase();
+  return joined.includes("top") && joined.includes("coat");
+}
+
 function matchesBaseRoute(item: CsvProduct, mode: BaseRouteMode): boolean {
+  if (mode === "TOP_COAT") return isTopCoat(item);
   if (mode === "EXTRA_STRENGTH") return isExtraStrengthBase(item);
   if (mode === "CLASSIC") return isClassicBase(item);
   if (mode === "RUBBER") return isRubberBase(item);
@@ -275,7 +284,7 @@ export default function B2BExtraStrengthBasesPage() {
   return (
     <B2BUniformShadeGrid
       title={getBasePageTitle(routeMode)}
-      description="Uniform product layout with shared colour chart panel."
+      description=""
       items={uniformItems}
       validationMessage={validationMessage}
       onQuantityChange={(id, value) => {

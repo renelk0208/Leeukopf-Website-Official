@@ -335,7 +335,7 @@ export default function B2BBuilderGelsPage() {
 
       <B2BUniformShadeGrid
         title={getBuilderPageTitle(routeMode)}
-        description="Uniform product layout with shared colour chart panel."
+        description=""
         items={uniformItems}
         validationMessage={validationMessage}
         onQuantityChange={(id, value) => {
