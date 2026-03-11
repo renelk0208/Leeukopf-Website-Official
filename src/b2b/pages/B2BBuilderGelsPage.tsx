@@ -93,7 +93,8 @@ function getCategoryScopedExplicitImage(value: string): string {
   const normalized = normalizeImagePath(value);
   if (!normalized) return "";
   if (/^https?:\/\//i.test(normalized)) return "";
-  return normalized.startsWith("/img/builder-gels/") || normalized.startsWith("/img/brush-on-builder/")
+  return normalized.startsWith("/img/builder-gels/") || normalized.startsWith("/img/brush-on-builder/") ||
+    normalized.startsWith("/img/b2b/builder-gels/") || normalized.startsWith("/img/b2b/brush-on-builder/")
     ? normalized
     : "";
 }
@@ -130,9 +131,14 @@ function getImageCandidates(product: CsvProduct): string[] {
   return Array.from(new Set([explicitImage, ...byCode].filter(Boolean)));
 }
 
-const builderImagePrefixes = ["/img/builder-gels/", "/img/brush-on-builder/"];
+const builderImagePrefixes = [
+  "/img/builder-gels/",
+  "/img/brush-on-builder/",
+  "/img/b2b/builder-gels/",
+  "/img/b2b/brush-on-builder/",
+];
 
-type BuilderRouteMode = "ALL" | "ACRYLICS" | "THREE_IN_ONE" | "FIBREGLASS" | "BIAB";
+type BuilderRouteMode = "ALL" | "ACRYLICS" | "THREE_IN_ONE" | "FIBREGLASS" | "BIAB" | "COLOUR_BUILDER" | "MASTER_BUILDER" | "NO_HEAT" | "THIXOTROPIC";
 
 function getBuilderRouteMode(pathname: string): BuilderRouteMode {
   const normalized = pathname.toLowerCase();
@@ -140,21 +146,24 @@ function getBuilderRouteMode(pathname: string): BuilderRouteMode {
   if (normalized.includes("/3-in-1-builder-gels")) return "THREE_IN_ONE";
   if (normalized.includes("/3-in-1-fibreglass-gel")) return "FIBREGLASS";
   if (normalized.includes("/biab")) return "BIAB";
+  if (normalized.includes("/colour-builder-gel")) return "COLOUR_BUILDER";
+  if (normalized.includes("/master-builder-gels")) return "MASTER_BUILDER";
+  if (normalized.includes("/no-heat-builder")) return "NO_HEAT";
+  if (normalized.includes("/thixotropic-gel")) return "THIXOTROPIC";
   return "ALL";
 }
 
 function getBuilderPageTitle(mode: BuilderRouteMode): string {
   switch (mode) {
-    case "ACRYLICS":
-      return "Builder Gels · Acrylics";
-    case "THREE_IN_ONE":
-      return "Builder Gels · 3-in-1 Builder Gels";
-    case "FIBREGLASS":
-      return "Builder Gels · 3-in-1 Fibreglass Gel";
-    case "BIAB":
-      return "Builder Gels · BIAB";
-    default:
-      return "Builder Gels";
+    case "ACRYLICS": return "Builder Gels · Acrylics";
+    case "THREE_IN_ONE": return "Builder Gels · 3-in-1 Builder Gels";
+    case "FIBREGLASS": return "Builder Gels · 3-in-1 Fibreglass Gel";
+    case "BIAB": return "Builder Gels · BIAB";
+    case "COLOUR_BUILDER": return "Builder Gels · Colour Builder Gel";
+    case "MASTER_BUILDER": return "Builder Gels · Master Builder Gels";
+    case "NO_HEAT": return "Builder Gels · No Heat Builder";
+    case "THIXOTROPIC": return "Builder Gels · Thixotropic Gel";
+    default: return "Builder Gels";
   }
 }
 
@@ -164,15 +173,19 @@ function getBuilderSearchBlob(item: Pick<CsvProduct, "category" | "subcategory" 
 
 function isBuilderGelByRoute(item: CsvProduct, mode: BuilderRouteMode): boolean {
   const blob = getBuilderSearchBlob(item);
-  if (!blob.includes("builder") && !blob.includes("biab") && !blob.includes("fiberglass") && !blob.includes("fibreglass") && !blob.includes("acrylic")) {
+  if (!blob.includes("builder") && !blob.includes("biab") && !blob.includes("fiberglass") && !blob.includes("fibreglass") && !blob.includes("acrylic") && !blob.includes("thixotropic")) {
     return false;
   }
 
   if (mode === "ALL") return item.category.toLowerCase() === "builder gel";
   if (mode === "ACRYLICS") return blob.includes("acrylic");
-  if (mode === "THREE_IN_ONE") return blob.includes("3-in-1") || blob.includes("3 in 1");
+  if (mode === "THREE_IN_ONE") return item.subcategory?.toLowerCase() === "3-in-1";
   if (mode === "FIBREGLASS") return blob.includes("fiberglass") || blob.includes("fibreglass") || blob.includes("fiber glass");
   if (mode === "BIAB") return blob.includes("biab") || blob.includes("builder in a bottle");
+  if (mode === "COLOUR_BUILDER") return item.subcategory?.toLowerCase() === "colour builder gel";
+  if (mode === "MASTER_BUILDER") return item.subcategory?.toLowerCase() === "master builder gels";
+  if (mode === "NO_HEAT") return item.subcategory?.toLowerCase() === "no heat builder";
+  if (mode === "THIXOTROPIC") return item.subcategory?.toLowerCase() === "thixotropic gel";
 
   return false;
 }

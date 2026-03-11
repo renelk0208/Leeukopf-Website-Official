@@ -87,7 +87,7 @@ function inferCategoryData(relativePath) {
   }
 
   if (normalizedPath.startsWith('builder-gels/') || normalizedPath.startsWith('brush-on-builder/')) {
-    if (normalizedPath.includes('fiberglass') || normalizedPath.includes('fibreglass') || normalizedPath.includes('fiber-glass')) {
+    if (normalizedPath.includes('fiberglass') || normalizedPath.includes('fibreglass') || normalizedPath.includes('fiber-glass') || normalizedPath.includes('fiber glass')) {
       return { category: 'Builder Gel', subcategory: 'Fiberglass', size: '15', unit: 'ml', moq: '25' }
     }
 
@@ -97,6 +97,22 @@ function inferCategoryData(relativePath) {
 
     if (normalizedPath.includes('acrylic')) {
       return { category: 'Builder Gel', subcategory: 'Acrylics', size: '15', unit: 'ml', moq: '25' }
+    }
+
+    if (normalizedPath.includes('colour-builder-gel')) {
+      return { category: 'Builder Gel', subcategory: 'Colour Builder Gel', size: '15', unit: 'ml', moq: '25' }
+    }
+
+    if (normalizedPath.includes('master-builder-gels') || normalizedPath.includes('master-builder-gel')) {
+      return { category: 'Builder Gel', subcategory: 'Master Builder Gels', size: '15', unit: 'ml', moq: '25' }
+    }
+
+    if (normalizedPath.includes('no-heat-builder') || normalizedPath.includes('no heat builder')) {
+      return { category: 'Builder Gel', subcategory: 'No Heat Builder', size: '15', unit: 'ml', moq: '25' }
+    }
+
+    if (normalizedPath.includes('thixotropic')) {
+      return { category: 'Builder Gel', subcategory: 'Thixotropic Gel', size: '15', unit: 'ml', moq: '25' }
     }
 
     if (normalizedPath.includes('3-in-1') || normalizedPath.includes('3 in 1')) {
@@ -206,10 +222,11 @@ function buildGeneratedRows() {
     const relFromB2BPosix = relFromB2B.split(path.sep).join('/').toLowerCase()
     if (relFromB2BPosix.startsWith('categories/')) return
 
-    // Some image paths use descriptive/letteronly names — allow them through
+    // All descriptive/letteronly image names are valid — never skip based on filename format
     const isDescriptivePolygel = relFromB2BPosix.startsWith('polygels/polygel/')
     const isDescriptiveTopsBase = relFromB2BPosix.startsWith('tops-bases/') || relFromB2BPosix.startsWith('bases/') || relFromB2BPosix.startsWith('brush-on-builder/')
-    const code = normalizeCodeFromFileName(absolutePath, !isDescriptivePolygel && !isDescriptiveTopsBase)
+    const isDescriptiveBuilderGel = relFromB2BPosix.startsWith('builder-gels/')
+    const code = normalizeCodeFromFileName(absolutePath, !isDescriptivePolygel && !isDescriptiveTopsBase && !isDescriptiveBuilderGel)
     if (!code) return
 
     const imageUrl = `/img/b2b/${relFromB2B.split(path.sep).join('/')}`
