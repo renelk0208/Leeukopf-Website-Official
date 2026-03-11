@@ -48,10 +48,10 @@ function isImageFile(name) {
   return /\.(webp|png|jpe?g)$/i.test(name)
 }
 
-function normalizeCodeFromFileName(filePath) {
+function normalizeCodeFromFileName(filePath, requireNumber = true) {
   const base = path.basename(filePath, path.extname(filePath)).trim()
   if (!base) return ''
-  if (!/[0-9]/.test(base)) return ''
+  if (requireNumber && !/[0-9]/.test(base)) return ''
   return base
 }
 
@@ -199,9 +199,12 @@ function buildGeneratedRows() {
     const categoryData = inferCategoryData(relFromB2B)
     if (!categoryData) return
 
-    if (relFromB2B.toLowerCase().startsWith('categories/')) return
+    const relFromB2BPosix = relFromB2B.split(path.sep).join('/').toLowerCase()
+    if (relFromB2BPosix.startsWith('categories/')) return
 
-    const code = normalizeCodeFromFileName(absolutePath)
+    // Polygels/polygel images are named descriptively (no number) — allow all filenames
+    const isDescriptivePolygel = relFromB2BPosix.startsWith('polygels/polygel/')
+    const code = normalizeCodeFromFileName(absolutePath, !isDescriptivePolygel)
     if (!code) return
 
     const imageUrl = `/img/b2b/${relFromB2B.split(path.sep).join('/')}`

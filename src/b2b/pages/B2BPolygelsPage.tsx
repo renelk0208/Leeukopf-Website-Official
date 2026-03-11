@@ -76,8 +76,8 @@ const liquidPolygelCodeGroups: Array<{ prefix: string; count: number }> = [
   { prefix: "LC_UGL_LP_P", count: 62 },
 ];
 
-const polygelImagePrefixes = ["/img/polygel/"];
-const liquidPolygelImagePrefixes = ["/img/liquid-polygel/"];
+const polygelImagePrefixes = ["/img/polygel/", "/img/b2b/Polygels/polygel/", "/img/b2b/polygels/polygel/"];
+const liquidPolygelImagePrefixes = ["/img/liquid-polygel/", "/img/b2b/Polygels/liquid-polygel/", "/img/b2b/polygels/liquid-polygel/"];
 
 function buildFallbackLiquidPolygelProducts(): CsvProduct[] {
   return liquidPolygelCodeGroups.flatMap(({ prefix, count }) =>
@@ -147,10 +147,10 @@ function getRouteScopedExplicitImage(value: string, isLiquidRoute: boolean): str
   if (/^https?:\/\//i.test(normalized)) return "";
 
   if (isLiquidRoute) {
-    return normalized.startsWith("/img/liquid-polygel/") ? normalized : "";
+    return liquidPolygelImagePrefixes.some((p) => normalized.startsWith(p)) ? normalized : "";
   }
 
-  return normalized.startsWith("/img/polygel/") ? normalized : "";
+  return polygelImagePrefixes.some((p) => normalized.startsWith(p)) ? normalized : "";
 }
 
 function getImageCandidates(product: CsvProduct, isLiquidRoute: boolean): string[] {
