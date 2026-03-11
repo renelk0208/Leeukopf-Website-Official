@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { AlertTriangle } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
@@ -297,8 +298,18 @@ export default function B2BExtraStrengthBasesPage() {
   }, [draftQty, existingQtyByCode, imageAttemptByCode, imageIndexByCode, products]);
 
   return (
-    <B2BUniformShadeGrid
-      title={getBasePageTitle(routeMode)}
+    <div className="space-y-4">
+      {buyerType === "finished_goods" && (
+        <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+          <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-bold uppercase tracking-wide text-white">Bottle Configuration Required at Checkout</span>
+          </div>
+          <p className="text-sm text-grey-secondary">Bases and top coats are filled into <span className="font-semibold">15ml bottles</span>. Set your bottle colour, brush, and branding in Checkout before submitting your order.</p>
+        </div>
+      )}
+      <B2BUniformShadeGrid
+        title={getBasePageTitle(routeMode)}
       description=""
       items={uniformItems}
       validationMessage={validationMessage}
@@ -353,5 +364,6 @@ export default function B2BExtraStrengthBasesPage() {
         setDraftQty((prev) => ({ ...prev, [match.code]: "" }));
       }}
     />
+    </div>
   );
 }

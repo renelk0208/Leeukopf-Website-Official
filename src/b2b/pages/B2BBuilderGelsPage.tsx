@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
@@ -332,12 +333,15 @@ export default function B2BBuilderGelsPage() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-lg border border-primary-200 bg-primary-50 p-3 text-sm text-primary-700">
-        Add items here first, then set bottle packaging in Checkout before export/submit.
-        <Link to="/b2b/checkout" className="ml-2 font-semibold underline">
-          Open Checkout
-        </Link>
-      </div>
+      {buyerType === "finished_goods" && (
+        <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+          <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-bold uppercase tracking-wide text-white">Jar Configuration Required at Checkout</span>
+          </div>
+          <p className="text-sm text-grey-secondary">Builder gels are filled into <span className="font-semibold">jars (30g or 40g)</span>. Set your jar size, colour, and branding in{" "}<Link to="/b2b/checkout" className="font-semibold underline">Checkout</Link>{" "}before submitting your order.</p>
+        </div>
+      )}
 
       <B2BUniformShadeGrid
         title={getBuilderPageTitle(routeMode)}

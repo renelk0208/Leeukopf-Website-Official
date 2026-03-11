@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { AlertTriangle } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import InternalSolidColourGrid, { type InternalSolidColourSyncItem } from "../../pages/InternalSolidColourGrid";
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
@@ -357,7 +358,17 @@ export default function B2BSolidColoursPage() {
   if (!isSolidColoursRoute) {
     if (isKnownColourSubcategoryRoute) {
       return (
-        <B2BUniformShadeGrid
+        <div className="space-y-4">
+          {(buyerType === "finished_goods" || isCreamCollection) && (
+            <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+              <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+                <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+                <span className="text-sm font-bold uppercase tracking-wide text-white">Bottle Configuration Required at Checkout</span>
+              </div>
+              <p className="text-sm text-grey-secondary">Gel polishes are filled into <span className="font-semibold">10ml bottles</span>. Set your bottle colour, brush, and branding in Checkout before submitting your order.</p>
+            </div>
+          )}
+          <B2BUniformShadeGrid
           title={toRouteLabel(routeSuffix)}
           description=""
           items={uniformItems}
@@ -413,11 +424,25 @@ export default function B2BSolidColoursPage() {
             setDraftQty((prev) => ({ ...prev, [match.code]: "" }));
           }}
         />
+        </div>
       );
     }
 
     if (isColourFamilyRoute) {
-      return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" familyFilter={colourFamilyRoutes[routeSuffix]} />;
+      return (
+        <div className="space-y-4">
+          {buyerType === "finished_goods" && (
+            <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+              <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+                <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+                <span className="text-sm font-bold uppercase tracking-wide text-white">Bottle Configuration Required at Checkout</span>
+              </div>
+              <p className="text-sm text-grey-secondary">Gel polishes are filled into <span className="font-semibold">10ml bottles</span>. Set your bottle colour, brush, and branding in Checkout before submitting your order.</p>
+            </div>
+          )}
+          <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" familyFilter={colourFamilyRoutes[routeSuffix]} />
+        </div>
+      );
     }
 
     return (
@@ -436,5 +461,18 @@ export default function B2BSolidColoursPage() {
     );
   }
 
-  return <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" />;
+  return (
+    <div className="space-y-4">
+      {buyerType === "finished_goods" && (
+        <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+          <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-bold uppercase tracking-wide text-white">Bottle Configuration Required at Checkout</span>
+          </div>
+          <p className="text-sm text-grey-secondary">Gel polishes are filled into <span className="font-semibold">10ml bottles</span>. Set your bottle colour, brush, and branding in Checkout before submitting your order.</p>
+        </div>
+      )}
+      <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" />
+    </div>
+  );
 }
