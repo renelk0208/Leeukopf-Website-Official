@@ -124,38 +124,38 @@ function inferCategoryData(relativePath) {
 
   if (normalizedPath.startsWith('bases/') || normalizedPath.startsWith('tops-bases/')) {
     if (normalizedPath.includes('rubber')) {
-      return { category: 'Top & Base', subcategory: 'Rubber Bases', size: '15', unit: 'ml', moq: '5' }
+      return { category: 'Top & Base', subcategory: 'Rubber Bases', size: '15', unit: 'ml', moq: '25' }
     }
 
     if (normalizedPath.includes('classic')) {
-      return { category: 'Top & Base', subcategory: 'Classic Base', size: '15', unit: 'ml', moq: '5' }
+      return { category: 'Top & Base', subcategory: 'Classic Base', size: '15', unit: 'ml', moq: '25' }
     }
 
     if (normalizedPath.includes('/tops/') || normalizedPath.includes('top-coat') || normalizedPath.includes('topcoat')) {
-      return { category: 'Top & Base', subcategory: 'Top Coat', size: '15', unit: 'ml', moq: '5' }
+      return { category: 'Top & Base', subcategory: 'Top Coat', size: '15', unit: 'ml', moq: '25' }
     }
 
-    return { category: 'Top & Base', subcategory: 'Extra Strength Base', size: '15', unit: 'ml', moq: '5' }
+    return { category: 'Top & Base', subcategory: 'Extra Strength Base', size: '15', unit: 'ml', moq: '25' }
   }
 
   if (normalizedPath.startsWith('solid-colours/')) {
-    return { category: 'Gel Polish', subcategory: 'Solid Colours', size: '10', unit: 'ml', moq: '5' }
+    return { category: 'Gel Polish', subcategory: 'Solid Colours', size: '10', unit: 'ml', moq: '25' }
   }
 
   if (normalizedPath.startsWith('french-colours/') || normalizedPath.startsWith('french-collection/')) {
-    return { category: 'Gel Polish', subcategory: 'French Collection', size: '10', unit: 'ml', moq: '5' }
+    return { category: 'Gel Polish', subcategory: 'French Collection', size: '10', unit: 'ml', moq: '25' }
   }
 
   if (normalizedPath.startsWith('glitters/')) {
-    return { category: 'Gel Polish', subcategory: 'Glitters', size: '10', unit: 'ml', moq: '5' }
+    return { category: 'Gel Polish', subcategory: 'Glitters', size: '10', unit: 'ml', moq: '25' }
   }
 
   if (normalizedPath.startsWith('cat eyes/') || normalizedPath.startsWith('cat-eyes/') || normalizedPath.startsWith('cat eye/')) {
-    return { category: 'Gel Polish', subcategory: 'Cat Eye', size: '10', unit: 'ml', moq: '5' }
+    return { category: 'Gel Polish', subcategory: 'Cat Eye', size: '10', unit: 'ml', moq: '25' }
   }
 
   if (normalizedPath.startsWith('platinum/')) {
-    return { category: 'Gel Polish', subcategory: 'Platinum', size: '10', unit: 'ml', moq: '5' }
+    return { category: 'Gel Polish', subcategory: 'Platinum', size: '10', unit: 'ml', moq: '25' }
   }
 
   if (normalizedPath.startsWith('solid cream/') || normalizedPath.startsWith('solid-cream/')) {
@@ -372,7 +372,7 @@ function main() {
       code: 'AUTO-RB-ROUTE-01',
       size: '15',
       unit: 'ml',
-      moq: '5',
+      moq: '25',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',
@@ -385,7 +385,7 @@ function main() {
       code: 'AUTO-ESB-ROUTE-01',
       size: '15',
       unit: 'ml',
-      moq: '5',
+      moq: '25',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',
@@ -398,7 +398,7 @@ function main() {
       code: 'AUTO-CB-ROUTE-01',
       size: '15',
       unit: 'ml',
-      moq: '5',
+      moq: '25',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',

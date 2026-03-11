@@ -170,6 +170,7 @@ export default function B2BSolidColoursPage() {
   const routeSuffix = normalizedPath.replace("/b2b/solid-colours", "").replace(/^\/+/, "");
   const isSolidColoursRoute = routeSuffix.length === 0 || routeSuffix === "solid-colours";
   const isKnownColourSubcategoryRoute = Boolean(routeKeywords[routeSuffix]);
+  const isCreamCollection = routeSuffix === "cream-collection";
 
   const subcategoryLabel = routeSuffix
     .split("/")
@@ -211,7 +212,7 @@ export default function B2BSolidColoursPage() {
               subcategory: row[index.subcategory] ?? "",
               product_name: row[index.product_name] ?? "",
               code: row[index.code] ?? "",
-              moq: row[index.moq] ?? "1",
+              moq: row[index.moq] ?? "25",
               image_url: row[index.image_url] ?? "",
               active: row[index.active] ?? "FALSE",
             } as CsvProduct;
@@ -295,7 +296,7 @@ export default function B2BSolidColoursPage() {
       const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
-      const moq = Number.parseInt(product.moq || "1", 10) || 1;
+      const moq = Number.parseInt(product.moq || "25", 10) || 25;
 
       return {
         id: `${product.code}-${index}`,
@@ -334,7 +335,7 @@ export default function B2BSolidColoursPage() {
           description=""
           items={uniformItems}
           validationMessage={validationMessage}
-          buyerType={buyerType}
+          buyerType={isCreamCollection ? "finished_goods" : buyerType}
           onQuantityChange={(id, value) => {
             const item = uniformItems.find((entry) => entry.id === id);
             if (!item) return;
@@ -346,8 +347,9 @@ export default function B2BSolidColoursPage() {
 
             const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
             const qty = Number.parseInt(raw, 10);
-            const pcsMoq = Number.parseInt(match.moq || "1", 10) || 1;
-            const effectiveMoq = buyerType === "bulk" ? 1 : pcsMoq;
+            const pcsMoq = Number.parseInt(match.moq || "25", 10) || 25;
+            const isBulkKg = buyerType === "bulk" && !isCreamCollection;
+            const effectiveMoq = isBulkKg ? 1 : pcsMoq;
 
             if (!Number.isFinite(qty) || qty < 0) {
               setValidationMessage(`Please enter a valid quantity for ${match.product_name || match.code}.`);
@@ -355,7 +357,7 @@ export default function B2BSolidColoursPage() {
             }
 
             if (qty > 0 && qty < effectiveMoq) {
-              const moqLabel = buyerType === "bulk" ? "1 kg" : `${effectiveMoq} pieces`;
+              const moqLabel = isBulkKg ? "1 kg" : `${effectiveMoq} pieces`;
               setValidationMessage(`MOQ for ${match.product_name || match.code} is ${moqLabel}.`);
               return;
             }
@@ -367,7 +369,7 @@ export default function B2BSolidColoursPage() {
               code: match.code,
               name: match.product_name,
               quantity: qty,
-              unitType: buyerType === "bulk" ? "KG" : "PCS",
+              unitType: isBulkKg ? "KG" : "PCS",
               meta: {
                 subcategory: match.subcategory,
                 image: uniformItems.find((entry) => entry.id === id)?.imageSrc || null,

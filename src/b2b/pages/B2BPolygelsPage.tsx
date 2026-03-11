@@ -405,7 +405,7 @@ export default function B2BPolygelsPage() {
         }
         items={uniformItems}
         validationMessage={validationMessage}
-        buyerType={buyerType}
+        buyerType={isLiquidRoute ? buyerType : "finished_goods"}
         onQuantityChange={(id, value) => {
           const item = uniformItems.find((entry) => entry.id === id);
           if (!item) return;
@@ -418,10 +418,11 @@ export default function B2BPolygelsPage() {
           const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? activeMoq)).trim();
           const qty = Number.parseInt(raw, 10);
 
-          const effectiveMoq = buyerType === "bulk" ? 1 : activeMoq;
+          const isBulkKg = buyerType === "bulk" && isLiquidRoute;
+          const effectiveMoq = isBulkKg ? 1 : activeMoq;
 
           if (!Number.isFinite(qty) || qty < effectiveMoq) {
-            const moqLabel = buyerType === "bulk" ? "1 kg" : `${activeMoq} pieces`;
+            const moqLabel = isBulkKg ? "1 kg" : `${activeMoq} pieces`;
             setValidationMessage(
               `MOQ for ${isLiquidRoute ? "liquid polygel" : "polygel"} is ${moqLabel} per colour. Use Clear to remove.`
             );
@@ -449,7 +450,7 @@ export default function B2BPolygelsPage() {
             code: match.code,
             name: match.product_name,
             quantity: qty,
-            unitType: buyerType === "bulk" ? "KG" : "PCS",
+            unitType: isBulkKg ? "KG" : "PCS",
             meta,
           });
         }}

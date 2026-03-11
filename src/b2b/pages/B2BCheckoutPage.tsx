@@ -138,6 +138,7 @@ export default function B2BCheckoutPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [movAcknowledged, setMovAcknowledged] = useState(false);
   const [profile, setProfile] = useState<PortalProfile | null>(null);
 
   useEffect(() => {
@@ -216,7 +217,7 @@ export default function B2BCheckoutPage() {
     (!requiresBottlePackaging || bottlePackaging !== null) &&
     (!requiresJarPackaging || jarPackaging !== null);
 
-  const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk;
+  const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk && movAcknowledged;
 
   const exportCsv = () => {
     if (!canProceed) return;
@@ -672,6 +673,21 @@ export default function B2BCheckoutPage() {
           Quantities must be greater than zero for all lines.
         </div>
       ) : null}
+
+      <div className="rounded-md border border-primary-200 bg-primary-50 p-4">
+        <p className="mb-3 text-sm font-semibold text-grey-primary">
+          Minimum order value: €1,000.00 excl. shipping (applies to all orders, bulk and finished goods).
+        </p>
+        <label className="flex cursor-pointer items-start gap-2 text-sm text-grey-primary">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
+            checked={movAcknowledged}
+            onChange={(event) => setMovAcknowledged(event.target.checked)}
+          />
+          <span>I confirm this order meets the minimum order value of €1,000.00 (excl. shipping).</span>
+        </label>
+      </div>
 
       {submitMessage ? (
         <div
