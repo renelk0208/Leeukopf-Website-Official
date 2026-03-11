@@ -12,6 +12,7 @@ type ClientRegistration = {
   vat_eori: string;
   billing_address: string;
   shipping_address: string;
+  buyer_type?: string | null;
   created_at?: string;
 };
 
@@ -66,7 +67,7 @@ export default function B2BClientInfoPage() {
 
       const { data, error: queryError } = await supabase
         .from("client_registrations")
-        .select("id, company, contact, email, phone, country, vat_eori, billing_address, shipping_address, created_at")
+        .select("id, company, contact, email, phone, country, vat_eori, billing_address, shipping_address, buyer_type, created_at")
         .ilike("email", email)
         .order("created_at", { ascending: false })
         .limit(1)
@@ -92,6 +93,7 @@ export default function B2BClientInfoPage() {
           vat_eori: data.vat_eori ?? "",
           billing_address: data.billing_address ?? "",
           shipping_address: data.shipping_address ?? "",
+          buyer_type: (data as ClientRegistration).buyer_type ?? null,
           created_at: data.created_at,
         });
       } else {
@@ -171,6 +173,19 @@ export default function B2BClientInfoPage() {
         </div>
       ) : (
         <section className="rounded-xl border border-grey-card bg-white p-4 sm:p-5">
+          {form.buyer_type ? (
+            <div className="mb-4 rounded-md border border-primary-200 bg-primary-50 p-3">
+              <span className="text-xs font-semibold uppercase tracking-wide text-grey-secondary">Buyer Type (set by Leeukopf)</span>
+              <p className="mt-1 text-sm font-semibold text-primary-700">
+                {form.buyer_type === "finished_goods" ? "Finished Goods Buyer" : form.buyer_type === "bulk" ? "Bulk Buyer" : form.buyer_type}
+              </p>
+              <p className="mt-0.5 text-xs text-grey-secondary">This is set by Leeukopf Laboratories based on your approved registration. Contact us to update.</p>
+            </div>
+          ) : (
+            <div className="mb-4 rounded-md border border-grey-200 bg-grey-50 p-3 text-xs text-grey-secondary">
+              Buyer type not yet assigned. You will be prompted to select one when entering the portal.
+            </div>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             {FIELDS.map((field) => (
               <div key={field.key} className={field.multiline ? "sm:col-span-2" : ""}>

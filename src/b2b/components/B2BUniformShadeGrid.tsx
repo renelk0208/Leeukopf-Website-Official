@@ -152,11 +152,11 @@ export default function B2BUniformShadeGrid({
                         <div className="flex items-center gap-1">
                           <input
                             type="number"
-                            min={0}
+                            min={isBulk ? 1 : item.moq}
                             step={1}
                             value={item.quantityValue}
                             onChange={(event) => onQuantityChange(item.id, event.target.value)}
-                            placeholder={isBulk ? "kg" : "Qty"}
+                            placeholder={isBulk ? "kg" : `Min ${item.moq}`}
                             className="w-full rounded-md border border-grey-card px-2 py-1.5 text-sm text-grey-primary"
                           />
                           {isBulk && (

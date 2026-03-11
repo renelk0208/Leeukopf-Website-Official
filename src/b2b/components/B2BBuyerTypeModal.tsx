@@ -17,7 +17,7 @@ const CARDS: Card[] = [
     bullets: [
       "Order by the piece (pcs)",
       "Custom bottles, jars & labels",
-      "MOQ from 5 pcs per colour",
+      "MOQ from 25 pcs per colour",
       "Pre-printed or label-applied branding",
     ],
     icon: (

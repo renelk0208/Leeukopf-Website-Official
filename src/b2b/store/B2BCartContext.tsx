@@ -54,6 +54,7 @@ type B2BCartContextValue = {
   setJarPackaging: (packaging: JarPackaging) => void;
   clearJarPackaging: () => void;
   setBuyerType: (type: BuyerType) => void;
+  clearBuyerType: () => void;
   clearCart: () => void;
   getTotals: () => CartTotals;
   getFilledUnitsTotal: () => number;
@@ -253,6 +254,15 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const clearBuyerType = useCallback(() => {
+    setBuyerTypeState(null);
+    try {
+      window.localStorage.removeItem(B2B_BUYER_TYPE_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+  }, []);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     window.localStorage.setItem(B2B_CART_STORAGE_KEY, JSON.stringify(state));
@@ -331,6 +341,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       setJarPackaging,
       clearJarPackaging,
       setBuyerType,
+      clearBuyerType,
       clearCart,
       getTotals,
       getFilledUnitsTotal,
@@ -350,6 +361,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       setJarPackaging,
       clearJarPackaging,
       setBuyerType,
+      clearBuyerType,
       clearCart,
       getTotals,
       getFilledUnitsTotal,
