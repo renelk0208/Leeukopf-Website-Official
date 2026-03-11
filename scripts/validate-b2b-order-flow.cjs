@@ -186,7 +186,7 @@ function validateOrderFlowInvariants() {
   )
   assertContains(
     checkoutSource,
-    'const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk;',
+    'const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk &&',
     'Checkout invariant missing: submit/export gate must require valid quantities and packaging'
   )
 
