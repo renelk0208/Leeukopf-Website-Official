@@ -8,7 +8,7 @@ type B2BLayoutProps = {
 };
 
 export default function B2BLayout({ children }: B2BLayoutProps) {
-  const { getTotals, buyerType, setBuyerType } = useB2BCart();
+  const { getTotals, buyerType } = useB2BCart();
   const totals = getTotals();
 
   const buyerLabel = buyerType === "finished_goods" ? "Finished Goods" : buyerType === "bulk" ? "Bulk" : null;
@@ -61,15 +61,6 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
                 <span className="rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700">
                   {buyerLabel}
                 </span>
-                <button
-                  onClick={() => {
-                    const next = buyerType === "finished_goods" ? "bulk" : "finished_goods";
-                    setBuyerType(next);
-                  }}
-                  className="text-xs text-grey-secondary underline hover:text-primary"
-                >
-                  Change
-                </button>
               </div>
             )}
             <Link

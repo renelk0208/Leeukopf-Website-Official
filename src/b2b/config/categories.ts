@@ -37,7 +37,6 @@ export const b2bCategories: B2BCategoryConfig[] = [
     imageSrc: "/img/b2b/categories/builder-gels-category.jpg",
     imageAlt: "Builder gel systems",
     navChildren: [
-      { label: "Acrylics", routePath: "/b2b/builder-gels/acrylics" },
       { label: "3-in-1 Builder Gels", routePath: "/b2b/builder-gels/3-in-1-builder-gels" },
       { label: "3-in-1 Fibreglass Gel", routePath: "/b2b/builder-gels/3-in-1-fibreglass-gel" },
       { label: "Builder in a Bottle (BIAB)", routePath: "/b2b/builder-gels/biab" },

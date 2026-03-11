@@ -193,7 +193,7 @@ function isBuilderGelByRoute(item: CsvProduct, mode: BuilderRouteMode): boolean 
 export default function B2BBuilderGelsPage() {
   const location = useLocation();
   const routeMode = getBuilderRouteMode(location.pathname);
-  const { items, addOrUpdateItem, removeItem } = useB2BCart();
+  const { items, addOrUpdateItem, removeItem, buyerType } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
@@ -338,6 +338,7 @@ export default function B2BBuilderGelsPage() {
         description=""
         items={uniformItems}
         validationMessage={validationMessage}
+        buyerType={buyerType}
         onQuantityChange={(id, value) => {
           const product = uniformItems.find((entry) => entry.id === id);
           if (!product) return;
@@ -349,15 +350,17 @@ export default function B2BBuilderGelsPage() {
 
           const raw = (draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "0")).trim();
           const qty = Number.parseInt(raw, 10);
-          const moq = Math.max(Number.parseInt(product.moq || "1", 10) || 1, BUILDER_GEL_MIN_MOQ);
+          const pcsMoq = Math.max(Number.parseInt(product.moq || "1", 10) || 1, BUILDER_GEL_MIN_MOQ);
+          const effectiveMoq = buyerType === "bulk" ? 1 : pcsMoq;
 
           if (!Number.isFinite(qty) || qty < 0) {
             setValidationMessage(`Please enter a valid quantity for ${product.product_name || product.code}.`);
             return;
           }
 
-          if (qty > 0 && qty < moq) {
-            setValidationMessage(`MOQ for ${product.product_name || product.code} is ${moq} pieces.`);
+          if (qty > 0 && qty < effectiveMoq) {
+            const moqLabel = buyerType === "bulk" ? "1 kg" : `${effectiveMoq} pieces`;
+            setValidationMessage(`MOQ for ${product.product_name || product.code} is ${moqLabel}.`);
             return;
           }
 
@@ -368,7 +371,7 @@ export default function B2BBuilderGelsPage() {
             code: product.code,
             name: product.product_name,
             quantity: qty,
-            unitType: "PCS",
+            unitType: buyerType === "bulk" ? "KG" : "PCS",
             meta: {
               image: uniformItems.find((entry) => entry.id === id)?.imageSrc || null,
               size: product.size,

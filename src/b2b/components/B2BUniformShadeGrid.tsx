@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect, type SyntheticEvent } from "react";
 import { X } from "lucide-react";
+import type { BuyerType } from "../types";
 
 export type B2BUniformShadeItem = {
   id: string;
@@ -20,6 +21,7 @@ type B2BUniformShadeGridProps = {
   description?: string;
   items: B2BUniformShadeItem[];
   validationMessage?: string;
+  buyerType?: BuyerType | null;
   onQuantityChange: (id: string, value: string) => void;
   onSave: (id: string) => void;
   onClear: (id: string) => void;
@@ -30,10 +32,12 @@ export default function B2BUniformShadeGrid({
   description,
   items,
   validationMessage,
+  buyerType,
   onQuantityChange,
   onSave,
   onClear,
 }: B2BUniformShadeGridProps) {
+  const isBulk = buyerType === "bulk";
   const [search, setSearch] = useState("");
   const [hiddenItemIds, setHiddenItemIds] = useState<Record<string, true>>({});
   const [lightboxItem, setLightboxItem] = useState<{ src: string; alt: string; code: string } | null>(null);
@@ -141,17 +145,24 @@ export default function B2BUniformShadeGrid({
                         <p className="text-sm font-semibold leading-tight text-grey-primary break-words [overflow-wrap:anywhere]">{item.code}</p>
                         {showName ? <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.name}</p> : null}
                         {showFamily ? <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.family}</p> : null}
-                        <p className="text-xs text-grey-secondary">MOQ: {item.moq}</p>
+                        <p className="text-xs text-grey-secondary">
+                          {isBulk ? "MOQ: 1 kg" : `MOQ: ${item.moq}`}
+                        </p>
 
-                        <input
-                          type="number"
-                          min={0}
-                          step={1}
-                          value={item.quantityValue}
-                          onChange={(event) => onQuantityChange(item.id, event.target.value)}
-                          placeholder="Qty"
-                          className="w-full rounded-md border border-grey-card px-2 py-1.5 text-sm text-grey-primary"
-                        />
+                        <div className="flex items-center gap-1">
+                          <input
+                            type="number"
+                            min={0}
+                            step={1}
+                            value={item.quantityValue}
+                            onChange={(event) => onQuantityChange(item.id, event.target.value)}
+                            placeholder={isBulk ? "kg" : "Qty"}
+                            className="w-full rounded-md border border-grey-card px-2 py-1.5 text-sm text-grey-primary"
+                          />
+                          {isBulk && (
+                            <span className="shrink-0 text-xs font-medium text-grey-secondary">kg</span>
+                          )}
+                        </div>
 
                         <div className="flex gap-2">
                           <button

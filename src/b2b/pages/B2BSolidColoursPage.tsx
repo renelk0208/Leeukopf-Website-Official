@@ -159,7 +159,7 @@ function toSolidOrderCode(code: string, internalSku?: string): string {
 
 export default function B2BSolidColoursPage() {
   const location = useLocation();
-  const { items, addOrUpdateItem, removeItem } = useB2BCart();
+  const { items, addOrUpdateItem, removeItem, buyerType } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
@@ -334,6 +334,7 @@ export default function B2BSolidColoursPage() {
           description=""
           items={uniformItems}
           validationMessage={validationMessage}
+          buyerType={buyerType}
           onQuantityChange={(id, value) => {
             const item = uniformItems.find((entry) => entry.id === id);
             if (!item) return;
@@ -345,15 +346,17 @@ export default function B2BSolidColoursPage() {
 
             const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
             const qty = Number.parseInt(raw, 10);
-            const moq = Number.parseInt(match.moq || "1", 10) || 1;
+            const pcsMoq = Number.parseInt(match.moq || "1", 10) || 1;
+            const effectiveMoq = buyerType === "bulk" ? 1 : pcsMoq;
 
             if (!Number.isFinite(qty) || qty < 0) {
               setValidationMessage(`Please enter a valid quantity for ${match.product_name || match.code}.`);
               return;
             }
 
-            if (qty > 0 && qty < moq) {
-              setValidationMessage(`MOQ for ${match.product_name || match.code} is ${moq} pieces.`);
+            if (qty > 0 && qty < effectiveMoq) {
+              const moqLabel = buyerType === "bulk" ? "1 kg" : `${effectiveMoq} pieces`;
+              setValidationMessage(`MOQ for ${match.product_name || match.code} is ${moqLabel}.`);
               return;
             }
 
@@ -364,7 +367,7 @@ export default function B2BSolidColoursPage() {
               code: match.code,
               name: match.product_name,
               quantity: qty,
-              unitType: "PCS",
+              unitType: buyerType === "bulk" ? "KG" : "PCS",
               meta: {
                 subcategory: match.subcategory,
                 image: uniformItems.find((entry) => entry.id === id)?.imageSrc || null,

@@ -218,7 +218,7 @@ export default function B2BPolygelsPage() {
   const location = useLocation();
   const isLiquidRoute = isLiquidPolygelRoute(location.pathname.toLowerCase());
   const activeMoq = isLiquidRoute ? LIQUID_POLYGEL_MOQ : POLYGEL_MOQ;
-  const { items, addOrUpdateItem, removeItem } = useB2BCart();
+  const { items, addOrUpdateItem, removeItem, buyerType } = useB2BCart();
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
@@ -405,6 +405,7 @@ export default function B2BPolygelsPage() {
         }
         items={uniformItems}
         validationMessage={validationMessage}
+        buyerType={buyerType}
         onQuantityChange={(id, value) => {
           const item = uniformItems.find((entry) => entry.id === id);
           if (!item) return;
@@ -417,9 +418,12 @@ export default function B2BPolygelsPage() {
           const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? activeMoq)).trim();
           const qty = Number.parseInt(raw, 10);
 
-          if (!Number.isFinite(qty) || qty < activeMoq) {
+          const effectiveMoq = buyerType === "bulk" ? 1 : activeMoq;
+
+          if (!Number.isFinite(qty) || qty < effectiveMoq) {
+            const moqLabel = buyerType === "bulk" ? "1 kg" : `${activeMoq} pieces`;
             setValidationMessage(
-              `MOQ for ${isLiquidRoute ? "liquid polygel" : "polygel"} is ${activeMoq} pieces per colour. Use Clear to remove.`
+              `MOQ for ${isLiquidRoute ? "liquid polygel" : "polygel"} is ${moqLabel} per colour. Use Clear to remove.`
             );
             return;
           }
@@ -430,7 +434,7 @@ export default function B2BPolygelsPage() {
           const meta = {
             image: item?.imageSrc || null,
             subcategory: match.subcategory,
-            moq: activeMoq,
+            moq: effectiveMoq,
             ...(isLiquidRoute
               ? {}
               : {
@@ -445,7 +449,7 @@ export default function B2BPolygelsPage() {
             code: match.code,
             name: match.product_name,
             quantity: qty,
-            unitType: "PCS",
+            unitType: buyerType === "bulk" ? "KG" : "PCS",
             meta,
           });
         }}
