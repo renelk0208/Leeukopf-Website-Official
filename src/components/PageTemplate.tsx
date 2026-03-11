@@ -76,6 +76,7 @@ export default function PageTemplate({
     <>
       <ScrollToTop />
       <Navigation />
+      <BackButton />
       <div className="min-h-screen pt-20">
       {/* Responsive header section - with optional hero background image */}
       <div 
@@ -103,9 +104,6 @@ export default function PageTemplate({
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full ${safeHeroImage ? 'relative z-20 py-8 sm:py-10 md:py-12' : ''}`}>
           {/* Text content card for readability when hero image is present */}
           <div className={safeHeroImage ? 'bg-white/85 rounded-2xl p-6 sm:p-8 md:p-10 max-w-3xl shadow-lg' : ''}>
-            <div className="mb-4 sm:mb-6">
-              <BackButton />
-            </div>
             {/* Responsive breadcrumbs - wrap on small screens */}
             <nav className="flex flex-wrap items-center gap-1 text-xs sm:text-sm mb-4 sm:mb-6" aria-label="Breadcrumb">
             {breadcrumbs.map((item, index) => (
