@@ -142,6 +142,14 @@ function inferCategoryData(relativePath) {
     return { category: 'Gel Polish', subcategory: 'Solid Colours', size: '10', unit: 'ml', moq: '6' }
   }
 
+  if (normalizedPath.startsWith('french-colours/') || normalizedPath.startsWith('french-collection/')) {
+    return { category: 'Gel Polish', subcategory: 'French Collection', size: '10', unit: 'ml', moq: '6' }
+  }
+
+  if (normalizedPath.startsWith('glitters/')) {
+    return { category: 'Gel Polish', subcategory: 'Glitters', size: '10', unit: 'ml', moq: '6' }
+  }
+
   return null
 }
 
@@ -226,7 +234,8 @@ function buildGeneratedRows() {
     const isDescriptivePolygel = relFromB2BPosix.startsWith('polygels/polygel/')
     const isDescriptiveTopsBase = relFromB2BPosix.startsWith('tops-bases/') || relFromB2BPosix.startsWith('bases/') || relFromB2BPosix.startsWith('brush-on-builder/')
     const isDescriptiveBuilderGel = relFromB2BPosix.startsWith('builder-gels/')
-    const code = normalizeCodeFromFileName(absolutePath, !isDescriptivePolygel && !isDescriptiveTopsBase && !isDescriptiveBuilderGel)
+    const isDescriptiveColour = relFromB2BPosix.startsWith('french-colours/') || relFromB2BPosix.startsWith('french-collection/') || relFromB2BPosix.startsWith('glitters/')
+    const code = normalizeCodeFromFileName(absolutePath, !isDescriptivePolygel && !isDescriptiveTopsBase && !isDescriptiveBuilderGel && !isDescriptiveColour)
     if (!code) return
 
     const imageUrl = `/img/b2b/${relFromB2B.split(path.sep).join('/')}`

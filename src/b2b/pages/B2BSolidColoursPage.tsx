@@ -25,7 +25,13 @@ const routeKeywords: Record<string, string[]> = {
   "cream-collection": ["cream"],
 };
 
-const solidImagePrefixes = ["/img/solid-colour/", "/img/products/gel_polishes/"];
+const solidImagePrefixes = [
+  "/img/solid-colour/",
+  "/img/products/gel_polishes/",
+  "/img/b2b/solid-colours/",
+  "/img/b2b/french-colours/",
+  "/img/b2b/glitters/",
+];
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
@@ -68,6 +74,9 @@ function getCategoryScopedExplicitImage(value: string): string {
   if (/^https?:\/\//i.test(normalized)) return "";
   if (normalized.startsWith("/img/products/gel_polishes/")) return normalized;
   if (normalized.startsWith("/img/solid-colour/")) return normalized;
+  if (normalized.startsWith("/img/b2b/solid-colours/")) return normalized;
+  if (normalized.startsWith("/img/b2b/french-colours/")) return normalized;
+  if (normalized.startsWith("/img/b2b/glitters/")) return normalized;
   return "";
 }
 
