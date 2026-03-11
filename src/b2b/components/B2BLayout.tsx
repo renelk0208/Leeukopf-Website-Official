@@ -106,14 +106,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
         <aside className="h-fit rounded-xl border border-grey-card bg-white p-3 lg:sticky lg:top-24">
           <nav className="space-y-1" aria-label="B2B portal navigation">
             {navItems.map((item) => (
-              item.type === "group" ? (
-                <div
-                  key={`group-${item.label}`}
-                  className="px-3 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-grey-secondary"
-                >
-                  {item.label}
-                </div>
-              ) : (
+              item.type === "group" ? null : (
                 <NavLink
                   key={item.path}
                   to={item.path}
