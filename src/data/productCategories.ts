@@ -54,13 +54,6 @@ export const productCategories: ProductCategory[] = [
     group: 'Gel Polish',
   },
   {
-    id: 'glow-in-the-dark',
-    key: 'glow-in-the-dark',
-    displayName: 'Glow In the Dark',
-    imagePath: '/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polish-category-card-image.png',
-    group: 'Gel Polish',
-  },
-  {
     id: 'platinum-gel-polish',
     key: 'platinum-gel-polish',
     displayName: 'Platinum Gel Polish',
@@ -79,13 +72,6 @@ export const productCategories: ProductCategory[] = [
     key: 'spring-summer-26',
     displayName: 'Spring Summer 26',
     imagePath: '/img/products/gel_polishes/spring-summer-26/spring-summer-26 category.jpg',
-    group: 'Gel Polish',
-  },
-  {
-    id: 'thermo-mood-changing',
-    key: 'thermo-mood-changing',
-    displayName: 'Thermo Mood Changing',
-    imagePath: '/img/products/gel_polishes/Thermo Mood Changing/thermo-mood-changing-gel-polish-category-image.png',
     group: 'Gel Polish',
   },
 
