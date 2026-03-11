@@ -545,9 +545,13 @@ const handler: Handler = async (event: HandlerEvent) => {
   const resend = new Resend(resendApiKey);
 
   try {
-    // Persist registration first so Admin approvals always sees submissions
-    console.log('Persisting registration to Supabase client_registrations...');
-    await persistClientRegistration(formData);
+    // Persist registration to Supabase (best-effort — don't block if misconfigured or DB error)
+    try {
+      console.log('Persisting registration to Supabase client_registrations...');
+      await persistClientRegistration(formData);
+    } catch (persistErr) {
+      console.error('Supabase persistence failed (non-fatal):', persistErr instanceof Error ? persistErr.message : persistErr);
+    }
 
     // Append data to Google Sheets (required)
     console.log('Appending data to Google Sheets...');
