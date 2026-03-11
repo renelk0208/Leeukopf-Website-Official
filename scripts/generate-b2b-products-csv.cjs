@@ -115,6 +115,10 @@ function inferCategoryData(relativePath) {
       return { category: 'Top & Base', subcategory: 'Classic Base', size: '15', unit: 'ml', moq: '1' }
     }
 
+    if (normalizedPath.includes('/tops/') || normalizedPath.includes('top-coat') || normalizedPath.includes('topcoat')) {
+      return { category: 'Top & Base', subcategory: 'Top Coat', size: '15', unit: 'ml', moq: '1' }
+    }
+
     return { category: 'Top & Base', subcategory: 'Extra Strength Base', size: '15', unit: 'ml', moq: '1' }
   }
 
@@ -202,9 +206,10 @@ function buildGeneratedRows() {
     const relFromB2BPosix = relFromB2B.split(path.sep).join('/').toLowerCase()
     if (relFromB2BPosix.startsWith('categories/')) return
 
-    // Polygels/polygel images are named descriptively (no number) — allow all filenames
+    // Some image paths use descriptive/letteronly names — allow them through
     const isDescriptivePolygel = relFromB2BPosix.startsWith('polygels/polygel/')
-    const code = normalizeCodeFromFileName(absolutePath, !isDescriptivePolygel)
+    const isDescriptiveTopsBase = relFromB2BPosix.startsWith('tops-bases/') || relFromB2BPosix.startsWith('bases/') || relFromB2BPosix.startsWith('brush-on-builder/')
+    const code = normalizeCodeFromFileName(absolutePath, !isDescriptivePolygel && !isDescriptiveTopsBase)
     if (!code) return
 
     const imageUrl = `/img/b2b/${relFromB2B.split(path.sep).join('/')}`
