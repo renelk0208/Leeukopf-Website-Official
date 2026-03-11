@@ -328,7 +328,9 @@ export default function B2BSolidColoursPage() {
         id: `${product.code}-${index}`,
         code: product.code,
         name: product.product_name || product.code,
-        family: product.subcategory || toRouteLabel(routeSuffix),
+        family: isCreamCollection
+            ? `${product.subcategory || "Cream Collection"} · 5g jar`
+            : (product.subcategory || toRouteLabel(routeSuffix)),
         moq,
         quantityValue: draftQty[product.code] !== undefined
           ? draftQty[product.code]
@@ -359,7 +361,15 @@ export default function B2BSolidColoursPage() {
     if (isKnownColourSubcategoryRoute) {
       return (
         <div className="space-y-4">
-          {(buyerType === "finished_goods" || isCreamCollection) && (
+          {isCreamCollection ? (
+            <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+              <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+                <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+                <span className="text-sm font-bold uppercase tracking-wide text-white">Ready-to-Sell — Supplied in 5g Jars</span>
+              </div>
+              <p className="text-sm text-grey-secondary">Cream Collection shades are <span className="font-semibold">pre-filled, ready-to-sell items</span> supplied in <span className="font-semibold">5g jars</span>. No packaging configuration is required. Jar size is fixed at 5g and cannot be changed.</p>
+            </div>
+          ) : (buyerType === "finished_goods") ? (
             <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
               <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
                 <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
@@ -367,7 +377,7 @@ export default function B2BSolidColoursPage() {
               </div>
               <p className="text-sm text-grey-secondary">Gel polishes are filled into <span className="font-semibold">10ml bottles</span>. Set your bottle colour, brush, and branding in Checkout before submitting your order.</p>
             </div>
-          )}
+          ) : null}
           <B2BUniformShadeGrid
           title={toRouteLabel(routeSuffix)}
           description=""
