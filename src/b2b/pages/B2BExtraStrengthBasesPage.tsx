@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
+import { useB2BPricing, lookupPrice } from "../hooks/useB2BPricing";
 
 type CsvProduct = {
   category: string;
@@ -145,7 +146,7 @@ function createFallbackProducts(): CsvProduct[] {
       subcategory: "Extra Strength Base",
       product_name: `Extra Strength Base ${id}`,
       code,
-      moq: "5",
+      moq: "25",
       image_url: `/img/tops-bases/Extra Strength Base Coat/${code}.png`,
       active: "TRUE",
     };
@@ -182,7 +183,19 @@ const fallbackProductImage = "/img/placeholders/product-missing.svg";
 export default function B2BExtraStrengthBasesPage() {
   const location = useLocation();
   const routeMode = getBaseRouteMode(location.pathname);
-  const { items, addOrUpdateItem, removeItem, buyerType } = useB2BCart();
+  const { items, addOrUpdateItem, removeItem, buyerType, priceTier } = useB2BCart();
+  const priceMap = useB2BPricing(priceTier);
+
+  // Map route mode to b2b_price_tiers subcategory key
+  const baseSubcategoryKey: string | null = (() => {
+    if (routeMode === "EXTRA_STRENGTH") return "Extra Strength Base";
+    if (routeMode === "CLASSIC") return "Classic Base";
+    if (routeMode === "RUBBER") return "Rubber Bases";
+    if (routeMode === "TOP_COAT") return "Top Coat";
+    return null; // "ALL" — mixed subcategories, no single price
+  })();
+  const priceUnit = buyerType === "bulk" ? "kg" : "pcs";
+  const pricePerUnit = baseSubcategoryKey ? lookupPrice(priceMap, baseSubcategoryKey, priceUnit) : null;
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
@@ -250,7 +263,7 @@ export default function B2BExtraStrengthBasesPage() {
       const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
-      const moq = toNumber(product.moq, 5);
+      const moq = toNumber(product.moq, 25);
 
       return {
         id: `${product.code}-${index}`,
@@ -288,6 +301,8 @@ export default function B2BExtraStrengthBasesPage() {
       items={uniformItems}
       validationMessage={validationMessage}
       buyerType={buyerType}
+      pricePerUnit={pricePerUnit}
+      priceUnit={priceUnit}
       onQuantityChange={(id, value) => {
         const item = uniformItems.find((entry) => entry.id === id);
         if (!item) return;
@@ -299,7 +314,7 @@ export default function B2BExtraStrengthBasesPage() {
 
         const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
         const qty = Number.parseInt(raw, 10);
-        const pcsMoq = toNumber(match.moq, 5);
+        const pcsMoq = toNumber(match.moq, 25);
         const effectiveMoq = buyerType === "bulk" ? 1 : pcsMoq;
 
         if (!Number.isFinite(qty) || qty < 0) {

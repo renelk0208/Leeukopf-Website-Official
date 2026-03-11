@@ -113,6 +113,7 @@ export default function B2BCheckoutPage() {
     getFilledUnitsTotal,
     getBottleUnitsRequired,
     isPrePrintedMinOk,
+    priceTier,
   } = useB2BCart();
 
   const [packagingDraft, setPackagingDraft] = useState<{
@@ -341,6 +342,8 @@ export default function B2BCheckoutPage() {
       },
       createdAt: new Date().toISOString(),
       source: "B2B Portal Checkout",
+      orderType: priceTier ? "purchase_order" : "quote_request",
+      priceTier: priceTier ?? "quote_pending",
     };
 
     setIsSubmitting(true);
@@ -419,6 +422,20 @@ export default function B2BCheckoutPage() {
         <h2 className="text-2xl font-bold text-grey-primary">Checkout</h2>
         <p className="mt-1 text-sm text-grey-secondary">Review all categories, set packaging, export CSV, and submit inquiry.</p>
       </section>
+
+      {priceTier ? (
+        <div className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+          <span className="font-semibold">Approved price tier:</span>{" "}
+          <span className="capitalize">{priceTier.replace(/_/g, " ")}</span>
+          {" — your order will be submitted as a confirmed Purchase Order."}
+        </div>
+      ) : (
+        <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+          No price tier assigned yet. Your order will be submitted as a{" "}
+          <span className="font-semibold">Quote Request</span>
+          {" — our team will follow up with pricing."}
+        </div>
+      )}
 
       {requiresBottlePackaging ? (
         <section className="rounded-lg border border-grey-card p-4">
@@ -716,7 +733,7 @@ export default function B2BCheckoutPage() {
           onClick={submit}
           className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-primary-200"
         >
-          {isSubmitting ? "Submitting..." : "Submit"}
+          {isSubmitting ? "Submitting..." : priceTier ? "Submit Purchase Order" : "Submit Quote Request"}
         </button>
       </div>
     </div>

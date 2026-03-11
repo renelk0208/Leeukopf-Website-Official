@@ -4,6 +4,7 @@ import InternalSolidColourGrid, { type InternalSolidColourSyncItem } from "../..
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
+import { useB2BPricing, lookupPrice } from "../hooks/useB2BPricing";
 
 type CsvProduct = {
   category: string;
@@ -159,7 +160,8 @@ function toSolidOrderCode(code: string, internalSku?: string): string {
 
 export default function B2BSolidColoursPage() {
   const location = useLocation();
-  const { items, addOrUpdateItem, removeItem, buyerType } = useB2BCart();
+  const { items, addOrUpdateItem, removeItem, buyerType, priceTier } = useB2BCart();
+  const priceMap = useB2BPricing(priceTier);
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
@@ -171,6 +173,12 @@ export default function B2BSolidColoursPage() {
   const isSolidColoursRoute = routeSuffix.length === 0 || routeSuffix === "solid-colours";
   const isKnownColourSubcategoryRoute = Boolean(routeKeywords[routeSuffix]);
   const isCreamCollection = routeSuffix === "cream-collection";
+
+  // Pricing: use the route label as subcategory key (matches b2b_price_tiers table)
+  const priceUnit = buyerType === "bulk" && !isCreamCollection ? "kg" : "pcs";
+  const pricePerUnit = isKnownColourSubcategoryRoute
+    ? lookupPrice(priceMap, toRouteLabel(routeSuffix), priceUnit)
+    : null;
 
   const subcategoryLabel = routeSuffix
     .split("/")
@@ -336,6 +344,8 @@ export default function B2BSolidColoursPage() {
           items={uniformItems}
           validationMessage={validationMessage}
           buyerType={isCreamCollection ? "finished_goods" : buyerType}
+          pricePerUnit={pricePerUnit}
+          priceUnit={priceUnit}
           onQuantityChange={(id, value) => {
             const item = uniformItems.find((entry) => entry.id === id);
             if (!item) return;

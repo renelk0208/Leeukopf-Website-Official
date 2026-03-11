@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { BottlePackaging, BuyerType, CartItem, CartTotals, JarPackaging } from "../types";
+import type { BottlePackaging, BuyerType, CartItem, CartTotals, JarPackaging, PriceTier } from "../types";
 
 type B2BCartState = {
   items: CartItem[];
@@ -17,12 +17,24 @@ type B2BCartState = {
 };
 
 const B2B_BUYER_TYPE_STORAGE_KEY = "leeukopf_b2b_buyer_type_v1";
+const B2B_PRICE_TIER_STORAGE_KEY = "leeukopf_b2b_price_tier_v1";
 
 function readStoredBuyerType(): BuyerType | null {
   if (typeof window === "undefined") return null;
   try {
     const raw = window.localStorage.getItem(B2B_BUYER_TYPE_STORAGE_KEY);
     if (raw === "finished_goods" || raw === "bulk") return raw;
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+function readStoredPriceTier(): PriceTier | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(B2B_PRICE_TIER_STORAGE_KEY);
+    if (raw && raw.trim().length > 0) return raw.trim();
   } catch {
     // ignore
   }
@@ -46,6 +58,7 @@ type B2BCartContextValue = {
   bottlePackaging: BottlePackaging | null;
   jarPackaging: JarPackaging | null;
   buyerType: BuyerType | null;
+  priceTier: PriceTier | null;
   addOrUpdateItem: (item: CartItem) => void;
   removeItem: (category: CartItem["category"], code: string) => void;
   setQuantity: (category: CartItem["category"], code: string, quantity: number) => void;
@@ -55,6 +68,8 @@ type B2BCartContextValue = {
   clearJarPackaging: () => void;
   setBuyerType: (type: BuyerType) => void;
   clearBuyerType: () => void;
+  setPriceTier: (tier: PriceTier) => void;
+  clearPriceTier: () => void;
   clearCart: () => void;
   getTotals: () => CartTotals;
   getFilledUnitsTotal: () => number;
@@ -244,6 +259,7 @@ const B2BCartContext = createContext<B2BCartContextValue | null>(null);
 export function B2BCartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, readStoredState);
   const [buyerType, setBuyerTypeState] = useState<BuyerType | null>(readStoredBuyerType);
+  const [priceTier, setPriceTierState] = useState<PriceTier | null>(readStoredPriceTier);
 
   const setBuyerType = useCallback((type: BuyerType) => {
     setBuyerTypeState(type);
@@ -254,10 +270,35 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const setPriceTier = useCallback((tier: PriceTier) => {
+    setPriceTierState(tier);
+    try {
+      window.localStorage.setItem(B2B_PRICE_TIER_STORAGE_KEY, tier);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const clearPriceTier = useCallback(() => {
+    setPriceTierState(null);
+    try {
+      window.localStorage.removeItem(B2B_PRICE_TIER_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+  }, []);
+
   const clearBuyerType = useCallback(() => {
     setBuyerTypeState(null);
     try {
       window.localStorage.removeItem(B2B_BUYER_TYPE_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    // Price tier is linked to buyer type — reset both together
+    setPriceTierState(null);
+    try {
+      window.localStorage.removeItem(B2B_PRICE_TIER_STORAGE_KEY);
     } catch {
       // ignore
     }
@@ -333,6 +374,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       bottlePackaging: state.bottlePackaging,
       jarPackaging: state.jarPackaging,
       buyerType,
+      priceTier,
       addOrUpdateItem,
       removeItem,
       setQuantity,
@@ -342,6 +384,8 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       clearJarPackaging,
       setBuyerType,
       clearBuyerType,
+      setPriceTier,
+      clearPriceTier,
       clearCart,
       getTotals,
       getFilledUnitsTotal,
@@ -353,6 +397,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       state.bottlePackaging,
       state.jarPackaging,
       buyerType,
+      priceTier,
       addOrUpdateItem,
       removeItem,
       setQuantity,
@@ -362,6 +407,8 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       clearJarPackaging,
       setBuyerType,
       clearBuyerType,
+      setPriceTier,
+      clearPriceTier,
       clearCart,
       getTotals,
       getFilledUnitsTotal,

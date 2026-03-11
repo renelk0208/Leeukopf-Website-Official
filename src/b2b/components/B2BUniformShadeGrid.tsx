@@ -22,6 +22,10 @@ type B2BUniformShadeGridProps = {
   items: B2BUniformShadeItem[];
   validationMessage?: string;
   buyerType?: BuyerType | null;
+  /** Per-unit price for this subcategory (null = new client / not yet priced). */
+  pricePerUnit?: number | null;
+  /** Unit label that goes with pricePerUnit (default: "pcs"). */
+  priceUnit?: "pcs" | "kg";
   onQuantityChange: (id: string, value: string) => void;
   onSave: (id: string) => void;
   onClear: (id: string) => void;
@@ -33,6 +37,8 @@ export default function B2BUniformShadeGrid({
   items,
   validationMessage,
   buyerType,
+  pricePerUnit,
+  priceUnit = "pcs",
   onQuantityChange,
   onSave,
   onClear,
@@ -148,6 +154,12 @@ export default function B2BUniformShadeGrid({
                         <p className="text-xs text-grey-secondary">
                           {isBulk ? "MOQ: 1 kg" : `MOQ: ${item.moq}`}
                         </p>
+                        {pricePerUnit != null ? (
+                          <p className="text-xs font-semibold text-primary-700">
+                            €{pricePerUnit.toFixed(2)}
+                            <span className="font-normal text-grey-secondary"> / {priceUnit === "kg" ? "kg" : "pc"}</span>
+                          </p>
+                        ) : null}
 
                         <div className="flex items-center gap-1">
                           <input
@@ -217,6 +229,14 @@ export default function B2BUniformShadeGrid({
 
           <div className="mt-4 rounded-xl border border-grey-card bg-grey-50 p-3">
             <p className="text-sm font-semibold text-grey-primary">Total units: {totalUnits}</p>
+            {pricePerUnit != null && totalUnits > 0 ? (
+              <p className="mt-1 text-sm text-grey-secondary">
+                Subtotal:{" "}
+                <span className="font-semibold text-grey-primary">
+                  €{(totalUnits * pricePerUnit).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+              </p>
+            ) : null}
           </div>
 
           <div className="mt-4 space-y-2">

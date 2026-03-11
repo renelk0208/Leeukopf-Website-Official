@@ -13,6 +13,7 @@ type ClientRegistration = {
   billing_address: string;
   shipping_address: string;
   buyer_type?: string | null;
+  price_tier?: string | null;
   created_at?: string;
 };
 
@@ -67,7 +68,7 @@ export default function B2BClientInfoPage() {
 
       const { data, error: queryError } = await supabase
         .from("client_registrations")
-        .select("id, company, contact, email, phone, country, vat_eori, billing_address, shipping_address, buyer_type, created_at")
+        .select("id, company, contact, email, phone, country, vat_eori, billing_address, shipping_address, buyer_type, price_tier, created_at")
         .ilike("email", email)
         .order("created_at", { ascending: false })
         .limit(1)
@@ -94,6 +95,7 @@ export default function B2BClientInfoPage() {
           billing_address: data.billing_address ?? "",
           shipping_address: data.shipping_address ?? "",
           buyer_type: (data as ClientRegistration).buyer_type ?? null,
+          price_tier: (data as ClientRegistration).price_tier ?? null,
           created_at: data.created_at,
         });
       } else {
@@ -184,6 +186,19 @@ export default function B2BClientInfoPage() {
           ) : (
             <div className="mb-4 rounded-md border border-grey-200 bg-grey-50 p-3 text-xs text-grey-secondary">
               Buyer type not yet assigned. You will be prompted to select one when entering the portal.
+            </div>
+          )}
+          {form.price_tier ? (
+            <div className="mb-4 rounded-md border border-emerald-200 bg-emerald-50 p-3">
+              <span className="text-xs font-semibold uppercase tracking-wide text-grey-secondary">Price Tier (set by Leeukopf)</span>
+              <p className="mt-1 text-sm font-semibold capitalize text-emerald-700">
+                {form.price_tier.replace(/_/g, " ")}
+              </p>
+              <p className="mt-0.5 text-xs text-grey-secondary">Agreed pricing tier for your account. Prices are shown on product pages and Purchase Orders.</p>
+            </div>
+          ) : (
+            <div className="mb-4 rounded-md border border-grey-200 bg-grey-50 p-3 text-xs text-grey-secondary">
+              No price tier assigned yet. Orders will be submitted as Quote Requests until pricing is agreed.
             </div>
           )}
           <div className="grid gap-4 sm:grid-cols-2">

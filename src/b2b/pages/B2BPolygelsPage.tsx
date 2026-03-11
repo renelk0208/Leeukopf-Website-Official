@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
+import { useB2BPricing, lookupPrice } from "../hooks/useB2BPricing";
 
 type CsvProduct = {
   category: string;
@@ -218,7 +219,13 @@ export default function B2BPolygelsPage() {
   const location = useLocation();
   const isLiquidRoute = isLiquidPolygelRoute(location.pathname.toLowerCase());
   const activeMoq = isLiquidRoute ? LIQUID_POLYGEL_MOQ : POLYGEL_MOQ;
-  const { items, addOrUpdateItem, removeItem, buyerType } = useB2BCart();
+  const { items, addOrUpdateItem, removeItem, buyerType, priceTier } = useB2BCart();
+  const priceMap = useB2BPricing(priceTier);
+  // Liquid polygel: bulk pricing is per kg; plain polygel: always per pcs (even for bulk buyers)
+  const isBulkKg = buyerType === "bulk" && isLiquidRoute;
+  const priceUnit = isBulkKg ? "kg" : "pcs";
+  const polygelSubcategoryKey = isLiquidRoute ? "Liquid Polygel" : "Polygel";
+  const pricePerUnit = lookupPrice(priceMap, polygelSubcategoryKey, priceUnit);
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
@@ -406,6 +413,8 @@ export default function B2BPolygelsPage() {
         items={uniformItems}
         validationMessage={validationMessage}
         buyerType={isLiquidRoute ? buyerType : "finished_goods"}
+        pricePerUnit={pricePerUnit}
+        priceUnit={priceUnit}
         onQuantityChange={(id, value) => {
           const item = uniformItems.find((entry) => entry.id === id);
           if (!item) return;

@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
 import { useB2BCart } from "../store/B2BCartContext";
+import { useB2BPricing, lookupPrice } from "../hooks/useB2BPricing";
 
 type CsvProduct = {
   category: string;
@@ -193,7 +194,12 @@ function isBuilderGelByRoute(item: CsvProduct, mode: BuilderRouteMode): boolean 
 export default function B2BBuilderGelsPage() {
   const location = useLocation();
   const routeMode = getBuilderRouteMode(location.pathname);
-  const { items, addOrUpdateItem, removeItem, buyerType } = useB2BCart();
+  const { items, addOrUpdateItem, removeItem, buyerType, priceTier } = useB2BCart();
+  const priceMap = useB2BPricing(priceTier);
+  const priceUnit = buyerType === "bulk" ? "kg" : "pcs";
+  // BIAB has its own price entry; all other builder gel modes share "Builder Gel"
+  const builderSubcategoryKey = routeMode === "BIAB" ? "BIAB" : "Builder Gel";
+  const pricePerUnit = lookupPrice(priceMap, builderSubcategoryKey, priceUnit);
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [validationMessage, setValidationMessage] = useState<string>("");
@@ -339,6 +345,8 @@ export default function B2BBuilderGelsPage() {
         items={uniformItems}
         validationMessage={validationMessage}
         buyerType={buyerType}
+        pricePerUnit={pricePerUnit}
+        priceUnit={priceUnit}
         onQuantityChange={(id, value) => {
           const product = uniformItems.find((entry) => entry.id === id);
           if (!product) return;

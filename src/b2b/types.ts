@@ -9,6 +9,9 @@ export type B2BCategory =
 
 export type BuyerType = "finished_goods" | "bulk";
 
+/** Price tier assigned to a client by Leeukopf admin. null = new/unpriced client (quote flow). */
+export type PriceTier = string; // e.g. 'standard' | 'distributor' | 'key_account'
+
 export type CartUnitType = "PCS" | "KG";
 
 export type BottleBranding = "PRE_PRINTED" | "LABELS";
