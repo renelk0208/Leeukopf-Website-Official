@@ -124,18 +124,18 @@ function inferCategoryData(relativePath) {
 
   if (normalizedPath.startsWith('bases/') || normalizedPath.startsWith('tops-bases/')) {
     if (normalizedPath.includes('rubber')) {
-      return { category: 'Top & Base', subcategory: 'Rubber Bases', size: '15', unit: 'ml', moq: '1' }
+      return { category: 'Top & Base', subcategory: 'Rubber Bases', size: '15', unit: 'ml', moq: '5' }
     }
 
     if (normalizedPath.includes('classic')) {
-      return { category: 'Top & Base', subcategory: 'Classic Base', size: '15', unit: 'ml', moq: '1' }
+      return { category: 'Top & Base', subcategory: 'Classic Base', size: '15', unit: 'ml', moq: '5' }
     }
 
     if (normalizedPath.includes('/tops/') || normalizedPath.includes('top-coat') || normalizedPath.includes('topcoat')) {
-      return { category: 'Top & Base', subcategory: 'Top Coat', size: '15', unit: 'ml', moq: '1' }
+      return { category: 'Top & Base', subcategory: 'Top Coat', size: '15', unit: 'ml', moq: '5' }
     }
 
-    return { category: 'Top & Base', subcategory: 'Extra Strength Base', size: '15', unit: 'ml', moq: '1' }
+    return { category: 'Top & Base', subcategory: 'Extra Strength Base', size: '15', unit: 'ml', moq: '5' }
   }
 
   if (normalizedPath.startsWith('solid-colours/')) {
@@ -372,7 +372,7 @@ function main() {
       code: 'AUTO-RB-ROUTE-01',
       size: '15',
       unit: 'ml',
-      moq: '1',
+      moq: '5',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',
@@ -385,7 +385,7 @@ function main() {
       code: 'AUTO-ESB-ROUTE-01',
       size: '15',
       unit: 'ml',
-      moq: '1',
+      moq: '5',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',
@@ -398,7 +398,7 @@ function main() {
       code: 'AUTO-CB-ROUTE-01',
       size: '15',
       unit: 'ml',
-      moq: '1',
+      moq: '5',
       price: '0',
       image_url: '',
       notes: 'AUTO_B2B_ROUTE_SEED',

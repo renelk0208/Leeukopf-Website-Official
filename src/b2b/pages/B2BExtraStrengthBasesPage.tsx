@@ -145,7 +145,7 @@ function createFallbackProducts(): CsvProduct[] {
       subcategory: "Extra Strength Base",
       product_name: `Extra Strength Base ${id}`,
       code,
-      moq: "1",
+      moq: "5",
       image_url: `/img/tops-bases/Extra Strength Base Coat/${code}.png`,
       active: "TRUE",
     };
@@ -250,7 +250,7 @@ export default function B2BExtraStrengthBasesPage() {
       const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
-      const moq = toNumber(product.moq, 1);
+      const moq = toNumber(product.moq, 5);
 
       return {
         id: `${product.code}-${index}`,
@@ -299,7 +299,7 @@ export default function B2BExtraStrengthBasesPage() {
 
         const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
         const qty = Number.parseInt(raw, 10);
-        const pcsMoq = toNumber(match.moq, 1);
+        const pcsMoq = toNumber(match.moq, 5);
         const effectiveMoq = buyerType === "bulk" ? 1 : pcsMoq;
 
         if (!Number.isFinite(qty) || qty < 0) {
