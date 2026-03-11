@@ -360,7 +360,8 @@ export default function B2BBuilderGelsPage() {
           const product = products.find((_, index) => `${products[index].code}-${index}` === id);
           if (!product) return;
 
-          const raw = (draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "0")).trim();
+          const displayed = uniformItems.find((entry) => entry.id === id)?.quantityValue ?? "0";
+          const raw = (draftQty[product.code] ?? displayed).trim();
           const qty = Number.parseInt(raw, 10);
           const pcsMoq = Math.max(Number.parseInt(product.moq || "1", 10) || 1, BUILDER_GEL_MIN_MOQ);
           const effectiveMoq = buyerType === "bulk" ? 1 : pcsMoq;

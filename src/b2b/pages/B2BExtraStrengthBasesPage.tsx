@@ -325,7 +325,8 @@ export default function B2BExtraStrengthBasesPage() {
         const match = products.find((product, index) => `${product.code}-${index}` === id);
         if (!match) return;
 
-        const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
+        const displayed = uniformItems.find((entry) => entry.id === id)?.quantityValue ?? "0";
+        const raw = (draftQty[match.code] ?? displayed).trim();
         const qty = Number.parseInt(raw, 10);
         const pcsMoq = toNumber(match.moq, 25);
         const effectiveMoq = buyerType === "bulk" ? 1 : pcsMoq;

@@ -395,7 +395,8 @@ export default function B2BSolidColoursPage() {
             const match = products.find((product, index) => `${product.code}-${index}` === id);
             if (!match) return;
 
-            const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? "0")).trim();
+            const displayed = uniformItems.find((entry) => entry.id === id)?.quantityValue ?? "0";
+            const raw = (draftQty[match.code] ?? displayed).trim();
             const qty = Number.parseInt(raw, 10);
             const pcsMoq = Number.parseInt(match.moq || "25", 10) || 25;
             const isBulkKg = buyerType === "bulk" && !isCreamCollection;
