@@ -13,6 +13,17 @@ interface ClientRegistrationLead {
   created_at: string;
 }
 
+interface OrderLineItem {
+  code: string;
+  product_name?: string;
+  name?: string;
+  size?: string;
+  unit?: string;
+  quantity?: number;
+  qty?: number;
+  moq?: string;
+}
+
 interface CompletedB2BOrder {
   order_id: string;
   status: string;
@@ -20,9 +31,13 @@ interface CompletedB2BOrder {
   company_name: string;
   contact_name: string | null;
   contact_email: string;
+  contact_phone: string | null;
   country: string | null;
+  vat_number: string | null;
+  shipping_address: string | null;
   line_count: number;
   total_qty: number;
+  items: OrderLineItem[] | null;
   email_sent: boolean;
   email_error: string | null;
   created_at: string;
@@ -86,6 +101,7 @@ export default function AdminDashboard() {
   const [brochureRequests, setBrochureRequests] = useState<BrochureRequest[]>([]);
   const [clientRegistrations, setClientRegistrations] = useState<ClientRegistrationLead[]>([]);
   const [completedOrders, setCompletedOrders] = useState<CompletedB2BOrder[]>([]);
+  const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [manualInviteLink, setManualInviteLink] = useState('');
@@ -1223,31 +1239,89 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {completedOrders.map((order) => (
-                        <tr key={order.order_id} className="border-b border-cyan-500/10 hover:bg-slate-900/30">
-                          <td className="py-4 px-4 text-gray-400 text-sm">
-                            {new Date(order.created_at).toLocaleString()}
-                          </td>
-                          <td className="py-4 px-4 text-white font-mono text-xs">{order.order_id}</td>
-                          <td className="py-4 px-4 text-gray-300">{order.company_name}</td>
-                          <td className="py-4 px-4 text-cyan-400">
-                            <a href={`mailto:${order.contact_email}`} className="hover:underline">
-                              {order.contact_email}
-                            </a>
-                          </td>
-                          <td className="py-4 px-4 text-gray-300">{order.total_qty}</td>
-                          <td className="py-4 px-4 text-gray-300">{order.line_count}</td>
-                          <td className="py-4 px-4">
-                            {order.email_sent ? (
-                              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm">Sent</span>
-                            ) : (
-                              <span className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full text-sm" title={order.email_error || undefined}>
-                                Failed
-                              </span>
+                      {completedOrders.map((order) => {
+                        const isExpanded = expandedOrderId === order.order_id;
+                        return (
+                          <>
+                            <tr
+                              key={order.order_id}
+                              className="border-b border-cyan-500/10 hover:bg-slate-900/30 cursor-pointer"
+                              onClick={() => setExpandedOrderId(isExpanded ? null : order.order_id)}
+                            >
+                              <td className="py-4 px-4 text-gray-400 text-sm">
+                                {new Date(order.created_at).toLocaleString()}
+                              </td>
+                              <td className="py-4 px-4 text-white font-mono text-xs">{order.order_id}</td>
+                              <td className="py-4 px-4 text-gray-300">{order.company_name}</td>
+                              <td className="py-4 px-4 text-cyan-400">
+                                <a href={`mailto:${order.contact_email}`} className="hover:underline" onClick={e => e.stopPropagation()}>
+                                  {order.contact_email}
+                                </a>
+                              </td>
+                              <td className="py-4 px-4 text-gray-300">{order.total_qty}</td>
+                              <td className="py-4 px-4 text-gray-300">{order.line_count}</td>
+                              <td className="py-4 px-4">
+                                {order.email_sent ? (
+                                  <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm">Sent</span>
+                                ) : (
+                                  <span className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full text-sm" title={order.email_error || undefined}>
+                                    Failed
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                            {isExpanded && (
+                              <tr key={`${order.order_id}-detail`} className="bg-slate-900/50">
+                                <td colSpan={7} className="px-6 py-5">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+                                    <div className="space-y-1 text-sm">
+                                      <p className="text-gray-400 font-semibold uppercase text-xs tracking-wider mb-2">Client Details</p>
+                                      <p className="text-gray-300"><span className="text-gray-500">Contact:</span> {order.contact_name || '—'}</p>
+                                      <p className="text-gray-300"><span className="text-gray-500">Phone:</span> {order.contact_phone || '—'}</p>
+                                      <p className="text-gray-300"><span className="text-gray-500">Country:</span> {order.country || '—'}</p>
+                                      <p className="text-gray-300"><span className="text-gray-500">VAT:</span> {order.vat_number || '—'}</p>
+                                      <p className="text-gray-300"><span className="text-gray-500">Shipping:</span> {order.shipping_address || '—'}</p>
+                                    </div>
+                                    <div className="space-y-1 text-sm">
+                                      <p className="text-gray-400 font-semibold uppercase text-xs tracking-wider mb-2">Order Info</p>
+                                      <p className="text-gray-300"><span className="text-gray-500">Order Date:</span> {order.order_date ? new Date(order.order_date).toLocaleDateString() : '—'}</p>
+                                      <p className="text-gray-300"><span className="text-gray-500">Status:</span> {order.status}</p>
+                                      <p className="text-gray-300"><span className="text-gray-500">Total Units:</span> {order.total_qty}</p>
+                                    </div>
+                                  </div>
+                                  {order.items && order.items.length > 0 && (
+                                    <div>
+                                      <p className="text-gray-400 font-semibold uppercase text-xs tracking-wider mb-2">Items ({order.items.length})</p>
+                                      <div className="overflow-x-auto rounded-lg border border-cyan-500/10">
+                                        <table className="w-full text-sm">
+                                          <thead>
+                                            <tr className="border-b border-cyan-500/10 bg-slate-800/60">
+                                              <th className="text-left py-2 px-3 text-gray-400 font-medium">SKU / Code</th>
+                                              <th className="text-left py-2 px-3 text-gray-400 font-medium">Product Name</th>
+                                              <th className="text-left py-2 px-3 text-gray-400 font-medium">Size</th>
+                                              <th className="text-right py-2 px-3 text-gray-400 font-medium">Qty</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {order.items.map((item, idx) => (
+                                              <tr key={idx} className="border-b border-cyan-500/5 hover:bg-slate-800/40">
+                                                <td className="py-2 px-3 text-cyan-300 font-mono text-xs">{item.code}</td>
+                                                <td className="py-2 px-3 text-gray-300">{item.product_name || item.name || '—'}</td>
+                                                <td className="py-2 px-3 text-gray-400">{item.size || '—'}</td>
+                                                <td className="py-2 px-3 text-white text-right font-semibold">{item.quantity ?? item.qty ?? '—'}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
                             )}
-                          </td>
-                        </tr>
-                      ))}
+                          </>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

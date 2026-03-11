@@ -5,6 +5,17 @@ export const config = {
   path: '/api/admin-b2b-orders',
 };
 
+type OrderLineItem = {
+  code: string;
+  product_name?: string;
+  name?: string;
+  size?: string;
+  unit?: string;
+  quantity?: number;
+  qty?: number;
+  moq?: string;
+};
+
 type AdminB2BOrder = {
   order_id: string;
   status: string;
@@ -12,9 +23,13 @@ type AdminB2BOrder = {
   company_name: string;
   contact_name: string | null;
   contact_email: string;
+  contact_phone: string | null;
   country: string | null;
+  vat_number: string | null;
+  shipping_address: string | null;
   line_count: number;
   total_qty: number;
+  items: OrderLineItem[] | null;
   email_sent: boolean;
   email_error: string | null;
   created_at: string;
@@ -40,11 +55,18 @@ function mapLegacySolidOrderToAdminOrder(row: {
   company_name: string | null;
   contact_name: string | null;
   contact_email: string | null;
+  contact_number: string | null;
   country: string | null;
+  vat: string | null;
+  shipping_address: string | null;
+  shipping_region: string | null;
+  shipping_postal_code: string | null;
   line_count: number | null;
   total_qty: number | null;
+  lines: OrderLineItem[] | null;
   created_at: string;
 }): AdminB2BOrder {
+  const shippingParts = [row.shipping_address, row.shipping_region, row.shipping_postal_code].filter(Boolean);
   return {
     order_id: row.order_id,
     status: 'completed',
@@ -52,9 +74,13 @@ function mapLegacySolidOrderToAdminOrder(row: {
     company_name: row.company_name || '-',
     contact_name: row.contact_name,
     contact_email: row.contact_email || '-',
+    contact_phone: row.contact_number,
     country: row.country,
+    vat_number: row.vat,
+    shipping_address: shippingParts.length ? shippingParts.join(', ') : null,
     line_count: row.line_count || 0,
     total_qty: row.total_qty || 0,
+    items: row.lines,
     email_sent: true,
     email_error: null,
     created_at: row.created_at,
@@ -173,7 +199,7 @@ export const handler: Handler = async (event) => {
 
   const { data, error } = await adminSupabase
     .from('b2b_orders')
-    .select('order_id, status, order_date, company_name, contact_name, contact_email, country, line_count, total_qty, email_sent, email_error, created_at')
+    .select('order_id, status, order_date, company_name, contact_name, contact_email, contact_phone, country, vat_number, shipping_address, line_count, total_qty, items, email_sent, email_error, created_at')
     .order('created_at', { ascending: false })
     .limit(300);
 
@@ -188,7 +214,7 @@ export const handler: Handler = async (event) => {
   if (error && isMissingTableError(error)) {
     const { data: legacyData, error: legacyError } = await adminSupabase
       .from('solid_colour_orders')
-      .select('order_id, order_date, company_name, contact_name, contact_email, country, line_count, total_qty, created_at')
+      .select('order_id, order_date, company_name, contact_name, contact_email, contact_number, country, vat, shipping_address, shipping_region, shipping_postal_code, line_count, total_qty, lines, created_at')
       .order('created_at', { ascending: false })
       .limit(300);
 
@@ -220,9 +246,15 @@ export const handler: Handler = async (event) => {
           company_name: string | null;
           contact_name: string | null;
           contact_email: string | null;
+          contact_number: string | null;
           country: string | null;
+          vat: string | null;
+          shipping_address: string | null;
+          shipping_region: string | null;
+          shipping_postal_code: string | null;
           line_count: number | null;
           total_qty: number | null;
+          lines: OrderLineItem[] | null;
           created_at: string;
         }
       )
