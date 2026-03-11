@@ -1,6 +1,7 @@
 import PageTemplate from '../../../../components/PageTemplate';
 import ApplicationCuring from '../../../../components/ApplicationCuring';
 import ProductGrid from '../../../../components/ProductGrid';
+import { categoryHero } from '../../../../config/imageMap';
 
 /**
  * Use Vite's import.meta.glob to dynamically load all No Heat Spike Builder Gel product images
@@ -63,7 +64,7 @@ export default function NoHeatSpikeBuilderGelPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card.jpg"
+            src={categoryHero['no-heat-spike-builder-gel']}
             alt="No Heat Spike Builder Gel"
             width="1600"
             height="400"
