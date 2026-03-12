@@ -553,9 +553,13 @@ const handler: Handler = async (event: HandlerEvent) => {
       console.error('Supabase persistence failed (non-fatal):', persistErr instanceof Error ? persistErr.message : persistErr);
     }
 
-    // Append data to Google Sheets (required)
-    console.log('Appending data to Google Sheets...');
-    await appendToGoogleSheets(formData);
+    // Append data to Google Sheets (best-effort — don't block registration if misconfigured or API error)
+    try {
+      console.log('Appending data to Google Sheets...');
+      await appendToGoogleSheets(formData);
+    } catch (sheetsErr) {
+      console.error('Google Sheets append failed (non-fatal):', sheetsErr instanceof Error ? sheetsErr.message : sheetsErr);
+    }
 
     // Send internal notification email
     console.log('Sending internal notification email to info@leeukopf.com');
