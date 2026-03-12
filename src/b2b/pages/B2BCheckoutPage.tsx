@@ -262,7 +262,8 @@ export default function B2BCheckoutPage() {
     (!requiresJarPackaging || jarPackaging !== null) &&
     (!requiresPolygelPackaging || polygelPackaging !== null);
 
-  const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk;
+  const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk &&
+    items.length > 0;
 
   const exportCsv = () => {
     if (!canProceed) return;
