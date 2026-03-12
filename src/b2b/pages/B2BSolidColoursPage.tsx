@@ -334,7 +334,7 @@ export default function B2BSolidColoursPage() {
         moq,
         quantityValue: draftQty[product.code] !== undefined
           ? draftQty[product.code]
-          : String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : (buyerType === "bulk" && !isCreamCollection ? 1 : (Number.parseInt(product.moq || "25", 10) || 25))),
+          : String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : (Number.parseInt(product.moq || "25", 10) || 25)),
         imageSrc: image,
         imageAlt: product.product_name || product.code,
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,

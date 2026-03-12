@@ -301,7 +301,7 @@ export default function B2BBuilderGelsPage() {
       const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
-      const quantityValue = draftQty[product.code] ?? String(existingQtyByCode[product.code] ?? "");
+      const quantityValue = draftQty[product.code] ?? String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : BUILDER_GEL_MIN_MOQ);
       return {
         id: `${product.code}-${index}`,
         code: product.code,

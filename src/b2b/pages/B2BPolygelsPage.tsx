@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { AlertTriangle } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { getIndexedCandidates, loadB2BImageIndex, type B2BImageIndex } from "../data/b2bImageIndex";
 import B2BUniformShadeGrid, { type B2BUniformShadeItem } from "../components/B2BUniformShadeGrid";
@@ -23,27 +22,8 @@ function sortProductsAlphabetically(products: CsvProduct[]): CsvProduct[] {
   });
 }
 
-type TubeColor = "BLACK" | "WHITE";
-type TubeSize = "30G" | "60G";
-type TubeLabel = "PRINTED" | "OWN_LABELS";
-
 const POLYGEL_MOQ = 100;
 const LIQUID_POLYGEL_MOQ = 25;
-
-const tubeColorOptions: Array<{ value: TubeColor; label: string }> = [
-  { value: "BLACK", label: "Black" },
-  { value: "WHITE", label: "White" },
-];
-
-const tubeSizeOptions: Array<{ value: TubeSize; label: string }> = [
-  { value: "30G", label: "30g" },
-  { value: "60G", label: "60g" },
-];
-
-const tubeLabelOptions: Array<{ value: TubeLabel; label: string }> = [
-  { value: "PRINTED", label: "Printed" },
-  { value: "OWN_LABELS", label: "Own labels" },
-];
 
 const fallbackProductImage = "/img/placeholders/product-missing.svg";
 
@@ -230,9 +210,6 @@ export default function B2BPolygelsPage() {
   const [products, setProducts] = useState<CsvProduct[]>([]);
   const [draftQty, setDraftQty] = useState<Record<string, string>>({});
   const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
-  const [tubeColor, setTubeColor] = useState<TubeColor>("BLACK");
-  const [tubeSize, setTubeSize] = useState<TubeSize>("30G");
-  const [tubeLabel, setTubeLabel] = useState<TubeLabel>("PRINTED");
   const [validationMessage, setValidationMessage] = useState<string>("");
   const [imageIndexByCode, setImageIndexByCode] = useState<B2BImageIndex>({});
 
@@ -359,58 +336,9 @@ export default function B2BPolygelsPage() {
       )}
 
       {!isLiquidRoute && buyerType === "finished_goods" && (
-        <section className="rounded-lg border-2 border-orange-400 bg-white p-4 shadow-sm">
-          <div className="-mx-4 -mt-4 mb-4 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
-            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
-            <span className="text-sm font-bold uppercase tracking-wide text-white">Action Required — Tube Configuration</span>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <label className="text-sm font-medium text-grey-primary">
-              Tube colour
-              <select
-                value={tubeColor}
-                onChange={(event) => setTubeColor(event.target.value as TubeColor)}
-                className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-              >
-                {tubeColorOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="text-sm font-medium text-grey-primary">
-              Tube size
-              <select
-                value={tubeSize}
-                onChange={(event) => setTubeSize(event.target.value as TubeSize)}
-                className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-              >
-                {tubeSizeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="text-sm font-medium text-grey-primary">
-              Label option
-              <select
-                value={tubeLabel}
-                onChange={(event) => setTubeLabel(event.target.value as TubeLabel)}
-                className="mt-1 w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
-              >
-                {tubeLabelOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        </section>
+        <div className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+          Tube configuration (colour, size and label option) is set at checkout.
+        </div>
       )}
 
       <B2BUniformShadeGrid
@@ -455,13 +383,6 @@ export default function B2BPolygelsPage() {
             image: item?.imageSrc || null,
             subcategory: match.subcategory,
             moq: effectiveMoq,
-            ...(isLiquidRoute
-              ? {}
-              : {
-                  tube_color: tubeColor,
-                  tube_size: tubeSize,
-                  label_option: tubeLabel,
-                }),
           };
 
           addOrUpdateItem({

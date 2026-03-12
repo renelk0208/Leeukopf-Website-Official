@@ -33,6 +33,16 @@ export type JarPackaging = {
   branding: BottleBranding;
 };
 
+export type TubeColor = "BLACK" | "WHITE";
+export type TubeSize = "30G" | "60G";
+export type TubeLabel = "PRINTED" | "OWN_LABELS";
+
+export type PolygelPackaging = {
+  color: TubeColor;
+  size: TubeSize;
+  label: TubeLabel;
+};
+
 export interface CartItem {
   category: B2BCategory;
   code: string;

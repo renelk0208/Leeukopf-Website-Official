@@ -8,12 +8,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { BottlePackaging, BuyerType, CartItem, CartTotals, JarPackaging, PriceTier } from "../types";
+import type { BottlePackaging, BuyerType, CartItem, CartTotals, JarPackaging, PolygelPackaging, PriceTier } from "../types";
 
 type B2BCartState = {
   items: CartItem[];
   bottlePackaging: BottlePackaging | null;
   jarPackaging: JarPackaging | null;
+  polygelPackaging: PolygelPackaging | null;
 };
 
 const B2B_BUYER_TYPE_STORAGE_KEY = "leeukopf_b2b_buyer_type_v1";
@@ -51,12 +52,15 @@ type B2BCartAction =
   | { type: "CLEAR_BOTTLE_PACKAGING" }
   | { type: "SET_JAR_PACKAGING"; payload: JarPackaging }
   | { type: "CLEAR_JAR_PACKAGING" }
+  | { type: "SET_POLYGEL_PACKAGING"; payload: PolygelPackaging }
+  | { type: "CLEAR_POLYGEL_PACKAGING" }
   | { type: "CLEAR" };
 
 type B2BCartContextValue = {
   items: CartItem[];
   bottlePackaging: BottlePackaging | null;
   jarPackaging: JarPackaging | null;
+  polygelPackaging: PolygelPackaging | null;
   buyerType: BuyerType | null;
   priceTier: PriceTier | null;
   addOrUpdateItem: (item: CartItem) => void;
@@ -66,6 +70,8 @@ type B2BCartContextValue = {
   clearBottlePackaging: () => void;
   setJarPackaging: (packaging: JarPackaging) => void;
   clearJarPackaging: () => void;
+  setPolygelPackaging: (packaging: PolygelPackaging) => void;
+  clearPolygelPackaging: () => void;
   setBuyerType: (type: BuyerType) => void;
   clearBuyerType: () => void;
   setPriceTier: (tier: PriceTier) => void;
@@ -83,6 +89,7 @@ const initialState: B2BCartState = {
   items: [],
   bottlePackaging: null,
   jarPackaging: null,
+  polygelPackaging: null,
 };
 
 const BOTTLE_PACKAGING_CATEGORIES = new Set<CartItem["category"]>([
@@ -206,6 +213,18 @@ function reducer(state: B2BCartState, action: B2BCartAction): B2BCartState {
         jarPackaging: null,
       };
 
+    case "SET_POLYGEL_PACKAGING":
+      return {
+        ...state,
+        polygelPackaging: action.payload,
+      };
+
+    case "CLEAR_POLYGEL_PACKAGING":
+      return {
+        ...state,
+        polygelPackaging: null,
+      };
+
     default:
       return state;
   }
@@ -237,6 +256,14 @@ function readStoredState(): B2BCartState {
       typeof storedJar.color === "string" &&
       typeof storedJar.branding === "string";
 
+    const storedPolygel = (parsed as B2BCartState & { polygelPackaging?: PolygelPackaging | null }).polygelPackaging;
+    const hasValidPolygelPackaging =
+      storedPolygel &&
+      typeof storedPolygel === "object" &&
+      typeof storedPolygel.color === "string" &&
+      typeof storedPolygel.size === "string" &&
+      typeof storedPolygel.label === "string";
+
     return {
       items: parsed.items
         .filter((item) => typeof item?.category === "string" && typeof item?.code === "string")
@@ -248,6 +275,7 @@ function readStoredState(): B2BCartState {
         .filter((item) => item.quantity > 0 && item.code.length > 0),
       bottlePackaging: hasValidBottlePackaging ? parsed.bottlePackaging : null,
       jarPackaging: hasValidJarPackaging ? storedJar : null,
+      polygelPackaging: hasValidPolygelPackaging ? storedPolygel : null,
     };
   } catch {
     return initialState;
@@ -337,6 +365,14 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "CLEAR_JAR_PACKAGING" });
   }, []);
 
+  const setPolygelPackaging = useCallback((packaging: PolygelPackaging) => {
+    dispatch({ type: "SET_POLYGEL_PACKAGING", payload: packaging });
+  }, []);
+
+  const clearPolygelPackaging = useCallback(() => {
+    dispatch({ type: "CLEAR_POLYGEL_PACKAGING" });
+  }, []);
+
   const clearCart = useCallback(() => {
     dispatch({ type: "CLEAR" });
     // Also clear synchronously so navigation doesn't race the state effect
@@ -373,6 +409,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       items: state.items,
       bottlePackaging: state.bottlePackaging,
       jarPackaging: state.jarPackaging,
+      polygelPackaging: state.polygelPackaging,
       buyerType,
       priceTier,
       addOrUpdateItem,
@@ -382,6 +419,8 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       clearBottlePackaging,
       setJarPackaging,
       clearJarPackaging,
+      setPolygelPackaging,
+      clearPolygelPackaging,
       setBuyerType,
       clearBuyerType,
       setPriceTier,
@@ -396,6 +435,7 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       state.items,
       state.bottlePackaging,
       state.jarPackaging,
+      state.polygelPackaging,
       buyerType,
       priceTier,
       addOrUpdateItem,
@@ -405,6 +445,8 @@ export function B2BCartProvider({ children }: { children: ReactNode }) {
       clearBottlePackaging,
       setJarPackaging,
       clearJarPackaging,
+      setPolygelPackaging,
+      clearPolygelPackaging,
       setBuyerType,
       clearBuyerType,
       setPriceTier,

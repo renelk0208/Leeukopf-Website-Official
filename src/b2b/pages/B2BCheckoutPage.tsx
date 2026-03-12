@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useB2BCart } from "../store/B2BCartContext";
-import type { BottleBranding, BottleColor, BottleSize, BrushType, CartItem, JarPackaging, JarSize } from "../types";
+import type { BottleBranding, BottleColor, BottleSize, BrushType, CartItem, JarPackaging, JarSize, PolygelPackaging, TubeColor, TubeLabel, TubeSize } from "../types";
 import { getB2BCategoryLabel } from "../config/categories";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
@@ -50,6 +50,21 @@ const jarColors: Array<{ value: BottleColor; label: string }> = [
   { value: "WHITE", label: "White" },
   { value: "BLACK", label: "Black" },
   { value: "OTHER", label: "Other (discuss with us)" },
+];
+
+const tubeColors: Array<{ value: TubeColor; label: string }> = [
+  { value: "BLACK", label: "Black" },
+  { value: "WHITE", label: "White" },
+];
+
+const tubeSizes: Array<{ value: TubeSize; label: string }> = [
+  { value: "30G", label: "30g" },
+  { value: "60G", label: "60g" },
+];
+
+const tubeLabels: Array<{ value: TubeLabel; label: string }> = [
+  { value: "PRINTED", label: "Printed" },
+  { value: "OWN_LABELS", label: "Own Labels" },
 ];
 function toCsvValue(input: string | number | undefined): string {
   if (input === undefined) return "";
@@ -104,10 +119,13 @@ export default function B2BCheckoutPage() {
     buyerType,
     bottlePackaging,
     jarPackaging,
+    polygelPackaging,
     setBottlePackaging,
     clearBottlePackaging,
     setJarPackaging,
     clearJarPackaging,
+    setPolygelPackaging,
+    clearPolygelPackaging,
     clearCart,
     removeItem,
     setQuantity,
@@ -139,9 +157,19 @@ export default function B2BCheckoutPage() {
     color: "",
     branding: "",
   });
+
+  const [polygelDraft, setPolygelDraft] = useState<{
+    color: TubeColor | "";
+    size: TubeSize | "";
+    label: TubeLabel | "";
+  }>({
+    color: "",
+    size: "",
+    label: "",
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [movAcknowledged, setMovAcknowledged] = useState(false);
   const [profile, setProfile] = useState<PortalProfile | null>(null);
 
   useEffect(() => {
@@ -164,6 +192,14 @@ export default function B2BCheckoutPage() {
     }
     setJarDraft({ size: "", color: "", branding: "" });
   }, [jarPackaging]);
+
+  useEffect(() => {
+    if (polygelPackaging) {
+      setPolygelDraft(polygelPackaging);
+      return;
+    }
+    setPolygelDraft({ color: "", size: "", label: "" });
+  }, [polygelPackaging]);
 
   useEffect(() => {
     const email = user?.email?.trim().toLowerCase();
@@ -215,13 +251,18 @@ export default function B2BCheckoutPage() {
   const hasBuilderGelItems = items.some((item) => item.category === "BUILDER_GEL");
   const hasBottleItems = items.some((item) => item.category !== "BUILDER_GEL" && item.category !== "POLYGEL");
   const hasSmallBottleItems = items.some((item) => item.category === "BASE" || item.category === "TOP");
+  const hasPolygelItems = items.some(
+    (item) => item.category === "POLYGEL" && getMetaString(item, "subcategory") !== "Liquid Polygel"
+  );
   const requiresBottlePackaging = hasBottleItems && buyerType === "finished_goods";
   const requiresJarPackaging = hasBuilderGelItems && buyerType === "finished_goods";
+  const requiresPolygelPackaging = hasPolygelItems && buyerType === "finished_goods";
   const isPackagingSelected =
     (!requiresBottlePackaging || bottlePackaging !== null) &&
-    (!requiresJarPackaging || jarPackaging !== null);
+    (!requiresJarPackaging || jarPackaging !== null) &&
+    (!requiresPolygelPackaging || polygelPackaging !== null);
 
-  const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk && movAcknowledged;
+  const canProceed = isPackagingSelected && !hasQuantityError && prePrintedMinOk;
 
   const exportCsv = () => {
     if (!canProceed) return;
@@ -265,9 +306,9 @@ export default function B2BCheckoutPage() {
         isJar && jarPackaging ? mapPackagingCsv(jarPackaging.color) : "",
         isJar && jarPackaging ? mapPackagingCsv(jarPackaging.branding) : "",
         // polygel columns
-        isPolygel ? mapPackagingCsv(getMetaString(item, "tube_size")) : "",
-        isPolygel ? mapPackagingCsv(getMetaString(item, "tube_color")) : "",
-        isPolygel ? mapPackagingCsv(getMetaString(item, "label_option")) : "",
+        isPolygel && polygelPackaging ? mapPackagingCsv(polygelPackaging.size) : "",
+        isPolygel && polygelPackaging ? mapPackagingCsv(polygelPackaging.color) : "",
+        isPolygel && polygelPackaging ? mapPackagingCsv(polygelPackaging.label) : "",
       ];
     });
 
@@ -291,14 +332,9 @@ export default function B2BCheckoutPage() {
       return;
     }
 
-    const polygelNotes = items
-      .filter((item) => item.category === "POLYGEL")
-      .map((item) => {
-        const tubeSize = getMetaString(item, "tube_size") || "";
-        const tubeColor = getMetaString(item, "tube_color") || "";
-        const labelOption = getMetaString(item, "label_option") || "";
-        return `${item.code}: size ${tubeSize || "-"}, color ${tubeColor || "-"}, label ${labelOption || "-"}`;
-      });
+    const polygelItemCount = items.filter(
+      (item) => item.category === "POLYGEL" && getMetaString(item, "subcategory") !== "Liquid Polygel"
+    ).length;
 
     const payload = {
       customer: {
@@ -326,14 +362,16 @@ export default function B2BCheckoutPage() {
           jarPackaging
             ? `Builder gel jar packaging preference: Size ${jarPackaging.size}, Colour ${jarPackaging.color}, Branding ${jarPackaging.branding}`
             : "",
-          polygelNotes.length > 0 ? `Polygel tube selections: ${polygelNotes.join(" | ")}` : "",
+          polygelPackaging && polygelItemCount > 0
+            ? `Polygel tube packaging: Size ${polygelPackaging.size}, Colour ${polygelPackaging.color}, Label ${polygelPackaging.label}`
+            : "",
         ].filter(Boolean).join("\n"),
       },
       order: {
         items: items.map((item) => ({
           groupCode: item.category,
           shadeCode: item.internalSku || item.code,
-          packSize: item.category === "POLYGEL" ? (getMetaString(item, "tube_size") || "") : item.category === "BUILDER_GEL" ? (jarPackaging?.size || "") : (bottlePackaging?.size || ""),
+          packSize: item.category === "POLYGEL" ? (polygelPackaging?.size || "") : item.category === "BUILDER_GEL" ? (jarPackaging?.size || "") : (bottlePackaging?.size || ""),
           qty: item.quantity,
           moq: 0,
           productName: item.name || item.code,
@@ -418,6 +456,16 @@ export default function B2BCheckoutPage() {
       return;
     }
     clearJarPackaging();
+  };
+
+  const setPolygelField = <K extends keyof typeof polygelDraft>(key: K, value: (typeof polygelDraft)[K]) => {
+    const nextDraft = { ...polygelDraft, [key]: value };
+    setPolygelDraft(nextDraft);
+    if (nextDraft.color && nextDraft.size && nextDraft.label) {
+      setPolygelPackaging(nextDraft as PolygelPackaging);
+      return;
+    }
+    clearPolygelPackaging();
   };
   return (
     <div className="space-y-6">
@@ -620,6 +668,72 @@ export default function B2BCheckoutPage() {
         </section>
       ) : null}
 
+      {requiresPolygelPackaging ? (
+        <section className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+          <div className="-mx-4 -mt-4 mb-4 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-bold uppercase tracking-wide text-white">Action Required — Tube Packaging</span>
+          </div>
+          <p className="mb-3 text-sm text-grey-secondary">Polygels are filled into tubes. Select your preferred tube colour, size and label option.</p>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Tube Colour</label>
+              <select
+                value={polygelDraft.color}
+                onChange={(event) => {
+                  const value = event.target.value as TubeColor;
+                  if (!value) return;
+                  setPolygelField("color", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select colour</option>
+                {tubeColors.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Tube Size</label>
+              <select
+                value={polygelDraft.size}
+                onChange={(event) => {
+                  const value = event.target.value as TubeSize;
+                  if (!value) return;
+                  setPolygelField("size", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select size</option>
+                {tubeSizes.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-grey-primary">Label Option</label>
+              <select
+                value={polygelDraft.label}
+                onChange={(event) => {
+                  const value = event.target.value as TubeLabel;
+                  if (!value) return;
+                  setPolygelField("label", value);
+                }}
+                className="w-full rounded-md border border-grey-card px-3 py-2 text-grey-primary"
+              >
+                <option value="">Select label option</option>
+                {tubeLabels.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section className="rounded-lg border border-grey-card p-4">
         <h3 className="text-lg font-semibold text-grey-primary">Cart Items</h3>
         {!items.length ? (
@@ -703,18 +817,9 @@ export default function B2BCheckoutPage() {
       ) : null}
 
       <div className="rounded-md border border-primary-200 bg-primary-50 p-4">
-        <p className="mb-3 text-sm font-semibold text-grey-primary">
+        <p className="text-sm font-semibold text-grey-primary">
           Minimum order value: €1,000.00 excl. shipping (applies to all orders, bulk and finished goods).
         </p>
-        <label className="flex cursor-pointer items-start gap-2 text-sm text-grey-primary">
-          <input
-            type="checkbox"
-            className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
-            checked={movAcknowledged}
-            onChange={(event) => setMovAcknowledged(event.target.checked)}
-          />
-          <span>I confirm this order meets the minimum order value of €1,000.00 (excl. shipping).</span>
-        </label>
       </div>
 
       {submitMessage ? (
