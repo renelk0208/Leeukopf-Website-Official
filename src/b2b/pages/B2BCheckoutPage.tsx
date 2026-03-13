@@ -254,6 +254,16 @@ export default function B2BCheckoutPage() {
   const hasPolygelItems = items.some(
     (item) => item.category === "POLYGEL" && getMetaString(item, "subcategory") !== "Liquid Polygel"
   );
+  const jarLineCount = items.filter((item) => item.category === "BUILDER_GEL").length;
+  const jarUnitsTotal = items
+    .filter((item) => item.category === "BUILDER_GEL")
+    .reduce((sum, item) => sum + item.quantity, 0);
+  const polygelLineCount = items.filter(
+    (item) => item.category === "POLYGEL" && getMetaString(item, "subcategory") !== "Liquid Polygel"
+  ).length;
+  const polygelUnitsTotal = items
+    .filter((item) => item.category === "POLYGEL" && getMetaString(item, "subcategory") !== "Liquid Polygel")
+    .reduce((sum, item) => sum + item.quantity, 0);
   const requiresBottlePackaging = hasBottleItems && buyerType === "finished_goods";
   const requiresJarPackaging = hasBuilderGelItems && buyerType === "finished_goods";
   const requiresPolygelPackaging = hasPolygelItems && buyerType === "finished_goods";
@@ -666,6 +676,11 @@ export default function B2BCheckoutPage() {
               </select>
             </div>
           </div>
+
+          <div className="mt-3 rounded-md border border-grey-card bg-primary-50 p-3 text-sm text-grey-primary">
+            <div>Builder gel shades: {jarLineCount}</div>
+            <div>Jars required: {jarUnitsTotal}</div>
+          </div>
         </section>
       ) : null}
 
@@ -731,6 +746,11 @@ export default function B2BCheckoutPage() {
                 ))}
               </select>
             </div>
+          </div>
+
+          <div className="mt-3 rounded-md border border-grey-card bg-primary-50 p-3 text-sm text-grey-primary">
+            <div>Polygel shades: {polygelLineCount}</div>
+            <div>Tubes required: {polygelUnitsTotal}</div>
           </div>
         </section>
       ) : null}
