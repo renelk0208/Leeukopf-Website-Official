@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "../lib/supabase";
 
 type FormState = {
   companyName: string;
@@ -35,6 +37,7 @@ const sectionClass = "rounded-xl border border-black/10 bg-white p-5";
 export default function B2BCheckoutPage() {
   const navigate = useNavigate();
   const { state, clearCart } = useCart();
+  const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const items = state.items;
@@ -48,27 +51,54 @@ export default function B2BCheckoutPage() {
   const [form, setForm] = useState<FormState>({
     companyName: "",
     vatNumber: "",
-
     invoiceAddress: "",
     invoicePostalCode: "",
     invoiceCity: "",
     invoiceRegion: "",
     invoiceCountry: "",
-
     shippingAddress: "",
     shippingPostalCode: "",
     shippingCity: "",
     shippingRegion: "",
     shippingCountry: "",
-
     contactPerson: "",
     contactEmail: "",
     contactNumber: "",
-
     orderDate: new Date().toISOString().slice(0, 10),
     signatureName: "",
     notes: "",
   });
+
+  // Pre-fill form from client_registrations profile
+  useEffect(() => {
+    const email = user?.email?.trim().toLowerCase();
+    if (!email) return;
+    let active = true;
+    supabase
+      .from("client_registrations")
+      .select("company, contact, email, phone, country, vat_eori, billing_address, shipping_address")
+      .ilike("email", email)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!active || !data) return;
+        setForm((prev) => ({
+          ...prev,
+          companyName: prev.companyName || data.company || "",
+          vatNumber: prev.vatNumber || data.vat_eori || "",
+          contactPerson: prev.contactPerson || data.contact || "",
+          contactEmail: prev.contactEmail || data.email || email,
+          contactNumber: prev.contactNumber || data.phone || "",
+          invoiceAddress: prev.invoiceAddress || data.billing_address || "",
+          invoiceCountry: prev.invoiceCountry || data.country || "",
+          shippingAddress: prev.shippingAddress || data.shipping_address || data.billing_address || "",
+          shippingCountry: prev.shippingCountry || data.country || "",
+          signatureName: prev.signatureName || data.contact || "",
+        }));
+      });
+    return () => { active = false; };
+  }, [user?.email]);
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));

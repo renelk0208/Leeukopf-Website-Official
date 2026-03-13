@@ -474,6 +474,18 @@ const ShadeTile = memo(function ShadeTile({
     onSetQty(sku, e.target.value);
   }, [interactionLocked, onSetQty, sku]);
 
+  const handleSave = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (interactionLocked) return;
+    e.stopPropagation();
+    onSetQty(sku, String(qtyValue !== "" ? qtyValue : minQty));
+  }, [interactionLocked, minQty, onSetQty, qtyValue, sku]);
+
+  const handleClear = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (interactionLocked) return;
+    e.stopPropagation();
+    onSetQty(sku, "0");
+  }, [interactionLocked, onSetQty, sku]);
+
   return (
     <div
       className={`rounded-2xl border bg-white p-3 shadow-sm transition ${
@@ -554,7 +566,7 @@ const ShadeTile = memo(function ShadeTile({
           {!hasImage ? "No alternate view" : currentView === "nail" ? "Show card" : "Show nail"}
         </button>
 
-        <div className="mt-3 flex items-center gap-2" onClick={stopPropagation}>
+        <div className="mt-3 flex items-center gap-1.5" onClick={stopPropagation}>
           <input
             type="number"
             min={minQty}
@@ -566,6 +578,24 @@ const ShadeTile = memo(function ShadeTile({
             onChange={handleQtyChange}
             className="w-16 rounded border px-2 py-1 text-xs"
           />
+          <button
+            type="button"
+            disabled={interactionLocked}
+            onClick={handleSave}
+            className="rounded bg-primary px-2 py-1 text-[11px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Save
+          </button>
+          {isSelected && (
+            <button
+              type="button"
+              disabled={interactionLocked}
+              onClick={handleClear}
+              className="rounded border border-grey-card px-2 py-1 text-[11px] text-grey-secondary disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Clear
+            </button>
+          )}
         </div>
       </div>
     </div>
