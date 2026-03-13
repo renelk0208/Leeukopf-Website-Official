@@ -83,6 +83,18 @@
   status = 200
   force = true
 
+[[redirects]]
+  from = "/api/admin-update-registration"
+  to = "/.netlify/functions/admin-update-registration"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-resend-orders"
+  to = "/.netlify/functions/admin-resend-orders"
+  status = 200
+  force = true
+
 # Static HTML page redirects
 [[redirects]]
   from = "/thank-you-compliance-consultation"
