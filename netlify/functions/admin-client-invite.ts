@@ -1,5 +1,6 @@
 import type { Handler } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
 
 export const config = {
   path: '/api/admin-client-invite',
@@ -200,6 +201,61 @@ export const handler: Handler = async (event) => {
     const alreadyRegistered = inviteErrorMessage.toLowerCase().includes('already been registered');
 
     if (alreadyRegistered) {
+      // Account already exists — generate a magic link and send an approval email
+      // via Resend so the client is notified and can log in immediately.
+      const portalOrigin = getAllowedOrigin(event.headers.origin);
+      const portalUrl = `${portalOrigin}/portal`;
+
+      let magicLink = portalUrl;
+      const { data: linkData } = await adminSupabase.auth.admin.generateLink({
+        type: 'magiclink',
+        email,
+        options: { redirectTo: portalUrl },
+      });
+      if (linkData?.properties?.action_link) {
+        magicLink = linkData.properties.action_link;
+      }
+
+      const resendApiKey = process.env.RESEND_API_KEY;
+      const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@leeukopf.com';
+      let emailSent = false;
+
+      if (resendApiKey) {
+        const resend = new Resend(resendApiKey);
+        const companyName = payload.company?.trim() || email;
+        const contactName = payload.contact?.trim() || '';
+        const greeting = contactName ? `Hi ${contactName},` : 'Hello,';
+
+        const { error: emailError } = await resend.emails.send({
+          from: `Leeukopf Laboratories <${fromEmail}>`,
+          to: [email],
+          subject: 'Your Leeukopf B2B Portal Access Has Been Approved',
+          html: `
+            <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+              <div style="background:#9b1c6a;padding:24px 32px;">
+                <h1 style="color:#fff;margin:0;font-size:22px;">Leeukopf Laboratories</h1>
+                <p style="color:#f3d1e8;margin:6px 0 0;font-size:14px;">B2B Portal Access Approved</p>
+              </div>
+              <div style="padding:32px;">
+                <p style="font-size:16px;">${greeting}</p>
+                <p>Your B2B portal registration for <strong>${companyName}</strong> has been <strong>approved</strong>.</p>
+                <p>You can now access the Leeukopf client portal to browse products and place orders.</p>
+                <div style="margin:28px 0;text-align:center;">
+                  <a href="${magicLink}"
+                     style="background:#9b1c6a;color:#fff;padding:14px 28px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:15px;display:inline-block;">
+                    Access Your Portal
+                  </a>
+                </div>
+                <p style="font-size:13px;color:#666;">This sign-in link expires in 24 hours. After it expires, visit <a href="${portalUrl}/login">${portalUrl}/login</a> to sign in with your password, or use "Forgot password?" to reset it.</p>
+                <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+                <p style="font-size:12px;color:#999;">Leeukopf Laboratories &bull; B2B Trade Portal</p>
+              </div>
+            </div>
+          `,
+        });
+        emailSent = !emailError;
+      }
+
       return {
         statusCode: 200,
         headers,
@@ -207,8 +263,10 @@ export const handler: Handler = async (event) => {
           success: true,
           invited: false,
           alreadyRegistered: true,
-          loginUrl: `${getAllowedOrigin(event.headers.origin)}/portal/login`,
-          message: `Client approved. This email already has an account, so no new invite email was sent. Ask them to sign in at /portal/login and use password reset if needed.`,
+          loginUrl: `${portalOrigin}/portal/login`,
+          message: emailSent
+            ? `Client approved. Approval email with sign-in link sent to ${email}.`
+            : `Client approved. Account already existed but approval email could not be sent (RESEND_API_KEY missing). Share the portal link manually: ${portalUrl}/login`,
         }),
       };
     }
