@@ -4,6 +4,7 @@ import { Resend } from 'resend';
 
 export const config = {
   path: '/api/admin-resend-orders',
+  timeout: 30,
 };
 
 function getAllowedOrigin(requestOrigin: string | undefined): string {
@@ -166,18 +167,33 @@ export const handler: Handler = async (event) => {
   let sent = 0;
   const errors: string[] = [];
 
-  for (const order of orders) {
-    try {
-      await resend.emails.send({
-        from: `Leeukopf Orders <${fromEmail}>`,
-        to: toEmail,
-        subject: `[RESENT] B2B Order ${order.order_id}`,
-        html: generateResendHtml(order),
-        replyTo: order.contact_email,
-      });
-      sent++;
-    } catch (err) {
-      errors.push(`${order.order_id}: ${err instanceof Error ? err.message : String(err)}`);
+  // Send in batches of 5 with a short pause to avoid rate limits and timeouts
+  const BATCH_SIZE = 5;
+  for (let i = 0; i < orders.length; i += BATCH_SIZE) {
+    const batch = orders.slice(i, i + BATCH_SIZE);
+    await Promise.all(
+      batch.map(async (order) => {
+        try {
+          const result = await resend.emails.send({
+            from: `Leeukopf Orders <${fromEmail}>`,
+            to: toEmail,
+            subject: `[RESENT] B2B Order ${order.order_id}`,
+            html: generateResendHtml(order),
+            replyTo: order.contact_email,
+          });
+          if (result.error) {
+            errors.push(`${order.order_id}: ${result.error.message}`);
+          } else {
+            sent++;
+          }
+        } catch (err) {
+          errors.push(`${order.order_id}: ${err instanceof Error ? err.message : String(err)}`);
+        }
+      }),
+    );
+    // Small pause between batches
+    if (i + BATCH_SIZE < orders.length) {
+      await new Promise((r) => setTimeout(r, 300));
     }
   }
 

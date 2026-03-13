@@ -162,10 +162,15 @@ export default function AdminDashboard() {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ to: 'info@leeukopf.com' }),
       });
-      const payload = (await response.json()) as { success?: boolean; message?: string };
-      setMessage(payload.message || (payload.success ? 'Done.' : 'Failed.'));
+      const payload = (await response.json()) as { success?: boolean; message?: string; sent?: number; total?: number; errors?: string[] };
+      const msg = payload.message || (payload.success ? 'Done.' : 'Failed.');
+      const detail = payload.errors?.length ? `\n\nErrors:\n${payload.errors.slice(0, 5).join('\n')}` : '';
+      window.alert(msg + detail);
+      setMessage(msg);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : 'Failed to resend orders.');
+      const msg = err instanceof Error ? err.message : 'Failed to resend orders.';
+      window.alert(msg);
+      setMessage(msg);
     } finally {
       setResendingOrders(false);
     }
