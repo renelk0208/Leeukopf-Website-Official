@@ -1574,8 +1574,8 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
 
                               {/* FULL REGISTRATION DETAILS */}
                               <div className="rounded-lg border border-cyan-500/20 bg-slate-800/60 p-5">
-                                <div className="flex items-center justify-between mb-3">
-                                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Full Registration Details</p>
+                                <div className="flex items-center justify-between mb-4">
+                                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Registration Details</p>
                                   <button
                                     onClick={(e) => { e.stopPropagation(); handleDownloadRegistrationPDF(registration); }}
                                     className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 rounded-lg text-xs font-medium hover:bg-cyan-500/20 transition-colors"
@@ -1583,7 +1583,9 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                     ↓ Download PDF
                                   </button>
                                 </div>
-                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4 text-sm">
+
+                                {/* PRIMARY BUSINESS INFO */}
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4 text-sm mb-4">
                                   <div>
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Role / Title</span>
                                     <p className="text-gray-200 mt-0.5">{registration.role || '—'}</p>
@@ -1591,10 +1593,6 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                   <div>
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Phone</span>
                                     <p className="text-gray-200 mt-0.5">{registration.phone || '—'}</p>
-                                  </div>
-                                  <div>
-                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Language</span>
-                                    <p className="text-gray-200 mt-0.5">{registration.language || '—'}</p>
                                   </div>
                                   <div>
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Monthly Volume</span>
@@ -1608,29 +1606,13 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Website</span>
                                     <p className="text-gray-200 mt-0.5">
                                       {registration.website ? (
-                                        <a
-                                          href={registration.website}
-                                          target="_blank"
-                                          rel="noreferrer"
-                                          className="text-cyan-400 hover:underline"
-                                          onClick={(e) => e.stopPropagation()}
-                                        >
-                                          {registration.website}
-                                        </a>
+                                        <a href={registration.website} target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline" onClick={(e) => e.stopPropagation()}>{registration.website}</a>
                                       ) : '—'}
                                     </p>
                                   </div>
                                   <div>
-                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Instagram</span>
-                                    <p className="text-gray-200 mt-0.5">{registration.instagram || '—'}</p>
-                                  </div>
-                                  <div>
-                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Facebook</span>
-                                    <p className="text-gray-200 mt-0.5">{registration.facebook || '—'}</p>
-                                  </div>
-                                  <div>
-                                    <span className="text-gray-500 text-xs uppercase tracking-wide">TikTok</span>
-                                    <p className="text-gray-200 mt-0.5">{registration.tiktok || '—'}</p>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Language</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.language || '—'}</p>
                                   </div>
                                   <div className="col-span-2">
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Product Interests</span>
@@ -1645,43 +1627,52 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                     <p className="text-gray-200 mt-0.5 whitespace-pre-line">{registration.shipping_address || '—'}</p>
                                   </div>
                                   {registration.notes ? (
-                                    <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
+                                    <div className="col-span-2 lg:col-span-4">
                                       <span className="text-gray-500 text-xs uppercase tracking-wide">Notes / Requirements</span>
                                       <p className="text-gray-200 mt-0.5 whitespace-pre-line">{registration.notes}</p>
                                     </div>
                                   ) : null}
-                                  {(registration.countries_covered || registration.distribution_channels || registration.estimated_monthly_volume || registration.years_in_business) ? (
-                                    <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
-                                      <p className="text-xs text-blue-400 uppercase tracking-wide font-medium mb-2">Distributor Details</p>
-                                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
-                                        {registration.countries_covered && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Countries Covered</span><p className="text-gray-200 mt-0.5">{registration.countries_covered}</p></div>}
-                                        {registration.distribution_channels && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Distribution Channels</span><p className="text-gray-200 mt-0.5">{registration.distribution_channels}</p></div>}
-                                        {registration.estimated_monthly_volume && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Est. Monthly Volume</span><p className="text-gray-200 mt-0.5">{registration.estimated_monthly_volume}</p></div>}
-                                        {registration.years_in_business && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Years in Business</span><p className="text-gray-200 mt-0.5">{registration.years_in_business}</p></div>}
-                                      </div>
-                                    </div>
-                                  ) : null}
-                                  {(registration.brand_name || registration.product_interest || registration.target_moq || registration.target_launch_date) ? (
-                                    <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
-                                      <p className="text-xs text-purple-400 uppercase tracking-wide font-medium mb-2">Private Label Details</p>
-                                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
-                                        {registration.brand_name && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Brand Name</span><p className="text-gray-200 mt-0.5">{registration.brand_name}</p></div>}
-                                        {registration.product_interest && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Product Interest</span><p className="text-gray-200 mt-0.5">{registration.product_interest}</p></div>}
-                                        {registration.target_moq && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Target MOQ</span><p className="text-gray-200 mt-0.5">{registration.target_moq}</p></div>}
-                                        {registration.target_launch_date && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Target Launch Date</span><p className="text-gray-200 mt-0.5">{registration.target_launch_date}</p></div>}
-                                      </div>
-                                    </div>
-                                  ) : null}
-                                  {(registration.country_audience || registration.avg_views) ? (
-                                    <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
-                                      <p className="text-xs text-pink-400 uppercase tracking-wide font-medium mb-2">Influencer Details</p>
-                                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
-                                        {registration.country_audience && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Country / Audience</span><p className="text-gray-200 mt-0.5">{registration.country_audience}</p></div>}
-                                        {registration.avg_views && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Avg Views / Engagement</span><p className="text-gray-200 mt-0.5">{registration.avg_views}</p></div>}
-                                      </div>
-                                    </div>
-                                  ) : null}
                                 </div>
+
+                                {/* DISTRIBUTOR DETAILS — primary focus */}
+                                {(registration.countries_covered || registration.distribution_channels || registration.estimated_monthly_volume || registration.years_in_business) ? (
+                                  <div className="border-t border-blue-500/20 pt-4 mt-2">
+                                    <p className="text-sm text-blue-300 font-semibold mb-3">🔵 Distributor Details</p>
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3 text-sm">
+                                      {registration.countries_covered && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Countries Covered</span><p className="text-gray-200 mt-0.5">{registration.countries_covered}</p></div>}
+                                      {registration.distribution_channels && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Distribution Channels</span><p className="text-gray-200 mt-0.5">{registration.distribution_channels}</p></div>}
+                                      {registration.estimated_monthly_volume && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Est. Monthly Volume</span><p className="text-gray-200 mt-0.5">{registration.estimated_monthly_volume}</p></div>}
+                                      {registration.years_in_business && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Years in Business</span><p className="text-gray-200 mt-0.5">{registration.years_in_business}</p></div>}
+                                    </div>
+                                  </div>
+                                ) : null}
+
+                                {/* PRIVATE LABEL DETAILS — primary focus */}
+                                {(registration.brand_name || registration.product_interest || registration.target_moq || registration.target_launch_date) ? (
+                                  <div className="border-t border-purple-500/20 pt-4 mt-2">
+                                    <p className="text-sm text-purple-300 font-semibold mb-3">🟣 Private Label Details</p>
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3 text-sm">
+                                      {registration.brand_name && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Brand Name</span><p className="text-gray-200 mt-0.5">{registration.brand_name}</p></div>}
+                                      {registration.product_interest && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Product Interest</span><p className="text-gray-200 mt-0.5">{registration.product_interest}</p></div>}
+                                      {registration.target_moq && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Target MOQ</span><p className="text-gray-200 mt-0.5">{registration.target_moq}</p></div>}
+                                      {registration.target_launch_date && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Target Launch Date</span><p className="text-gray-200 mt-0.5">{registration.target_launch_date}</p></div>}
+                                    </div>
+                                  </div>
+                                ) : null}
+
+                                {/* SOCIAL MEDIA + INFLUENCER — collapsed at the bottom, low emphasis */}
+                                {(registration.instagram || registration.facebook || registration.tiktok || registration.country_audience || registration.avg_views) ? (
+                                  <div className="border-t border-gray-700/50 pt-3 mt-3">
+                                    <p className="text-xs text-gray-600 uppercase tracking-wide font-medium mb-2">Social / Influencer</p>
+                                    <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-400">
+                                      {registration.instagram && <span><span className="text-gray-600">Instagram:</span> {registration.instagram}</span>}
+                                      {registration.facebook && <span><span className="text-gray-600">Facebook:</span> {registration.facebook}</span>}
+                                      {registration.tiktok && <span><span className="text-gray-600">TikTok:</span> {registration.tiktok}</span>}
+                                      {registration.country_audience && <span><span className="text-gray-600">Audience:</span> {registration.country_audience}</span>}
+                                      {registration.avg_views && <span><span className="text-gray-600">Avg Views:</span> {registration.avg_views}</span>}
+                                    </div>
+                                  </div>
+                                ) : null}
                               </div>
                             </td>
                           </tr>
