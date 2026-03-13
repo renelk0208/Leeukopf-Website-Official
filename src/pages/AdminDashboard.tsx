@@ -27,6 +27,24 @@ interface ClientRegistrationLead {
   shipping_address?: string;
   language?: string;
   notes?: string;
+  // Distributor fields
+  countries_covered?: string;
+  distribution_channels?: string;
+  estimated_monthly_volume?: string;
+  years_in_business?: string;
+  // Private Label fields
+  brand_name?: string;
+  product_interest?: string;
+  target_moq?: string;
+  target_launch_date?: string;
+  // Influencer fields
+  country_audience?: string;
+  avg_views?: string;
+  // CRM fields
+  pipeline_stage?: string;
+  samples_sent_at?: string;
+  last_contact_date?: string;
+  admin_notes?: string;
   created_at: string;
 }
 
@@ -104,6 +122,21 @@ const DEFAULT_COLORS: SiteSettings = {
   accent_color: '#22d3ee',
 };
 
+const PIPELINE_STAGES = [
+  { value: 'new',          label: 'New Lead',         cls: 'bg-gray-500/20 text-gray-300' },
+  { value: 'contacted',    label: 'Contacted',         cls: 'bg-blue-500/20 text-blue-300' },
+  { value: 'samples_sent', label: 'Samples Sent',      cls: 'bg-amber-500/20 text-amber-300' },
+  { value: 'feedback',     label: 'Feedback',          cls: 'bg-orange-500/20 text-orange-300' },
+  { value: 'negotiating',  label: 'Negotiating',       cls: 'bg-purple-500/20 text-purple-300' },
+  { value: 'approved',     label: 'Approved',          cls: 'bg-emerald-500/20 text-emerald-400' },
+  { value: 'rejected',     label: 'Rejected',          cls: 'bg-red-500/20 text-red-400' },
+  { value: 'on_hold',      label: 'On Hold',           cls: 'bg-slate-500/20 text-slate-400' },
+];
+
+function getPipelineStage(value: string | undefined) {
+  return PIPELINE_STAGES.find((s) => s.value === (value || 'new')) ?? PIPELINE_STAGES[0];
+}
+
 export default function AdminDashboard() {
   const { signOut, user, session } = useAuth();
   const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients'>('products');
@@ -115,6 +148,160 @@ export default function AdminDashboard() {
   const [completedOrders, setCompletedOrders] = useState<CompletedB2BOrder[]>([]);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [expandedRegistrationId, setExpandedRegistrationId] = useState<string | null>(null);
+  const [crmEdits, setCrmEdits] = useState<Record<string, { pipeline_stage: string; admin_notes: string; samples_sent_at: string; last_contact_date: string; }>>({});
+  const [savingCrm, setSavingCrm] = useState<string | null>(null);
+
+  const handleToggleRegistration = (registration: ClientRegistrationLead) => {
+    const id = registration.id;
+    setExpandedRegistrationId((prev) => (prev === id ? null : id));
+    setCrmEdits((prev) => ({
+      ...prev,
+      [id]: prev[id] ?? {
+        pipeline_stage: registration.pipeline_stage || 'new',
+        admin_notes: registration.admin_notes || '',
+        samples_sent_at: registration.samples_sent_at || '',
+        last_contact_date: registration.last_contact_date || '',
+      },
+    }));
+  };
+
+  const handleSaveCRM = async (id: string) => {
+    if (!session?.access_token) return;
+    setSavingCrm(id);
+    try {
+      const edits = crmEdits[id];
+      const response = await fetch('/api/admin-update-registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ id, ...edits }),
+      });
+      const payload = (await response.json()) as { success?: boolean; message?: string };
+      if (!response.ok || !payload.success) throw new Error(payload.message || 'Save failed.');
+      setClientRegistrations((prev) => prev.map((r) => r.id === id ? { ...r, ...edits } : r));
+      setMessage('CRM record saved.');
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Save failed.');
+    } finally {
+      setSavingCrm(null);
+    }
+  };
+
+  const handleExportCSV = () => {
+    const csvHeaders = ['Date','Company','Contact','Role','Email','Phone','Country','Business Type','Client Type','Pipeline Stage','Interests','Monthly Volume','VAT/EORI','Website','Instagram','Facebook','TikTok','Billing Address','Shipping Address','Countries Covered','Distrib. Channels','Est. Monthly Vol','Years in Business','Brand Name','Product Interest','Target MOQ','Launch Date','Country/Audience','Avg Views','Samples Sent','Last Contact','Admin Notes'];
+    const esc = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const rows = clientRegistrations.map((r) => [
+      new Date(r.created_at).toLocaleDateString(),
+      r.company, r.contact, r.role || '', r.email, r.phone || '', r.country,
+      r.business_type, r.client_type || '',
+      getPipelineStage(r.pipeline_stage).label,
+      Array.isArray(r.interests) ? r.interests.join('; ') : r.interests || '',
+      r.monthly_volume || '', r.vat_eori || '', r.website || '',
+      r.instagram || '', r.facebook || '', r.tiktok || '',
+      r.billing_address || '', r.shipping_address || '',
+      r.countries_covered || '', r.distribution_channels || '',
+      r.estimated_monthly_volume || '', r.years_in_business || '',
+      r.brand_name || '', r.product_interest || '', r.target_moq || '', r.target_launch_date || '',
+      r.country_audience || '', r.avg_views || '',
+      r.samples_sent_at || '', r.last_contact_date || '', r.admin_notes || '',
+    ].map(esc));
+    const csv = [csvHeaders.map(esc).join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `client-registrations-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadRegistrationPDF = (registration: ClientRegistrationLead) => {
+    const interestsDisplay = Array.isArray(registration.interests)
+      ? registration.interests.join(', ')
+      : typeof registration.interests === 'string'
+      ? registration.interests
+      : '';
+    const clientTypeBadges: string[] = [];
+    if (registration.interest_distribution) clientTypeBadges.push('Distributor');
+    if (registration.interest_private_label) clientTypeBadges.push('Private Label');
+    if (registration.interest_influencer) clientTypeBadges.push('Influencer');
+    if (clientTypeBadges.length === 0 && registration.client_type) {
+      const ct = registration.client_type;
+      if (ct === 'Distributors') clientTypeBadges.push('Distributor');
+      else if (ct === 'PrivateLabel') clientTypeBadges.push('Private Label');
+      else if (ct === 'Influencers') clientTypeBadges.push('Influencer');
+      else clientTypeBadges.push(ct);
+    }
+    const field = (label: string, value: string | undefined | null) =>
+      value ? `<tr><td class="lbl">${label}</td><td class="val">${value.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</td></tr>` : '';
+    const section = (title: string, rows: string) =>
+      rows.trim() ? `<section><h2>${title}</h2><table>${rows}</table></section>` : '';
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>Registration – ${registration.company}</title>
+<style>
+  body{font-family:Arial,sans-serif;font-size:12px;color:#111;margin:36px}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:#666;font-size:12px;margin-bottom:18px}
+  .badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-right:4px;background:#e8f0fe;color:#1a56db;border:1px solid #c3d4f7}
+  section{margin-bottom:18px}
+  h2{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555;border-bottom:1px solid #ddd;padding-bottom:3px;margin:0 0 8px}
+  table{width:100%;border-collapse:collapse}
+  td{padding:4px 8px;vertical-align:top}
+  td.lbl{width:38%;color:#666;font-weight:700;font-size:11px}
+  td.val{color:#111}
+  .notes{white-space:pre-wrap;background:#f9f9f9;border:1px solid #eee;padding:8px;border-radius:4px}
+  @media print{body{margin:20px}}
+</style></head><body>
+<h1>${registration.company}</h1>
+<div class="sub">Client Registration &nbsp;·&nbsp; Submitted ${new Date(registration.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
+${clientTypeBadges.map(b => `<span class="badge">${b}</span>`).join('')}
+${section('Contact Information', [
+  field('Contact Name', registration.contact),
+  field('Role / Title', registration.role),
+  field('Email', registration.email),
+  field('Phone', registration.phone),
+  field('Country', registration.country),
+  field('Language', registration.language),
+].join(''))}
+${section('Business Details', [
+  field('Business Type', registration.business_type),
+  field('VAT / EORI', registration.vat_eori),
+  field('Monthly Volume', registration.monthly_volume),
+  field('Product Interests', interestsDisplay),
+  field('Website', registration.website),
+].join(''))}
+${section('Social Media', [
+  field('Instagram', registration.instagram),
+  field('Facebook', registration.facebook),
+  field('TikTok', registration.tiktok),
+].join(''))}
+${section('Addresses', [
+  field('Billing Address', registration.billing_address),
+  field('Shipping Address', registration.shipping_address),
+].join(''))}
+${section('Distributor Details', [
+  field('Countries Covered', registration.countries_covered),
+  field('Distribution Channels', registration.distribution_channels),
+  field('Est. Monthly Volume', registration.estimated_monthly_volume),
+  field('Years in Business', registration.years_in_business),
+].join(''))}
+${section('Private Label Details', [
+  field('Brand Name', registration.brand_name),
+  field('Product Interest', registration.product_interest),
+  field('Target MOQ', registration.target_moq),
+  field('Target Launch Date', registration.target_launch_date),
+].join(''))}
+${section('Influencer Details', [
+  field('Country / Audience', registration.country_audience),
+  field('Avg Views / Engagement', registration.avg_views),
+].join(''))}
+${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">${registration.notes.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p></section>` : ''}
+<script>window.onload=function(){window.print();}</script>
+</body></html>`;
+    const win = window.open('', '_blank');
+    if (win) { win.document.write(html); win.document.close(); }
+  };
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [manualInviteLink, setManualInviteLink] = useState('');
@@ -1122,6 +1309,14 @@ export default function AdminDashboard() {
               <div className="flex items-center gap-2">
                 <button
                   type="button"
+                  onClick={handleExportCSV}
+                  disabled={clientRegistrations.length === 0}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-emerald-500/30 rounded-lg text-emerald-300 hover:border-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  ↓ Export CSV
+                </button>
+                <button
+                  type="button"
                   onClick={handleBackfillClientRegistrations}
                   disabled={backfillingClients || refreshingClients}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-cyan-500/20 rounded-lg text-gray-200 hover:border-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed"
@@ -1157,8 +1352,8 @@ export default function AdminDashboard() {
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Email</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Country</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Client Type</th>
-                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Business Type</th>
-                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Status</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Pipeline</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Portal Access</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Action</th>
                     </tr>
                   </thead>
@@ -1191,7 +1386,7 @@ export default function AdminDashboard() {
                           className={`border-b border-cyan-500/10 hover:bg-slate-900/30 cursor-pointer transition-colors ${
                             isExpanded ? 'bg-slate-900/40' : ''
                           }`}
-                          onClick={() => setExpandedRegistrationId(isExpanded ? null : registration.id)}
+                          onClick={() => handleToggleRegistration(registration)}
                         >
                           <td className="py-4 px-2 text-center text-gray-500">
                             {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -1233,7 +1428,9 @@ export default function AdminDashboard() {
                               <span className="text-gray-600 text-sm">—</span>
                             )}
                           </td>
-                          <td className="py-4 px-4 text-gray-300">{registration.business_type ?? '-'}</td>
+                          <td className="py-4 px-4">
+                            {(() => { const ps = getPipelineStage(registration.pipeline_stage); return <span className={`px-2 py-0.5 rounded text-xs font-medium ${ps.cls}`}>{ps.label}</span>; })()}
+                          </td>
                           <td className="py-4 px-4">
                             {isApproved ? (
                               <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm">Approved</span>
@@ -1259,9 +1456,113 @@ export default function AdminDashboard() {
                       if (isExpanded) {
                         rows.push(
                           <tr key={`${registration.id}-detail`} className="bg-slate-900/40 border-b border-cyan-500/10">
-                            <td colSpan={9} className="px-6 pb-6 pt-1">
+                            <td colSpan={10} className="px-6 pb-6 pt-2">
+                              {/* CRM SECTION */}
+                              <div className="rounded-lg border border-cyan-500/20 bg-slate-900/60 p-4 mb-4">
+                                <p className="text-xs text-cyan-400 uppercase tracking-wide font-semibold mb-3">CRM — Pipeline & Tracking</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
+                                  <div>
+                                    <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1">Pipeline Stage</label>
+                                    <select
+                                      value={crmEdits[registration.id]?.pipeline_stage ?? registration.pipeline_stage ?? 'new'}
+                                      onChange={(e) => setCrmEdits((prev) => ({ ...prev, [registration.id]: { ...prev[registration.id], pipeline_stage: e.target.value } }))}
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="w-full px-3 py-2 bg-slate-800 border border-cyan-500/20 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400"
+                                    >
+                                      {PIPELINE_STAGES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1">Samples Sent</label>
+                                    <input
+                                      type="date"
+                                      value={crmEdits[registration.id]?.samples_sent_at ?? registration.samples_sent_at ?? ''}
+                                      onChange={(e) => setCrmEdits((prev) => ({ ...prev, [registration.id]: { ...prev[registration.id], samples_sent_at: e.target.value } }))}
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="w-full px-3 py-2 bg-slate-800 border border-cyan-500/20 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1">Last Contact</label>
+                                    <input
+                                      type="date"
+                                      value={crmEdits[registration.id]?.last_contact_date ?? registration.last_contact_date ?? ''}
+                                      onChange={(e) => setCrmEdits((prev) => ({ ...prev, [registration.id]: { ...prev[registration.id], last_contact_date: e.target.value } }))}
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="w-full px-3 py-2 bg-slate-800 border border-cyan-500/20 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400"
+                                    />
+                                  </div>
+                                  <div className="flex items-end">
+                                    <button
+                                      onClick={(e) => { e.stopPropagation(); handleSaveCRM(registration.id); }}
+                                      disabled={savingCrm === registration.id}
+                                      className="w-full px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-800 disabled:opacity-50"
+                                    >
+                                      {savingCrm === registration.id ? 'Saving...' : 'Save Changes'}
+                                    </button>
+                                  </div>
+                                </div>
+                                <div>
+                                  <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1">Admin Notes (internal, not visible to client)</label>
+                                  <textarea
+                                    rows={3}
+                                    value={crmEdits[registration.id]?.admin_notes ?? registration.admin_notes ?? ''}
+                                    onChange={(e) => setCrmEdits((prev) => ({ ...prev, [registration.id]: { ...prev[registration.id], admin_notes: e.target.value } }))}
+                                    onClick={(e) => e.stopPropagation()}
+                                    placeholder="Add internal notes, feedback, follow-up reminders..."
+                                    className="w-full px-3 py-2 bg-slate-800 border border-cyan-500/20 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400 resize-none"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* LINKED ORDERS */}
+                              {(() => {
+                                const clientOrders = completedOrders.filter(
+                                  (o) => o.contact_email.toLowerCase() === registration.email.toLowerCase()
+                                );
+                                if (clientOrders.length === 0) return null;
+                                return (
+                                  <div className="rounded-lg border border-cyan-500/20 bg-slate-900/40 p-4 mb-4">
+                                    <p className="text-xs text-amber-400 uppercase tracking-wide font-semibold mb-3">Orders ({clientOrders.length})</p>
+                                    <div className="overflow-x-auto">
+                                      <table className="w-full text-sm">
+                                        <thead>
+                                          <tr className="border-b border-cyan-500/10">
+                                            <th className="text-left py-2 px-3 text-gray-400 font-medium text-xs">Order ID</th>
+                                            <th className="text-left py-2 px-3 text-gray-400 font-medium text-xs">Date</th>
+                                            <th className="text-left py-2 px-3 text-gray-400 font-medium text-xs">Status</th>
+                                            <th className="text-right py-2 px-3 text-gray-400 font-medium text-xs">Units</th>
+                                            <th className="text-right py-2 px-3 text-gray-400 font-medium text-xs">Lines</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {clientOrders.map((o) => (
+                                            <tr key={o.order_id} className="border-b border-cyan-500/5">
+                                              <td className="py-2 px-3 text-cyan-300 font-mono text-xs">{o.order_id}</td>
+                                              <td className="py-2 px-3 text-gray-400">{o.order_date ? new Date(o.order_date).toLocaleDateString() : '—'}</td>
+                                              <td className="py-2 px-3 text-gray-300">{o.status}</td>
+                                              <td className="py-2 px-3 text-white text-right">{o.total_qty}</td>
+                                              <td className="py-2 px-3 text-gray-300 text-right">{o.line_count}</td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+
+                              {/* FULL REGISTRATION DETAILS */}
                               <div className="rounded-lg border border-cyan-500/20 bg-slate-800/60 p-5">
-                                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-3">Full Registration Details</p>
+                                <div className="flex items-center justify-between mb-3">
+                                  <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Full Registration Details</p>
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); handleDownloadRegistrationPDF(registration); }}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 rounded-lg text-xs font-medium hover:bg-cyan-500/20 transition-colors"
+                                  >
+                                    ↓ Download PDF
+                                  </button>
+                                </div>
                                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 text-sm">
                                   <div>
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Role / Title</span>
@@ -1327,6 +1628,37 @@ export default function AdminDashboard() {
                                     <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
                                       <span className="text-gray-500 text-xs uppercase tracking-wide">Notes / Requirements</span>
                                       <p className="text-gray-200 mt-0.5 whitespace-pre-line">{registration.notes}</p>
+                                    </div>
+                                  ) : null}
+                                  {(registration.countries_covered || registration.distribution_channels || registration.estimated_monthly_volume || registration.years_in_business) ? (
+                                    <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
+                                      <p className="text-xs text-blue-400 uppercase tracking-wide font-medium mb-2">Distributor Details</p>
+                                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
+                                        {registration.countries_covered && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Countries Covered</span><p className="text-gray-200 mt-0.5">{registration.countries_covered}</p></div>}
+                                        {registration.distribution_channels && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Distribution Channels</span><p className="text-gray-200 mt-0.5">{registration.distribution_channels}</p></div>}
+                                        {registration.estimated_monthly_volume && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Est. Monthly Volume</span><p className="text-gray-200 mt-0.5">{registration.estimated_monthly_volume}</p></div>}
+                                        {registration.years_in_business && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Years in Business</span><p className="text-gray-200 mt-0.5">{registration.years_in_business}</p></div>}
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                  {(registration.brand_name || registration.product_interest || registration.target_moq || registration.target_launch_date) ? (
+                                    <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
+                                      <p className="text-xs text-purple-400 uppercase tracking-wide font-medium mb-2">Private Label Details</p>
+                                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
+                                        {registration.brand_name && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Brand Name</span><p className="text-gray-200 mt-0.5">{registration.brand_name}</p></div>}
+                                        {registration.product_interest && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Product Interest</span><p className="text-gray-200 mt-0.5">{registration.product_interest}</p></div>}
+                                        {registration.target_moq && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Target MOQ</span><p className="text-gray-200 mt-0.5">{registration.target_moq}</p></div>}
+                                        {registration.target_launch_date && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Target Launch Date</span><p className="text-gray-200 mt-0.5">{registration.target_launch_date}</p></div>}
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                  {(registration.country_audience || registration.avg_views) ? (
+                                    <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
+                                      <p className="text-xs text-pink-400 uppercase tracking-wide font-medium mb-2">Influencer Details</p>
+                                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
+                                        {registration.country_audience && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Country / Audience</span><p className="text-gray-200 mt-0.5">{registration.country_audience}</p></div>}
+                                        {registration.avg_views && <div><span className="text-gray-500 text-xs uppercase tracking-wide">Avg Views / Engagement</span><p className="text-gray-200 mt-0.5">{registration.avg_views}</p></div>}
+                                      </div>
                                     </div>
                                   ) : null}
                                 </div>

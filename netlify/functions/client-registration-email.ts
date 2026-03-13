@@ -469,6 +469,19 @@ async function persistClientRegistration(formData: FormData): Promise<void> {
       interest_distribution: Boolean(formData.interestDistribution),
       interest_private_label: Boolean(formData.interestPrivateLabel),
       interest_influencer: Boolean(formData.interestInfluencer),
+      // Distributor fields
+      countries_covered: formData.countries_covered?.trim() || null,
+      distribution_channels: formData.distribution_channels?.trim() || null,
+      estimated_monthly_volume: formData.estimated_monthly_volume?.trim() || null,
+      years_in_business: formData.years_in_business?.trim() || null,
+      // Private Label fields
+      brand_name: formData.brand_name?.trim() || null,
+      product_interest: formData.product_interest?.trim() || null,
+      target_moq: formData.target_moq?.trim() || null,
+      target_launch_date: formData.target_launch_date?.trim() || null,
+      // Influencer fields
+      country_audience: formData.country_audience?.trim() || null,
+      avg_views: formData.avg_views?.trim() || null,
     });
 
   if (error) {

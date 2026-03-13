@@ -29,6 +29,24 @@ type ClientRegistrationRow = {
   shipping_address?: string;
   language?: string;
   notes?: string;
+  // Distributor fields
+  countries_covered?: string;
+  distribution_channels?: string;
+  estimated_monthly_volume?: string;
+  years_in_business?: string;
+  // Private Label fields
+  brand_name?: string;
+  product_interest?: string;
+  target_moq?: string;
+  target_launch_date?: string;
+  // Influencer fields
+  country_audience?: string;
+  avg_views?: string;
+  // CRM fields
+  pipeline_stage?: string;
+  samples_sent_at?: string;
+  last_contact_date?: string;
+  admin_notes?: string;
   created_at: string;
 };
 
@@ -201,7 +219,7 @@ export const handler: Handler = async (event) => {
 
   let registrationsQuery = adminSupabase
     .from('client_registrations')
-    .select('id, company, contact, role, email, phone, country, website, instagram, facebook, tiktok, business_type, client_type, interest_distribution, interest_private_label, interest_influencer, interests, monthly_volume, vat_eori, billing_address, shipping_address, language, notes, created_at')
+    .select('id, company, contact, role, email, phone, country, website, instagram, facebook, tiktok, business_type, client_type, interest_distribution, interest_private_label, interest_influencer, interests, monthly_volume, vat_eori, billing_address, shipping_address, language, notes, countries_covered, distribution_channels, estimated_monthly_volume, years_in_business, brand_name, product_interest, target_moq, target_launch_date, country_audience, avg_views, pipeline_stage, samples_sent_at, last_contact_date, admin_notes, created_at')
     .order('created_at', { ascending: false });
 
   if (startDateIso) {
