@@ -861,7 +861,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {message && (
           <div className="mb-6 p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-lg text-cyan-400">
             {message}
@@ -1362,7 +1362,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[1200px]">
                   <thead>
                     <tr className="border-b border-cyan-500/20">
                       <th className="py-3 px-2 w-8"></th>
@@ -1583,7 +1583,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                     ↓ Download PDF
                                   </button>
                                 </div>
-                                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 text-sm">
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4 text-sm">
                                   <div>
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Role / Title</span>
                                     <p className="text-gray-200 mt-0.5">{registration.role || '—'}</p>
