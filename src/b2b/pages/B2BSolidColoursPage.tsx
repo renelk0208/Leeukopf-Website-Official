@@ -489,7 +489,7 @@ export default function B2BSolidColoursPage() {
               <p className="text-sm text-grey-secondary">Gel polishes are filled into <span className="font-semibold">10ml bottles</span>. Set your bottle colour, brush, and branding in Checkout before submitting your order.</p>
             </div>
           )}
-          <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" familyFilter={colourFamilyRoutes[routeSuffix]} />
+          <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" familyFilter={colourFamilyRoutes[routeSuffix]} buyerType={buyerType} />
         </div>
       );
     }
@@ -521,7 +521,7 @@ export default function B2BSolidColoursPage() {
           <p className="text-sm text-grey-secondary">Gel polishes are filled into <span className="font-semibold">10ml bottles</span>. Set your bottle colour, brush, and branding in Checkout before submitting your order.</p>
         </div>
       )}
-      <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" />
+      <InternalSolidColourGrid onSelectionSync={handleSelectionSync} disableClientInfoLock viewMode="shades-only" buyerType={buyerType} />
     </div>
   );
 }

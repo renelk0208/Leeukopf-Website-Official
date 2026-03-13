@@ -960,6 +960,18 @@ export default function B2BCheckoutPage() {
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
+          disabled={items.length === 0}
+          onClick={() => {
+            if (window.confirm("Clear all items from your order?")) {
+              clearCart();
+            }
+          }}
+          className="rounded-md border border-red-300 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Clear Order
+        </button>
+        <button
+          type="button"
           disabled={!canProceed || items.length === 0}
           onClick={exportCsv}
           className="rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary disabled:cursor-not-allowed disabled:opacity-50"

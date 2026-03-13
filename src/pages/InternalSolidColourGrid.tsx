@@ -167,6 +167,7 @@ type InternalSolidColourGridProps = {
   disableClientInfoLock?: boolean;
   viewMode?: "all" | "client-only" | "shades-only";
   familyFilter?: string;
+  buyerType?: "bulk" | "finished_goods" | null;
 };
 
 type ShadeTileProps = {
@@ -1010,6 +1011,7 @@ export default function InternalSolidColourGrid({
   disableClientInfoLock = false,
   viewMode = "all",
   familyFilter,
+  buyerType,
 }: InternalSolidColourGridProps = {}) {
   const { user } = useAuth();
   const [rows, setRows] = useState<Row[]>([]);
@@ -1055,6 +1057,7 @@ export default function InternalSolidColourGrid({
   const [missingDetailsPopup, setMissingDetailsPopup] = useState<string[] | null>(null);
   const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [orderFormat, setOrderFormat] = useState<OrderFormat>("finished_units");
+  const isBulkMode = orderFormat === "bulk" || buyerType === "bulk";
   const [bulkContainer, setBulkContainer] = useState<BulkContainer | "">("");
   const [isBulkContainerAuto, setIsBulkContainerAuto] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -1319,11 +1322,11 @@ export default function InternalSolidColourGrid({
   }, []);
 
   const setQuantityInput = useCallback((id: string, value: string) => {
-    const numeric = parseInt(value || String(QUANTITY_MOQ), 10);
-    if (orderFormat !== "bulk" && violatesFinishedUnitsMoqRule(numeric)) {
+    const numeric = parseInt(value || String(isBulkMode ? 1 : QUANTITY_MOQ), 10);
+    if (!isBulkMode && violatesFinishedUnitsMoqRule(numeric)) {
       showMoqRulePopup();
     }
-    const nextQty = normalizeQuantity(numeric);
+    const nextQty = isBulkMode ? Math.max(1, numeric) : normalizeQuantity(numeric);
 
     setQuantities((prev) => ({ ...prev, [id]: nextQty }));
 
@@ -1332,7 +1335,7 @@ export default function InternalSolidColourGrid({
     if (sku) {
       setOrder((prev) => ({ ...prev, [sku]: nextQty }));
     }
-  }, [orderFormat, rows]);
+  }, [isBulkMode, rows]);
 
   const incrementQuantity = useCallback((id: string) => {
     setQuantities((prev) => {
@@ -1577,7 +1580,7 @@ export default function InternalSolidColourGrid({
     return selectedShades.map((shade) => {
       const row = rowById.get(shade.id);
       const code = row ? getRowCode(row, shade.id) : shade.code;
-      const quantity = quantities[shade.id] ?? QUANTITY_MOQ;
+      const quantity = quantities[shade.id] ?? (isBulkMode ? 1 : QUANTITY_MOQ);
       const normalizedHex = row ? normalizeHex(row["HEX"] || "") : null;
 
       return {
@@ -1679,7 +1682,7 @@ export default function InternalSolidColourGrid({
     let nextOrderQty = 0;
     if (Number.isNaN(parsed) || parsed <= 0) {
       nextOrderQty = 0;
-    } else if (orderFormat === "bulk") {
+    } else if (isBulkMode) {
       nextOrderQty = Math.max(1, parsed);
     } else {
       if (violatesFinishedUnitsMoqRule(parsed)) {
@@ -1706,7 +1709,7 @@ export default function InternalSolidColourGrid({
 
       setQuantities((prev) => ({
         ...prev,
-        [rowId]: normalizeQuantity(nextOrderQty),
+        [rowId]: isBulkMode ? nextOrderQty : normalizeQuantity(nextOrderQty),
       }));
     } else {
       setSelectedIds((prev) => {
@@ -1726,8 +1729,8 @@ export default function InternalSolidColourGrid({
     }
   }, [orderFormat, skuToRowId]);
 
-  const tileMinQty = orderFormat === "bulk" ? 1 : QUANTITY_MOQ;
-  const tileQtyStep = orderFormat === "bulk" ? 1 : QUANTITY_STEP;
+  const tileMinQty = isBulkMode ? 1 : QUANTITY_MOQ;
+  const tileQtyStep = isBulkMode ? 1 : QUANTITY_STEP;
 
   const toggleTileView = useCallback((id: string) => {
     setTileView((prev) => ({
@@ -1783,7 +1786,7 @@ export default function InternalSolidColourGrid({
   }, [displaySelectedShades]);
 
   const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
-  const qtyUnit: "pcs" | "kg" = orderFormat === "bulk"
+  const qtyUnit: "pcs" | "kg" = isBulkMode
     ? (ALLOWS_KG_UNIT ? "kg" : "pcs")
     : (ALLOWS_PCS_UNIT ? "pcs" : "kg");
   const bulkRequiresBucket = orderFormat === "bulk" && selectedItems.some(([, qty]) => qty >= 5);
