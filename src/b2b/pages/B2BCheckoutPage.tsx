@@ -328,6 +328,108 @@ export default function B2BCheckoutPage() {
     downloadCsv(csv, `b2b-cart-${stamp}.csv`);
   };
 
+  const exportZohoCsv = () => {
+    if (!items.length) return;
+
+    const customerEmail = profile?.email?.trim() || user?.email?.trim() || "";
+    const companyName = profile?.company?.trim() || "";
+    const contactName = profile?.contact?.trim() || "";
+    const phone = profile?.phone?.trim() || "";
+    const vatNumber = profile?.vat_eori?.trim() || "";
+    const billingAddress = profile?.billing_address?.trim() || "";
+    const shippingAddress = (profile?.shipping_address?.trim() || profile?.billing_address?.trim()) || "";
+    const country = profile?.country?.trim() || "";
+    const orderDate = new Date().toISOString().slice(0, 10);
+    const orderType = priceTier ? "Purchase Order" : "Quote Request";
+
+    const packagingNote = [
+      bottlePackaging
+        ? `Bottle: ${bottlePackaging.size} ${bottlePackaging.color} ${bottlePackaging.brush} ${bottlePackaging.branding}`
+        : "",
+      jarPackaging
+        ? `Jar: ${jarPackaging.size} ${jarPackaging.color} ${jarPackaging.branding}`
+        : "",
+      polygelPackaging
+        ? `Tube: ${polygelPackaging.size} ${polygelPackaging.color} ${polygelPackaging.label}`
+        : "",
+    ].filter(Boolean).join(" | ");
+
+    const zohoHeader = [
+      "SalesOrder#",
+      "OrderDate",
+      "OrderType",
+      "PriceTier",
+      "CustomerName",
+      "ContactName",
+      "Email",
+      "Phone",
+      "VAT_EORI",
+      "BillingAddress",
+      "ShippingAddress",
+      "Country",
+      "ItemName",
+      "SKU",
+      "ItemCode",
+      "Category",
+      "Quantity",
+      "Unit",
+      "BottleSize",
+      "BottleColor",
+      "BrushType",
+      "Branding",
+      "JarSize",
+      "JarColor",
+      "JarBranding",
+      "TubeSize",
+      "TubeColor",
+      "TubeLabel",
+      "PackagingNotes",
+    ];
+
+    const zohoRows = items.map((item) => {
+      const isJar = item.category === "BUILDER_GEL";
+      const isPolygel = item.category === "POLYGEL";
+      return [
+        "",               // SalesOrder# — Zoho auto-assigns
+        orderDate,
+        orderType,
+        priceTier ?? "quote_pending",
+        companyName,
+        contactName,
+        customerEmail,
+        phone,
+        vatNumber,
+        billingAddress,
+        shippingAddress,
+        country,
+        item.name ?? item.code,
+        item.internalSku ?? item.code,
+        item.code,
+        getB2BCategoryLabel(item.category),
+        item.quantity,
+        item.unitType ?? "PCS",
+        // bottle
+        !isJar && !isPolygel && bottlePackaging ? mapPackagingCsv(bottlePackaging.size) : "",
+        !isJar && !isPolygel && bottlePackaging ? mapPackagingCsv(bottlePackaging.color) : "",
+        !isJar && !isPolygel && bottlePackaging ? mapPackagingCsv(bottlePackaging.brush) : "",
+        !isJar && !isPolygel && bottlePackaging ? mapPackagingCsv(bottlePackaging.branding) : "",
+        // jar
+        isJar && jarPackaging ? mapPackagingCsv(jarPackaging.size) : "",
+        isJar && jarPackaging ? mapPackagingCsv(jarPackaging.color) : "",
+        isJar && jarPackaging ? mapPackagingCsv(jarPackaging.branding) : "",
+        // tube
+        isPolygel && polygelPackaging ? mapPackagingCsv(polygelPackaging.size) : "",
+        isPolygel && polygelPackaging ? mapPackagingCsv(polygelPackaging.color) : "",
+        isPolygel && polygelPackaging ? mapPackagingCsv(polygelPackaging.label) : "",
+        packagingNote,
+      ];
+    });
+
+    const zohoCSV = "\uFEFF" + [zohoHeader, ...zohoRows].map((row) => row.map((cell) => toCsvValue(cell)).join(",")).join("\n");
+    const stamp = new Date().toISOString().slice(0, 10);
+    downloadCsv(zohoCSV, `zoho-order-${stamp}.csv`);
+  };
+
   const submit = async () => {
     if (!canProceed) return;
 
@@ -863,6 +965,14 @@ export default function B2BCheckoutPage() {
           className="rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary disabled:cursor-not-allowed disabled:opacity-50"
         >
           Export CSV
+        </button>
+        <button
+          type="button"
+          disabled={items.length === 0}
+          onClick={exportZohoCsv}
+          className="rounded-md border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Download for Zoho
         </button>
         <button
           type="button"
