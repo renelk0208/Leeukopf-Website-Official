@@ -1303,6 +1303,14 @@ export default function AdminDashboard() {
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Instagram</span>
                                     <p className="text-gray-200 mt-0.5">{registration.instagram || '—'}</p>
                                   </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Facebook</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.facebook || '—'}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">TikTok</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.tiktok || '—'}</p>
+                                  </div>
                                   <div className="col-span-2">
                                     <span className="text-gray-500 text-xs uppercase tracking-wide">Product Interests</span>
                                     <p className="text-gray-200 mt-0.5">{interestsDisplay || '—'}</p>
