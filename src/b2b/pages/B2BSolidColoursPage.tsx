@@ -184,6 +184,7 @@ export default function B2BSolidColoursPage() {
   const [validationMessage, setValidationMessage] = useState<string>("");
   const [imageAttemptByCode, setImageAttemptByCode] = useState<Record<string, number>>({});
   const [imageIndexByCode, setImageIndexByCode] = useState<B2BImageIndex>({});
+  const [creamBulkUnit, setCreamBulkUnit] = useState<"pcs" | "kg">("pcs");
 
   const normalizedPath = location.pathname.toLowerCase();
   const routeSuffix = normalizedPath.replace("/b2b/solid-colours", "").replace(/^\/+/, "");
@@ -193,7 +194,7 @@ export default function B2BSolidColoursPage() {
   const isCreamCollection = routeSuffix === "cream-collection";
 
   // Pricing: use the route label as subcategory key (matches b2b_price_tiers table)
-  const priceUnit = buyerType === "bulk" && !isCreamCollection ? "kg" : "pcs";
+  const priceUnit = buyerType === "bulk" && (!isCreamCollection || creamBulkUnit === "kg") ? "kg" : "pcs";
   const pricePerUnit = isKnownColourSubcategoryRoute
     ? lookupPrice(priceMap, toRouteLabel(routeSuffix), priceUnit)
     : null;
@@ -325,7 +326,7 @@ export default function B2BSolidColoursPage() {
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
       const pcsMoq = Number.parseInt(product.moq || "25", 10) || 25;
-      const isBulkKg = buyerType === "bulk" && !isCreamCollection;
+      const isBulkKg = buyerType === "bulk" && (!isCreamCollection || creamBulkUnit === "kg");
       const effectiveMoq = isBulkKg ? 1 : (isCreamCollection && buyerType === "bulk" ? 200 : pcsMoq);
 
       return {
@@ -366,12 +367,45 @@ export default function B2BSolidColoursPage() {
       return (
         <div className="space-y-4">
           {isCreamCollection ? (
-            <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
-              <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
-                <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
-                <span className="text-sm font-bold uppercase tracking-wide text-white">Ready-to-Sell — Supplied in 5g Jars</span>
+            <div className="space-y-3">
+              <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+                <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+                  <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+                  <span className="text-sm font-bold uppercase tracking-wide text-white">Ready-to-Sell — Supplied in 5g Jars</span>
+                </div>
+                <p className="text-sm text-grey-secondary">Cream Collection shades are <span className="font-semibold">pre-filled, ready-to-sell items</span> supplied in <span className="font-semibold">5g jars</span>. No packaging configuration is required. Jar size is fixed at 5g and cannot be changed.</p>
               </div>
-              <p className="text-sm text-grey-secondary">Cream Collection shades are <span className="font-semibold">pre-filled, ready-to-sell items</span> supplied in <span className="font-semibold">5g jars</span>. No packaging configuration is required. Jar size is fixed at 5g and cannot be changed.</p>
+              {buyerType === "bulk" && (
+                <div className="flex flex-wrap items-center gap-3 rounded-lg border border-grey-card bg-white p-3">
+                  <span className="text-sm font-medium text-grey-secondary">Order unit:</span>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (creamBulkUnit === "pcs") return;
+                        items.filter((i) => i.category === "SOLID_GEL_POLISH").forEach((i) => removeItem("SOLID_GEL_POLISH", i.code));
+                        setDraftQty({});
+                        setCreamBulkUnit("pcs");
+                      }}
+                      className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${creamBulkUnit === "pcs" ? "bg-primary text-white" : "border border-grey-card text-grey-primary hover:bg-grey-100"}`}
+                    >
+                      Per Piece (min 200 pcs)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (creamBulkUnit === "kg") return;
+                        items.filter((i) => i.category === "SOLID_GEL_POLISH").forEach((i) => removeItem("SOLID_GEL_POLISH", i.code));
+                        setDraftQty({});
+                        setCreamBulkUnit("kg");
+                      }}
+                      className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${creamBulkUnit === "kg" ? "bg-primary text-white" : "border border-grey-card text-grey-primary hover:bg-grey-100"}`}
+                    >
+                      Per KG (min 1 kg)
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (buyerType === "finished_goods") ? (
             <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
@@ -387,7 +421,7 @@ export default function B2BSolidColoursPage() {
           description=""
           items={uniformItems}
           validationMessage={validationMessage}
-          buyerType={isCreamCollection ? "finished_goods" : buyerType}
+          buyerType={isCreamCollection && creamBulkUnit !== "kg" ? "finished_goods" : buyerType}
           pricePerUnit={pricePerUnit}
           priceUnit={priceUnit}
           onQuantityChange={(id, value) => {
@@ -403,7 +437,7 @@ export default function B2BSolidColoursPage() {
             const raw = (draftQty[match.code] ?? displayed).trim();
             const qty = Number.parseInt(raw, 10);
             const pcsMoq = Number.parseInt(match.moq || "25", 10) || 25;
-            const isBulkKg = buyerType === "bulk" && !isCreamCollection;
+            const isBulkKg = buyerType === "bulk" && (!isCreamCollection || creamBulkUnit === "kg");
             const effectiveMoq = isBulkKg ? 1 : (isCreamCollection && buyerType === "bulk" ? 200 : pcsMoq);
 
             if (!Number.isFinite(qty) || qty < 0) {

@@ -202,8 +202,9 @@ export default function B2BPolygelsPage() {
   const activeMoq = isLiquidRoute ? LIQUID_POLYGEL_MOQ : POLYGEL_MOQ;
   const { items, addOrUpdateItem, removeItem, buyerType, priceTier } = useB2BCart();
   const priceMap = useB2BPricing(priceTier);
-  // Liquid polygel: bulk pricing is per kg; plain polygel: always per pcs (even for bulk buyers)
-  const isBulkKg = buyerType === "bulk" && isLiquidRoute;
+  const [polygelBulkUnit, setPolygelBulkUnit] = useState<"pcs" | "kg">("pcs");
+  // Liquid polygel: bulk pricing is per kg; plain polygel: also per kg when bulk + kg mode selected
+  const isBulkKg = buyerType === "bulk" && (isLiquidRoute || polygelBulkUnit === "kg");
   const priceUnit = isBulkKg ? "kg" : "pcs";
   const polygelSubcategoryKey = isLiquidRoute ? "Liquid Polygel" : "Polygel";
   const pricePerUnit = lookupPrice(priceMap, polygelSubcategoryKey, priceUnit);
@@ -291,11 +292,11 @@ export default function B2BPolygelsPage() {
         code: product.code,
         name: product.product_name || "Polygel shade",
         family: product.subcategory || (isLiquidRoute ? "Liquid Polygel" : "Polygel"),
-        moq: activeMoq,
+        moq: isBulkKg ? 1 : activeMoq,
         quantityValue:
           draftedQty !== undefined && draftedQty.trim().length > 0
             ? draftedQty
-            : String(existingQty > 0 ? existingQty : activeMoq),
+            : String(existingQty > 0 ? existingQty : (isBulkKg ? 1 : activeMoq)),
         imageSrc: image,
         imageAlt: product.product_name || product.code,
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
@@ -335,6 +336,38 @@ export default function B2BPolygelsPage() {
         </div>
       )}
 
+      {!isLiquidRoute && buyerType === "bulk" && (
+        <div className="flex flex-wrap items-center gap-3 rounded-lg border border-grey-card bg-white p-3">
+          <span className="text-sm font-medium text-grey-secondary">Order unit:</span>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                if (polygelBulkUnit === "pcs") return;
+                items.filter((i) => i.category === "POLYGEL").forEach((i) => removeItem("POLYGEL", i.code));
+                setDraftQty({});
+                setPolygelBulkUnit("pcs");
+              }}
+              className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${polygelBulkUnit === "pcs" ? "bg-primary text-white" : "border border-grey-card text-grey-primary hover:bg-grey-100"}`}
+            >
+              Per Piece (min 100 pcs)
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (polygelBulkUnit === "kg") return;
+                items.filter((i) => i.category === "POLYGEL").forEach((i) => removeItem("POLYGEL", i.code));
+                setDraftQty({});
+                setPolygelBulkUnit("kg");
+              }}
+              className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${polygelBulkUnit === "kg" ? "bg-primary text-white" : "border border-grey-card text-grey-primary hover:bg-grey-100"}`}
+            >
+              Per KG (min 1 kg)
+            </button>
+          </div>
+        </div>
+      )}
+
       {!isLiquidRoute && buyerType === "finished_goods" && (
         <div className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
           Tube configuration (colour, size and label option) is set at checkout.
@@ -350,7 +383,7 @@ export default function B2BPolygelsPage() {
         }
         items={uniformItems}
         validationMessage={validationMessage}
-        buyerType={isLiquidRoute ? buyerType : "finished_goods"}
+        buyerType={isBulkKg ? "bulk" : "finished_goods"}
         pricePerUnit={pricePerUnit}
         priceUnit={priceUnit}
         onQuantityChange={(id, value) => {
@@ -365,7 +398,7 @@ export default function B2BPolygelsPage() {
           const raw = (draftQty[match.code] ?? String(existingQtyByCode[match.code] ?? activeMoq)).trim();
           const qty = Number.parseInt(raw, 10);
 
-          const isBulkKg = buyerType === "bulk" && isLiquidRoute;
+          const isBulkKg = buyerType === "bulk" && (isLiquidRoute || polygelBulkUnit === "kg");
           const effectiveMoq = isBulkKg ? 1 : activeMoq;
 
           if (!Number.isFinite(qty) || qty < effectiveMoq) {
