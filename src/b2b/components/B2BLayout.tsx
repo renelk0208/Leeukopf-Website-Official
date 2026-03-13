@@ -19,7 +19,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
     clearCart();
     clearBuyerType();
     await signOut();
-    navigate("/login");
+    navigate("/portal/login");
   };
 
   const buyerLabel = buyerType === "finished_goods" ? "Finished Goods" : buyerType === "bulk" ? "Bulk" : null;
