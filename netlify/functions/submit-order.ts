@@ -298,7 +298,7 @@ async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Prom
   const toEmail =
     process.env.ORDER_NOTIFICATION_EMAIL ||
     process.env.ORDERS_INBOX_EMAIL ||
-    'leeukopf@gmail.com';
+    'info@leeukopf.com';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@leeukopf.com';
   const resend = new Resend(resendApiKey);
 

@@ -150,6 +150,26 @@ export default function AdminDashboard() {
   const [expandedRegistrationId, setExpandedRegistrationId] = useState<string | null>(null);
   const [crmEdits, setCrmEdits] = useState<Record<string, { pipeline_stage: string; admin_notes: string; samples_sent_at: string; last_contact_date: string; }>>({});
   const [savingCrm, setSavingCrm] = useState<string | null>(null);
+  const [resendingOrders, setResendingOrders] = useState(false);
+
+  const handleResendAllOrders = async () => {
+    if (!session?.access_token) return;
+    if (!window.confirm('Resend all stored orders to info@leeukopf.com?')) return;
+    setResendingOrders(true);
+    try {
+      const response = await fetch('/api/admin-resend-orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ to: 'info@leeukopf.com' }),
+      });
+      const payload = (await response.json()) as { success?: boolean; message?: string };
+      setMessage(payload.message || (payload.success ? 'Done.' : 'Failed.'));
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Failed to resend orders.');
+    } finally {
+      setResendingOrders(false);
+    }
+  };
 
   const handleToggleRegistration = (registration: ClientRegistrationLead) => {
     const id = registration.id;
@@ -1689,7 +1709,17 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
             ) : null}
 
             <div className="mt-10 border-t border-cyan-500/20 pt-8">
-              <h3 className="text-xl font-bold text-white mb-2">Completed B2B Orders</h3>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-xl font-bold text-white">Completed B2B Orders</h3>
+                <button
+                  type="button"
+                  onClick={handleResendAllOrders}
+                  disabled={resendingOrders || completedOrders.length === 0}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-amber-500/30 rounded-lg text-amber-300 hover:border-amber-400 disabled:opacity-40 disabled:cursor-not-allowed text-sm"
+                >
+                  {resendingOrders ? 'Sending...' : '↻ Resend all to info@leeukopf.com'}
+                </button>
+              </div>
               <p className="text-gray-400 mb-4">
                 Stored orders are visible here even if email delivery fails.
               </p>
