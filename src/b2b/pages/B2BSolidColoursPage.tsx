@@ -275,6 +275,8 @@ export default function B2BSolidColoursPage() {
       }
     });
 
+    const expectedUnitType = buyerType === "bulk" ? "KG" : "PCS";
+
     normalizedSelectedItems.forEach((item) => {
       const quantity = Number.isFinite(item.quantity) ? Math.max(0, Math.floor(item.quantity)) : 0;
       const nextName = item.name?.trim() ? item.name : item.code;
@@ -287,7 +289,7 @@ export default function B2BSolidColoursPage() {
         existing.quantity !== quantity ||
         existing.name !== nextName ||
         existing.internalSku !== nextInternalSku ||
-        existing.unitType !== "PCS" ||
+        existing.unitType !== expectedUnitType ||
         existingHex !== item.hex;
 
       if (!hasChanged) return;
@@ -298,13 +300,13 @@ export default function B2BSolidColoursPage() {
         internalSku: nextInternalSku,
         name: nextName,
         quantity,
-        unitType: "PCS",
+        unitType: expectedUnitType,
         meta: {
           hex: item.hex || null,
         },
       });
     });
-  }, [addOrUpdateItem, items, removeItem]);
+  }, [addOrUpdateItem, buyerType, items, removeItem]);
 
   const existingQtyByCode = useMemo(() => {
     const map: Record<string, number> = {};
@@ -322,7 +324,9 @@ export default function B2BSolidColoursPage() {
       const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
-      const moq = Number.parseInt(product.moq || "25", 10) || 25;
+      const pcsMoq = Number.parseInt(product.moq || "25", 10) || 25;
+      const isBulkKg = buyerType === "bulk" && !isCreamCollection;
+      const effectiveMoq = isBulkKg ? 1 : (isCreamCollection && buyerType === "bulk" ? 200 : pcsMoq);
 
       return {
         id: `${product.code}-${index}`,
@@ -331,10 +335,10 @@ export default function B2BSolidColoursPage() {
         family: isCreamCollection
             ? `${product.subcategory || "Cream Collection"} · 5g jar`
             : (product.subcategory || toRouteLabel(routeSuffix)),
-        moq,
+        moq: effectiveMoq,
         quantityValue: draftQty[product.code] !== undefined
           ? draftQty[product.code]
-          : String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : (Number.parseInt(product.moq || "25", 10) || 25)),
+          : String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : effectiveMoq),
         imageSrc: image,
         imageAlt: product.product_name || product.code,
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
@@ -400,7 +404,7 @@ export default function B2BSolidColoursPage() {
             const qty = Number.parseInt(raw, 10);
             const pcsMoq = Number.parseInt(match.moq || "25", 10) || 25;
             const isBulkKg = buyerType === "bulk" && !isCreamCollection;
-            const effectiveMoq = isBulkKg ? 1 : pcsMoq;
+            const effectiveMoq = isBulkKg ? 1 : (isCreamCollection && buyerType === "bulk" ? 200 : pcsMoq);
 
             if (!Number.isFinite(qty) || qty < 0) {
               setValidationMessage(`Please enter a valid quantity for ${match.product_name || match.code}.`);

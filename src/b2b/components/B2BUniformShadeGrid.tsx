@@ -152,7 +152,7 @@ export default function B2BUniformShadeGrid({
                         {showName ? <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.name}</p> : null}
                         {showFamily ? <p className="text-xs leading-tight text-grey-secondary break-words [overflow-wrap:anywhere]">{item.family}</p> : null}
                         <p className="text-xs text-grey-secondary">
-                          {isBulk ? "MOQ: 1 kg" : `MOQ: ${item.moq}`}
+                          {`MOQ: ${item.moq} ${priceUnit === "kg" ? "kg" : "pcs"}`}
                         </p>
                         {pricePerUnit != null ? (
                           <p className="text-xs font-semibold text-primary-700">
@@ -164,11 +164,11 @@ export default function B2BUniformShadeGrid({
                         <div className="flex items-center gap-1">
                           <input
                             type="number"
-                            min={isBulk ? 1 : item.moq}
+                            min={item.moq}
                             step={1}
                             value={item.quantityValue}
                             onChange={(event) => onQuantityChange(item.id, event.target.value)}
-                            placeholder={isBulk ? "kg" : `Min ${item.moq}`}
+                            placeholder={priceUnit === "kg" ? `Min ${item.moq} kg` : `Min ${item.moq}`}
                             className="w-full rounded-md border border-grey-card px-2 py-1.5 text-sm text-grey-primary"
                           />
                           {isBulk && (

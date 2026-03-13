@@ -301,13 +301,13 @@ export default function B2BBuilderGelsPage() {
       const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
-      const quantityValue = draftQty[product.code] ?? String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : BUILDER_GEL_MIN_MOQ);
+      const quantityValue = draftQty[product.code] ?? String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : (buyerType === "bulk" ? 1 : BUILDER_GEL_MIN_MOQ));
       return {
         id: `${product.code}-${index}`,
         code: product.code,
         name: product.product_name,
         family: product.subcategory || "Builder Gel",
-        moq: Math.max(Number.parseInt(product.moq || "1", 10) || 1, BUILDER_GEL_MIN_MOQ),
+        moq: buyerType === "bulk" ? 1 : Math.max(Number.parseInt(product.moq || "1", 10) || 1, BUILDER_GEL_MIN_MOQ),
         quantityValue,
         imageSrc: image,
         imageAlt: product.product_name || product.code,

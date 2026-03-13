@@ -264,7 +264,8 @@ export default function B2BExtraStrengthBasesPage() {
       const imageCandidates = Array.from(new Set([...indexedCandidates, ...getImageCandidates(product)]));
       const nextImageIndex = imageAttemptByCode[product.code] ?? 0;
       const image = imageCandidates[nextImageIndex] ?? fallbackProductImage;
-      const moq = toNumber(product.moq, 25);
+      const pcsMoq = toNumber(product.moq, 25);
+      const moq = buyerType === "bulk" ? 1 : pcsMoq;
 
       return {
         id: `${product.code}-${index}`,
@@ -274,7 +275,7 @@ export default function B2BExtraStrengthBasesPage() {
         moq,
         quantityValue: draftQty[product.code] !== undefined
           ? draftQty[product.code]
-          : String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : (Number.parseInt(product.moq || "25", 10) || 25)),
+          : String(existingQtyByCode[product.code] > 0 ? existingQtyByCode[product.code] : moq),
         imageSrc: image,
         imageAlt: product.product_name || product.code || "Base",
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
