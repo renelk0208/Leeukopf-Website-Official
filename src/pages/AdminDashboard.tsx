@@ -1,15 +1,32 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw } from 'lucide-react';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ClientRegistrationLead {
   id: string;
   company: string;
   contact: string;
+  role?: string;
   email: string;
+  phone?: string;
   country: string;
+  website?: string;
+  instagram?: string;
+  facebook?: string;
+  tiktok?: string;
   business_type: string;
+  client_type?: string;
+  interest_distribution?: boolean;
+  interest_private_label?: boolean;
+  interest_influencer?: boolean;
+  interests?: string[] | string;
+  monthly_volume?: string;
+  vat_eori?: string;
+  billing_address?: string;
+  shipping_address?: string;
+  language?: string;
+  notes?: string;
   created_at: string;
 }
 
@@ -87,11 +104,6 @@ const DEFAULT_COLORS: SiteSettings = {
   accent_color: '#22d3ee',
 };
 
-function getLatestDecemberStart(referenceDate = new Date()): Date {
-  const year = referenceDate.getMonth() >= 11 ? referenceDate.getFullYear() : referenceDate.getFullYear() - 1;
-  return new Date(year, 11, 1, 0, 0, 0, 0);
-}
-
 export default function AdminDashboard() {
   const { signOut, user, session } = useAuth();
   const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients'>('products');
@@ -102,6 +114,7 @@ export default function AdminDashboard() {
   const [clientRegistrations, setClientRegistrations] = useState<ClientRegistrationLead[]>([]);
   const [completedOrders, setCompletedOrders] = useState<CompletedB2BOrder[]>([]);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+  const [expandedRegistrationId, setExpandedRegistrationId] = useState<string | null>(null);
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   const [manualInviteLink, setManualInviteLink] = useState('');
@@ -124,14 +137,6 @@ export default function AdminDashboard() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [bulkFiles, setBulkFiles] = useState<FileList | null>(null);
   const [bulkUploading, setBulkUploading] = useState(false);
-  const clientRegistrationsStartDate = getLatestDecemberStart();
-  const clientRegistrationsStartIso = clientRegistrationsStartDate.toISOString();
-  const clientRegistrationsWindowLabel = clientRegistrationsStartDate.toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
   const loadCategories = useCallback(async () => {
     const { data } = await supabase
       .from('product_categories')
@@ -180,7 +185,7 @@ export default function AdminDashboard() {
     }
 
     try {
-      const response = await fetch(`/api/admin-client-registrations?startDate=${encodeURIComponent(clientRegistrationsStartIso)}`, {
+      const response = await fetch('/api/admin-client-registrations', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${session.access_token}`,
@@ -202,7 +207,7 @@ export default function AdminDashboard() {
       console.error('Failed to load client registrations:', error);
       setMessage(error instanceof Error ? error.message : 'Failed to load client registrations.');
     }
-  }, [clientRegistrationsStartIso, session?.access_token]);
+  }, [session?.access_token]);
 
   const handleBackfillClientRegistrations = useCallback(async () => {
     if (!session?.access_token) {
@@ -212,7 +217,7 @@ export default function AdminDashboard() {
 
     setBackfillingClients(true);
     try {
-      const response = await fetch(`/api/admin-client-registrations-backfill?startDate=${encodeURIComponent(clientRegistrationsStartIso)}`, {
+      const response = await fetch('/api/admin-client-registrations-backfill', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${session.access_token}`,
@@ -235,7 +240,7 @@ export default function AdminDashboard() {
     } finally {
       setBackfillingClients(false);
     }
-  }, [clientRegistrationsStartIso, loadClientRegistrations, session?.access_token]);
+  }, [loadClientRegistrations, session?.access_token]);
 
   const loadApprovedClients = useCallback(async () => {
     const { data, error } = await supabase
@@ -1111,7 +1116,7 @@ export default function AdminDashboard() {
                   Approve registrations and direct portal signups from one place.
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  Showing registrations and portal signups from {clientRegistrationsWindowLabel} to today.
+                  Showing all registrations and portal signups.
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -1145,32 +1150,89 @@ export default function AdminDashboard() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-cyan-500/20">
+                      <th className="py-3 px-2 w-8"></th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Date</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Company</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Contact</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Email</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Country</th>
+                      <th className="text-left py-3 px-4 text-gray-300 font-medium">Client Type</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Business Type</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Status</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {clientRegistrations.map((registration) => {
+                    {clientRegistrations.flatMap((registration) => {
                       const isApproved = approvedEmails.has(registration.email.toLowerCase());
-                      return (
-                        <tr key={registration.id} className="border-b border-cyan-500/10 hover:bg-slate-900/30">
+                      const isExpanded = expandedRegistrationId === registration.id;
+                      const interestsDisplay = Array.isArray(registration.interests)
+                        ? registration.interests.join(', ')
+                        : typeof registration.interests === 'string'
+                        ? registration.interests
+                        : '';
+
+                      // Build client type badges from interest flags or client_type field
+                      const clientTypeBadges: string[] = [];
+                      if (registration.interest_distribution) clientTypeBadges.push('Distributor');
+                      if (registration.interest_private_label) clientTypeBadges.push('Private Label');
+                      if (registration.interest_influencer) clientTypeBadges.push('Influencer');
+                      // Fallback: derive from client_type string if booleans not set
+                      if (clientTypeBadges.length === 0 && registration.client_type) {
+                        const ct = registration.client_type;
+                        if (ct === 'Distributors') clientTypeBadges.push('Distributor');
+                        else if (ct === 'PrivateLabel') clientTypeBadges.push('Private Label');
+                        else if (ct === 'Influencers') clientTypeBadges.push('Influencer');
+                        else clientTypeBadges.push(ct);
+                      }
+                      const rows = [
+                        <tr
+                          key={registration.id}
+                          className={`border-b border-cyan-500/10 hover:bg-slate-900/30 cursor-pointer transition-colors ${
+                            isExpanded ? 'bg-slate-900/40' : ''
+                          }`}
+                          onClick={() => setExpandedRegistrationId(isExpanded ? null : registration.id)}
+                        >
+                          <td className="py-4 px-2 text-center text-gray-500">
+                            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                          </td>
                           <td className="py-4 px-4 text-gray-400 text-sm">
                             {new Date(registration.created_at).toLocaleDateString()}
                           </td>
                           <td className="py-4 px-4 text-white">{registration.company}</td>
                           <td className="py-4 px-4 text-gray-300">{registration.contact}</td>
                           <td className="py-4 px-4 text-cyan-400">
-                            <a href={`mailto:${registration.email}`} className="hover:underline">
+                            <a
+                              href={`mailto:${registration.email}`}
+                              className="hover:underline"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               {registration.email}
                             </a>
                           </td>
                           <td className="py-4 px-4 text-gray-300">{registration.country}</td>
+                          <td className="py-4 px-4">
+                            {clientTypeBadges.length > 0 ? (
+                              <div className="flex flex-wrap gap-1">
+                                {clientTypeBadges.map((badge) => (
+                                  <span
+                                    key={badge}
+                                    className={
+                                      badge === 'Distributor'
+                                        ? 'px-2 py-0.5 bg-blue-500/20 text-blue-300 rounded text-xs font-medium'
+                                        : badge === 'Private Label'
+                                        ? 'px-2 py-0.5 bg-purple-500/20 text-purple-300 rounded text-xs font-medium'
+                                        : 'px-2 py-0.5 bg-pink-500/20 text-pink-300 rounded text-xs font-medium'
+                                    }
+                                  >
+                                    {badge}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className="text-gray-600 text-sm">—</span>
+                            )}
+                          </td>
                           <td className="py-4 px-4 text-gray-300">{registration.business_type ?? '-'}</td>
                           <td className="py-4 px-4">
                             {isApproved ? (
@@ -1179,7 +1241,7 @@ export default function AdminDashboard() {
                               <span className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full text-sm">Pending</span>
                             )}
                           </td>
-                          <td className="py-4 px-4">
+                          <td className="py-4 px-4" onClick={(e) => e.stopPropagation()}>
                             <button
                               onClick={() => handleApproveAndInvite(registration)}
                               disabled={invitingEmail === registration.email}
@@ -1192,8 +1254,80 @@ export default function AdminDashboard() {
                                   : 'Approve / Activate Access'}
                             </button>
                           </td>
-                        </tr>
-                      );
+                        </tr>,
+                      ];
+                      if (isExpanded) {
+                        rows.push(
+                          <tr key={`${registration.id}-detail`} className="bg-slate-900/40 border-b border-cyan-500/10">
+                            <td colSpan={9} className="px-6 pb-6 pt-1">
+                              <div className="rounded-lg border border-cyan-500/20 bg-slate-800/60 p-5">
+                                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-3">Full Registration Details</p>
+                                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 text-sm">
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Role / Title</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.role || '—'}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Phone</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.phone || '—'}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Language</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.language || '—'}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Monthly Volume</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.monthly_volume || '—'}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">VAT / EORI</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.vat_eori || '—'}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Website</span>
+                                    <p className="text-gray-200 mt-0.5">
+                                      {registration.website ? (
+                                        <a
+                                          href={registration.website}
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          className="text-cyan-400 hover:underline"
+                                          onClick={(e) => e.stopPropagation()}
+                                        >
+                                          {registration.website}
+                                        </a>
+                                      ) : '—'}
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Instagram</span>
+                                    <p className="text-gray-200 mt-0.5">{registration.instagram || '—'}</p>
+                                  </div>
+                                  <div className="col-span-2">
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Product Interests</span>
+                                    <p className="text-gray-200 mt-0.5">{interestsDisplay || '—'}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Billing Address</span>
+                                    <p className="text-gray-200 mt-0.5 whitespace-pre-line">{registration.billing_address || '—'}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500 text-xs uppercase tracking-wide">Shipping Address</span>
+                                    <p className="text-gray-200 mt-0.5 whitespace-pre-line">{registration.shipping_address || '—'}</p>
+                                  </div>
+                                  {registration.notes ? (
+                                    <div className="col-span-2 lg:col-span-3 border-t border-cyan-500/10 pt-3 mt-1">
+                                      <span className="text-gray-500 text-xs uppercase tracking-wide">Notes / Requirements</span>
+                                      <p className="text-gray-200 mt-0.5 whitespace-pre-line">{registration.notes}</p>
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      }
+                      return rows;
                     })}
                   </tbody>
                 </table>

@@ -453,6 +453,8 @@ async function persistClientRegistration(formData: FormData): Promise<void> {
       country: normalizedCountry || null,
       website: formData.website?.trim() || null,
       instagram: formData.instagram?.trim() || null,
+      facebook: formData.facebook?.trim() || null,
+      tiktok: formData.tiktok?.trim() || null,
       business_type: normalizedBusinessType || null,
       interests: Array.isArray(formData.interests)
         ? formData.interests.map((item) => String(item).trim()).filter(Boolean)
@@ -463,6 +465,10 @@ async function persistClientRegistration(formData: FormData): Promise<void> {
       shipping_address: formData.shippingAddress?.trim() || null,
       language: formData.language?.trim() || 'EN',
       notes: formData.notes?.trim() || null,
+      client_type: formData.client_type?.trim() || null,
+      interest_distribution: Boolean(formData.interestDistribution),
+      interest_private_label: Boolean(formData.interestPrivateLabel),
+      interest_influencer: Boolean(formData.interestInfluencer),
     });
 
   if (error) {

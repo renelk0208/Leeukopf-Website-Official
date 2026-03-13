@@ -9,9 +9,26 @@ type ClientRegistrationRow = {
   id: string;
   company: string;
   contact: string;
+  role?: string;
   email: string;
+  phone?: string;
   country: string;
+  website?: string;
+  instagram?: string;
+  facebook?: string;
+  tiktok?: string;
   business_type: string;
+  client_type?: string;
+  interest_distribution?: boolean;
+  interest_private_label?: boolean;
+  interest_influencer?: boolean;
+  interests?: string[];
+  monthly_volume?: string;
+  vat_eori?: string;
+  billing_address?: string;
+  shipping_address?: string;
+  language?: string;
+  notes?: string;
   created_at: string;
 };
 
@@ -184,7 +201,7 @@ export const handler: Handler = async (event) => {
 
   let registrationsQuery = adminSupabase
     .from('client_registrations')
-    .select('id, company, contact, email, country, business_type, created_at')
+    .select('id, company, contact, role, email, phone, country, website, instagram, facebook, tiktok, business_type, client_type, interest_distribution, interest_private_label, interest_influencer, interests, monthly_volume, vat_eori, billing_address, shipping_address, language, notes, created_at')
     .order('created_at', { ascending: false });
 
   if (startDateIso) {
