@@ -185,8 +185,59 @@
       });
     </script>
     <!-- End Meta Pixel Code -->
+
+    <!-- Google tag (gtag.js) - Google Analytics / Google Ads -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5GF1408V3K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      // Default consent denied (GDPR / Consent Mode v2)
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500
+      });
+
+      gtag('js', new Date());
+      gtag('config', 'G-5GF1408V3K');
+
+      // Grant consent when user has accepted all cookies
+      function grantGoogleConsent() {
+        gtag('consent', 'update', {
+          analytics_storage: 'granted',
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted'
+        });
+      }
+
+      // Check existing consent on load
+      (function checkGoogleConsent() {
+        var match = document.cookie
+          .split(';')
+          .map(function(c) { return c.trim(); })
+          .find(function(c) { return c.startsWith('lkp_cookie_consent='); });
+        if (match) {
+          try {
+            var val = JSON.parse(decodeURIComponent(match.split('=')[1]));
+            if (val.choice === 'all') grantGoogleConsent();
+          } catch(e) {}
+        }
+      })();
+
+      // Listen for consent changes
+      window.addEventListener('cookieConsentChanged', function(event) {
+        if (event.detail && event.detail.choice === 'all') {
+          grantGoogleConsent();
+        }
+      });
+    </script>
+    <!-- End Google tag -->
+
     
-    <!-- Calendly widget -->
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
     <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
     <!-- End Calendly widget -->
