@@ -95,6 +95,59 @@ function generateResendHtml(order: {
   `;
 }
 
+function generateResendCsv(order: {
+  order_id: string;
+  order_date: string | null;
+  company_name: string;
+  contact_name: string | null;
+  contact_email: string;
+  contact_phone: string | null;
+  country: string | null;
+  vat_number: string | null;
+  shipping_address: string | null;
+  total_qty: number;
+  items: unknown;
+}): string {
+  const escapeCsv = (val: unknown): string => {
+    const str = String(val ?? '');
+    if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+      return `"${str.replace(/"/g, '""')}"`;
+    }
+    return str;
+  };
+
+  type ItemRow = { code?: string; product_name?: string; name?: string; size?: string; quantity?: number; qty?: number; moq?: string };
+  const items: ItemRow[] = Array.isArray(order.items) ? (order.items as ItemRow[]) : [];
+
+  const headers = [
+    'Order ID', 'Order Date', 'Company', 'Contact Name', 'Email', 'Phone',
+    'Country', 'VAT Number', 'Shipping Address', 'Item Code', 'Product Name',
+    'Size', 'Quantity', 'MOQ',
+  ];
+  const rows: string[] = [headers.map(escapeCsv).join(',')];
+
+  for (const item of items) {
+    rows.push([
+      escapeCsv(order.order_id),
+      escapeCsv(order.order_date),
+      escapeCsv(order.company_name),
+      escapeCsv(order.contact_name),
+      escapeCsv(order.contact_email),
+      escapeCsv(order.contact_phone),
+      escapeCsv(order.country),
+      escapeCsv(order.vat_number),
+      escapeCsv(order.shipping_address),
+      escapeCsv(item.code),
+      escapeCsv(item.product_name ?? item.name),
+      escapeCsv(item.size),
+      escapeCsv(item.quantity ?? item.qty),
+      escapeCsv(item.moq),
+    ].join(','));
+  }
+
+  return rows.join('\r\n');
+}
+
 export const handler: Handler = async (event) => {
   const headers = getCorsHeaders(event.headers.origin);
 
@@ -180,6 +233,12 @@ export const handler: Handler = async (event) => {
             subject: `[RESENT] B2B Order ${order.order_id}`,
             html: generateResendHtml(order),
             replyTo: order.contact_email,
+            attachments: [
+              {
+                filename: `order-${order.order_id}.csv`,
+                content: Buffer.from(generateResendCsv(order)),
+              },
+            ],
           });
           if (result.error) {
             errors.push(`${order.order_id}: ${result.error.message}`);

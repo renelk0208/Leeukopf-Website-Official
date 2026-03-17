@@ -289,6 +289,44 @@ function generateOrderEmailHtml(orderId: string, orderData: OrderSubmission): st
   `;
 }
 
+function generateOrderCsv(orderId: string, orderData: OrderSubmission): string {
+  const escapeCsv = (val: unknown): string => {
+    const str = String(val ?? '');
+    if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+      return `"${str.replace(/"/g, '""')}"`;
+    }
+    return str;
+  };
+
+  const headers = [
+    'Order ID', 'Order Date', 'Company', 'Contact Name', 'Email', 'Phone',
+    'Country', 'VAT Number', 'Shipping Address', 'Item Code', 'Product Name',
+    'Size', 'Quantity', 'MOQ',
+  ];
+  const rows: string[] = [headers.map(escapeCsv).join(',')];
+
+  for (const item of orderData.items) {
+    rows.push([
+      escapeCsv(orderId),
+      escapeCsv(orderData.order_date),
+      escapeCsv(orderData.customer.company_name),
+      escapeCsv(orderData.customer.contact_name),
+      escapeCsv(orderData.customer.email),
+      escapeCsv(orderData.customer.phone),
+      escapeCsv(orderData.customer.country),
+      escapeCsv(orderData.customer.vat_number ?? ''),
+      escapeCsv(orderData.customer.shipping_address),
+      escapeCsv(item.code),
+      escapeCsv(item.product_name),
+      escapeCsv(item.size),
+      escapeCsv(item.quantity),
+      escapeCsv(item.moq),
+    ].join(','));
+  }
+
+  return rows.join('\r\n');
+}
+
 async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Promise<void> {
   const resendApiKey = process.env.RESEND_API_KEY;
   if (!resendApiKey) {
@@ -302,12 +340,20 @@ async function sendOrderEmail(orderId: string, orderData: OrderSubmission): Prom
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@leeukopf.com';
   const resend = new Resend(resendApiKey);
 
+  const csvContent = generateOrderCsv(orderId, orderData);
+
   await resend.emails.send({
     from: `Leeukopf Orders <${fromEmail}>`,
     to: toEmail,
     subject: `New B2B Order ${orderId}`,
     html: generateOrderEmailHtml(orderId, orderData),
     replyTo: orderData.customer.email,
+    attachments: [
+      {
+        filename: `order-${orderId}.csv`,
+        content: Buffer.from(csvContent),
+      },
+    ],
   });
 
   await resend.emails.send({
