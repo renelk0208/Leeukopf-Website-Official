@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useAdminStaff } from '../contexts/AdminStaffContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight } from 'lucide-react';
 
 interface ClientRegistrationLead {
   id: string;
@@ -40,6 +41,9 @@ interface ClientRegistrationLead {
   // Influencer fields
   country_audience?: string;
   avg_views?: string;
+  // Portal tier (gated by view_prices permission)
+  buyer_type?: string;
+  price_tier?: string;
   // CRM fields
   pipeline_stage?: string;
   samples_sent_at?: string;
@@ -83,6 +87,45 @@ interface SiteSettings {
   secondary_color: string;
   accent_color: string;
 }
+
+interface AdminStaffMember {
+  id: string;
+  email: string;
+  full_name?: string;
+  role: 'owner' | 'staff';
+  permissions: {
+    view_clients: boolean;
+    approve_registrations: boolean;
+    view_orders: boolean;
+    view_prices: boolean;
+    manage_products: boolean;
+    manage_colors: boolean;
+    manage_brochures: boolean;
+  };
+  is_active: boolean;
+  created_at: string;
+  created_by?: string;
+}
+
+const ALL_PERMISSIONS: AdminStaffMember['permissions'] = {
+  view_clients: true,
+  approve_registrations: true,
+  view_orders: true,
+  view_prices: true,
+  manage_products: true,
+  manage_colors: true,
+  manage_brochures: true,
+};
+
+const DEFAULT_STAFF_PERMISSIONS: AdminStaffMember['permissions'] = {
+  view_clients: true,
+  approve_registrations: true,
+  view_orders: true,
+  view_prices: false,
+  manage_products: false,
+  manage_colors: false,
+  manage_brochures: false,
+};
 
 const APPROVED_EMAILS_STORAGE_KEY = 'adminApprovedClientEmails';
 
@@ -139,7 +182,8 @@ function getPipelineStage(value: string | undefined) {
 
 export default function AdminDashboard() {
   const { signOut, user, session } = useAuth();
-  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients'>('products');
+  const adminStaff = useAdminStaff();
+  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients' | 'staff'>('products');
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
@@ -336,6 +380,21 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
   const [newAdminEmail, setNewAdminEmail] = useState('');
   const [newAdminPassword, setNewAdminPassword] = useState('');
   const [creatingAdmin, setCreatingAdmin] = useState(false);
+
+  // ── Staff management state (owner only) ──────────────────────────────────
+  const [staffList, setStaffList] = useState<AdminStaffMember[]>([]);
+  const [loadingStaff, setLoadingStaff] = useState(false);
+  const [newStaffEmail, setNewStaffEmail] = useState('');
+  const [newStaffName, setNewStaffName] = useState('');
+  const [newStaffPassword, setNewStaffPassword] = useState('');
+  const [newStaffPermissions, setNewStaffPermissions] = useState<AdminStaffMember['permissions']>({ ...DEFAULT_STAFF_PERMISSIONS });
+  const [addingStaff, setAddingStaff] = useState(false);
+  const [resetPwdStaffId, setResetPwdStaffId] = useState<string | null>(null);
+  const [resetPwdValue, setResetPwdValue] = useState('');
+  const [resettingPwd, setResettingPwd] = useState(false);
+  const [editingPermsId, setEditingPermsId] = useState<string | null>(null);
+  const [editingPerms, setEditingPerms] = useState<AdminStaffMember['permissions']>({ ...DEFAULT_STAFF_PERMISSIONS });
+  const [savingPerms, setSavingPerms] = useState(false);
   const [refreshingClients, setRefreshingClients] = useState(false);
   const [backfillingClients, setBackfillingClients] = useState(false);
   const [colors, setColors] = useState<SiteSettings>(DEFAULT_COLORS);
@@ -543,6 +602,162 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
 
     return () => window.clearInterval(intervalId);
   }, [activeTab, refreshClientAccess]);
+
+  // Auto-switch to the first permitted tab when permissions are loaded
+  useEffect(() => {
+    const tabAccessMap: Record<string, boolean> = {
+      products: adminStaff.canDo('manage_products'),
+      brochures: adminStaff.canDo('manage_brochures'),
+      colors: adminStaff.canDo('manage_colors'),
+      clients: adminStaff.canDo('view_clients'),
+      staff: adminStaff.isOwner,
+    };
+    if (!tabAccessMap[activeTab]) {
+      const first = Object.entries(tabAccessMap).find(([, ok]) => ok)?.[0];
+      if (first) setActiveTab(first as typeof activeTab);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adminStaff.role]);
+
+  // ── Staff management (owner only) ────────────────────────────────────────
+  const loadStaff = useCallback(async () => {
+    if (!session?.access_token) return;
+    setLoadingStaff(true);
+    try {
+      const response = await fetch('/api/admin-list-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+      });
+      const payload = (await response.json()) as { success?: boolean; data?: AdminStaffMember[]; message?: string };
+      if (!response.ok || !payload.success) throw new Error(payload.message || 'Failed to load staff.');
+      setStaffList(payload.data ?? []);
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Failed to load staff.');
+    } finally {
+      setLoadingStaff(false);
+    }
+  }, [session?.access_token]);
+
+  useEffect(() => {
+    if (activeTab === 'staff' && adminStaff.isOwner) {
+      void loadStaff();
+    }
+  }, [activeTab, adminStaff.isOwner, loadStaff]);
+
+  const handleAddStaff = async () => {
+    if (!session?.access_token) return;
+    const email = newStaffEmail.trim().toLowerCase();
+    if (!email) { setMessage('Enter a staff email address.'); return; }
+    const password = newStaffPassword.trim();
+    if (!password || password.length < 8) { setMessage('Password must be at least 8 characters.'); return; }
+
+    setAddingStaff(true);
+    try {
+      const response = await fetch('/api/admin-create-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName: newStaffName.trim() || undefined,
+          permissions: newStaffPermissions,
+          addToStaff: true,
+        }),
+      });
+      const payload = (await response.json()) as { success?: boolean; message?: string; data?: { temporaryPassword?: string } };
+      if (!response.ok || !payload.success) throw new Error(payload.message || 'Failed to add staff.');
+      const returnedPwd = payload.data?.temporaryPassword || password;
+      setMessage(`Staff added. Login: ${email} / ${returnedPwd}`);
+      setNewStaffEmail('');
+      setNewStaffName('');
+      setNewStaffPassword('');
+      setNewStaffPermissions({ ...DEFAULT_STAFF_PERMISSIONS });
+      await loadStaff();
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Failed to add staff.');
+    } finally {
+      setAddingStaff(false);
+    }
+  };
+
+  const handleResetStaffPassword = async (staffId: string) => {
+    if (!session?.access_token) return;
+    const newPwd = resetPwdValue.trim();
+    if (!newPwd || newPwd.length < 8) { setMessage('New password must be at least 8 characters.'); return; }
+    setResettingPwd(true);
+    try {
+      const response = await fetch('/api/admin-update-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ action: 'reset_password', staffId, newPassword: newPwd }),
+      });
+      const payload = (await response.json()) as { success?: boolean; message?: string };
+      if (!response.ok || !payload.success) throw new Error(payload.message || 'Failed to reset password.');
+      setMessage(payload.message || 'Password reset.');
+      setResetPwdStaffId(null);
+      setResetPwdValue('');
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Failed to reset password.');
+    } finally {
+      setResettingPwd(false);
+    }
+  };
+
+  const handleSaveStaffPermissions = async (staffId: string) => {
+    if (!session?.access_token) return;
+    setSavingPerms(true);
+    try {
+      const response = await fetch('/api/admin-update-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ action: 'update_permissions', staffId, permissions: editingPerms }),
+      });
+      const payload = (await response.json()) as { success?: boolean; message?: string };
+      if (!response.ok || !payload.success) throw new Error(payload.message || 'Failed to save permissions.');
+      setMessage('Permissions saved.');
+      setEditingPermsId(null);
+      setStaffList((prev) => prev.map((s) => s.id === staffId ? { ...s, permissions: { ...editingPerms } } : s));
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Failed to save permissions.');
+    } finally {
+      setSavingPerms(false);
+    }
+  };
+
+  const handleToggleStaffActive = async (staffId: string, currentActive: boolean) => {
+    if (!session?.access_token) return;
+    try {
+      const response = await fetch('/api/admin-update-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ action: 'toggle_active', staffId }),
+      });
+      const payload = (await response.json()) as { success?: boolean; message?: string; is_active?: boolean };
+      if (!response.ok || !payload.success) throw new Error(payload.message || 'Failed.');
+      setMessage(payload.message || 'Done.');
+      setStaffList((prev) => prev.map((s) => s.id === staffId ? { ...s, is_active: !currentActive } : s));
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Action failed.');
+    }
+  };
+
+  const handleDeleteStaff = async (staffId: string, email: string) => {
+    if (!window.confirm(`Remove ${email} from staff? This only removes portal access, not their login account.`)) return;
+    if (!session?.access_token) return;
+    try {
+      const response = await fetch('/api/admin-update-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ action: 'delete', staffId }),
+      });
+      const payload = (await response.json()) as { success?: boolean; message?: string };
+      if (!response.ok || !payload.success) throw new Error(payload.message || 'Failed.');
+      setMessage(payload.message || 'Staff removed.');
+      setStaffList((prev) => prev.filter((s) => s.id !== staffId));
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Failed to remove staff.');
+    }
+  };
 
   useEffect(() => {
     if (selectedCategory) {
@@ -873,61 +1088,87 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
           </div>
         )}
 
-        <div className="flex space-x-4 mb-8">
-          <button
-            onClick={() => setActiveTab('products')}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
-              activeTab === 'products'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
-                : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
-            }`}
-          >
-            <ImageIcon size={20} />
-            <span>Manage Products</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('brochures')}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
-              activeTab === 'brochures'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
-                : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
-            }`}
-          >
-            <FileText size={20} />
-            <span>Brochure Requests</span>
-            {brochureRequests.length > 0 && (
-              <span className="ml-2 px-2 py-1 bg-cyan-500 text-white rounded-full text-xs">
-                {brochureRequests.length}
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab('colors')}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
-              activeTab === 'colors'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
-                : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
-            }`}
-          >
-            <Palette size={20} />
-            <span>Customize Colors</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('clients')}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
-              activeTab === 'clients'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
-                : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
-            }`}
-          >
-            <UserPlus size={20} />
-            <span>Client Access</span>
-            {clientRegistrations.length > 0 && (
-              <span className="ml-2 px-2 py-1 bg-cyan-500 text-white rounded-full text-xs">
-                {clientRegistrations.length}
-              </span>
-            )}
-          </button>
+        <div className="flex flex-wrap gap-3 mb-8">
+          {adminStaff.canDo('manage_products') && (
+            <button
+              onClick={() => setActiveTab('products')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'products'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
+                  : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
+              }`}
+            >
+              <ImageIcon size={20} />
+              <span>Manage Products</span>
+            </button>
+          )}
+          {adminStaff.canDo('manage_brochures') && (
+            <button
+              onClick={() => setActiveTab('brochures')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'brochures'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
+                  : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
+              }`}
+            >
+              <FileText size={20} />
+              <span>Brochure Requests</span>
+              {brochureRequests.length > 0 && (
+                <span className="ml-2 px-2 py-1 bg-cyan-500 text-white rounded-full text-xs">
+                  {brochureRequests.length}
+                </span>
+              )}
+            </button>
+          )}
+          {adminStaff.canDo('manage_colors') && (
+            <button
+              onClick={() => setActiveTab('colors')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'colors'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
+                  : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
+              }`}
+            >
+              <Palette size={20} />
+              <span>Customize Colors</span>
+            </button>
+          )}
+          {adminStaff.canDo('view_clients') && (
+            <button
+              onClick={() => setActiveTab('clients')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'clients'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
+                  : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
+              }`}
+            >
+              <UserPlus size={20} />
+              <span>Client Access</span>
+              {clientRegistrations.length > 0 && (
+                <span className="ml-2 px-2 py-1 bg-cyan-500 text-white rounded-full text-xs">
+                  {clientRegistrations.length}
+                </span>
+              )}
+            </button>
+          )}
+          {adminStaff.isOwner && (
+            <button
+              onClick={() => setActiveTab('staff')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'staff'
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-700 text-white'
+                  : 'bg-slate-800/50 text-gray-300 border border-purple-500/20'
+              }`}
+            >
+              <Users size={20} />
+              <span>Staff</span>
+              {staffList.length > 0 && (
+                <span className="ml-2 px-2 py-1 bg-purple-500 text-white rounded-full text-xs">
+                  {staffList.length}
+                </span>
+              )}
+            </button>
+          )}
         </div>
 
         {activeTab === 'products' && (
@@ -1259,6 +1500,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
 
         {activeTab === 'clients' && (
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-cyan-500/20 p-6">
+            {adminStaff.canDo('approve_registrations') && (
             <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
               <h3 className="text-lg font-semibold text-white">Client Portal Access Recovery (No Email Required)</h3>
               <p className="mt-1 text-sm text-gray-300">
@@ -1289,7 +1531,9 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                 </button>
               </div>
             </div>
+            )}
 
+            {adminStaff.isOwner && (
             <div className="mb-6 rounded-xl border border-cyan-500/20 bg-slate-900/40 p-4">
               <h3 className="text-lg font-semibold text-white">Create Admin Access (No Email Required)</h3>
               <p className="mt-1 text-sm text-gray-400">
@@ -1319,7 +1563,9 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                   {creatingAdmin ? 'Creating...' : 'Create Admin Now'}
                 </button>
               </div>
+              <p className="mt-2 text-xs text-amber-400">Note: Use the Staff tab to add team members with controlled permissions instead.</p>
             </div>
+            )}
 
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
@@ -1464,6 +1710,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                             )}
                           </td>
                           <td className="py-4 px-4" onClick={(e) => e.stopPropagation()}>
+                            {adminStaff.canDo('approve_registrations') ? (
                             <button
                               onClick={() => handleApproveAndInvite(registration)}
                               disabled={invitingEmail === registration.email}
@@ -1475,6 +1722,9 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                   ? 'Resend Invite / Get Manual Link'
                                   : 'Approve / Activate Access'}
                             </button>
+                            ) : (
+                              <span className="text-xs text-gray-600 italic">No permission</span>
+                            )}
                           </td>
                         </tr>,
                       ];
@@ -1540,8 +1790,8 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                 </div>
                               </div>
 
-                              {/* LINKED ORDERS */}
-                              {(() => {
+                              {/* LINKED ORDERS — gated by view_orders permission */}
+                              {adminStaff.canDo('view_orders') && (() => {
                                 const clientOrders = completedOrders.filter(
                                   (o) => o.contact_email.toLowerCase() === registration.email.toLowerCase()
                                 );
@@ -1576,6 +1826,27 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                   </div>
                                 );
                               })()}
+
+                              {/* PORTAL TIERS — gated by view_prices permission */}
+                              {adminStaff.canDo('view_prices') && (registration.buyer_type || registration.price_tier) && (
+                                <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4 mb-4">
+                                  <p className="text-xs text-emerald-400 uppercase tracking-wide font-semibold mb-3">Portal Access Tier</p>
+                                  <div className="flex flex-wrap gap-4 text-sm">
+                                    {registration.buyer_type && (
+                                      <div>
+                                        <span className="text-gray-500 text-xs uppercase tracking-wide">Buyer Type</span>
+                                        <p className="text-gray-200 mt-0.5 capitalize">{registration.buyer_type.replace('_', ' ')}</p>
+                                      </div>
+                                    )}
+                                    {registration.price_tier && (
+                                      <div>
+                                        <span className="text-gray-500 text-xs uppercase tracking-wide">Price Tier</span>
+                                        <p className="text-emerald-300 mt-0.5 font-medium capitalize">{registration.price_tier.replace('_', ' ')}</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
 
                               {/* FULL REGISTRATION DETAILS */}
                               <div className="rounded-lg border border-cyan-500/20 bg-slate-800/60 p-5">
@@ -1824,6 +2095,259 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                       })}
                     </tbody>
                   </table>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ── STAFF TAB (owner only) ──────────────────────────────────────── */}
+        {activeTab === 'staff' && adminStaff.isOwner && (
+          <div className="space-y-8">
+            {/* Add Staff */}
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-purple-500/20 p-6">
+              <h2 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
+                <Shield size={20} className="text-purple-400" />
+                Add Staff Member
+              </h2>
+              <p className="text-gray-400 text-sm mb-5">Create a login for a team member. You set their password and can reset it any time.</p>
+
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-4">
+                <div>
+                  <label className="block text-xs text-gray-400 uppercase tracking-wide mb-1">Email *</label>
+                  <input
+                    type="email"
+                    value={newStaffEmail}
+                    onChange={(e) => setNewStaffEmail(e.target.value)}
+                    placeholder="staff@leeukopf.com"
+                    className="w-full rounded-lg border border-purple-500/20 bg-slate-900/50 px-3 py-2 text-white placeholder-gray-600 focus:border-purple-400 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-400 uppercase tracking-wide mb-1">Full Name</label>
+                  <input
+                    type="text"
+                    value={newStaffName}
+                    onChange={(e) => setNewStaffName(e.target.value)}
+                    placeholder="Jane Smith"
+                    className="w-full rounded-lg border border-purple-500/20 bg-slate-900/50 px-3 py-2 text-white placeholder-gray-600 focus:border-purple-400 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-400 uppercase tracking-wide mb-1">Password * (min 8 chars)</label>
+                  <input
+                    type="text"
+                    value={newStaffPassword}
+                    onChange={(e) => setNewStaffPassword(e.target.value)}
+                    placeholder="Set their login password"
+                    className="w-full rounded-lg border border-purple-500/20 bg-slate-900/50 px-3 py-2 text-white placeholder-gray-600 focus:border-purple-400 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="mb-5">
+                <label className="block text-xs text-gray-400 uppercase tracking-wide mb-2">Permissions</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {(Object.keys(DEFAULT_STAFF_PERMISSIONS) as (keyof typeof DEFAULT_STAFF_PERMISSIONS)[]).map((perm) => (
+                    <label key={perm} className="flex items-center gap-2 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={newStaffPermissions[perm]}
+                        onChange={(e) => setNewStaffPermissions((p) => ({ ...p, [perm]: e.target.checked }))}
+                        className="w-4 h-4 rounded accent-purple-500"
+                      />
+                      <span className="text-sm text-gray-300 group-hover:text-white transition-colors capitalize">
+                        {perm.replace(/_/g, ' ')}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={handleAddStaff}
+                  disabled={addingStaff}
+                  className="px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-700 text-white rounded-lg font-medium hover:from-purple-400 hover:to-indigo-600 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {addingStaff ? 'Adding...' : 'Add Staff Member'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNewStaffPermissions({ ...ALL_PERMISSIONS })}
+                  className="px-4 py-2.5 bg-slate-700/50 text-gray-300 rounded-lg text-sm hover:bg-slate-700"
+                >
+                  Select All
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNewStaffPermissions({ ...DEFAULT_STAFF_PERMISSIONS })}
+                  className="px-4 py-2.5 bg-slate-700/50 text-gray-300 rounded-lg text-sm hover:bg-slate-700"
+                >
+                  Reset to Default
+                </button>
+              </div>
+            </div>
+
+            {/* Staff List */}
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-purple-500/20 p-6">
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Users size={20} className="text-purple-400" />
+                  Team Members
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => { void loadStaff(); }}
+                  disabled={loadingStaff}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-purple-500/20 rounded-lg text-gray-300 hover:border-purple-400 text-sm disabled:opacity-60"
+                >
+                  <RefreshCw size={14} className={loadingStaff ? 'animate-spin' : ''} />
+                  Refresh
+                </button>
+              </div>
+
+              {loadingStaff ? (
+                <p className="text-gray-400 py-8 text-center">Loading staff...</p>
+              ) : staffList.length === 0 ? (
+                <p className="text-gray-500 py-8 text-center">No staff members yet. Add one above.</p>
+              ) : (
+                <div className="space-y-4">
+                  {staffList.map((member) => (
+                    <div key={member.id} className={`rounded-xl border p-4 ${member.is_active ? 'border-purple-500/20 bg-slate-900/40' : 'border-gray-700/30 bg-slate-900/20 opacity-60'}`}>
+                      <div className="flex items-start justify-between gap-4 flex-wrap">
+                        <div>
+                          <p className="font-medium text-white">{member.full_name || '(no name)'}</p>
+                          <p className="text-sm text-cyan-400">{member.email}</p>
+                          <p className="text-xs text-gray-500 mt-1">Added {new Date(member.created_at).toLocaleDateString()}{member.created_by ? ` by ${member.created_by}` : ''}</p>
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {/* Reset Password */}
+                          {resetPwdStaffId === member.id ? (
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={resetPwdValue}
+                                onChange={(e) => setResetPwdValue(e.target.value)}
+                                placeholder="New password (min 8)"
+                                className="w-44 rounded-lg border border-purple-500/20 bg-slate-800 px-3 py-1.5 text-white text-sm focus:border-purple-400 focus:outline-none"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => { void handleResetStaffPassword(member.id); }}
+                                disabled={resettingPwd}
+                                className="px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-500 disabled:opacity-60"
+                              >
+                                {resettingPwd ? '...' : 'Save'}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => { setResetPwdStaffId(null); setResetPwdValue(''); }}
+                                className="px-3 py-1.5 bg-slate-700 text-gray-300 rounded-lg text-sm hover:bg-slate-600"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => { setResetPwdStaffId(member.id); setResetPwdValue(''); }}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-700/50 border border-slate-600 text-gray-300 rounded-lg text-sm hover:border-purple-400 hover:text-white transition-colors"
+                            >
+                              <KeyRound size={14} />
+                              Reset Password
+                            </button>
+                          )}
+
+                          {/* Toggle Active */}
+                          <button
+                            type="button"
+                            onClick={() => { void handleToggleStaffActive(member.id, member.is_active); }}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                              member.is_active
+                                ? 'bg-slate-700/50 border-slate-600 text-gray-300 hover:border-amber-400 hover:text-amber-300'
+                                : 'bg-slate-700/50 border-emerald-600/40 text-emerald-400 hover:border-emerald-400'
+                            }`}
+                          >
+                            {member.is_active ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
+                            {member.is_active ? 'Deactivate' : 'Reactivate'}
+                          </button>
+
+                          {/* Delete */}
+                          <button
+                            type="button"
+                            onClick={() => { void handleDeleteStaff(member.id, member.email); }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-700/50 border border-red-500/20 text-red-400 rounded-lg text-sm hover:border-red-400 transition-colors"
+                          >
+                            <Trash2 size={14} />
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Permissions */}
+                      <div className="mt-3">
+                        {editingPermsId === member.id ? (
+                          <div className="rounded-lg border border-purple-500/20 bg-slate-800/60 p-3">
+                            <p className="text-xs text-purple-400 uppercase tracking-wide mb-2">Edit Permissions</p>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-3">
+                              {(Object.keys(editingPerms) as (keyof typeof editingPerms)[]).map((perm) => (
+                                <label key={perm} className="flex items-center gap-2 cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={editingPerms[perm]}
+                                    onChange={(e) => setEditingPerms((p) => ({ ...p, [perm]: e.target.checked }))}
+                                    className="w-4 h-4 rounded accent-purple-500"
+                                  />
+                                  <span className="text-sm text-gray-300 capitalize">{perm.replace(/_/g, ' ')}</span>
+                                </label>
+                              ))}
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                type="button"
+                                onClick={() => { void handleSaveStaffPermissions(member.id); }}
+                                disabled={savingPerms}
+                                className="px-4 py-1.5 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-500 disabled:opacity-60"
+                              >
+                                {savingPerms ? 'Saving...' : 'Save Permissions'}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setEditingPermsId(null)}
+                                className="px-4 py-1.5 bg-slate-700 text-gray-300 rounded-lg text-sm hover:bg-slate-600"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <button
+                              type="button"
+                              onClick={() => { setEditingPermsId(member.id); setEditingPerms({ ...member.permissions }); }}
+                              className="text-xs text-purple-400 hover:text-purple-300 underline"
+                            >
+                              Edit permissions
+                            </button>
+                            <span className="text-gray-700">·</span>
+                            {(Object.entries(member.permissions) as [string, boolean][])
+                              .filter(([, v]) => v)
+                              .map(([k]) => (
+                                <span key={k} className="px-2 py-0.5 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded text-xs capitalize">
+                                  {k.replace(/_/g, ' ')}
+                                </span>
+                              ))
+                            }
+                            {(Object.values(member.permissions) as boolean[]).every((v) => !v) && (
+                              <span className="text-xs text-gray-600 italic">No permissions set</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

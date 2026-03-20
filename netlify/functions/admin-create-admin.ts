@@ -8,6 +8,19 @@ export const config = {
 type CreateAdminPayload = {
   email?: string;
   password?: string;
+  fullName?: string;
+  permissions?: Record<string, boolean>;
+  addToStaff?: boolean; // default true — registers user in admin_staff with given permissions
+};
+
+const DEFAULT_STAFF_PERMISSIONS = {
+  view_clients: true,
+  approve_registrations: true,
+  view_orders: true,
+  view_prices: false,
+  manage_products: false,
+  manage_colors: false,
+  manage_brochures: false,
 };
 
 function getAllowedOrigin(requestOrigin: string | undefined): string {
@@ -176,12 +189,23 @@ export const handler: Handler = async (event) => {
     };
   }
 
+  // Resolve final permissions — caller can override defaults
+  const resolvedPermissions =
+    payload.permissions && typeof payload.permissions === 'object'
+      ? payload.permissions
+      : DEFAULT_STAFF_PERMISSIONS;
+
+  const fullName = (payload.fullName || '').trim() || undefined;
+  const addToStaff = payload.addToStaff !== false; // default true
+
+  // Attempt to create the auth user
   const { data: createdUserData, error: createError } = await adminSupabase.auth.admin.createUser({
     email,
     password,
     email_confirm: true,
     user_metadata: {
       role: 'admin',
+      full_name: fullName,
       createdBy: requesterEmail,
       createdAt: new Date().toISOString(),
     },
@@ -190,12 +214,26 @@ export const handler: Handler = async (event) => {
   if (createError) {
     const lowered = createError.message.toLowerCase();
     if (lowered.includes('already') && lowered.includes('registered')) {
+      // User already exists — if addToStaff, upsert their admin_staff record anyway
+      if (addToStaff) {
+        await adminSupabase.from('admin_staff').upsert(
+          {
+            email,
+            full_name: fullName,
+            role: 'staff',
+            permissions: resolvedPermissions,
+            is_active: true,
+            created_by: requesterEmail,
+          },
+          { onConflict: 'email', ignoreDuplicates: false }
+        );
+      }
       return {
         statusCode: 409,
         headers,
         body: JSON.stringify({
           success: false,
-          message: 'Admin account already exists for this email. Ask them to sign in or reset password from /admin/login.',
+          message: 'An account already exists for this email. Staff record updated with new permissions.',
         }),
       };
     }
@@ -207,14 +245,37 @@ export const handler: Handler = async (event) => {
     };
   }
 
+  const createdUserId = createdUserData.user?.id ?? null;
+
+  // Register in admin_staff so ProtectedRoute can verify their access
+  if (addToStaff) {
+    const { error: staffError } = await adminSupabase.from('admin_staff').upsert(
+      {
+        user_id: createdUserId,
+        email,
+        full_name: fullName,
+        role: 'staff',
+        permissions: resolvedPermissions,
+        is_active: true,
+        created_by: requesterEmail,
+      },
+      { onConflict: 'email', ignoreDuplicates: false }
+    );
+
+    if (staffError) {
+      // Auth user was created; log but don't fail — owner can re-save permissions from Staff tab
+      console.error('[admin-create-admin] Failed to register in admin_staff:', staffError.message);
+    }
+  }
+
   return {
     statusCode: 200,
     headers,
     body: JSON.stringify({
       success: true,
-      message: `Admin account created for ${email}. Share credentials securely.`,
+      message: `Staff account created for ${email}. Share credentials securely.`,
       data: {
-        id: createdUserData.user?.id ?? null,
+        id: createdUserId,
         email,
         temporaryPassword: password,
       },
