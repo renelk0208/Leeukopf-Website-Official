@@ -592,17 +592,20 @@ const handler: Handler = async (event: HandlerEvent) => {
     });
     console.log('Internal email sent successfully:', internalEmailResult.id);
 
-    // Send auto-reply to client
-    console.log('Sending auto-reply email to:', formData.email);
-    const autoReplyBody = generateAutoReplyBody();
-    
-    const autoReplyResult = await resend.emails.send({
-      from: 'Leeukopf Laboratories <info@leeukopf.com>',
-      to: formData.email,
-      subject: 'Thank you for completing the client registration form',
-      html: autoReplyBody,
-    });
-    console.log('Auto-reply email sent successfully:', autoReplyResult.id);
+    // Send auto-reply to client (best-effort — don't fail the whole request if this bounces)
+    try {
+      console.log('Sending auto-reply email to:', formData.email);
+      const autoReplyBody = generateAutoReplyBody();
+      const autoReplyResult = await resend.emails.send({
+        from: 'Leeukopf Laboratories <info@leeukopf.com>',
+        to: formData.email,
+        subject: 'Thank you for completing the client registration form',
+        html: autoReplyBody,
+      });
+      console.log('Auto-reply email sent successfully:', autoReplyResult.id);
+    } catch (autoReplyErr) {
+      console.error('Auto-reply failed (non-fatal):', autoReplyErr instanceof Error ? autoReplyErr.message : autoReplyErr);
+    }
 
     return {
       statusCode: 200,

@@ -88,6 +88,22 @@ export default function ClientPortalProtectedRoute({ children }: ClientPortalPro
           return;
         }
 
+        // Not in approved_clients — check if they're an active admin/staff member
+        const staffResult = await supabase
+          .from('admin_staff')
+          .select('is_active')
+          .eq('email', email)
+          .eq('is_active', true)
+          .maybeSingle();
+
+        if (!active) return;
+
+        if (staffResult.data) {
+          writeApprovalCache(email);
+          setApprovalState('approved');
+          return;
+        }
+
         clearApprovalCache();
         setApprovalState('pending');
       } catch (error) {

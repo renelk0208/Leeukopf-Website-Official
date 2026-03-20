@@ -112,6 +112,21 @@ export default function ClientPortalLoginPage() {
         const normalizedEmail = email.trim().toLowerCase();
         await signUp(normalizedEmail, password);
         persistRememberedEmail(normalizedEmail);
+        // Fire-and-forget: notify owner of new portal signup
+        fetch('/api/client-registration-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            company: 'Portal signup',
+            contact: normalizedEmail,
+            email: normalizedEmail,
+            country: 'Unknown',
+            businessType: 'Portal signup',
+            interests: [],
+            language: 'en',
+            source: 'portal_signup',
+          }),
+        }).catch(() => { /* non-fatal */ });
         navigate(`/portal/pending-approval?email=${encodeURIComponent(normalizedEmail)}`);
       } else {
         const normalizedEmail = email.trim().toLowerCase();

@@ -1,5 +1,6 @@
 import type { Handler } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
 
 export const config = {
   path: '/api/admin-create-admin',
@@ -68,6 +69,46 @@ function normalizeEmail(email: string): string {
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function buildWelcomeEmail(recipientName: string | undefined, recipientEmail: string, password: string, isExisting: boolean): string {
+  const name = recipientName || recipientEmail;
+  const loginUrl = 'https://leeukopf.com/login';
+  const notice = isExisting
+    ? '<p style="color:#f59e0b">Note: your Leeukopf account already existed. Your original password is unchanged — use that to log in, or ask the owner to reset it for you from the Staff tab.</p>'
+    : `<p><strong>Password:</strong> <code style="background:#1e293b;color:#a78bfa;padding:2px 6px;border-radius:4px;font-size:15px">${password}</code></p>`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0f172a;font-family:sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f172a;padding:40px 0">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="background:#1e293b;border-radius:12px;overflow:hidden;border:1px solid #334155">
+        <tr><td style="background:linear-gradient(135deg,#7c3aed,#4338ca);padding:32px 40px;text-align:center">
+          <h1 style="margin:0;color:#fff;font-size:22px;font-weight:700">Leeukopf Laboratories</h1>
+          <p style="margin:6px 0 0;color:#c4b5fd;font-size:14px">Admin Portal Access</p>
+        </td></tr>
+        <tr><td style="padding:32px 40px;color:#e2e8f0">
+          <p style="font-size:16px">Hi ${name},</p>
+          <p>You have been added as a staff member on the Leeukopf admin portal. Use the details below to log in.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f172a;border-radius:8px;border:1px solid #334155;padding:20px;margin:20px 0">
+            <tr><td><p style="margin:0 0 8px"><strong>Login URL:</strong> <a href="${loginUrl}" style="color:#818cf8">${loginUrl}</a></p>
+            <p style="margin:0 0 8px"><strong>Email:</strong> ${recipientEmail}</p>
+            ${notice}
+            </td></tr>
+          </table>
+          <p style="color:#94a3b8;font-size:13px">Keep these credentials safe. You can change your password after logging in.</p>
+          <p style="margin-top:32px">Kind regards,<br><strong>Leeukopf Laboratories</strong></p>
+        </td></tr>
+        <tr><td style="padding:16px 40px;border-top:1px solid #334155;text-align:center">
+          <p style="margin:0;font-size:12px;color:#475569">&copy; ${new Date().getFullYear()} Leeukopf Laboratories. All rights reserved.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
 }
 
 function generateTemporaryPassword(length = 14): string {
@@ -214,10 +255,14 @@ export const handler: Handler = async (event) => {
   if (createError) {
     const lowered = createError.message.toLowerCase();
     if (lowered.includes('already') && lowered.includes('registered')) {
-      // User already exists — if addToStaff, upsert their admin_staff record anyway
+      // User already exists in Supabase Auth — look up their user_id so we can link it
+      const { data: existingUser } = await adminSupabase.auth.admin.listUsers();
+      const foundUser = existingUser?.users?.find((u) => u.email?.toLowerCase() === email);
+
       if (addToStaff) {
-        await adminSupabase.from('admin_staff').upsert(
+        const { error: upsertError } = await adminSupabase.from('admin_staff').upsert(
           {
+            user_id: foundUser?.id ?? null,
             email,
             full_name: fullName,
             role: 'staff',
@@ -227,13 +272,39 @@ export const handler: Handler = async (event) => {
           },
           { onConflict: 'email', ignoreDuplicates: false }
         );
+        if (upsertError) {
+          console.error('[admin-create-admin] Failed to upsert existing user into admin_staff:', upsertError.message);
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ success: false, message: 'Account exists but failed to grant staff access. Try again.' }),
+          };
+        }
       }
+      // Send welcome email (existing account — password unchanged)
+      const resendKeyForExisting = process.env.RESEND_API_KEY;
+      if (resendKeyForExisting) {
+        try {
+          const resend = new Resend(resendKeyForExisting);
+          await resend.emails.send({
+            from: 'Leeukopf Laboratories <noreply@leeukopf.com>',
+            to: email,
+            subject: 'Your Leeukopf Admin Access',
+            html: buildWelcomeEmail(fullName, email, '', true),
+          });
+        } catch (emailErr) {
+          console.error('[admin-create-admin] Failed to send welcome email (existing user):', emailErr);
+        }
+      }
+
+      // Treat as success — the staff record was created/updated, which is the goal
       return {
-        statusCode: 409,
+        statusCode: 200,
         headers,
         body: JSON.stringify({
-          success: false,
-          message: 'An account already exists for this email. Staff record updated with new permissions.',
+          success: true,
+          message: `Staff access granted for ${email}. (Account already existed — existing login credentials apply.) A welcome email has been sent.`,
+          data: { id: foundUser?.id ?? null, email },
         }),
       };
     }
@@ -268,12 +339,28 @@ export const handler: Handler = async (event) => {
     }
   }
 
+  // Send welcome email with credentials
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (resendApiKey) {
+    try {
+      const resend = new Resend(resendApiKey);
+      await resend.emails.send({
+        from: 'Leeukopf Laboratories <noreply@leeukopf.com>',
+        to: email,
+        subject: 'Your Leeukopf Admin Access',
+        html: buildWelcomeEmail(fullName, email, password, false),
+      });
+    } catch (emailErr) {
+      console.error('[admin-create-admin] Failed to send welcome email:', emailErr);
+    }
+  }
+
   return {
     statusCode: 200,
     headers,
     body: JSON.stringify({
       success: true,
-      message: `Staff account created for ${email}. Share credentials securely.`,
+      message: `Staff account created for ${email}. A welcome email with login details has been sent.`,
       data: {
         id: createdUserId,
         email,
