@@ -6,9 +6,10 @@ import { useAuth } from "../../contexts/AuthContext";
 
 type B2BLayoutProps = {
   children: ReactNode;
+  isAdminStaff?: boolean;
 };
 
-export default function B2BLayout({ children }: B2BLayoutProps) {
+export default function B2BLayout({ children, isAdminStaff = false }: B2BLayoutProps) {
   const { getTotals, buyerType, clearBuyerType, clearCart } = useB2BCart();
   const { signOut } = useAuth();
   const navigate = useNavigate();
@@ -50,13 +51,15 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
       });
     });
 
-  const navItems: NavEntry[] = [
-    { type: "link", label: "Dashboard", path: "/b2b" },
-    { type: "link", label: "Client Info", path: "/b2b/client-info" },
-    { type: "link", label: "My Orders", path: "/b2b/orders" },
-    ...categoryEntries,
-    { type: "link", label: "Checkout", path: "/b2b/checkout" },
-  ];
+  const navItems: NavEntry[] = isAdminStaff
+    ? categoryEntries
+    : [
+        { type: "link", label: "Dashboard", path: "/b2b" },
+        { type: "link", label: "Client Info", path: "/b2b/client-info" },
+        { type: "link", label: "My Orders", path: "/b2b/orders" },
+        ...categoryEntries,
+        { type: "link", label: "Checkout", path: "/b2b/checkout" },
+      ];
 
   return (
     <div className="min-h-screen bg-grey-offWhite">
@@ -66,6 +69,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
             <h1 className="text-2xl font-bold text-grey-primary">B2B Portal</h1>
             <p className="text-sm text-grey-secondary">{totals.totalLines} items / {totals.totalQty} total units</p>
           </div>
+          {!isAdminStaff && (
           <div className="flex items-center gap-3">
             {buyerLabel && (
               <div className="hidden items-center gap-2 sm:flex">
@@ -88,6 +92,7 @@ export default function B2BLayout({ children }: B2BLayoutProps) {
               Checkout ({totals.totalLines})
             </Link>
           </div>
+          )}
         </div>
       </header>
 
