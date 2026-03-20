@@ -122,6 +122,24 @@
   status = 200
   force = true
 
+[[redirects]]
+  from = "/api/admin-verify-admin"
+  to = "/.netlify/functions/admin-verify-admin"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-list-staff"
+  to = "/.netlify/functions/admin-list-staff"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/admin-update-staff"
+  to = "/.netlify/functions/admin-update-staff"
+  status = 200
+  force = true
+
 # Static HTML page redirects
 [[redirects]]
   from = "/thank-you-compliance-consultation"
