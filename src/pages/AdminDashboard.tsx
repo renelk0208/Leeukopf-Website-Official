@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStaff } from '../contexts/AdminStaffContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink } from 'lucide-react';
 
 interface ClientRegistrationLead {
   id: string;
@@ -1070,6 +1070,15 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
           </h1>
           <div className="flex items-center space-x-4">
             <span className="text-gray-400">{user?.email}</span>
+            <a
+              href="/b2b"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 px-4 py-2 bg-slate-800/50 text-cyan-300 rounded-lg hover:bg-slate-700/50 transition-colors border border-cyan-500/20"
+            >
+              <ExternalLink size={16} />
+              <span>View Portal</span>
+            </a>
             <button
               onClick={() => signOut()}
               className="flex items-center space-x-2 px-4 py-2 bg-slate-800/50 text-gray-300 rounded-lg hover:bg-slate-700/50 transition-colors"
