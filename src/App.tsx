@@ -90,6 +90,7 @@ const FrenchCollectionPage = lazy(() => import('./pages/products/FrenchCollectio
 const GelItUpPage = lazy(() => import('./pages/brands/GelItUpPage'));
 
 import CookieConsent from './components/CookieConsent';
+import TawkChat from './components/TawkChat';
 
 function App() {
   return (
@@ -216,6 +217,7 @@ function App() {
         </Routes>
       </Suspense>
       <CookieConsent />
+      <TawkChat />
     </>
   );
 }
