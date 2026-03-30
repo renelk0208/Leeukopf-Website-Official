@@ -26,7 +26,7 @@ const carouselImageModules = import.meta.glob<{ default: string }>(
  *       "polygel_cover_ll_color.jpg"    → "Cover II"
  */
 function extractPolygelName(filename: string): string {
-  let name = filename
+  const name = filename
     .replace(/^polygel_/i, '')                          // remove "polygel_" prefix
     .replace(/_color\.(webp|jpg|jpeg|png)$/i, '')       // remove "_color.ext"
     .replace(/\.(webp|jpg|jpeg|png)$/i, '')             // remove bare extension
@@ -129,6 +129,8 @@ export default function PolygelAcrygelPage() {
     <PageTemplate
       title="Polygel / AcryGel"
       subtitle="Lightweight, flexible hybrid gels that combine strength and control — fully HEMA-free and TPO-free."
+      seoTitle="Private Label Polygel & AcryGel Manufacturer – HEMA-Free | Leeukopf"
+      seoDescription="Manufacture your own Polygel and AcryGel products. HEMA-free, TPO-free hybrid nail extension systems. GMP-certified EU factory, strong & flexible formulas, low MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -140,7 +142,7 @@ export default function PolygelAcrygelPage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src="/img/products/builder-systems/Acrygel-Polygel/polygel_category_3.webp"
-            alt="Polygel / AcryGel"
+            alt="Private label polygel and acrygel hybrid nail extension systems – HEMA-free by Leeukopf"
             width="1200"
             height="675"
             className="category-hero"

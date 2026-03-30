@@ -27,6 +27,8 @@ export default function TopCoatsPage() {
     <PageTemplate
       title="Top Coats"
       subtitle="Smooth, durable finishes that protect colour — all HEMA-free and TPO-free."
+      seoTitle="Private Label Top Coat Manufacturer – Gloss, Matte & Effects | Leeukopf"
+      seoDescription="Private label top coat manufacturer: standard gloss, matte and effect top coats. HEMA-free, TPO-free. GMP-certified EU production, full CPNP documentation, low MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },

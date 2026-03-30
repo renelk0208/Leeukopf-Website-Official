@@ -52,6 +52,8 @@ export default function BiabBuilderInABottlePage() {
     <PageTemplate
       title="BIAB (Builder in a Bottle)"
       subtitle="Convenient brush-on building system for quick overlays and natural nail reinforcement — HEMA-free and TPO-free."
+      seoTitle="Private Label BIAB Builder in a Bottle – HEMA-Free | Leeukopf"
+      seoDescription="Manufacture your own BIAB (Builder in a Bottle) gel. Brush-on, HEMA-free, TPO-free formula ideal for natural nail overlays. GMP EU factory, flexible MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -64,7 +66,7 @@ export default function BiabBuilderInABottlePage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src="/img/products/builder-systems/BIAB builder-in-a-bottle/brush-on-builder-category-hero-image.webp"
-            alt="BIAB Builder in a Bottle"
+            alt="BIAB builder in a bottle – brush-on HEMA-free nail overlay system by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"

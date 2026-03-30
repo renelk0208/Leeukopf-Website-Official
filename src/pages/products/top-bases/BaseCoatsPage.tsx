@@ -40,6 +40,8 @@ export default function BaseCoatsPage() {
     <PageTemplate
       title="Base Coats"
       subtitle="Reliable adhesion and a smooth foundation, all HEMA-free and TPO-free."
+      seoTitle="Private Label Base Coat Manufacturer – Rubber Base & Classic | Leeukopf"
+      seoDescription="Manufacture your own base coats: classic, rubber base, superior 5-in-1, effects and no heat spike variants. HEMA-free, TPO-free. GMP-certified EU factory, low MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },

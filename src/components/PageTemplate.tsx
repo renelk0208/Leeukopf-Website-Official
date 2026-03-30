@@ -5,6 +5,7 @@ import Navigation from './Navigation';
 import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
 import BackButton from './BackButton';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 interface BreadcrumbItem {
   label: string;
@@ -21,6 +22,14 @@ interface PageTemplateProps {
   ctaLink?: string;
   ctaAction?: () => void;
   heroImage?: string;
+  /** SEO-specific page title (defaults to the visible title). */
+  seoTitle?: string;
+  /** Meta description for search engines. */
+  seoDescription?: string;
+  /** Canonical URL override (defaults to current pathname). */
+  seoCanonical?: string;
+  /** OG image override. */
+  seoOgImage?: string;
 }
 
 export default function PageTemplate({
@@ -32,8 +41,18 @@ export default function PageTemplate({
   ctaText,
   ctaLink,
   ctaAction,
-  heroImage
+  heroImage,
+  seoTitle,
+  seoDescription,
+  seoCanonical,
+  seoOgImage,
 }: PageTemplateProps) {
+  usePageMeta({
+    title: seoTitle ?? title,
+    description: seoDescription ?? subtitle,
+    canonical: seoCanonical,
+    ogImage: seoOgImage,
+  });
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Use default CTA text

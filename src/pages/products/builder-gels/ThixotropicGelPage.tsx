@@ -23,6 +23,8 @@ export default function ThixotropicGelPage() {
     <PageTemplate
       title="Thixotropic Gel"
       subtitle="Advanced thixotropic formula for maximum control and effortless application — HEMA-free and TPO-free."
+      seoTitle="Private Label Thixotropic Builder Gel – HEMA-Free | Leeukopf"
+      seoDescription="Private label thixotropic builder gel: self-levelling, no-sag formula for precision nail work. HEMA-free, TPO-free. GMP-certified EU manufacturer, flexible MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -35,7 +37,7 @@ export default function ThixotropicGelPage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src="/img/products/builder-systems/thixotropic-gel/thixotropic-gl-hero-category-image.webp"
-            alt="Thixotropic Gel"
+            alt="Thixotropic builder gel – self-levelling, no-sag HEMA-free formula by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"

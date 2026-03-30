@@ -18,6 +18,7 @@ const pages = [
   { url: '/contact', priority: '0.9', changefreq: 'monthly' },
   { url: '/products', priority: '0.9', changefreq: 'weekly' },
   { url: '/certificates-and-compliance', priority: '0.8', changefreq: 'monthly' },
+  { url: '/cpnp-compliance-support', priority: '0.8', changefreq: 'monthly' },
   { url: '/distributors-wanted', priority: '0.8', changefreq: 'monthly' },
   { url: '/client-registration', priority: '0.8', changefreq: 'monthly' },
   { url: '/season-trends', priority: '0.7', changefreq: 'weekly' },
@@ -27,6 +28,7 @@ const pages = [
   
   // Product categories
   { url: '/products/gel-polish', priority: '0.9', changefreq: 'weekly' },
+  { url: '/products/gel-polish/cat-eye-gel-polish', priority: '0.8', changefreq: 'monthly' },
   { url: '/products/builder-and-structure-gels', priority: '0.9', changefreq: 'weekly' },
   { url: '/products/top-and-bases', priority: '0.9', changefreq: 'weekly' },
   { url: '/products/polygel-acrygel', priority: '0.8', changefreq: 'weekly' },
@@ -43,6 +45,7 @@ const pages = [
   { url: '/products/builder-and-structure-gels/premium-fiber-glass', priority: '0.7', changefreq: 'monthly' },
   { url: '/products/builder-and-structure-gels/no-heat-spike-builder-gel', priority: '0.7', changefreq: 'monthly' },
   { url: '/products/builder-and-structure-gels/biab-builder-in-a-bottle', priority: '0.7', changefreq: 'monthly' },
+  { url: '/products/builder-and-structure-gels/thixotropic-gel', priority: '0.7', changefreq: 'monthly' },
   
   // Top & Bases Subcategories
   { url: '/products/top-and-bases/top-coats', priority: '0.7', changefreq: 'monthly' },
@@ -51,6 +54,7 @@ const pages = [
   { url: '/products/top-and-bases/base-coats', priority: '0.7', changefreq: 'monthly' },
   { url: '/products/top-and-bases/base-coats/classic', priority: '0.6', changefreq: 'monthly' },
   { url: '/products/top-and-bases/base-coats/rubber-base', priority: '0.6', changefreq: 'monthly' },
+  { url: '/products/top-and-bases/base-coats/rubber-base/effects', priority: '0.6', changefreq: 'monthly' },
   { url: '/products/top-and-bases/base-coats/superior-base-5-in-1', priority: '0.6', changefreq: 'monthly' },
   { url: '/products/top-and-bases/brush-on-builder', priority: '0.7', changefreq: 'monthly' },
   
