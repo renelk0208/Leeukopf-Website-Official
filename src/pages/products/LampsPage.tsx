@@ -7,6 +7,8 @@ export default function LampsPage() {
     <PageTemplate
       title="UV & LED Lamps"
       subtitle="Professional curing lamps for efficient, reliable gel polymerization."
+      seoTitle="Private Label UV & LED Nail Lamp Manufacturer | Leeukopf"
+      seoDescription="Source professional UV and LED gel curing lamps under your own brand. GMP-certified EU manufacturer. Comfort Plus L3 and Quick Cure G1 models available. Low MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },

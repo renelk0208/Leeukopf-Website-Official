@@ -69,6 +69,8 @@ export default function BuilderAndStructureGelsPage() {
     <PageTemplate
       title="Builder & Structure Gels"
       subtitle="Strengthening systems made for shaping, extending and reinforcing natural nails, formulated without HEMA or TPO."
+      seoTitle="Private Label Builder Gel Manufacturer – HEMA & TPO-Free | Leeukopf"
+      seoDescription="Manufacturer of BIAB, 3-phase, fiberglass & thixotropic builder gels. Private label, GMP-certified, EU production. HEMA-free and TPO-free formulas with flexible MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -80,7 +82,7 @@ export default function BuilderAndStructureGelsPage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src={categoryHero['builder-gels']}
-            alt="Builder & Structure Gels"
+            alt="Private label builder gel and structure gel systems – HEMA-free and TPO-free by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"

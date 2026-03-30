@@ -35,7 +35,7 @@ export default function ThreePhasePage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src="/img/products/builder-systems/3-phase-builder-gel/3-phase-builder-gel-category-hero-image.webp"
-            alt="3-Phase Builder Gels"
+            alt="3-phase builder gel system – HEMA-free controlled strength for nail extensions by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"

@@ -53,6 +53,9 @@ const AccessoriesPage = lazy(() => import('./pages/products/AccessoriesPage'));
 const JarsAndTubesPage = lazy(() => import('./pages/products/JarsAndTubesPage'));
 const CategoryGridTestPage = lazy(() => import('./pages/products/CategoryGridTestPage'));
 
+// Gel Polish Subcategories
+const CatEyeGelPolishPage = lazy(() => import('./pages/products/gel-polish/CatEyeGelPolishPage'));
+
 // Builder Gels Subcategories
 const ThreePhasePage = lazy(() => import('./pages/products/builder-gels/ThreePhasePage'));
 const ThreeInOnePage = lazy(() => import('./pages/products/builder-gels/ThreeInOnePage'));
@@ -155,6 +158,7 @@ function App() {
           {/* Products */}
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/gel-polish" element={<GelPolishPage />} />
+          <Route path="/products/gel-polish/cat-eye-gel-polish" element={<CatEyeGelPolishPage />} />
           <Route path="/products/category-grid-test" element={<CategoryGridTestPage />} />
           <Route path="/catalog-test" element={<CatalogTest />} />
           <Route path="/cart-test" element={<CartTest />} />

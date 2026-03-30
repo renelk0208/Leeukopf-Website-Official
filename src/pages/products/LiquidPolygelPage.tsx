@@ -54,6 +54,8 @@ export default function LiquidPolygelPage() {
     <PageTemplate
       title="Liquid Polygel"
       subtitle="Revolutionary liquid formula for effortless application and superior control — fully HEMA-free and TPO-free."
+      seoTitle="Private Label Liquid Polygel Manufacturer – HEMA-Free | Leeukopf"
+      seoDescription="Manufacture your own liquid polygel nail extension system. Brush-on, HEMA-free, TPO-free formula with extended working time. GMP-certified EU production, low MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -66,7 +68,7 @@ export default function LiquidPolygelPage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src={categoryHero['liquid-polygel']}
-            alt="Liquid Polygel"
+            alt="Private label liquid polygel – brush-on HEMA-free nail extension system by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"

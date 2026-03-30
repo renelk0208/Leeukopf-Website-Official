@@ -53,6 +53,8 @@ export default function LiquidsAndSolutionsPage() {
     <PageTemplate
       title="Liquids & Solutions"
       subtitle="Professional prep and cleanse solutions for complete gel nail systems."
+      seoTitle="Private Label Nail Liquids & Solutions Manufacturer | Leeukopf"
+      seoDescription="Private label nail prep, cleanser and remover liquids for gel systems. GMP-certified EU manufacturer, documented batch consistency, full CPNP regulatory support."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },

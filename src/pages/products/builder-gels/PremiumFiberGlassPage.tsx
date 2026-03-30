@@ -20,6 +20,8 @@ export default function PremiumFiberGlassPage() {
     <PageTemplate
       title="Premium Fibreglass Gel"
       subtitle="Professional Technical Specifications"
+      seoTitle="Private Label Fiberglass Builder Gel Manufacturer – HEMA-Free | Leeukopf"
+      seoDescription="Fiberglass-reinforced builder gel for private label. Ultra-strong, HEMA-free and TPO-free formula for nail extensions. GMP-certified EU manufacturer, low MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -32,7 +34,7 @@ export default function PremiumFiberGlassPage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src="/img/products/builder-systems/Premium Builder Gels/premium-builder-gel-hero-category-image.webp"
-            alt="Premium Fibreglass Gel"
+            alt="Private label fiberglass builder gel – ultra-strong, HEMA-free nail extension gel by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"

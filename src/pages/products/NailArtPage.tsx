@@ -18,6 +18,8 @@ export default function NailArtPage() {
     <PageTemplate
       title="Nail Art"
       subtitle="Speciality products for creative nail art and advanced services."
+      seoTitle="Private Label Nail Art Products Manufacturer – Cat Eye, Glitter & Effects | Leeukopf"
+      seoDescription="Private label nail art products: cat eye gels, chrome powders, glitters and effect gels. GMP-certified EU manufacturer, HEMA-free formulas, flexible MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -29,7 +31,7 @@ export default function NailArtPage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src={categoryHero['nail-art']}
-            alt="Nail Art Products"
+            alt="Private label nail art products – cat eye, glitter, and effect gels by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"

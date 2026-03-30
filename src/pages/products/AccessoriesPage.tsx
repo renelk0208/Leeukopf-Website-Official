@@ -6,6 +6,8 @@ export default function AccessoriesPage() {
     <PageTemplate
       title="Accessories"
       subtitle="Essential accessories to complete your professional nail setup."
+      seoTitle="Private Label Nail Accessories Manufacturer | Leeukopf"
+      seoDescription="Source private label nail accessories and tools under your own brand. GMP-certified EU manufacturer supplying brushes, prep tools and professional nail care accessories."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },

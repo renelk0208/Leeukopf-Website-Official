@@ -33,7 +33,7 @@ export default function ThreeInOnePage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src="/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gel-main-category-image.webp"
-            alt="3-in-1 Builder Gels"
+            alt="3-in-1 builder gel – all-in-one build, shape and finish HEMA-free formula by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"

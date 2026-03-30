@@ -39,6 +39,8 @@ export default function GelPolishPage() {
       <PageTemplate
         title="Gel Polish Collection"
         subtitle="Professional gel polish systems with exceptional shine, durability, and color payoff. Perfect for salon and home use."
+        seoTitle="Private Label Gel Polish Manufacturer – 2000+ Colors | Leeukopf"
+        seoDescription="Private label gel polish manufacturer in Bulgaria (EU). 2000+ colors, HEMA-free & TPO-free formulas, GMP-compliant. Cat eye, builder, base & top coat systems."
         breadcrumbs={[
           { label: 'Home', path: '/' },
           { label: 'Our Products', path: '/products' },
@@ -50,7 +52,7 @@ export default function GelPolishPage() {
           <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
             <img
               src={categoryHero['gel-polish']}
-              alt="Professional Gel Polish Collection"
+              alt="Private label gel polish collection – 2000+ HEMA-free colors by Leeukopf Laboratories"
               width="1600"
               height="400"
               className="category-hero"

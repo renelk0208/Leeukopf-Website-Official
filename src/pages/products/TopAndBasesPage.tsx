@@ -24,6 +24,8 @@ export default function TopAndBasesPage() {
     <PageTemplate
       title="Top & Bases"
       subtitle="Essential prep and finishing formulas that enhance durability and wear, all safely HEMA-free and TPO-free."
+      seoTitle="Private Label Top Coat & Base Coat Manufacturer – HEMA-Free | Leeukopf"
+      seoDescription="Manufacture your own HEMA-free, TPO-free top coats and base coats under your brand. GMP-certified EU facility, rubber base, superior base, effects top coats. Low MOQ."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'Our Products', path: '/products' },
@@ -35,7 +37,7 @@ export default function TopAndBasesPage() {
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
             src="/img/products/tops-and-bases/tops/tops-bases_category_1.jpg"
-            alt="Top & Bases"
+            alt="Private label top coat and base coat systems – HEMA-free and TPO-free by Leeukopf"
             width="1600"
             height="400"
             className="category-hero"
