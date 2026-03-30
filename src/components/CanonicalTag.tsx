@@ -1,39 +1,74 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { seoRoutes, DEFAULT_SEO, BASE_URL } from '../config/seoRoutes';
 
 /**
- * Component to dynamically add canonical tags to pages
- * This helps prevent duplicate content issues
+ * Injects route-specific SEO meta tags on every navigation.
+ *
+ * Updates:
+ *  - document.title
+ *  - <meta name="description">
+ *  - <meta name="title">
+ *  - <link rel="canonical">
+ *  - Open Graph: og:url, og:title, og:description, og:image
+ *  - Twitter: twitter:url, twitter:title, twitter:description, twitter:image
+ *
+ * Falls back to DEFAULT_SEO when no entry exists for the current pathname.
  */
 export default function CanonicalTag() {
   const location = useLocation();
 
   useEffect(() => {
-    const baseUrl = 'https://www.leeukopf.com';
-    const canonicalUrl = `${baseUrl}${location.pathname}`;
+    const seo = seoRoutes[location.pathname] ?? DEFAULT_SEO;
+    const canonicalUrl = `${BASE_URL}${seo.canonical ?? location.pathname}`;
+    const ogImage = seo.ogImage ? `${BASE_URL}${seo.ogImage}` : undefined;
 
-    // Remove existing canonical tag if it exists
-    const existingCanonical = document.querySelector('link[rel="canonical"]');
-    if (existingCanonical) {
-      existingCanonical.setAttribute('href', canonicalUrl);
-    } else {
-      // Create new canonical tag if it doesn't exist
-      const link = document.createElement('link');
-      link.setAttribute('rel', 'canonical');
-      link.setAttribute('href', canonicalUrl);
-      document.head.appendChild(link);
+    // Title
+    document.title = seo.title;
+
+    // Helper: get-or-create a <meta> element by attribute selector
+    function setMeta(selector: string, attr: string, value: string) {
+      let el = document.querySelector<HTMLMetaElement>(selector);
+      if (!el) {
+        el = document.createElement('meta');
+        const [attrName, attrValue] = selector
+          .replace(/^\[|\]$/g, '')
+          .split('=')
+          .map((s) => s.replace(/"/g, ''));
+        el.setAttribute(attrName, attrValue);
+        document.head.appendChild(el);
+      }
+      el.setAttribute(attr, value);
     }
 
-    // Update Open Graph URL
-    const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) {
-      ogUrl.setAttribute('content', canonicalUrl);
+    // Standard meta
+    setMeta('meta[name="title"]', 'content', seo.title);
+    setMeta('meta[name="description"]', 'content', seo.description);
+
+    // Canonical
+    let canonicalEl = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonicalEl) {
+      canonicalEl = document.createElement('link');
+      canonicalEl.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalEl);
+    }
+    canonicalEl.setAttribute('href', canonicalUrl);
+
+    // Open Graph
+    setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+    setMeta('meta[property="og:title"]', 'content', seo.title);
+    setMeta('meta[property="og:description"]', 'content', seo.description);
+    if (ogImage) {
+      setMeta('meta[property="og:image"]', 'content', ogImage);
+      setMeta('meta[property="og:image:secure_url"]', 'content', ogImage);
     }
 
-    // Update Twitter URL
-    const twitterUrl = document.querySelector('meta[property="twitter:url"]');
-    if (twitterUrl) {
-      twitterUrl.setAttribute('content', canonicalUrl);
+    // Twitter
+    setMeta('meta[property="twitter:url"]', 'content', canonicalUrl);
+    setMeta('meta[property="twitter:title"]', 'content', seo.title);
+    setMeta('meta[property="twitter:description"]', 'content', seo.description);
+    if (ogImage) {
+      setMeta('meta[property="twitter:image"]', 'content', ogImage);
     }
   }, [location]);
 
