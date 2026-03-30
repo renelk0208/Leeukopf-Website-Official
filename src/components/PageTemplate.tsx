@@ -91,7 +91,7 @@ export default function PageTemplate({
             {/* Hero image using img tag for better LCP optimization - no blur or heavy overlays */}
             <img
               src={encodedHeroImage}
-              alt=""
+              alt={title}
               width={2000}
               height={848}
               className="absolute inset-0 w-full h-full object-cover object-center z-0"
