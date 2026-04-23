@@ -211,7 +211,7 @@ export const productCategories: ProductCategory[] = [
     id: 'jars-and-tubes',
     key: 'jars-and-tubes',
     displayName: 'Jars & Tubes',
-    imagePath: '/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg',
+    imagePath: '/img/private-label/Jars/website_leeukopf_acrylic_jar_1.jpg',
     group: 'Packaging',
   },
 ];

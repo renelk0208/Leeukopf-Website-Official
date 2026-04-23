@@ -26,7 +26,7 @@ const carouselImageModules = import.meta.glob<{ default: string }>(
  *       "polygel_cover_ll_color.jpg"    → "Cover II"
  */
 function extractPolygelName(filename: string): string {
-  let name = filename
+  const name = filename
     .replace(/^polygel_/i, '')                          // remove "polygel_" prefix
     .replace(/_color\.(webp|jpg|jpeg|png)$/i, '')       // remove "_color.ext"
     .replace(/\.(webp|jpg|jpeg|png)$/i, '')             // remove bare extension
