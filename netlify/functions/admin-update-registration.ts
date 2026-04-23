@@ -78,7 +78,17 @@ export const handler: Handler = async (event) => {
     .split(',').map((e) => e.trim().toLowerCase()).filter(Boolean);
 
   if (approvedAdminList.length > 0 && !approvedAdminList.includes(requesterEmail)) {
-    return { statusCode: 403, headers, body: JSON.stringify({ success: false, message: 'Forbidden.' }) };
+    // Not an owner — check admin_staff table for approve_registrations permission
+    const { data: staffRow } = await adminSupabase
+      .from('admin_staff')
+      .select('permissions, is_active')
+      .eq('email', requesterEmail)
+      .maybeSingle();
+
+    const staffPermissions = staffRow?.permissions as Record<string, boolean> | null;
+    if (!staffRow?.is_active || !staffPermissions?.approve_registrations) {
+      return { statusCode: 403, headers, body: JSON.stringify({ success: false, message: 'Forbidden.' }) };
+    }
   }
 
   let body: Record<string, unknown>;
