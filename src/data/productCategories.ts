@@ -50,7 +50,7 @@ export const productCategories: ProductCategory[] = [
     id: 'glitters-collection',
     key: 'glitters-collection',
     displayName: 'Glitters Collection',
-    imagePath: '/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp',
+    imagePath: '/img/products/gel_polishes/Glitters Collection/glitter-images.jpg',
     group: 'Gel Polish',
   },
   {
@@ -211,7 +211,7 @@ export const productCategories: ProductCategory[] = [
     id: 'jars-and-tubes',
     key: 'jars-and-tubes',
     displayName: 'Jars & Tubes',
-    imagePath: '/img/products/jars-and-tubes/website_leeukopf_acrylic_jar_1.jpg',
+    imagePath: '/img/placeholders/category-placeholder.jpg',
     group: 'Packaging',
   },
 ];
