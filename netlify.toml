@@ -37,9 +37,6 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-[[context.deploy-preview.plugins]]
-  package = "@netlify/plugin-lighthouse"
-
 # Explicit redirects for API endpoints to Netlify Functions
 # These MUST come before the SPA wildcard redirect
 [[redirects]]
