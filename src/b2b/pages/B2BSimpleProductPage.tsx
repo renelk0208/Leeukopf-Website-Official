@@ -167,7 +167,7 @@ export default function B2BSimpleProductPage({
         imageSrc: image,
         imageAlt: product.product_name || product.code || csvCategory,
         isSelected: (existingQtyByCode[product.code] ?? 0) > 0,
-        isMissingImage: image === fallbackProductImage,
+        isMissingImage: false,
         onImageError: (event) => {
           const target = event.currentTarget;
           const currentAttempt = imageAttemptByCode[product.code] ?? 0;
