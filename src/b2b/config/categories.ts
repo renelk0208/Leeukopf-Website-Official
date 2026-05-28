@@ -96,8 +96,7 @@ export const b2bCategories: B2BCategoryConfig[] = [
     imageSrc: "/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp",
     imageAlt: "Liquids and solutions",
     navChildren: [
-      { label: "Cleansers", routePath: "/b2b/liquids/cleansers", imageSrc: "/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp", imageAlt: "Cleansers" },
-      { label: "Removers", routePath: "/b2b/liquids/removers", imageSrc: "/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp", imageAlt: "Removers" },
+      { label: "Liquids & Solutions", routePath: "/b2b/liquids", imageSrc: "/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp", imageAlt: "Liquids & Solutions" },
     ],
   },
   {
@@ -119,11 +118,10 @@ export const b2bCategories: B2BCategoryConfig[] = [
     routePath: "/b2b/accessories",
     defaultUnitType: "PCS",
     enabled: true,
-    imageSrc: "/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp",
+    imageSrc: "/img/products/Lamps/lamps_category_card-1.jpg",
     imageAlt: "Accessories",
     navChildren: [
-      { label: "Brushes", routePath: "/b2b/accessories/brushes", imageSrc: "/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp", imageAlt: "Brushes" },
-      { label: "Tools", routePath: "/b2b/accessories/tools", imageSrc: "/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp", imageAlt: "Tools" },
+      { label: "Tools", routePath: "/b2b/accessories/tools", imageSrc: "/img/products/Lamps/lamps_category_card-1.jpg", imageAlt: "Tools" },
     ],
   },
   {
