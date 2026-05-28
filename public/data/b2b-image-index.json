@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-05-28T11:46:55.196Z",
-  "keys": 3182,
-  "totalImages": 5060,
+  "generatedAt": "2026-05-28T12:50:46.722Z",
+  "keys": 3177,
+  "totalImages": 5055,
   "byCode": {
     "LCCOVRBCLEAR": [
       "/img/b2b/bases/Cover rubber base/LC-COVRB-Clear.webp"
@@ -10076,21 +10076,6 @@
     ],
     "LCUG3IN131": [
       "/img/builder-gels/3-in-1-builder/Camouflage-builder-gel/LC_UG-3-in-1_31.webp"
-    ],
-    "FLAKESGEL1": [
-      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-1.jpg"
-    ],
-    "FLAKESGEL2": [
-      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-2.jpg"
-    ],
-    "FLAKESGEL3": [
-      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-3.jpg"
-    ],
-    "FLAKESGEL4": [
-      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-4.jpg"
-    ],
-    "FLAKESGEL5": [
-      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-5.jpg"
     ],
     "LCUGF3IN101": [
       "/img/builder-gels/3-in-1-builder/forming-builder-gel/LC_UGF-3-in-1_01.webp"
