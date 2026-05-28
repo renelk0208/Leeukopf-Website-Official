@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-23T09:53:25.640Z",
-  "keys": 3170,
-  "totalImages": 5048,
+  "generatedAt": "2026-05-28T08:44:39.937Z",
+  "keys": 3182,
+  "totalImages": 5060,
   "byCode": {
     "5DDFCATEYE101": [
       "/img/b2b/Cat Eyes/5D_DF-CATEYE1_01.jpg"
@@ -10023,6 +10023,21 @@
     "LCUG3IN131": [
       "/img/builder-gels/3-in-1-builder/Camouflage-builder-gel/LC_UG-3-in-1_31.webp"
     ],
+    "FLAKESGEL1": [
+      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-1.jpg"
+    ],
+    "FLAKESGEL2": [
+      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-2.jpg"
+    ],
+    "FLAKESGEL3": [
+      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-3.jpg"
+    ],
+    "FLAKESGEL4": [
+      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-4.jpg"
+    ],
+    "FLAKESGEL5": [
+      "/img/builder-gels/3-in-1-builder/Flakes Gel/flakes-gel-5.jpg"
+    ],
     "LCYG2BRIDBG01": [
       "/img/builder-gels/3-in-1-builder/bridal-builder-gel/LC_YG2-BRIDBG-01.webp"
     ],
@@ -10755,6 +10770,9 @@
     "3IN1BUILDERGELSUGS": [
       "/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gels-UGS.jpg"
     ],
+    "POLEDIMENSIONS": [
+      "/img/products/builder-systems/3-in-1 Builder gel/Pole Dimensions.png"
+    ],
     "3PHASEBUILDERGELUGN": [
       "/img/products/builder-systems/3-phase-builder-gel/3-phase-builder-gel-UGN.jpg"
     ],
@@ -10984,6 +11002,9 @@
     ],
     "GLITTERIMAGES6": [
       "/img/products/gel_polishes/Glitters Collection/glitter-images6.jpg"
+    ],
+    "GLITTERSIMAGECATEGORYCARD": [
+      "/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp"
     ],
     "GLOWINTHEDARKGELPOLISHCATEGORYCARDIMAGE": [
       "/img/products/gel_polishes/Glow In the Dark/glow-in-the-dark-gel-polish-category-card-image.png"
@@ -11242,6 +11263,21 @@
     ],
     "NAILARTIMAGES8": [
       "/img/products/nail-art/Nail Art/nail-art-images (8).jpg"
+    ],
+    "SOLIDCREAM1": [
+      "/img/products/nail-art/Nail Art/solid-cream-palettes/solid-cream1.jpg"
+    ],
+    "SOLIDCREAM2": [
+      "/img/products/nail-art/Nail Art/solid-cream-palettes/solid-cream2.jpg"
+    ],
+    "SOLIDCREAM3": [
+      "/img/products/nail-art/Nail Art/solid-cream-palettes/solid-cream3.jpg"
+    ],
+    "SOLIDCREAM4": [
+      "/img/products/nail-art/Nail Art/solid-cream-palettes/solid-cream4.jpg"
+    ],
+    "SOLIDCREAM5": [
+      "/img/products/nail-art/Nail Art/solid-cream-palettes/solid-cream5.jpg"
     ],
     "BASECOATCATEGORYCARDIMAGE": [
       "/img/products/tops-and-bases/base-coat-category-card-image.png",
