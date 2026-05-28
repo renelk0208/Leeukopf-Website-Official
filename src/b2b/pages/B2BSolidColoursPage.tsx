@@ -23,6 +23,7 @@ const routeKeywords: Record<string, string[]> = {
   "cat-eye": ["cat eye", "cat-eye", "cateye"],
   "french-collection": ["french"],
   glitters: ["glitter"],
+  metallics: ["metallic"],
   platinum: ["platinum"],
   "cream-collection": ["cream"],
 };

@@ -32,6 +32,7 @@ const B2BSolidColoursPage = lazy(() => import("./b2b/pages/B2BSolidColoursPage")
 const B2BBuilderGelsPortalPage = lazy(() => import("./b2b/pages/B2BBuilderGelsPage"));
 const B2BPolygelsPage = lazy(() => import("./b2b/pages/B2BPolygelsPage"));
 const B2BExtraStrengthBasesPage = lazy(() => import("./b2b/pages/B2BExtraStrengthBasesPage"));
+const B2BSimpleProductPage = lazy(() => import("./b2b/pages/B2BSimpleProductPage"));
 const B2BCheckoutPage = lazy(() => import("./b2b/pages/B2BCheckoutPage"));
 const B2BOrdersPage = lazy(() => import("./b2b/pages/B2BOrdersPage"));
 const LegacyB2BSolidColoursPage = lazy(() => import("./b2b/pages/LegacyB2BSolidColoursPage"));
@@ -127,6 +128,9 @@ function App() {
             <Route path="builder-gels/*" element={<B2BBuilderGelsPortalPage />} />
             <Route path="polygels/*" element={<B2BPolygelsPage />} />
             <Route path="extra-strength-bases/*" element={<B2BExtraStrengthBasesPage />} />
+            <Route path="liquids/*" element={<B2BSimpleProductPage csvCategory="Liquids" b2bCategory="LIQUID" pageTitle="Liquids & Solutions" />} />
+            <Route path="nail-art/*" element={<B2BSimpleProductPage csvCategory="Nail Art" b2bCategory="NAIL_ART" pageTitle="Nail Art" />} />
+            <Route path="accessories/*" element={<B2BSimpleProductPage csvCategory="Accessories" b2bCategory="ACCESSORY" pageTitle="Accessories" />} />
             <Route path="checkout" element={<B2BCheckoutPage />} />
             <Route path="orders" element={<B2BOrdersPage />} />
           </Route>

@@ -5,6 +5,9 @@ export type B2BCategory =
   | "BIAB"
   | "TOP"
   | "BASE"
+  | "LIQUID"
+  | "ACCESSORY"
+  | "NAIL_ART"
   | "OTHER";
 
 export type BuyerType = "finished_goods" | "bulk";
