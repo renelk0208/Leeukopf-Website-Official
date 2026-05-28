@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { b2bCategories } from "../config/categories";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useB2BCart } from "../store/B2BCartContext";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -13,8 +12,11 @@ export default function B2BLayout({ children, isAdminStaff = false }: B2BLayoutP
   const { getTotals, buyerType, clearBuyerType, clearCart } = useB2BCart();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const totals = getTotals();
   const [showChangeBuyerModal, setShowChangeBuyerModal] = useState(false);
+
+  const isDashboard = location.pathname === "/b2b" || location.pathname === "/b2b/";
 
   const handleLogout = async () => {
     clearCart();
@@ -25,53 +27,18 @@ export default function B2BLayout({ children, isAdminStaff = false }: B2BLayoutP
 
   const buyerLabel = buyerType === "finished_goods" ? "Finished Goods" : buyerType === "bulk" ? "Bulk" : null;
 
-  type NavEntry = { type: "link"; label: string; path: string; isSubcategory?: boolean };
-
-  // Build category nav entries preserving the order defined in b2bCategories
-  const categoryEntries: NavEntry[] = [];
-
-  b2bCategories
-    .filter((category) => category.enabled)
-    .forEach((category) => {
-      if (category.navChildren?.length) {
-        category.navChildren.forEach((child) => {
-          categoryEntries.push({
-            type: "link",
-            label: child.label,
-            path: child.routePath,
-            isSubcategory: true,
-          });
-        });
-        return;
-      }
-      categoryEntries.push({
-        type: "link",
-        label: category.label,
-        path: category.routePath,
-      });
-    });
-
-  const navItems: NavEntry[] = isAdminStaff
-    ? categoryEntries
-    : [
-        { type: "link", label: "Dashboard", path: "/b2b" },
-        { type: "link", label: "Client Info", path: "/b2b/client-info" },
-        { type: "link", label: "My Orders", path: "/b2b/orders" },
-        ...categoryEntries,
-        { type: "link", label: "Checkout", path: "/b2b/checkout" },
-      ];
-
   return (
     <div className="min-h-screen bg-grey-offWhite">
       <header className="sticky top-0 z-30 border-b border-grey-card bg-white/95 backdrop-blur-sm">
         <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div>
-            <h1 className="text-2xl font-bold text-grey-primary">B2B Portal</h1>
+            <Link to="/b2b" className="hover:opacity-75 transition-opacity">
+              <h1 className="text-2xl font-bold text-grey-primary">B2B Portal</h1>
+            </Link>
             <p className="text-sm text-grey-secondary">{totals.totalLines} items / {totals.totalQty} total units</p>
           </div>
-          {!isAdminStaff && (
           <div className="flex items-center gap-3">
-            {buyerLabel && (
+            {!isAdminStaff && buyerLabel && (
               <div className="hidden items-center gap-2 sm:flex">
                 <span className="rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700">
                   {buyerLabel}
@@ -85,14 +52,22 @@ export default function B2BLayout({ children, isAdminStaff = false }: B2BLayoutP
                 </button>
               </div>
             )}
-            <Link
-              to="/b2b/checkout"
-              className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-600"
+            {!isAdminStaff && (
+              <Link
+                to="/b2b/checkout"
+                className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-600"
+              >
+                Checkout ({totals.totalLines})
+              </Link>
+            )}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="hidden sm:inline-flex items-center rounded-md border border-grey-card px-3 py-2 text-sm font-medium text-grey-secondary hover:bg-red-50 hover:text-red-600 transition-colors"
             >
-              Checkout ({totals.totalLines})
-            </Link>
+              Log out
+            </button>
           </div>
-          )}
         </div>
       </header>
 
@@ -138,40 +113,17 @@ export default function B2BLayout({ children, isAdminStaff = false }: B2BLayoutP
         </div>
       )}
 
-      <div className="mx-auto grid w-full max-w-screen-2xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="h-fit rounded-xl border border-grey-card bg-white p-3 lg:sticky lg:top-24">
-          <nav className="space-y-1" aria-label="B2B portal navigation">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                end={item.path === "/b2b"}
-                className={({ isActive }) =>
-                  `flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    item.isSubcategory ? "ml-3" : ""
-                  } ${isActive ? "bg-primary text-white" : "text-grey-primary hover:bg-primary-50"}`
-                }
-              >
-                  <span>{item.label}</span>
-                  {item.path === "/b2b/checkout" && totals.totalLines > 0 ? (
-                    <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-white">
-                      {totals.totalLines}
-                    </span>
-                  ) : null}
-                </NavLink>
-            ))}
-            <div className="mt-2 border-t border-grey-card pt-2">
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex w-full items-center rounded-md px-3 py-2 text-sm font-medium text-grey-secondary hover:bg-red-50 hover:text-red-600 transition-colors"
-              >
-                Log out
-              </button>
-            </div>
-          </nav>
-        </aside>
-
+      <div className="mx-auto w-full max-w-screen-2xl px-4 py-6 sm:px-6">
+        {!isDashboard && (
+          <div className="mb-4">
+            <Link
+              to="/b2b"
+              className="inline-flex items-center gap-1.5 rounded-md border border-grey-card bg-white px-3 py-1.5 text-sm font-medium text-grey-secondary hover:border-primary-300 hover:text-primary transition-colors"
+            >
+              ← All Categories
+            </Link>
+          </div>
+        )}
         <main className="rounded-xl border border-grey-card bg-white p-4 sm:p-6">{children}</main>
       </div>
     </div>
