@@ -106,11 +106,11 @@ export const b2bCategories: B2BCategoryConfig[] = [
     routePath: "/b2b/nail-art",
     defaultUnitType: "PCS",
     enabled: true,
-    imageSrc: "/img/products/nail-art/nail-art-category-card-imge.png",
+    imageSrc: "/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp",
     imageAlt: "Nail art",
     navChildren: [
-      { label: "Glitters", routePath: "/b2b/nail-art/glitters", imageSrc: "/img/products/nail-art/nail-art-category-card-imge.png", imageAlt: "Glitters" },
-      { label: "Pigments", routePath: "/b2b/nail-art/pigments", imageSrc: "/img/products/nail-art/nail-art-category-card-imge.png", imageAlt: "Pigments" },
+      { label: "Glitters", routePath: "/b2b/nail-art/glitters", imageSrc: "/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp", imageAlt: "Glitters" },
+      { label: "Pigments", routePath: "/b2b/nail-art/pigments", imageSrc: "/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp", imageAlt: "Pigments" },
     ],
   },
   {
@@ -119,6 +119,8 @@ export const b2bCategories: B2BCategoryConfig[] = [
     routePath: "/b2b/accessories",
     defaultUnitType: "PCS",
     enabled: true,
+    imageSrc: "/img/b2b/categories/builder-gels-category.jpg",
+    imageAlt: "Accessories",
     navChildren: [
       { label: "Brushes", routePath: "/b2b/accessories/brushes", swatchColour: "#6B7280" },
       { label: "Tools", routePath: "/b2b/accessories/tools", swatchColour: "#9CA3AF" },
