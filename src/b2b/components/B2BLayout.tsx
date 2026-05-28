@@ -2,6 +2,51 @@ import { useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useB2BCart } from "../store/B2BCartContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { b2bCategories } from "../config/categories";
+
+/** Build breadcrumb segments from the current pathname.
+ *  e.g. /b2b/builder-gels/biab → [Dashboard, Builder Gel Systems (/b2b/builder-gels), BIAB]
+ */
+function useBreadcrumbs(pathname: string): Array<{ label: string; to?: string }> {
+  if (pathname === "/b2b" || pathname === "/b2b/") return [];
+
+  const crumbs: Array<{ label: string; to?: string }> = [
+    { label: "Dashboard", to: "/b2b" },
+  ];
+
+  // Find which top-level category this path belongs to
+  const matchedCategory = b2bCategories.find((cat) =>
+    pathname.startsWith(cat.routePath + "/") || pathname === cat.routePath
+  );
+
+  if (!matchedCategory) return crumbs;
+
+  // Find a matching child if path goes deeper
+  const matchedChild = matchedCategory.navChildren?.find(
+    (child) => pathname === child.routePath || pathname.startsWith(child.routePath + "/")
+  );
+
+  if (matchedChild) {
+    // We're on a subcategory page: Dashboard > Category > Subcategory
+    crumbs.push({ label: matchedCategory.label, to: "/b2b" });
+    crumbs.push({ label: matchedChild.label });
+  } else {
+    // We're on the category root or a non-child route (e.g. checkout, orders)
+    const staticLabels: Record<string, string> = {
+      "/b2b/checkout": "Checkout",
+      "/b2b/orders": "My Orders",
+      "/b2b/client-info": "Client Info",
+    };
+    const staticLabel = staticLabels[pathname];
+    if (staticLabel) {
+      crumbs.push({ label: staticLabel });
+    } else {
+      crumbs.push({ label: matchedCategory.label });
+    }
+  }
+
+  return crumbs;
+}
 
 type B2BLayoutProps = {
   children: ReactNode;
@@ -17,6 +62,7 @@ export default function B2BLayout({ children, isAdminStaff = false }: B2BLayoutP
   const [showChangeBuyerModal, setShowChangeBuyerModal] = useState(false);
 
   const isDashboard = location.pathname === "/b2b" || location.pathname === "/b2b/";
+  const breadcrumbs = useBreadcrumbs(location.pathname);
 
   const handleLogout = async () => {
     clearCart();
@@ -114,15 +160,29 @@ export default function B2BLayout({ children, isAdminStaff = false }: B2BLayoutP
       )}
 
       <div className="mx-auto w-full max-w-screen-2xl px-4 py-6 sm:px-6">
-        {!isDashboard && (
-          <div className="mb-4">
-            <Link
-              to="/b2b"
-              className="inline-flex items-center gap-1.5 rounded-md border border-grey-card bg-white px-3 py-1.5 text-sm font-medium text-grey-secondary hover:border-primary-300 hover:text-primary transition-colors"
-            >
-              ← All Categories
-            </Link>
-          </div>
+        {!isDashboard && breadcrumbs.length > 0 && (
+          <nav aria-label="Breadcrumb" className="mb-4 flex items-center gap-1.5 text-sm">
+            {breadcrumbs.map((crumb, i) => {
+              const isLast = i === breadcrumbs.length - 1;
+              return (
+                <span key={i} className="flex items-center gap-1.5">
+                  {i > 0 && <span className="text-grey-card select-none">/</span>}
+                  {crumb.to && !isLast ? (
+                    <Link
+                      to={crumb.to}
+                      className="font-medium text-grey-secondary hover:text-primary transition-colors"
+                    >
+                      {crumb.label}
+                    </Link>
+                  ) : (
+                    <span className={isLast ? "font-semibold text-grey-primary" : "font-medium text-grey-secondary"}>
+                      {crumb.label}
+                    </span>
+                  )}
+                </span>
+              );
+            })}
+          </nav>
         )}
         <main className="rounded-xl border border-grey-card bg-white p-4 sm:p-6">{children}</main>
       </div>
