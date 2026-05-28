@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
 import { b2bCategories } from "../config/categories";
-import B2BCategoryImageFrame from "../components/B2BCategoryImageFrame";
 import { useB2BCart } from "../store/B2BCartContext";
 
 export default function B2BDashboard() {
@@ -12,7 +11,7 @@ export default function B2BDashboard() {
   const enabledCategories = b2bCategories.filter((cat) => cat.enabled && (cat.navChildren?.length ?? 0) > 0);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {orderSuccess?.orderSuccess && (
         <section className="rounded-lg border border-green-200 bg-green-50 p-4">
           <h3 className="text-lg font-semibold text-green-800">Order received ✓</h3>
@@ -68,22 +67,37 @@ export default function B2BDashboard() {
                 <Link
                   key={child.routePath}
                   to={child.routePath}
-                  className="overflow-hidden rounded-lg border border-grey-card transition-all hover:border-primary-300 hover:shadow-md"
+                  className="group block overflow-hidden rounded-2xl shadow-md transition-shadow hover:shadow-lg"
+                  style={{ perspective: '800px' }}
                 >
-                  {child.swatchColour ? (
-                    <div
-                      className="h-36 w-full"
-                      style={{ backgroundColor: child.swatchColour }}
-                    />
-                  ) : imgSrc ? (
-                    <B2BCategoryImageFrame
-                      src={imgSrc}
-                      alt={child.imageAlt ?? child.label}
-                      frameClassName="h-36"
-                    />
-                  ) : null}
-                  <div className="p-3">
-                    <p className="text-sm font-semibold text-grey-primary">{child.label}</p>
+                  <div className="relative overflow-hidden rounded-2xl" style={{ transformStyle: 'preserve-3d' }}>
+                    {/* Image or colour swatch */}
+                    {child.swatchColour ? (
+                      <div
+                        className="h-48 w-full transition-transform duration-300 group-hover:scale-105"
+                        style={{ backgroundColor: child.swatchColour }}
+                      />
+                    ) : imgSrc ? (
+                      <img
+                        src={imgSrc}
+                        alt={child.imageAlt ?? child.label}
+                        width={400}
+                        height={192}
+                        className="h-48 w-full object-cover block transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <div className="h-48 w-full bg-grey-card" />
+                    )}
+
+                    {/* Gradient darkening on hover */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-2xl" />
+
+                    {/* Frosted glass label overlaid at the bottom */}
+                    <div className="absolute bottom-3 left-3 right-3 rounded-md bg-white/85 px-3 py-2 shadow-sm backdrop-blur-sm">
+                      <p className="text-sm font-semibold text-slate-900 leading-tight">{child.label}</p>
+                    </div>
                   </div>
                 </Link>
               );
