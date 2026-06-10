@@ -8,13 +8,13 @@ export default function HowItWorks() {
       icon: MessageCircle,
       number: '1',
       title: 'Tell us about your brand',
-      description: 'What market, what price point, what vibe. We'll guide the rest.',
+      description: "What market, what price point, what vibe. We'll guide the rest.",
     },
     {
       icon: Palette,
       number: '2',
       title: 'Pick your formulas & colors',
-      description: 'Test real samples. We adjust until they're right.',
+      description: "Test real samples. We adjust until they're right.",
     },
     {
       icon: TrendingUp,
