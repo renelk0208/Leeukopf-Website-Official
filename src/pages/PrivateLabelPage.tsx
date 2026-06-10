@@ -74,7 +74,7 @@ export default function PrivateLabelPage() {
       key: 'starters',
       icon: Users,
       title: 'Starting a new nail brand',
-      text: 'You've got the vision and the market. We'll give you the formulas, the documentation, and a manufacturer that actually picks up the phone.',
+      text: "You've got the vision and the market. We'll give you the formulas, the documentation, and a manufacturer that actually picks up the phone.",
     },
     { 
       key: 'brands',
