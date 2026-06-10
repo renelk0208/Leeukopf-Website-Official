@@ -309,7 +309,7 @@ export default function PrivateLabelPage() {
         </h2>
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base mb-4">
           {/* TODO: Replace [X] with your actual starting MOQ per shade */}
-          MOQs vary by product and packaging — but most first launches start from [X] units per shade. We'll give you exact numbers in your first consultation, not a generic price list.
+          Most first launches start from 25 pieces per colour (bottled) or 1kg per shade (bulk). We'll confirm exact numbers for your specific packaging in your first consultation.
         </p>
         <ul className="space-y-2">
           {['Different MOQs for bottles, jars and bulk', 'Standard lead times for repeat orders after first setup', 'Clear communication if anything affects production schedules'].map((bullet, index) => (
