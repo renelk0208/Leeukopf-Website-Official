@@ -1,24 +1,24 @@
-// TODO: Replace placeholder quotes below with real client testimonials.
-// Keep format: quote, first name + last initial, role, country.
+// Replace these with real client quotes when available.
+// Format: short quote (2–3 sentences max), first name + last initial, role, country.
 
 const testimonials = [
   {
-    quote: "We launched our first collection of 24 shades under our own brand. Leeukopf made the EU compliance side straightforward — we didn't need a separate consultant. The guidance from start to launch was exceptional.",
-    name: "Sarah K.",
-    role: "Salon Owner & Brand Founder",
-    country: "United Kingdom",
-  },
-  {
-    quote: "I was worried small batches would not be taken seriously. We started with 12 shades and nobody made us feel like a small order. Three ranges later, we are stocked in four countries.",
-    name: "Marie T.",
-    role: "Training Academy Owner",
+    quote: "We launched our first 24-shade collection under our own brand within three months. The compliance documentation was ready before we even asked for it — that alone saved us weeks.",
+    name: "Nadia V.",
+    role: "Brand Founder",
     country: "Belgium",
   },
   {
-    quote: "HEMA-free formulas were non-negotiable for us — our clients have sensitive skin. Leeukopf had the range, the documentation, and turnaround was faster than we expected.",
-    name: "Aisha M.",
-    role: "Brand Distributor",
-    country: "South Africa",
+    quote: "I run a training academy and needed a consistent formula my students could rely on. Starting from 25 pieces per colour made it easy to test before committing to a full range.",
+    name: "Claire M.",
+    role: "Nail Education Academy",
+    country: "United Kingdom",
+  },
+  {
+    quote: "HEMA-free was non-negotiable for our market. Leeukopf had the full range, the technical data sheets, and the turnaround was faster than any supplier we had tried before.",
+    name: "Rania A.",
+    role: "Distributor",
+    country: "Qatar",
   },
 ];
 
