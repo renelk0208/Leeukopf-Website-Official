@@ -1,5 +1,15 @@
 const stats = [
   {
+    value: '200+',
+    label: 'Brands launched',
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 19h16" />
+        <path d="M8 19V9l4-4 4 4v10" />
+      </svg>
+    ),
+  },
+  {
     value: '2000+',
     label: 'Colors ready to brand',
     icon: (

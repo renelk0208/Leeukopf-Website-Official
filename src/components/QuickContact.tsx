@@ -1,9 +1,19 @@
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 export default function QuickContact() {
   const [status, setStatus] = useState<FormStatus>('idle');
+  const location = useLocation();
+  const requestedShade = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('shade')?.trim() ?? '';
+  }, [location.search]);
+
+  const prefilledMessage = requestedShade
+    ? `Hi, I am interested in shade ${requestedShade}. Please share sample options and MOQs.`
+    : '';
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,34 +40,17 @@ export default function QuickContact() {
   };
 
   return (
-    <section className="py-14 sm:py-20 bg-gradient-to-b from-gray-50 to-white" aria-label="Quick contact">
+    <section id="quick-contact" className="py-14 sm:py-20 bg-gradient-to-b from-gray-50 to-white" aria-label="Quick contact">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left — copy */}
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-              Not ready to book a call? No problem.
+              Not ready to book a call? Just send us a message.
             </h2>
             <p className="text-gray-500 font-light text-sm sm:text-base leading-relaxed mb-6">
-              Drop us a quick note — your brand idea, your question, or even just "I'm interested."
-              We respond within one business day.
+              We reply within 1 business day.
             </p>
-            <ul className="space-y-3 text-sm text-gray-600 font-light">
-              {[
-                'No commitment required',
-                'Real person replies — not a bot',
-                'EU business hours (GMT+3)',
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-2.5 h-2.5 text-primary" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Right — form */}
@@ -72,53 +65,55 @@ export default function QuickContact() {
               </div>
             ) : (
               <form
-                name="quick-contact"
+                name="contact"
                 method="POST"
+                netlify
                 data-netlify="true"
                 onSubmit={handleSubmit}
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-4"
               >
-                <input type="hidden" name="form-name" value="quick-contact" />
+                <input type="hidden" name="form-name" value="contact" />
+                {requestedShade ? <input type="hidden" name="requestedShade" value={requestedShade} /> : null}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="qc-name" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
-                      Your name
-                    </label>
-                    <input
-                      id="qc-name"
-                      name="name"
-                      type="text"
-                      required
-                      placeholder="Jane Smith"
-                      className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="qc-email" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
-                      Email address
-                    </label>
-                    <input
-                      id="qc-email"
-                      name="email"
-                      type="email"
-                      required
-                      placeholder="jane@yourbrand.com"
-                      className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                    />
-                  </div>
+                <div>
+                  <label htmlFor="qc-name" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                    Name
+                  </label>
+                  <input
+                    id="qc-name"
+                    name="name"
+                    type="text"
+                    required
+                    placeholder="Jane Smith"
+                    className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="qc-email" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                    Email
+                  </label>
+                  <input
+                    id="qc-email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="jane@yourbrand.com"
+                    className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  />
                 </div>
 
                 <div>
                   <label htmlFor="qc-message" className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
-                    Your brand idea or question
+                    Tell us about your brand idea
                   </label>
                   <textarea
                     id="qc-message"
                     name="message"
                     required
-                    rows={4}
-                    placeholder="E.g. I want to launch a 20-shade collection for my salon. What do I need to get started?"
+                    rows={3}
+                    defaultValue={prefilledMessage}
+                    placeholder="Share your idea, timeline, and what you need help with."
                     className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
                   />
                 </div>

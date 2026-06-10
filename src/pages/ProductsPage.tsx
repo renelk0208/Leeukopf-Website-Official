@@ -2,6 +2,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { CheckCircle, Search, X } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
+import ColorCatalogPreview from '../components/ColorCatalogPreview';
 import { enabledCategories, isCategoryEnabled } from '../config/productCategories';
 import ProductCategoryCard3D from '../components/products/ProductCategoryCard3D';
 import { getOurProductsVideoSrc } from '../config/seasonal';
@@ -214,6 +215,8 @@ export default function ProductsPage() {
             We don't simply fill bottles. We design full, compatible systems – gel polishes, bases, tops, builders and accessories – that work together for long-lasting, salon-proof results.
           </p>
         </div>
+
+        <ColorCatalogPreview />
 
         {/* Seasonal Hero Video - BEFORE "Explore our products" section */}
         {videoSrc && (

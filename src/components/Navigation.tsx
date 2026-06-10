@@ -89,6 +89,7 @@ export default function Navigation() {
     { label: 'Gelitup Distribution', path: '/our-brands' },
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
     { label: 'Start Your Brand', path: '/faq-starting-a-gel-polish-brand' },
+    { label: 'Book Appointment', path: '/client-registration' },
   ];
 
   const isActive = (path: string) => {
@@ -148,6 +149,23 @@ export default function Navigation() {
           </nav>
 
           <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
+            <div className="hidden xl:flex items-center gap-2 pr-2 text-xs text-gray-500">
+              <span className="uppercase tracking-wide">Existing clients</span>
+              <span aria-hidden="true">|</span>
+              <Link
+                to="/portal/login"
+                className="hover:text-primary transition-colors"
+              >
+                Portal
+              </Link>
+              <span aria-hidden="true">|</span>
+              <Link
+                to="/client-registration"
+                className="hover:text-primary transition-colors"
+              >
+                Client Registration
+              </Link>
+            </div>
             <div className="hidden xl:flex items-center">
               {isDesktopSearchOpen ? (
                 <form onSubmit={handleSearchSubmit} className="flex items-center">
@@ -214,22 +232,6 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-
-        <div className="hidden xl:flex justify-center items-center gap-2 pb-3">
-          <span className="text-xs text-gray-400 font-light mr-1">Existing clients:</span>
-          <Link
-            to="/portal/login"
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white hover:bg-primary/90 transition-colors whitespace-nowrap"
-          >
-            PORTAL
-          </Link>
-          <Link
-            to="/client-registration"
-            className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold text-[#444444] hover:text-[#A3005A] hover:border-primary transition-colors whitespace-nowrap"
-          >
-            CLIENT REGISTRATION
-          </Link>
-        </div>
       </div>
 
       {/* Mobile Navigation */}
@@ -265,21 +267,26 @@ export default function Navigation() {
               </Link>
             ))}
 
-            <Link
-              to="/portal/login"
-              onClick={() => setIsOpen(false)}
-              className="block w-full text-center px-3 py-3 rounded-md bg-primary text-white hover:bg-primary/90 transition-colors font-semibold text-sm mt-2"
-            >
-              ORDER NOW ON PORTAL
-            </Link>
-
-            <Link
-              to="/client-registration"
-              onClick={() => setIsOpen(false)}
-              className="block w-full text-center px-3 py-3 rounded-md border border-gray-300 text-[#444444] hover:text-[#A3005A] hover:border-primary transition-colors font-semibold text-sm mt-2"
-            >
-              CLIENT REGISTRATION
-            </Link>
+            <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 px-3 py-3">
+              <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">Existing clients</p>
+              <div className="flex items-center gap-3 text-sm">
+                <Link
+                  to="/portal/login"
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-600 hover:text-primary transition-colors"
+                >
+                  Portal
+                </Link>
+                <span className="text-gray-300" aria-hidden="true">|</span>
+                <Link
+                  to="/client-registration"
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-600 hover:text-primary transition-colors"
+                >
+                  Client Registration
+                </Link>
+              </div>
+            </div>
 
             <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
               <div className="px-3 mb-3">

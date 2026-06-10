@@ -3,22 +3,22 @@
 
 const testimonials = [
   {
-    quote: "We launched our first 24-shade collection under our own brand within three months. The compliance documentation was ready before we even asked for it — that alone saved us weeks.",
-    name: "Nadia V.",
-    role: "Brand Founder",
-    country: "Belgium",
-  },
-  {
-    quote: "I run a training academy and needed a consistent formula my students could rely on. Starting from 25 pieces per colour made it easy to test before committing to a full range.",
-    name: "Claire M.",
-    role: "Nail Education Academy",
+    quote: "We launched our first collection of 80 shades within 3 months. The process was clearer than we expected and the support was always there.",
+    name: "Sarah M.",
+    role: "Nail brand owner",
     country: "United Kingdom",
   },
   {
-    quote: "HEMA-free was non-negotiable for our market. Leeukopf had the full range, the technical data sheets, and the turnaround was faster than any supplier we had tried before.",
-    name: "Rania A.",
+    quote: "As a training academy we needed consistent, reliable products. Leeukopf gave us exactly that - and our own label on top.",
+    name: "Yiannis P.",
+    role: "Nail academy",
+    country: "Greece",
+  },
+  {
+    quote: "From first call to first delivery was smoother than any supplier we'd worked with before.",
+    name: "Fatima A.",
     role: "Distributor",
-    country: "Qatar",
+    country: "Saudi Arabia",
   },
 ];
 

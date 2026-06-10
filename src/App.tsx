@@ -93,6 +93,7 @@ const GelItUpPage = lazy(() => import('./pages/brands/GelItUpPage'));
 import CookieConsent from './components/CookieConsent';
 import TawkChat from './components/TawkChat';
 import StickyBooking from './components/StickyBooking';
+import WhatsAppFloatButton from './components/WhatsAppFloatButton';
 import ErrorBoundary from './components/ErrorBoundary';
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
@@ -229,6 +230,7 @@ function App() {
       </ErrorBoundary>
       <CookieConsent />
       <TawkChat />
+      <WhatsAppFloatButton />
       <StickyBooking />
     </>
   );

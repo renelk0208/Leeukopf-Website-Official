@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
 import StartHereBanner from '../components/StartHereBanner';
 import VideoGallery from '../components/VideoGallery';
+import QuickContact from '../components/QuickContact';
 import { Beaker, Settings, ShieldCheck, Handshake, Users, Building2, GraduationCap, CheckCircle } from 'lucide-react';
 
 export default function PrivateLabelPage() {
@@ -90,6 +91,19 @@ export default function PrivateLabelPage() {
     },
   ];
 
+  const compactTestimonials = [
+    {
+      quote: 'We launched our first collection of 80 shades within 3 months. The process was clearer than we expected and the support was always there.',
+      author: 'Sarah M.',
+      details: 'Nail brand owner, United Kingdom',
+    },
+    {
+      quote: 'As a training academy we needed consistent, reliable products. Leeukopf gave us exactly that and our own label on top.',
+      author: 'Yiannis P.',
+      details: 'Nail academy, Greece',
+    },
+  ];
+
   return (
     <PageTemplate
       title="Your Brand. Our Lab."
@@ -120,6 +134,24 @@ export default function PrivateLabelPage() {
           Request more information
         </Link>
       </div>
+
+      <section className="mb-10 sm:mb-12 md:mb-16" aria-label="Client testimonials">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">What brand owners say</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          {compactTestimonials.map((item) => (
+            <figure key={item.author} className="rounded-xl border border-gray-200 bg-white p-5 sm:p-6">
+              <blockquote>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed">"{item.quote}"</p>
+              </blockquote>
+              <figcaption className="mt-4 text-sm text-gray-600">
+                - {item.author}, {item.details}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
 
       {/* Who This Is For — moved to top so visitors see themselves immediately */}
       <div className="mb-10 sm:mb-12 md:mb-16">
@@ -344,6 +376,8 @@ export default function PrivateLabelPage() {
           </Link>
         </div>
       </div>
+
+      <QuickContact />
     </PageTemplate>
   );
 }
