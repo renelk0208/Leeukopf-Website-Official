@@ -22,7 +22,7 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover object-center z-0"
       />
       {/* Responsive padding: more compact on mobile, spacious on desktop */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-8 md:pb-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 xl:pt-32 pb-8 md:pb-12">
         <div className="space-y-6 md:space-y-8">
           {/* Logo with responsive sizing - marked as high priority for LCP */}
           <div className="flex justify-center mb-6 md:mb-8">

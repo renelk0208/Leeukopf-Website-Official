@@ -154,6 +154,27 @@
   to = "/seasonal/valentines/index.html"
   status = 200
 
+# Common wrong-URL redirects (auditor shortcuts / legacy links)
+[[redirects]]
+  from = "/faq"
+  to = "/faq-starting-a-gel-polish-brand"
+  status = 301
+
+[[redirects]]
+  from = "/our-products"
+  to = "/products"
+  status = 301
+
+[[redirects]]
+  from = "/gelitup-distribution"
+  to = "/our-brands"
+  status = 301
+
+[[redirects]]
+  from = "/certificates-compliance"
+  to = "/certificates-and-compliance"
+  status = 301
+
 # SPA redirect - serve index.html for all other routes
 # This must be LAST so explicit redirects and functions take precedence
 [[redirects]]

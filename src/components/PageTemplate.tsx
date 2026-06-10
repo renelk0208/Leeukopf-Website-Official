@@ -77,7 +77,7 @@ export default function PageTemplate({
       <ScrollToTop />
       <Navigation />
       <BackButton />
-      <div className="min-h-screen pt-20">
+      <div className="min-h-screen pt-20 xl:pt-[120px]">
       {/* Responsive header section - with optional hero background image */}
       <div 
         className={`border-b border-gray-200 ${

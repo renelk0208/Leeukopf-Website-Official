@@ -92,12 +92,15 @@ const GelItUpPage = lazy(() => import('./pages/brands/GelItUpPage'));
 
 import CookieConsent from './components/CookieConsent';
 import TawkChat from './components/TawkChat';
+import ErrorBoundary from './components/ErrorBoundary';
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function App() {
   return (
     <>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
           {/* Main Pages */}
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -218,8 +221,11 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/cookies-policy" element={<CookiesPolicyPage />} />
           <Route path="/privacy-notice-distributors" element={<PrivacyNoticeDistributorsPage />} />
+          {/* 404 catch-all */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
+      </ErrorBoundary>
       <CookieConsent />
       <TawkChat />
     </>
