@@ -1,3 +1,4 @@
+import { type FormEvent, useState } from 'react';
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
@@ -56,8 +57,57 @@ const SocialLinks = () => {
 };
 
 export default function Footer() {
+  const [nlEmail, setNlEmail] = useState('');
+  const [nlStatus, setNlStatus] = useState<'idle' | 'submitting' | 'done' | 'error'>('idle');
+
+  const handleNewsletter = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setNlStatus('submitting');
+    const data = new URLSearchParams({ 'form-name': 'newsletter', email: nlEmail });
+    try {
+      const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data.toString() });
+      setNlStatus(res.ok ? 'done' : 'error');
+    } catch {
+      setNlStatus('error');
+    }
+  };
+
   return (
     <footer className="bg-[#E8E8E8] border-t border-[#D4D4D4]">
+      {/* Newsletter strip */}
+      <div className="bg-white border-b border-[#D4D4D4] py-5 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="font-semibold text-gray-900 text-sm sm:text-base">Stay ahead of new collections &amp; launches</p>
+            <p className="text-xs text-gray-500 font-light mt-0.5">Brand owner tips, seasonal trends, and early access. No spam.</p>
+          </div>
+          {nlStatus === 'done' ? (
+            <p className="text-sm text-green-600 font-medium whitespace-nowrap">✓ You're on the list!</p>
+          ) : (
+            <form name="newsletter" method="POST" data-netlify="true" onSubmit={handleNewsletter} className="flex gap-2 w-full sm:w-auto">
+              <input type="hidden" name="form-name" value="newsletter" />
+              <input
+                type="email"
+                name="email"
+                required
+                value={nlEmail}
+                onChange={(e) => setNlEmail(e.target.value)}
+                placeholder="your@email.com"
+                aria-label="Email address for newsletter"
+                className="flex-1 sm:w-56 rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              />
+              <button
+                type="submit"
+                disabled={nlStatus === 'submitting'}
+                className="btn-primary px-4 py-2 text-sm whitespace-nowrap disabled:opacity-60"
+              >
+                {nlStatus === 'submitting' ? '…' : 'Subscribe'}
+              </button>
+            </form>
+          )}
+          {nlStatus === 'error' && <p className="text-xs text-red-500">Something went wrong. Try again.</p>}
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         {/* Responsive grid - stacks on mobile, 4 cols on desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
@@ -73,7 +123,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-[#6B6B6B] text-sm font-light leading-relaxed mb-4">
-              Premium beauty products manufactured in Bulgaria, trusted by professionals worldwide.
+              GMP-certified gel polish manufacturer in Bulgaria. In-house lab, HEMA-free formulas, private label from 25 pieces.
             </p>
             
             {/* Business Address - More visible for local SEO */}

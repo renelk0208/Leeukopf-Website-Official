@@ -279,11 +279,14 @@
     <script src="https://elfsightcdn.com/platform.js" async></script>
   </head>
   <body>
-    <!-- Hidden form for Netlify to detect at build time (mirrors the React QuickContact form) -->
+    <!-- Hidden forms for Netlify to detect at build time -->
     <form name="quick-contact" data-netlify="true" hidden>
       <input type="text" name="name" />
       <input type="email" name="email" />
       <textarea name="message"></textarea>
+    </form>
+    <form name="newsletter" data-netlify="true" hidden>
+      <input type="email" name="email" />
     </form>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KBN88W68"
