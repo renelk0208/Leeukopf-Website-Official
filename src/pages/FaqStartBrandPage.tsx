@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import PageTemplate from '../components/PageTemplate';
 
 interface FAQAnswer {
@@ -91,6 +92,32 @@ const faqItems: FAQItem[] = [
 ];
 
 export default function FaqStartBrandPage() {
+  // Inject FAQPage JSON-LD schema for Google rich results
+  useEffect(() => {
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answers
+            .map((a) => (typeof a === 'string' ? a : a.text))
+            .join(' '),
+        },
+      })),
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'faq-schema';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+    return () => {
+      document.getElementById('faq-schema')?.remove();
+    };
+  }, []);
+
   return (
     <PageTemplate
       title="Frequently Asked Questions – Starting Your Own Gel Polish Brand"

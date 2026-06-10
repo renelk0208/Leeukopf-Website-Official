@@ -9,28 +9,28 @@ export default function AboutPage() {
   // Pigment mixing videos - all available videos from the factory
   // Full collection of pigment mixing process videos - 16 videos total
   const pigmentMixingVideos = [
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (1).MP4', title: 'Pigment Mixing Process' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (2).MP4', title: 'Custom Color Creation' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (3).mp4', title: 'Advanced Mixing Techniques' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (4).mp4', title: 'Color Blending Method' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (5).mp4', title: 'Precision Pigment Control' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (6).mp4', title: 'Custom Shade Development' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (7).mp4', title: 'Expert Color Mixing' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (8).mp4', title: 'Professional Color Formulation' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (9).mp4', title: 'Color Blending Technique' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (10).mp4', title: 'Pigment Quality Control' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (11).mp4', title: 'Color Consistency Testing' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (12).mp4', title: 'Specialized Pigment Mixing' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (13).mp4', title: 'Professional Color Matching' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (14).mp4', title: 'Advanced Formulation Process' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (15).mp4', title: 'Laboratory Color Development' },
-    { src: '/videos/pigment-mixing/pigment-mixing-videos (16).mp4', title: 'Final Quality Verification' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (1).MP4', title: 'Leeukopf lab technician mixing custom gel polish pigments' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (2).MP4', title: 'Weighing raw pigment at the Leeukopf factory' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (3).mp4', title: 'Industrial mixer producing gel polish base' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (4).mp4', title: 'Colour dispersion in gel polish formula' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (5).mp4', title: 'QC testing gel polish viscosity in the lab' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (6).mp4', title: 'Custom shade production at Leeukopf' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (7).mp4', title: 'Technician filling gel polish bottles on the production line' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (8).mp4', title: 'Colour consistency check before batch approval' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (9).mp4', title: 'High-speed mixing of professional gel formula' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (10).mp4', title: 'Factory floor production at Leeukopf Laboratories' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (11).mp4', title: 'Pigment scale and batch records — GMP compliance' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (12).mp4', title: 'Effect pigment blending for cat-eye gel polish' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (13).mp4', title: 'Neutral tone gel polish being mixed in the lab' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (14).mp4', title: 'Nail gel homogenisation process at Leeukopf' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (15).mp4', title: 'Lab technician recording formula batch data' },
+    { src: '/videos/pigment-mixing/pigment-mixing-videos (16).mp4', title: 'Final visual inspection before gel polish shipment' },
   ];
 
   return (
     <PageTemplate
       title="About Leeukopf Laboratories"
-      subtitle="Premium beauty solutions manufactured in Bulgaria, trusted by professionals worldwide."
+      subtitle="In-house lab. GMP-certified. Every formula developed and produced by us — not contracted out."
       breadcrumbs={[
         { label: 'Home', path: '/' },
         { label: 'About' }
@@ -48,10 +48,10 @@ export default function AboutPage() {
           <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
         </h2>
         <p className="text-gray-600 mb-4 font-light leading-relaxed text-sm sm:text-base">
-          Founded with a commitment to excellence, Leeukopf Laboratories has become a trusted name in professional beauty products. Our state-of-the-art manufacturing facility in Bulgaria combines European quality standards with innovative formulations to deliver products that meet the highest industry benchmarks.
+          Leeukopf Laboratories is a GMP-certified gel polish manufacturer based in Bulgaria, EU. We develop, produce, and fill professional nail systems entirely in-house — no subcontracting, no middle layers. Our facility operates under EU Regulation 1223/2009 with full QC traceability on every batch.
         </p>
         <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
-          We specialize in gel polish systems, builder gels, and complete nail care solutions. Every product is developed with meticulous attention to detail, ensuring safety, performance, and stunning results for nail professionals and their clients worldwide.
+          We work with brand owners in 17+ countries — from first-time launches to established distributors scaling their range. Small batches welcome, long-term partnerships preferred.
         </p>
       </div>
 
