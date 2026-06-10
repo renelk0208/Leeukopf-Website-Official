@@ -1,10 +1,12 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Image as ImageIcon, ArrowUp } from 'lucide-react';
 import Navigation from './Navigation';
 import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
 import BackButton from './BackButton';
+
+const BASE_URL = 'https://leeukopf.com';
 
 interface BreadcrumbItem {
   label: string;
@@ -35,6 +37,30 @@ export default function PageTemplate({
   heroImage
 }: PageTemplateProps) {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const location = useLocation();
+
+  // Inject BreadcrumbList JSON-LD schema
+  useEffect(() => {
+    if (breadcrumbs.length < 2) return;
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbs.map((crumb, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: crumb.label,
+        item: crumb.path ? `${BASE_URL}${crumb.path}` : `${BASE_URL}${location.pathname}`,
+      })),
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'breadcrumb-schema';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+    return () => {
+      document.getElementById('breadcrumb-schema')?.remove();
+    };
+  }, [breadcrumbs, location.pathname]);
 
   // Use default CTA text
   const defaultCtaText = ctaText || 'Get in Touch';
