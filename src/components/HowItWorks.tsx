@@ -1,4 +1,4 @@
-import { MessageCircle, Palette, Factory, TrendingUp } from 'lucide-react';
+import { MessageCircle, Palette, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function HowItWorks() {
@@ -7,26 +7,20 @@ export default function HowItWorks() {
     {
       icon: MessageCircle,
       number: '1',
-      title: 'Consult & feasibility check',
-      description: 'Book a free consultation with our experts to discuss your brand vision and requirements.',
+      title: 'Tell us about your brand',
+      description: 'What market, what price point, what vibe. We'll guide the rest.',
     },
     {
       icon: Palette,
       number: '2',
-      title: 'Choose shades (2000+ options)',
-      description: 'Select from our 2000+ premium gel polish colors or create custom shades for your brand.',
-    },
-    {
-      icon: Factory,
-      number: '3',
-      title: 'We manufacture + QC release',
-      description: 'Our GMP-certified facility produces your products with EU compliance and HEMA-free formulations.',
+      title: 'Pick your formulas & colors',
+      description: 'Test real samples. We adjust until they're right.',
     },
     {
       icon: TrendingUp,
-      number: '4',
-      title: 'You launch & sell',
-      description: 'Launch your branded gel polish line and grow your beauty business with confidence.',
+      number: '3',
+      title: 'Launch under your name',
+      description: 'We handle production, filling, and documentation. You handle the brand.',
     },
   ];
 
@@ -42,7 +36,7 @@ export default function HowItWorks() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
@@ -102,7 +96,7 @@ export default function HowItWorks() {
             onClick={() => navigate('/client-registration')}
             className="btn-primary px-8 py-4 min-h-[44px] text-base sm:text-lg"
           >
-            Start Your Brand Journey
+            Book Free Consultation
           </button>
         </div>
       </div>

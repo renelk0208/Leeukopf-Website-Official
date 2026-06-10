@@ -38,17 +38,18 @@ export default function Hero() {
             />
           </div>
 
-          {/* H1 - Main keyword-rich heading for SEO */}
+          {/* H1 - Outcome-focused headline */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 max-w-4xl mx-auto leading-tight px-2 bg-white/90 rounded-lg py-4 inline-block">
-            GMP-Compliant Private Label Gel Polish Manufacturing in the EU
+            Launch Your Gel Polish Brand. We Handle the Lab.
           </h1>
 
-          {/* Responsive typography with clamp-like approach */}
+          {/* Subheadline — trust signals + MOQ reassurance */}
           <p className="text-lg sm:text-xl md:text-2xl text-gray-800 max-w-3xl mx-auto leading-relaxed font-medium px-2 bg-white/90 rounded-lg py-3 inline-block">
-            In-house formulations from our GMP-certified facility in Bulgaria (EU). Full QC traceability, consultative support, 2000+ colors. HEMA & TPO-free. Small enough to care, big enough to deliver.
+            EU-manufactured. HEMA &amp; TPO-free formulas. 2000+ colors. GMP-certified.<br />
+            Small batches welcome — we grow with your brand.
           </p>
 
-          {/* Responsive button group with full-width on mobile */}
+          {/* CTAs — primary dominant, secondary ghost */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center pt-4 sm:pt-6 px-4 sm:px-0">
             <button
               onClick={() => navigate('/client-registration')}
@@ -58,23 +59,23 @@ export default function Hero() {
             </button>
             <button
               onClick={() => navigate('/products/gel-polish#solid-colour-collection')}
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] bg-white/80 rounded-md font-semibold transition-all duration-300 border-2 text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 min-h-[44px] bg-transparent rounded-md font-semibold transition-all duration-300 border-2 text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
             >
-              View Our Colors
+              See Our Color Range
             </button>
           </div>
 
-          {/* Product Category Links - Text Only */}
+          {/* Feature Cards — brand owner benefits */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 px-2 sm:px-0">
             <a
               href="/products/gel-polish"
               className={categoryLinkClass}
             >
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                2000+ Colors to choose from
+                Start with 50 colors or 2,000
               </h3>
-              <p className="text-base sm:text-lg font-semibold text-primary">
-                Gel Polish
+              <p className="text-sm sm:text-base text-gray-600 font-light">
+                Our catalog covers everything from launch collections to full seasonal ranges.
               </p>
             </a>
             <a
@@ -82,21 +83,21 @@ export default function Hero() {
               className={categoryLinkClass}
             >
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                Professional Strength & Durability
+                Formulas that protect your clients
               </h3>
-              <p className="text-base sm:text-lg font-semibold text-primary">
-                Builder Gel Systems
+              <p className="text-sm sm:text-base text-gray-600 font-light">
+                All products are HEMA-free and TPO-free — safer for sensitive skin, stronger for your brand reputation.
               </p>
             </a>
             <a
-              href="/products/nail-art"
+              href="/private-label"
               className={categoryLinkClass}
             >
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                Complete Product Range
+                EU-compliant from day one
               </h3>
-              <p className="text-base sm:text-lg font-semibold text-primary">
-                Nail Art
+              <p className="text-sm sm:text-base text-gray-600 font-light">
+                GMP-certified production with full documentation support. No compliance headaches.
               </p>
             </a>
           </div>

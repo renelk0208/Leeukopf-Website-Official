@@ -88,7 +88,7 @@ export default function Navigation() {
     { label: 'Private Label', path: '/private-label' },
     { label: 'Gelitup Distribution', path: '/our-brands' },
     { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
-    { label: 'FAQ', path: '/faq-starting-a-gel-polish-brand' },
+    { label: 'Start Your Brand', path: '/faq-starting-a-gel-polish-brand' },
   ];
 
   const isActive = (path: string) => {
