@@ -37,3 +37,6 @@ netlify/functions/assets/google-service-account.json
 *.bak
 # Temporary files and reports
 tmp/
+
+# Git worktrees (local-only)
+gelitup-app.worktrees/
