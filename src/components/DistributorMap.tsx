@@ -122,6 +122,16 @@ const distributorCountries: Distributor[] = [
       }
     ]
   },
+  {
+    country: 'Italy',
+    coordinates: '39.2238,9.1217', // Cagliari
+    locations: [
+      {
+        name: 'GEL.IT.UP Italy',
+        address: 'Cagliari, Italy'
+      }
+    ]
+  },
   { 
     country: 'Kingdom of Saudi Arabia',
     coordinates: '21.5433,39.1728', // Jeddah
