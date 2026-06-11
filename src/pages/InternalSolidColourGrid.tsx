@@ -1,0 +1,2688 @@
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { categories } from "../config/categories";
+import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "../lib/supabase";
+
+type Row = Record<string, string>;
+type OrderFormat = "finished_units" | "bulk";
+type BulkContainer = "1kg_flask" | "5kg_bucket";
+type OrderLine = {
+  code: string;
+  name: string;
+  qty: number;
+  unit: "pcs" | "kg";
+};
+type ClientDetails = {
+  companyName: string;
+  contactName: string;
+  contactNumber: string;
+  invoiceAddress: string;
+  invoiceRegion: string;
+  invoicePostalCode: string;
+  shippingAddress: string;
+  shippingRegion: string;
+  shippingPostalCode: string;
+  sameAddress: boolean;
+  vat: string;
+  country: string;
+  email: string;
+};
+
+type ClientRegistrationPrefill = {
+  company: string | null;
+  contact: string | null;
+  email: string | null;
+  phone: string | null;
+  country: string | null;
+  vat_eori: string | null;
+  billing_address: string | null;
+  shipping_address: string | null;
+  created_at: string;
+};
+type BottlePackaging = {
+  size: string;
+  color: string;
+  brushShape: string;
+  brushType?: string;
+};
+
+type JarPackaging = {
+  size: string;
+  color: string;
+};
+
+type PackagingPayload = {
+  mode: "standard" | "custom";
+  system: "bottle" | "jar";
+  bottle: BottlePackaging | null;
+  jar: JarPackaging | null;
+  customDescription: string;
+  notes: string;
+};
+
+const BOTTLE_SIZE_OPTIONS = ["10ml", "15ml"];
+const BOTTLE_COLOR_OPTIONS = ["white", "black"];
+const BRUSH_SHAPE_OPTIONS = ["oval", "flat"];
+const BRUSH_TYPE_OPTIONS = ["standard", "thin"];
+const JAR_SIZE_OPTIONS = ["10ml", "15ml"];
+const JAR_COLOR_OPTIONS = ["white", "black"];
+const solidColourConfig = categories.solidColour;
+const ALLOWED_UNITS = solidColourConfig.allowedUnits;
+const ALLOWED_PACKAGING = solidColourConfig.allowedPackaging;
+const ENABLE_BRUSH_TYPE = solidColourConfig.hasGlobalBrush;
+const SHOW_JAR_SIZE_SELECTOR = solidColourConfig.hasJarSizeSelector;
+const ALLOWS_PCS_UNIT = ALLOWED_UNITS.includes("pcs");
+const ALLOWS_KG_UNIT = ALLOWED_UNITS.includes("kg");
+const ALLOWS_BUCKET_PACKAGING = ALLOWED_PACKAGING.includes("bucket");
+const SELECTED_SHADES_STORAGE_KEY = "lk_selected_solid_shades";
+const SELECTED_SHADES_ORDER_STORAGE_KEY = "lk_selected_solid_shades_order";
+const SELECTED_SHADES_QTY_STORAGE_KEY = "lk_selected_solid_shades_qty";
+const CLIENT_DETAILS_STORAGE_KEY = "lk_solid_client_details";
+const PACKAGING_STORAGE_KEY = "lk_solid_packaging";
+const ENABLE_VIRTUAL_GRID = false;
+const QUANTITY_MOQ = 25;
+const QUANTITY_STEP = 5;
+const ESTIMATED_BLOCK_SIZE = 300;
+const FAMILY_ORDER = [
+  "Reds",
+  "Oranges",
+  "Yellows",
+  "Greens",
+  "Teals",
+  "Blues",
+  "Purples",
+  "Pinks",
+  "Browns",
+  "Nudes/Beiges",
+  "Whites",
+  "Blacks",
+  "Greys",
+  "Other",
+] as const;
+const PANEL_FAMILY_ORDER = [
+  "Nudes/Beiges",
+  "Pinks",
+  "Reds",
+  "Oranges",
+  "Yellows",
+  "Greens",
+  "Teals",
+  "Blues",
+  "Purples",
+  "Browns",
+  "Greys",
+  "Whites",
+  "Blacks",
+  "Other",
+] as const;
+const BALANCE_PREFERRED_FAMILIES = ["Nudes/Beiges", "Reds", "Greens", "Blues", "Whites", "Blacks"] as const;
+
+const toDisplayLabel = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+
+type SelectedShade = {
+  id: string;
+  code: string;
+  imageCandidates: string[];
+  hasImage: boolean;
+  family: string;
+};
+
+type SelectedSortMode = "family" | "code" | "recent";
+
+type SelectedFamilyGroup = {
+  family: string;
+  shades: SelectedShade[];
+};
+
+type BalanceInsight = {
+  topFamilies: Array<{ family: string; percentage: number }>;
+  hint: string | null;
+};
+
+type GridShadeItem = {
+  rowId: string;
+  sku: string;
+  code: string;
+  hex: string;
+  imageCandidates: string[];
+  hasImage: boolean;
+  currentView: "nail" | "card";
+  isSelected: boolean;
+  qtyValue: number | "";
+};
+
+type GridFilter = "all" | "selected" | "unselected";
+
+export type InternalSolidColourSyncItem = {
+  id: string;
+  code: string;
+  internalSku?: string;
+  name: string;
+  hex?: string;
+  quantity: number;
+};
+
+type InternalSolidColourGridProps = {
+  onSelectionSync?: (items: InternalSolidColourSyncItem[]) => void;
+  disableClientInfoLock?: boolean;
+  viewMode?: "all" | "client-only" | "shades-only";
+  familyFilter?: string;
+  buyerType?: "bulk" | "finished_goods" | null;
+};
+
+type ShadeTileProps = {
+  rowId: string;
+  sku: string;
+  code: string;
+  hex: string;
+  imageCandidates: string[];
+  hasImage: boolean;
+  currentView: "nail" | "card";
+  isSelected: boolean;
+  qtyValue: number | "";
+  qtyUnit: "pcs" | "kg";
+  minQty: number;
+  qtyStep: number;
+  interactionLocked: boolean;
+  onToggleSelected: (id: string) => void;
+  onToggleView: (id: string) => void;
+  onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
+  onSetQty: (sku: string, value: string) => void;
+};
+
+type SelectedPanelProps = {
+  selectedCount: number;
+  countsByFamily: Array<[string, number]>;
+  selectedShades: SelectedShade[];
+  groupedSelectedShades: SelectedFamilyGroup[];
+  sortMode: SelectedSortMode;
+  onSortModeChange: (mode: SelectedSortMode) => void;
+  balanceInsight: BalanceInsight;
+  gridFilter: GridFilter;
+  onGridFilterChange: (filter: GridFilter) => void;
+  showQuantities: boolean;
+  onToggleQuantities: () => void;
+  quantities: Record<string, number>;
+  totalSelectedUnits: number;
+  estimatedBlocks: number;
+  onQuantityInput: (id: string, value: string) => void;
+  onQuantityIncrement: (id: string) => void;
+  onQuantityDecrement: (id: string) => void;
+  onRemoveShade: (id: string) => void;
+  onClearAll: () => void;
+  onCopyCodes: () => void;
+  onDownloadCsv: () => void;
+  copyFeedback: boolean;
+  interactionLocked: boolean;
+  onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
+  className?: string;
+};
+
+type MobileDrawerProps = {
+  open: boolean;
+  onClose: () => void;
+  panelProps: SelectedPanelProps;
+};
+
+type ShadeGridProps = {
+  items: GridShadeItem[];
+  qtyUnit: "pcs" | "kg";
+  minQty: number;
+  qtyStep: number;
+  interactionLocked: boolean;
+  onToggleSelected: (id: string) => void;
+  onToggleView: (id: string) => void;
+  onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
+  onSetQty: (sku: string, value: string) => void;
+};
+
+const normalizeHex = (value: string): string | null => {
+  const raw = value.trim();
+  if (!raw) return null;
+  const hex = raw.startsWith("#") ? raw.slice(1) : raw;
+  if (!/^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$/.test(hex)) return null;
+  if (hex.length === 3) {
+    const expanded = hex
+      .split("")
+      .map((char) => char + char)
+      .join("");
+    return `#${expanded.toUpperCase()}`;
+  }
+  return `#${hex.toUpperCase()}`;
+};
+
+const hexToHsl = (hex: string): { h: number; s: number; l: number } | null => {
+  const normalized = normalizeHex(hex);
+  if (!normalized) return null;
+
+  const r = parseInt(normalized.slice(1, 3), 16) / 255;
+  const g = parseInt(normalized.slice(3, 5), 16) / 255;
+  const b = parseInt(normalized.slice(5, 7), 16) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+
+  let h = 0;
+  const l = (max + min) / 2;
+  const s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+  if (delta !== 0) {
+    if (max === r) h = ((g - b) / delta) % 6;
+    else if (max === g) h = (b - r) / delta + 2;
+    else h = (r - g) / delta + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+
+  return {
+    h,
+    s: s * 100,
+    l: l * 100,
+  };
+};
+
+const classifyFamilyFromHex = (hex: string): string => {
+  const hsl = hexToHsl(hex);
+  if (!hsl) return "Other";
+
+  const { h, s, l } = hsl;
+
+  if (l >= 92 && s <= 12) return "Whites";
+  if (l <= 12 && s <= 20) return "Blacks";
+  if (s <= 12) return "Greys";
+
+  if (h >= 20 && h < 45 && l < 45) return "Browns";
+  if ((h >= 15 && h < 50 && s < 35 && l >= 45) || (h >= 10 && h < 40 && s < 45 && l >= 70)) {
+    return "Nudes/Beiges";
+  }
+
+  if (h < 15 || h >= 345) return "Reds";
+  if (h < 45) return "Oranges";
+  if (h < 70) return "Yellows";
+  if (h < 165) return "Greens";
+  if (h < 195) return "Teals";
+  if (h < 255) return "Blues";
+  if (h < 290) return "Purples";
+  if (h < 345) return "Pinks";
+
+  return "Other";
+};
+
+const FAMILY_FIELDS = ["family", "Family", "Colour_Family", "Color_Family", "colour_family", "color_family"];
+
+function getMissingRequiredClientFields(client: ClientDetails): string[] {
+  const missing: string[] = [];
+  if (!client.companyName.trim()) missing.push("Company Name or Client Name");
+  if (!client.invoiceAddress.trim()) missing.push("Invoice Address");
+  if (!client.invoiceRegion.trim()) missing.push("Invoice Region");
+  if (!client.country.trim()) missing.push("Country");
+  if (!client.invoicePostalCode.trim()) missing.push("Invoice Postal Code");
+  if (!client.email.trim()) missing.push("Email");
+  if (!client.contactNumber.trim()) missing.push("Contact Number");
+  if (!client.contactName.trim()) missing.push("Contact Name");
+
+  if (!client.sameAddress) {
+    if (!client.shippingAddress.trim()) missing.push("Shipping Address");
+    if (!client.shippingRegion.trim()) missing.push("Shipping Region");
+    if (!client.shippingPostalCode.trim()) missing.push("Shipping Postal Code");
+  }
+
+  return missing;
+}
+
+const getRowId = (row: Row, idx: number): string => row["Internal_SKU"] || row["Shade_Code"] || `row-${idx}`;
+
+const getRowCode = (row: Row, fallbackId: string): string => row["Shade_Code"] || row["Internal_SKU"] || fallbackId;
+
+const getRowHex = (row: Row): string => row["Hex_Code"] || row["HEX"] || "";
+
+const toImagePath = (value: string): string => {
+  if (!value) return "";
+  if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("/")) return value;
+  return `/img/solid-colour/${value}.webp`;
+};
+
+const getImageCandidatesFromId = (value: string): string[] => {
+  const match = value.match(/^(.*?)(\d+)$/);
+  if (!match) return [value];
+
+  const prefix = match[1];
+  const numericRaw = match[2];
+  const numeric = parseInt(numericRaw, 10);
+  if (Number.isNaN(numeric)) return [value];
+
+  const variants = [
+    `${prefix}${numericRaw}`,
+    `${prefix}${String(numeric).padStart(4, "0")}`,
+    `${prefix}${String(numeric).padStart(5, "0")}`,
+    `${prefix}${numeric}`,
+  ];
+
+  return Array.from(new Set(variants));
+};
+
+const getRowImageCandidates = (row: Row, id: string): string[] => {
+  const explicit = (row["Swatch_Image"] || "").trim();
+  const rawCandidates = explicit
+    ? [explicit]
+    : getImageCandidatesFromId(id);
+  return Array.from(new Set(rawCandidates.map((entry) => toImagePath(entry)).filter(Boolean)));
+};
+
+const getRowFamily = (row: Row): string => {
+  const familyField = FAMILY_FIELDS.map((key) => row[key]).find((value) => Boolean(value?.trim()));
+  if (familyField) return familyField.trim();
+  return classifyFamilyFromHex(getRowHex(row));
+};
+
+function normalizeQuantity(value: number): number {
+  if (Number.isNaN(value)) return QUANTITY_MOQ;
+  const roundedUp = Math.ceil(value / QUANTITY_STEP) * QUANTITY_STEP;
+  return Math.max(QUANTITY_MOQ, roundedUp);
+}
+
+function violatesFinishedUnitsMoqRule(value: number): boolean {
+  if (!Number.isFinite(value) || value <= 0) return false;
+  return value < QUANTITY_MOQ || value % QUANTITY_STEP !== 0;
+}
+
+function showMoqRulePopup() {
+  window.alert("MOQ is 25 units per colour and increase by increments of 5 units");
+}
+
+const codeSort = (left: string, right: string): number =>
+  left.localeCompare(right, undefined, { numeric: true, sensitivity: "base" });
+
+const panelFamilyOrderIndex = (family: string): number => {
+  const idx = PANEL_FAMILY_ORDER.indexOf(family as (typeof PANEL_FAMILY_ORDER)[number]);
+  return idx === -1 ? Number.MAX_SAFE_INTEGER : idx;
+};
+
+const ShadeTile = memo(function ShadeTile({
+  rowId,
+  sku,
+  code,
+  hex,
+  imageCandidates,
+  hasImage,
+  currentView,
+  isSelected,
+  qtyValue,
+  qtyUnit,
+  minQty,
+  qtyStep,
+  interactionLocked,
+  onToggleSelected,
+  onToggleView,
+  onSetImageStatus,
+  onSetQty,
+}: ShadeTileProps) {
+  const showImage = hasImage && currentView === "nail";
+  const showCard = !hasImage || currentView === "card";
+  const [candidateIndex, setCandidateIndex] = useState(0);
+  const activeImage = imageCandidates[candidateIndex] || "";
+  const candidateSignature = imageCandidates.join("|");
+
+  useEffect(() => {
+    setCandidateIndex(0);
+  }, [candidateSignature]);
+
+  const handleToggleSelected = useCallback(() => {
+    if (interactionLocked) return;
+    onToggleSelected(rowId);
+  }, [interactionLocked, onToggleSelected, rowId]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (interactionLocked) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onToggleSelected(rowId);
+    }
+  }, [interactionLocked, onToggleSelected, rowId]);
+
+  const handleToggleViewClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (interactionLocked) return;
+    e.stopPropagation();
+    onToggleView(rowId);
+  }, [interactionLocked, onToggleView, rowId]);
+
+  const handlePreviewToggleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (interactionLocked) return;
+    e.stopPropagation();
+    onToggleView(rowId);
+  }, [interactionLocked, onToggleView, rowId]);
+
+  const handleImageLoad = useCallback(() => {
+    onSetImageStatus(rowId, "OK");
+  }, [onSetImageStatus, rowId]);
+
+  const handleImageError = useCallback(() => {
+    setCandidateIndex((prev) => {
+      const next = prev + 1;
+      if (next < imageCandidates.length) return next;
+      onSetImageStatus(rowId, "MISSING");
+      return prev;
+    });
+  }, [imageCandidates.length, onSetImageStatus, rowId]);
+
+  const stopPropagation = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+  }, []);
+
+  const handleQtyChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (interactionLocked) return;
+    onSetQty(sku, e.target.value);
+  }, [interactionLocked, onSetQty, sku]);
+
+  const handleSave = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (interactionLocked) return;
+    e.stopPropagation();
+    onSetQty(sku, String(qtyValue !== "" ? qtyValue : minQty));
+  }, [interactionLocked, minQty, onSetQty, qtyValue, sku]);
+
+  const handleClear = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    if (interactionLocked) return;
+    e.stopPropagation();
+    onSetQty(sku, "0");
+  }, [interactionLocked, onSetQty, sku]);
+
+  return (
+    <div
+      className={`rounded-2xl border bg-white p-3 shadow-sm transition ${
+        interactionLocked ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+      } ${
+        isSelected ? "border-primary ring-2 ring-primary-200" : "border-grey-card"
+      }`}
+      role="button"
+      tabIndex={interactionLocked ? -1 : 0}
+      aria-pressed={isSelected}
+      aria-label={`${isSelected ? "Deselect" : "Select"} ${code}`}
+      onClick={handleToggleSelected}
+      onKeyDown={handleKeyDown}
+    >
+      <div
+        className="relative aspect-square w-full overflow-hidden rounded-xl bg-primary-50"
+        role="img"
+        aria-label={`${code} ${showImage ? "nail view" : "card view"}`}
+      >
+        {showImage ? (
+          <>
+            <img
+              src={activeImage}
+              alt={code}
+              className="h-full w-full object-cover"
+              loading="lazy"
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+            />
+            <button
+              type="button"
+              onClick={handlePreviewToggleClick}
+              className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm"
+            >
+              View card
+            </button>
+          </>
+        ) : showCard && hex ? (
+          <>
+            <div className="h-full w-full" style={{ backgroundColor: hex }} />
+            {hasImage && (
+              <button
+                type="button"
+                onClick={handlePreviewToggleClick}
+                className="absolute bottom-2 right-2 rounded-full border bg-white px-2 py-0.5 text-[10px] shadow-sm"
+              >
+                View nail
+              </button>
+            )}
+          </>
+        ) : (
+          <div className="flex h-full items-center justify-center px-2 text-center text-xs text-grey-secondary">{code}</div>
+        )}
+
+        {isSelected && (
+          <div className="absolute left-2 top-2 rounded-full border border-primary bg-primary px-2 py-0.5 text-[10px] text-white shadow-sm">
+            Selected
+          </div>
+        )}
+      </div>
+
+      <div className="mt-2">
+        <div className="text-xs font-semibold">{code}</div>
+        {sku && sku !== code && <div className="text-[11px] text-grey-secondary">{sku}</div>}
+
+        <button
+          type="button"
+          disabled={interactionLocked || !hasImage}
+          aria-pressed={currentView === "card"}
+          aria-label={
+            hasImage
+              ? `${currentView === "nail" ? "Show card view" : "Show nail view"} for ${code}`
+              : `No alternate view available for ${code}`
+          }
+          onClick={handleToggleViewClick}
+          className="mt-2 rounded-md border border-grey-card px-2 py-1 text-[11px] text-grey-primary disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {!hasImage ? "No alternate view" : currentView === "nail" ? "Show card" : "Show nail"}
+        </button>
+
+        <div className="mt-3 flex items-center gap-1.5" onClick={stopPropagation}>
+          <input
+            type="number"
+            min={minQty}
+            step={qtyStep}
+            placeholder={qtyUnit === "kg" ? "KG" : "Qty"}
+            value={qtyValue}
+            disabled={interactionLocked}
+            onClick={stopPropagation}
+            onChange={handleQtyChange}
+            className="w-16 rounded border px-2 py-1 text-xs"
+          />
+          <button
+            type="button"
+            disabled={interactionLocked}
+            onClick={handleSave}
+            className="rounded bg-primary px-2 py-1 text-[11px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Save
+          </button>
+          {isSelected && (
+            <button
+              type="button"
+              disabled={interactionLocked}
+              onClick={handleClear}
+              className="rounded border border-grey-card px-2 py-1 text-[11px] text-grey-secondary disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+});
+
+type SelectedSwatchItemProps = {
+  shade: SelectedShade;
+  quantity: number;
+  showQuantities: boolean;
+  interactionLocked: boolean;
+  onRemoveShade: (id: string) => void;
+  onSetImageStatus: (id: string, status: "OK" | "MISSING") => void;
+  onQuantityInput: (id: string, value: string) => void;
+  onQuantityIncrement: (id: string) => void;
+  onQuantityDecrement: (id: string) => void;
+};
+
+const SelectedSwatchItem = memo(function SelectedSwatchItem({
+  shade,
+  quantity,
+  showQuantities,
+  interactionLocked,
+  onRemoveShade,
+  onSetImageStatus,
+  onQuantityInput,
+  onQuantityIncrement,
+  onQuantityDecrement,
+}: SelectedSwatchItemProps) {
+  const [candidateIndex, setCandidateIndex] = useState(0);
+  const activeImage = shade.imageCandidates[candidateIndex] || "";
+  const candidateSignature = shade.imageCandidates.join("|");
+
+  useEffect(() => {
+    setCandidateIndex(0);
+  }, [candidateSignature]);
+
+  const handleRemove = useCallback(() => {
+    if (interactionLocked) return;
+    onRemoveShade(shade.id);
+  }, [interactionLocked, onRemoveShade, shade.id]);
+  const handleLoad = useCallback(() => onSetImageStatus(shade.id, "OK"), [onSetImageStatus, shade.id]);
+  const handleError = useCallback(() => {
+    setCandidateIndex((prev) => {
+      const next = prev + 1;
+      if (next < shade.imageCandidates.length) return next;
+      onSetImageStatus(shade.id, "MISSING");
+      return prev;
+    });
+  }, [onSetImageStatus, shade.id, shade.imageCandidates.length]);
+  const handleInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (interactionLocked) return;
+      onQuantityInput(shade.id, e.target.value);
+    },
+    [interactionLocked, onQuantityInput, shade.id]
+  );
+  const handleInc = useCallback(() => {
+    if (interactionLocked) return;
+    onQuantityIncrement(shade.id);
+  }, [interactionLocked, onQuantityIncrement, shade.id]);
+  const handleDec = useCallback(() => {
+    if (interactionLocked) return;
+    onQuantityDecrement(shade.id);
+  }, [interactionLocked, onQuantityDecrement, shade.id]);
+
+  return (
+    <div className="relative rounded-lg border border-grey-card bg-primary-50 p-1">
+      <button
+        type="button"
+        onClick={handleRemove}
+        disabled={interactionLocked}
+        className="absolute right-1 top-1 z-10 h-5 w-5 rounded-full border bg-white text-[10px] leading-none"
+        aria-label={`Remove ${shade.code}`}
+      >
+        ×
+      </button>
+
+      <div className="aspect-square overflow-hidden rounded-md bg-white">
+        {shade.hasImage ? (
+          <img
+            src={activeImage}
+            alt={shade.code}
+            className="h-full w-full object-cover"
+            loading="lazy"
+            onLoad={handleLoad}
+            onError={handleError}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center px-1 text-center text-[10px] font-medium text-grey-secondary">
+            {shade.code}
+          </div>
+        )}
+      </div>
+
+      <div className="mt-1 truncate text-[10px] font-medium text-grey-primary">{shade.code}</div>
+
+      {showQuantities && (
+        <div className="mt-1 flex items-center justify-center gap-1">
+          <button type="button" onClick={handleDec} disabled={interactionLocked} className="h-5 w-5 rounded border text-[10px] disabled:cursor-not-allowed disabled:opacity-50">-</button>
+          <input
+            type="number"
+            min={QUANTITY_MOQ}
+            step={QUANTITY_STEP}
+            value={quantity}
+            disabled={interactionLocked}
+            onChange={handleInput}
+            className="w-11 rounded border px-1 py-0.5 text-center text-[10px]"
+          />
+          <button type="button" onClick={handleInc} disabled={interactionLocked} className="h-5 w-5 rounded border text-[10px] disabled:cursor-not-allowed disabled:opacity-50">+</button>
+        </div>
+      )}
+    </div>
+  );
+});
+
+function ShadeGrid({ items, qtyUnit, minQty, qtyStep, interactionLocked, onToggleSelected, onToggleView, onSetImageStatus, onSetQty }: ShadeGridProps) {
+  if (ENABLE_VIRTUAL_GRID) {
+    return (
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {items.map((item) => (
+          <ShadeTile
+            key={item.rowId}
+            rowId={item.rowId}
+            sku={item.sku}
+            code={item.code}
+            hex={item.hex}
+            imageCandidates={item.imageCandidates}
+            hasImage={item.hasImage}
+            currentView={item.currentView}
+            isSelected={item.isSelected}
+            qtyValue={item.qtyValue}
+            qtyUnit={qtyUnit}
+            minQty={minQty}
+            qtyStep={qtyStep}
+            interactionLocked={interactionLocked}
+            onToggleSelected={onToggleSelected}
+            onToggleView={onToggleView}
+            onSetImageStatus={onSetImageStatus}
+            onSetQty={onSetQty}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      {items.map((item) => (
+        <ShadeTile
+          key={item.rowId}
+          rowId={item.rowId}
+          sku={item.sku}
+          code={item.code}
+          hex={item.hex}
+          imageCandidates={item.imageCandidates}
+          hasImage={item.hasImage}
+          currentView={item.currentView}
+          isSelected={item.isSelected}
+          qtyValue={item.qtyValue}
+          qtyUnit={qtyUnit}
+          minQty={minQty}
+          qtyStep={qtyStep}
+          interactionLocked={interactionLocked}
+          onToggleSelected={onToggleSelected}
+          onToggleView={onToggleView}
+          onSetImageStatus={onSetImageStatus}
+          onSetQty={onSetQty}
+        />
+      ))}
+    </div>
+  );
+}
+
+function SelectedPanel({
+  selectedCount,
+  countsByFamily,
+  selectedShades,
+  groupedSelectedShades,
+  sortMode,
+  onSortModeChange,
+  balanceInsight,
+  gridFilter,
+  onGridFilterChange,
+  showQuantities,
+  onToggleQuantities,
+  quantities,
+  totalSelectedUnits,
+  estimatedBlocks,
+  onQuantityInput,
+  onQuantityIncrement,
+  onQuantityDecrement,
+  onRemoveShade,
+  onClearAll,
+  onCopyCodes,
+  onDownloadCsv,
+  copyFeedback,
+  interactionLocked,
+  onSetImageStatus,
+  className,
+}: SelectedPanelProps) {
+  const renderSwatch = useCallback(
+    (shade: SelectedShade) => (
+      <SelectedSwatchItem
+        key={shade.id}
+        shade={shade}
+        quantity={quantities[shade.id] ?? QUANTITY_MOQ}
+        showQuantities={showQuantities}
+        interactionLocked={interactionLocked}
+        onRemoveShade={onRemoveShade}
+        onSetImageStatus={onSetImageStatus}
+        onQuantityInput={onQuantityInput}
+        onQuantityIncrement={onQuantityIncrement}
+        onQuantityDecrement={onQuantityDecrement}
+      />
+    ),
+    [interactionLocked, onQuantityDecrement, onQuantityIncrement, onQuantityInput, onRemoveShade, onSetImageStatus, quantities, showQuantities]
+  );
+
+  return (
+    <div className={`rounded-2xl border bg-white p-4 shadow-sm ${className ?? ""}`}>
+      <div className="text-base font-semibold">My Colour Chart</div>
+      <div className="mt-1 text-sm text-grey-secondary">Selected: {selectedCount}</div>
+
+      <div className="mt-3 rounded-xl border border-grey-card bg-primary-50 p-3">
+        <div className="text-xs font-semibold uppercase tracking-wide text-grey-secondary">Balance</div>
+        {balanceInsight.topFamilies.length ? (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {balanceInsight.topFamilies.map((entry) => (
+              <span key={entry.family} className="rounded-full border border-grey-card bg-white px-2 py-1 text-[11px] text-grey-primary">
+                {entry.family} {entry.percentage}%
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2 text-xs text-grey-secondary">No balance data yet.</div>
+        )}
+        {balanceInsight.hint && <div className="mt-2 text-xs text-grey-primary">{balanceInsight.hint}</div>}
+      </div>
+
+      <div className="mt-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-grey-secondary">Family counts</div>
+        {countsByFamily.length ? (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {countsByFamily.map(([family, count]) => (
+              <span key={family} className="rounded-full border border-grey-card bg-primary-50 px-2 py-1 text-[11px] text-grey-primary">
+                {family}: {count}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2 text-xs text-grey-secondary">No shades selected yet.</div>
+        )}
+      </div>
+
+      <div className="mt-4">
+        <div className="mb-2 flex items-center justify-between">
+          <div className="text-xs font-semibold uppercase tracking-wide text-grey-secondary">Selected swatches</div>
+          <button
+            type="button"
+            onClick={onClearAll}
+            disabled={interactionLocked || selectedCount === 0}
+            className="rounded-md border border-grey-card px-2 py-1 text-[11px] text-grey-primary disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Clear all
+          </button>
+        </div>
+
+        <div className="mb-2">
+          <div className="mb-1 text-[11px] text-grey-secondary">Sort</div>
+          <div className="inline-flex rounded-full border border-grey-card bg-primary-50 p-1">
+            <button
+              type="button"
+              onClick={() => onSortModeChange("family")}
+              disabled={interactionLocked}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "family" ? "bg-primary text-white" : "text-grey-primary"}`}
+            >
+              By Family
+            </button>
+            <button
+              type="button"
+              onClick={() => onSortModeChange("code")}
+              disabled={interactionLocked}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "code" ? "bg-primary text-white" : "text-grey-primary"}`}
+            >
+              By Code
+            </button>
+            <button
+              type="button"
+              onClick={() => onSortModeChange("recent")}
+              disabled={interactionLocked}
+              className={`rounded-full px-2 py-1 text-[11px] ${sortMode === "recent" ? "bg-primary text-white" : "text-grey-primary"}`}
+            >
+              Recently Added
+            </button>
+          </div>
+        </div>
+
+        <div className="mb-2 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => onGridFilterChange(gridFilter === "selected" ? "all" : "selected")}
+            disabled={interactionLocked}
+            className={`rounded-full border px-2 py-1 text-[11px] transition ${
+              gridFilter === "selected" ? "bg-primary text-white" : "bg-primary-50 text-grey-primary"
+            }`}
+          >
+            Show selected only
+          </button>
+          <button
+            type="button"
+            onClick={() => onGridFilterChange(gridFilter === "unselected" ? "all" : "unselected")}
+            disabled={interactionLocked}
+            className={`rounded-full border px-2 py-1 text-[11px] transition ${
+              gridFilter === "unselected" ? "bg-primary text-white" : "bg-primary-50 text-grey-primary"
+            }`}
+          >
+            Show unselected only
+          </button>
+        </div>
+
+        <div className="mb-3 flex gap-2">
+          <button
+            type="button"
+            onClick={onCopyCodes}
+            disabled={interactionLocked || selectedCount === 0}
+            className="rounded-md border border-grey-card px-2 py-1 text-[11px] text-grey-primary disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {copyFeedback ? "Copied ✓" : "Copy Codes"}
+          </button>
+          <button
+            type="button"
+            onClick={onDownloadCsv}
+            disabled={interactionLocked || selectedCount === 0}
+            className="rounded-md border border-grey-card px-2 py-1 text-[11px] text-grey-primary disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Download CSV
+          </button>
+        </div>
+
+        <div className="mb-3 rounded-lg border border-grey-card bg-primary-50 px-2 py-2">
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-medium text-grey-primary">Add quantities</div>
+            <button
+              type="button"
+              onClick={onToggleQuantities}
+              disabled={interactionLocked}
+              className={`rounded-full border border-grey-card px-2 py-0.5 text-[11px] ${showQuantities ? "bg-primary text-white" : "bg-white text-grey-primary"}`}
+            >
+              {showQuantities ? "On" : "Off"}
+            </button>
+          </div>
+          <div className="mt-1 text-[11px] text-grey-secondary">Total units: {totalSelectedUnits}</div>
+          <div className="text-[11px] text-grey-secondary">Estimated production blocks: {estimatedBlocks}</div>
+        </div>
+
+        {selectedShades.length ? (
+          sortMode === "family" ? (
+            <div className="space-y-3">
+              {groupedSelectedShades.map((group) => (
+                <div key={group.family}>
+                  <div className="mb-1 text-[11px] font-medium text-grey-primary">{group.family} ({group.shades.length})</div>
+                  <div className="grid grid-cols-3 gap-2">{group.shades.map(renderSwatch)}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-2">{selectedShades.map(renderSwatch)}</div>
+          )
+        ) : (
+          <div className="rounded-lg border border-dashed border-grey-card p-3 text-xs text-grey-secondary">
+            Tap shades in the grid to build your chart.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MobileDrawer({ open, onClose, panelProps }: MobileDrawerProps) {
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end bg-black/40 md:hidden"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className="min-h-[72vh] max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border bg-white pb-[max(1rem,env(safe-area-inset-bottom))]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="sticky top-0 z-10 mb-3 flex items-center justify-between border-b bg-white px-4 py-3">
+          <div className="text-sm font-semibold">My Colour Chart</div>
+          <button type="button" onClick={onClose} className="rounded-md border px-2 py-1 text-xs">
+            Close
+          </button>
+        </div>
+        <div className="px-4">
+          <SelectedPanel {...panelProps} className="border-0 p-0 shadow-none" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function InternalSolidColourGrid({
+  onSelectionSync,
+  disableClientInfoLock = false,
+  viewMode = "all",
+  familyFilter,
+  buyerType,
+}: InternalSolidColourGridProps = {}) {
+  const { user } = useAuth();
+  const [rows, setRows] = useState<Row[]>([]);
+  const [q, setQ] = useState("");
+  const [imgStatus, setImgStatus] = useState<Record<string, "OK" | "MISSING">>({});
+  const [tileView, setTileView] = useState<Record<string, "nail" | "card">>({});
+  const [onlyMissing, setOnlyMissing] = useState(false);
+  const [order, setOrder] = useState<Record<string, number>>({});
+  const [client, setClient] = useState<ClientDetails>({
+    companyName: "",
+    contactName: "",
+    contactNumber: "",
+    invoiceAddress: "",
+    invoiceRegion: "",
+    invoicePostalCode: "",
+    shippingAddress: "",
+    shippingRegion: "",
+    shippingPostalCode: "",
+    sameAddress: false,
+    vat: "",
+    country: "",
+    email: "",
+  });
+  const [packaging, setPackaging] = useState<PackagingPayload>({
+    mode: "standard",
+    system: "bottle",
+    bottle: {
+      size: "",
+      color: "",
+      brushShape: "",
+      brushType: "",
+    },
+    jar: {
+      size: "",
+      color: "",
+    },
+    customDescription: "",
+    notes: "",
+  });
+  const [packagingError, setPackagingError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [missingDetailsPopup, setMissingDetailsPopup] = useState<string[] | null>(null);
+  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
+  const [orderFormat, setOrderFormat] = useState<OrderFormat>("finished_units");
+  const isBulkMode = orderFormat === "bulk" || buyerType === "bulk";
+  const [bulkContainer, setBulkContainer] = useState<BulkContainer | "">("");
+  const [isBulkContainerAuto, setIsBulkContainerAuto] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [selectedOrder, setSelectedOrder] = useState<string[]>([]);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [sortMode, setSortMode] = useState<SelectedSortMode>("family");
+  const [showQuantities, setShowQuantities] = useState(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [gridFilter, setGridFilter] = useState<GridFilter>("all");
+  const [copyFeedback, setCopyFeedback] = useState(false);
+  const copyFeedbackTimeoutRef = useRef<number | null>(null);
+  const hasAttemptedPrefillRef = useRef(false);
+  const showClientSection = viewMode !== "shades-only";
+  const showShadeSection = viewMode !== "client-only";
+
+  useEffect(() => {
+    const rawClient = localStorage.getItem(CLIENT_DETAILS_STORAGE_KEY);
+    if (rawClient) {
+      try {
+        const parsed = JSON.parse(rawClient) as Partial<ClientDetails>;
+        setClient((prev) => ({ ...prev, ...parsed }));
+      } catch {
+        // ignore malformed local storage payload
+      }
+    }
+
+    const rawPackaging = localStorage.getItem(PACKAGING_STORAGE_KEY);
+    if (rawPackaging) {
+      try {
+        const parsed = JSON.parse(rawPackaging) as Partial<PackagingPayload>;
+        setPackaging((prev) => ({
+          ...prev,
+          ...parsed,
+          bottle: {
+            size: typeof parsed.bottle?.size === "string" ? parsed.bottle.size : (prev.bottle?.size || ""),
+            color: typeof parsed.bottle?.color === "string" ? parsed.bottle.color : (prev.bottle?.color || ""),
+            brushShape: typeof parsed.bottle?.brushShape === "string" ? parsed.bottle.brushShape : (prev.bottle?.brushShape || ""),
+            brushType: typeof parsed.bottle?.brushType === "string" ? parsed.bottle.brushType : (prev.bottle?.brushType || ""),
+          },
+          jar: {
+            size: typeof parsed.jar?.size === "string" ? parsed.jar.size : (prev.jar?.size || ""),
+            color: typeof parsed.jar?.color === "string" ? parsed.jar.color : (prev.jar?.color || ""),
+          },
+        }));
+      } catch {
+        // ignore malformed local storage payload
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(CLIENT_DETAILS_STORAGE_KEY, JSON.stringify(client));
+  }, [client]);
+
+  useEffect(() => {
+    localStorage.setItem(PACKAGING_STORAGE_KEY, JSON.stringify(packaging));
+  }, [packaging]);
+
+  useEffect(() => {
+    const email = user?.email?.trim().toLowerCase();
+    if (!email || hasAttemptedPrefillRef.current) return;
+
+    hasAttemptedPrefillRef.current = true;
+    let isActive = true;
+
+    const loadClientPrefill = async () => {
+      const { data, error } = await supabase
+        .from("client_registrations")
+        .select("company, contact, email, phone, country, vat_eori, billing_address, shipping_address, created_at")
+        .ilike("email", email)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (!isActive || error || !data) {
+        if (error) {
+          console.error("Failed to prefill client details:", error);
+        }
+        return;
+      }
+
+      const registration = data as ClientRegistrationPrefill;
+
+      setClient((prev) => {
+        const nextInvoiceAddress = prev.invoiceAddress || registration.billing_address || "";
+        const nextShippingAddress =
+          prev.shippingAddress || registration.shipping_address || registration.billing_address || "";
+
+        return {
+          ...prev,
+          companyName: prev.companyName || registration.company || "",
+          contactName: prev.contactName || registration.contact || "",
+          contactNumber: prev.contactNumber || registration.phone || "",
+          invoiceAddress: nextInvoiceAddress,
+          shippingAddress: nextShippingAddress,
+          vat: prev.vat || registration.vat_eori || "",
+          country: prev.country || registration.country || "",
+          email: prev.email || registration.email || email,
+          sameAddress: prev.sameAddress || (!registration.shipping_address && Boolean(nextInvoiceAddress)),
+        };
+      });
+    };
+
+    void loadClientPrefill();
+
+    return () => {
+      isActive = false;
+    };
+  }, [user?.email]);
+
+  useEffect(() => {
+    fetch("/data/solid-1200.json")
+      .then((res) => res.json())
+      .then((data: unknown) => setRows(Array.isArray(data) ? (data as Row[]) : []))
+      .catch(() => setRows([]));
+  }, []);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("solidColourOrder1200");
+    if (saved) {
+      try {
+        setOrder(JSON.parse(saved));
+      } catch {
+        setOrder({});
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("solidColourOrder1200", JSON.stringify(order));
+  }, [order]);
+
+  useEffect(() => {
+    const raw = localStorage.getItem(SELECTED_SHADES_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const ids = parsed.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+        setSelectedIds(new Set(ids));
+      }
+    } catch {
+      setSelectedIds(new Set());
+    }
+  }, []);
+
+  useEffect(() => {
+    const raw = localStorage.getItem(SELECTED_SHADES_ORDER_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const safe = parsed.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+        setSelectedOrder(safe);
+      }
+    } catch {
+      setSelectedOrder([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const raw = localStorage.getItem(SELECTED_SHADES_QTY_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        const safe: Record<string, number> = {};
+        Object.entries(parsed).forEach(([key, value]) => {
+          if (typeof value === "number") safe[key] = normalizeQuantity(value);
+        });
+        setQuantities(safe);
+      }
+    } catch {
+      setQuantities({});
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(SELECTED_SHADES_STORAGE_KEY, JSON.stringify(Array.from(selectedIds)));
+  }, [selectedIds]);
+
+  useEffect(() => {
+    localStorage.setItem(SELECTED_SHADES_ORDER_STORAGE_KEY, JSON.stringify(selectedOrder));
+  }, [selectedOrder]);
+
+  useEffect(() => {
+    localStorage.setItem(SELECTED_SHADES_QTY_STORAGE_KEY, JSON.stringify(quantities));
+  }, [quantities]);
+
+  useEffect(() => {
+    return () => {
+      if (copyFeedbackTimeoutRef.current !== null) {
+        window.clearTimeout(copyFeedbackTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setShowBackToTop(window.scrollY > 500);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const setImageStatus = useCallback((id: string, status: "OK" | "MISSING") => {
+    setImgStatus((prev) => (prev[id] === status ? prev : { ...prev, [id]: status }));
+  }, []);
+
+  const toggleSelected = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      const exists = next.has(id);
+
+      if (exists) next.delete(id);
+      else next.add(id);
+
+      setSelectedOrder((prevOrder) => {
+        if (exists) return prevOrder.filter((entry) => entry !== id);
+        return [id, ...prevOrder.filter((entry) => entry !== id)];
+      });
+
+      setQuantities((prevQty) => {
+        if (exists) {
+          if (!(id in prevQty)) return prevQty;
+          const nextQty = { ...prevQty };
+          delete nextQty[id];
+          return nextQty;
+        }
+        if (id in prevQty) return prevQty;
+        return { ...prevQty, [id]: QUANTITY_MOQ };
+      });
+
+      return next;
+    });
+  }, []);
+
+  const removeSelected = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      if (!prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+
+    setSelectedOrder((prev) => prev.filter((entry) => entry !== id));
+    setQuantities((prev) => {
+      if (!(id in prev)) return prev;
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+  }, []);
+
+  const clearSelected = useCallback(() => {
+    setSelectedIds(new Set());
+    setSelectedOrder([]);
+    setQuantities({});
+  }, []);
+
+  const setQuantityInput = useCallback((id: string, value: string) => {
+    const numeric = parseInt(value || String(isBulkMode ? 1 : QUANTITY_MOQ), 10);
+    if (!isBulkMode && violatesFinishedUnitsMoqRule(numeric)) {
+      showMoqRulePopup();
+    }
+    const nextQty = isBulkMode ? Math.max(1, numeric) : normalizeQuantity(numeric);
+
+    setQuantities((prev) => ({ ...prev, [id]: nextQty }));
+
+    const row = rows.find((item, idx) => getRowId(item, idx) === id);
+    const sku = row?.["Internal_SKU"] || row?.["Shade_Code"] || id;
+    if (sku) {
+      setOrder((prev) => ({ ...prev, [sku]: nextQty }));
+    }
+  }, [isBulkMode, rows]);
+
+  const incrementQuantity = useCallback((id: string) => {
+    setQuantities((prev) => {
+      const current = prev[id] ?? QUANTITY_MOQ;
+      const nextQty = normalizeQuantity(current + QUANTITY_STEP);
+      const row = rows.find((item, idx) => getRowId(item, idx) === id);
+      const sku = row?.["Internal_SKU"] || row?.["Shade_Code"] || id;
+      if (sku) {
+        setOrder((orderPrev) => ({ ...orderPrev, [sku]: nextQty }));
+      }
+      return { ...prev, [id]: nextQty };
+    });
+  }, [rows]);
+
+  const decrementQuantity = useCallback((id: string) => {
+    setQuantities((prev) => {
+      const current = prev[id] ?? QUANTITY_MOQ;
+      const nextQty = normalizeQuantity(current - QUANTITY_STEP);
+      const row = rows.find((item, idx) => getRowId(item, idx) === id);
+      const sku = row?.["Internal_SKU"] || row?.["Shade_Code"] || id;
+      if (sku) {
+        setOrder((orderPrev) => ({ ...orderPrev, [sku]: nextQty }));
+      }
+      return { ...prev, [id]: nextQty };
+    });
+  }, [rows]);
+
+  const filtered = useMemo(() => {
+    const query = q.trim().toLowerCase();
+    let out = rows;
+
+    if (familyFilter) {
+      out = out.filter((r) => getRowFamily(r) === familyFilter);
+    }
+
+    if (query) {
+      out = out.filter((r) => {
+        const sku = (r["Internal_SKU"] || "").toLowerCase();
+        const name = (r["Shade_Name"] || "").toLowerCase();
+        const code = (r["Shade_Code"] || "").toLowerCase();
+        return sku.includes(query) || name.includes(query) || code.includes(query);
+      });
+    }
+
+    if (onlyMissing) {
+      out = out.filter((r, idx) => {
+        const key = getRowId(r, idx);
+        return imgStatus[key] === "MISSING";
+      });
+    }
+
+    return out;
+  }, [rows, q, onlyMissing, imgStatus, familyFilter]);
+
+  const rowById = useMemo(() => {
+    const map = new Map<string, Row>();
+    rows.forEach((row, idx) => {
+      map.set(getRowId(row, idx), row);
+    });
+    return map;
+  }, [rows]);
+
+  const skuToRowId = useMemo(() => {
+    const map = new Map<string, string>();
+    rows.forEach((row, idx) => {
+      const rowId = getRowId(row, idx);
+      const internalSku = row["Internal_SKU"] || "";
+      const shadeCode = row["Shade_Code"] || "";
+      if (internalSku) map.set(internalSku, rowId);
+      if (shadeCode) map.set(shadeCode, rowId);
+      map.set(rowId, rowId);
+    });
+    return map;
+  }, [rows]);
+
+  useEffect(() => {
+    const selectedArray = Array.from(selectedIds);
+    const selectedSet = new Set(selectedArray);
+
+    setSelectedOrder((prev) => {
+      const kept = prev.filter((id) => selectedSet.has(id));
+      const missing = selectedArray.filter((id) => !kept.includes(id));
+      if (missing.length === 0 && kept.length === prev.length) return prev;
+      return [...kept, ...missing];
+    });
+
+    setQuantities((prev) => {
+      const next: Record<string, number> = {};
+      let changed = false;
+
+      selectedArray.forEach((id) => {
+        if (typeof prev[id] === "number") next[id] = normalizeQuantity(prev[id]);
+        else {
+          next[id] = QUANTITY_MOQ;
+          changed = true;
+        }
+      });
+
+      const prevKeys = Object.keys(prev);
+      if (!changed && prevKeys.length !== Object.keys(next).length) changed = true;
+      if (!changed) {
+        for (const key of prevKeys) {
+          if (!(key in next) || next[key] !== prev[key]) {
+            changed = true;
+            break;
+          }
+        }
+      }
+
+      return changed ? next : prev;
+    });
+  }, [selectedIds]);
+
+  const selectedShades = useMemo<SelectedShade[]>(() => {
+    const out: SelectedShade[] = [];
+    selectedIds.forEach((id) => {
+      const row = rowById.get(id);
+      if (!row) return;
+      const imageCandidates = getRowImageCandidates(row, id);
+      out.push({
+        id,
+        code: getRowCode(row, id),
+        imageCandidates,
+        hasImage: imageCandidates.length > 0 && imgStatus[id] !== "MISSING",
+        family: getRowFamily(row),
+      });
+    });
+
+    return out;
+  }, [selectedIds, rowById, imgStatus]);
+
+  const selectedByCode = useMemo(() => [...selectedShades].sort((a, b) => codeSort(a.code, b.code)), [selectedShades]);
+
+  const selectedOrderIndex = useMemo(() => {
+    const index = new Map<string, number>();
+    selectedOrder.forEach((id, pos) => index.set(id, pos));
+    return index;
+  }, [selectedOrder]);
+
+  const selectedByRecent = useMemo(
+    () =>
+      [...selectedShades].sort((a, b) => {
+        const left = selectedOrderIndex.get(a.id) ?? Number.MAX_SAFE_INTEGER;
+        const right = selectedOrderIndex.get(b.id) ?? Number.MAX_SAFE_INTEGER;
+        if (left !== right) return left - right;
+        return codeSort(a.code, b.code);
+      }),
+    [selectedShades, selectedOrderIndex]
+  );
+
+  const groupedSelectedShades = useMemo<SelectedFamilyGroup[]>(() => {
+    const groups = new Map<string, SelectedShade[]>();
+    selectedByCode.forEach((shade) => {
+      const arr = groups.get(shade.family) || [];
+      arr.push(shade);
+      groups.set(shade.family, arr);
+    });
+
+    return Array.from(groups.entries())
+      .sort((a, b) => {
+        const familyOrder = panelFamilyOrderIndex(a[0]) - panelFamilyOrderIndex(b[0]);
+        if (familyOrder !== 0) return familyOrder;
+        return a[0].localeCompare(b[0]);
+      })
+      .map(([family, shades]) => ({ family, shades }));
+  }, [selectedByCode]);
+
+  const displaySelectedShades = useMemo(() => {
+    if (sortMode === "recent") return selectedByRecent;
+    return selectedByCode;
+  }, [selectedByCode, selectedByRecent, sortMode]);
+
+  const countsByFamily = useMemo<Array<[string, number]>>(() => {
+    const counts = new Map<string, number>();
+    selectedShades.forEach((shade) => {
+      counts.set(shade.family, (counts.get(shade.family) || 0) + 1);
+    });
+
+    return Array.from(counts.entries()).sort((a, b) => {
+      const indexA = FAMILY_ORDER.indexOf(a[0] as (typeof FAMILY_ORDER)[number]);
+      const indexB = FAMILY_ORDER.indexOf(b[0] as (typeof FAMILY_ORDER)[number]);
+      const safeA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
+      const safeB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
+      if (safeA !== safeB) return safeA - safeB;
+      return a[0].localeCompare(b[0]);
+    });
+  }, [selectedShades]);
+
+  const balanceInsight = useMemo<BalanceInsight>(() => {
+    if (!selectedShades.length) return { topFamilies: [], hint: null };
+
+    const total = selectedShades.length;
+    const familyCounts = new Map<string, number>();
+    selectedShades.forEach((shade) => {
+      familyCounts.set(shade.family, (familyCounts.get(shade.family) || 0) + 1);
+    });
+
+    const ranked = Array.from(familyCounts.entries()).sort((a, b) => {
+      if (b[1] !== a[1]) return b[1] - a[1];
+      return panelFamilyOrderIndex(a[0]) - panelFamilyOrderIndex(b[0]);
+    });
+
+    const topFamilies = ranked.slice(0, 6).map(([family, count]) => ({
+      family,
+      percentage: Math.round((count / total) * 100),
+    }));
+
+    const dominant = ranked[0];
+    const preferredSuggestion = [...BALANCE_PREFERRED_FAMILIES]
+      .map((family) => ({ family, count: familyCounts.get(family) || 0 }))
+      .sort((a, b) => {
+        if (a.count !== b.count) return a.count - b.count;
+        return panelFamilyOrderIndex(a.family) - panelFamilyOrderIndex(b.family);
+      })
+      .slice(0, 2)
+      .map((item) => item.family);
+
+    let hint: string | null = null;
+    if (dominant && dominant[1] / total > 0.45) {
+      hint = `Mostly ${dominant[0]}. Add contrast with ${preferredSuggestion.join(" and ")}.`;
+    } else if (total < 10) {
+      hint = "Early build. Add 2–3 anchors: nudes + 1 deep tone.";
+    } else if (!familyCounts.has("Nudes/Beiges") && total >= 12) {
+      hint = "Consider adding 2–4 nudes/beiges for wearable balance.";
+    } else if ((!familyCounts.has("Whites") || !familyCounts.has("Blacks")) && total >= 12) {
+      hint = "Consider 1–2 whites/blacks for line-work + contrast.";
+    }
+
+    return { topFamilies, hint };
+  }, [selectedShades]);
+
+  const totalSelectedUnits = useMemo(
+    () => selectedShades.reduce((sum, shade) => sum + (quantities[shade.id] ?? QUANTITY_MOQ), 0),
+    [quantities, selectedShades]
+  );
+
+  const estimatedBlocks = useMemo(() => Math.ceil(totalSelectedUnits / ESTIMATED_BLOCK_SIZE), [totalSelectedUnits]);
+
+  const selectedCount = selectedShades.length;
+
+  const syncPayload = useMemo<InternalSolidColourSyncItem[]>(() => {
+    return selectedShades.map((shade) => {
+      const row = rowById.get(shade.id);
+      const code = row ? getRowCode(row, shade.id) : shade.code;
+      const quantity = quantities[shade.id] ?? (isBulkMode ? 1 : QUANTITY_MOQ);
+      const normalizedHex = row ? normalizeHex(row["HEX"] || "") : null;
+
+      return {
+        id: shade.id,
+        code,
+        internalSku: row?.["Internal_SKU"] || undefined,
+        name: row?.["Shade_Name"] || code,
+        hex: normalizedHex || undefined,
+        quantity,
+      };
+    });
+  }, [quantities, rowById, selectedShades]);
+
+  useEffect(() => {
+    if (!onSelectionSync) return;
+    onSelectionSync(syncPayload);
+  }, [onSelectionSync, syncPayload]);
+
+  useEffect(() => {
+    const positiveOrderEntries = Object.entries(order).filter(([sku, qty]) => Boolean(sku) && qty > 0);
+    if (!positiveOrderEntries.length) return;
+
+    const orderIds = positiveOrderEntries
+      .map(([sku]) => skuToRowId.get(sku) || "")
+      .filter((id): id is string => Boolean(id));
+
+    if (!orderIds.length) return;
+
+    setSelectedIds((prev) => {
+      let changed = false;
+      const next = new Set(prev);
+      orderIds.forEach((id) => {
+        if (!next.has(id)) {
+          next.add(id);
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+
+    setSelectedOrder((prev) => {
+      const next = [...prev];
+      let changed = false;
+      orderIds.forEach((id) => {
+        if (!next.includes(id)) {
+          next.unshift(id);
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+
+    setQuantities((prev) => {
+      const next = { ...prev };
+      let changed = false;
+      positiveOrderEntries.forEach(([sku, qty]) => {
+        const id = skuToRowId.get(sku);
+        if (!id) return;
+        const normalized = normalizeQuantity(qty);
+        if (next[id] !== normalized) {
+          next[id] = normalized;
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+  }, [order, skuToRowId]);
+
+  const filteredShades = useMemo(() => {
+    if (gridFilter === "all") return filtered;
+    const selectedOnly = gridFilter === "selected";
+    return filtered.filter((row, idx) => selectedIds.has(getRowId(row, idx)) === selectedOnly);
+  }, [filtered, gridFilter, selectedIds]);
+
+  const gridItems = useMemo<GridShadeItem[]>(
+    () =>
+      filteredShades.map((row, idx) => {
+        const rowId = getRowId(row, idx);
+        const sku = row["Internal_SKU"] || "";
+        const imageCandidates = getRowImageCandidates(row, rowId);
+        return {
+          rowId,
+          sku,
+          code: getRowCode(row, rowId),
+          hex: getRowHex(row),
+          imageCandidates,
+          hasImage: imageCandidates.length > 0 && imgStatus[rowId] !== "MISSING",
+          currentView: tileView[rowId] || "nail",
+          isSelected: selectedIds.has(rowId),
+          qtyValue: order[sku] || "",
+        };
+      }),
+    [filteredShades, imgStatus, order, selectedIds, tileView]
+  );
+
+  const setOrderQty = useCallback((sku: string, value: string) => {
+    const parsed = parseInt(value || "0", 10);
+
+    let nextOrderQty = 0;
+    if (Number.isNaN(parsed) || parsed <= 0) {
+      nextOrderQty = 0;
+    } else if (isBulkMode) {
+      nextOrderQty = Math.max(1, parsed);
+    } else {
+      if (violatesFinishedUnitsMoqRule(parsed)) {
+        showMoqRulePopup();
+      }
+      nextOrderQty = normalizeQuantity(parsed);
+    }
+
+    setOrder((prev) => ({ ...prev, [sku]: nextOrderQty }));
+
+    const rowId = skuToRowId.get(sku) || sku;
+
+    if (!rowId) return;
+
+    if (nextOrderQty > 0) {
+      setSelectedIds((prev) => {
+        if (prev.has(rowId)) return prev;
+        const next = new Set(prev);
+        next.add(rowId);
+        return next;
+      });
+
+      setSelectedOrder((prev) => [rowId, ...prev.filter((entry) => entry !== rowId)]);
+
+      setQuantities((prev) => ({
+        ...prev,
+        [rowId]: isBulkMode ? nextOrderQty : normalizeQuantity(nextOrderQty),
+      }));
+    } else {
+      setSelectedIds((prev) => {
+        if (!prev.has(rowId)) return prev;
+        const next = new Set(prev);
+        next.delete(rowId);
+        return next;
+      });
+
+      setSelectedOrder((prev) => prev.filter((entry) => entry !== rowId));
+      setQuantities((prev) => {
+        if (!(rowId in prev)) return prev;
+        const next = { ...prev };
+        delete next[rowId];
+        return next;
+      });
+    }
+  }, [orderFormat, skuToRowId]);
+
+  const tileMinQty = isBulkMode ? 1 : QUANTITY_MOQ;
+  const tileQtyStep = isBulkMode ? 1 : QUANTITY_STEP;
+
+  const toggleTileView = useCallback((id: string) => {
+    setTileView((prev) => ({
+      ...prev,
+      [id]: (prev[id] || "nail") === "nail" ? "card" : "nail",
+    }));
+  }, []);
+
+  const changeGridFilter = useCallback((filter: GridFilter) => {
+    setGridFilter(filter);
+  }, []);
+
+  const changeSortMode = useCallback((mode: SelectedSortMode) => {
+    setSortMode(mode);
+  }, []);
+
+  const toggleQuantities = useCallback(() => {
+    setShowQuantities((prev) => !prev);
+  }, []);
+
+  const handleCopyCodes = useCallback(async () => {
+    if (!displaySelectedShades.length) return;
+    const text = displaySelectedShades.map((shade) => shade.code).join(", ");
+    await navigator.clipboard.writeText(text);
+    setCopyFeedback(true);
+
+    if (copyFeedbackTimeoutRef.current !== null) {
+      window.clearTimeout(copyFeedbackTimeoutRef.current);
+    }
+    copyFeedbackTimeoutRef.current = window.setTimeout(() => {
+      setCopyFeedback(false);
+      copyFeedbackTimeoutRef.current = null;
+    }, 1600);
+  }, [displaySelectedShades]);
+
+  const handleDownloadCsv = useCallback(() => {
+    if (!displaySelectedShades.length) return;
+
+    const escapeCell = (value: string) => `"${value.replace(/"/g, '""')}"`;
+    const lines = [
+      "code,family",
+      ...displaySelectedShades.map((shade) => `${escapeCell(shade.code)},${escapeCell(shade.family)}`),
+    ];
+    const csv = lines.join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "leeukopf-selected-shades.csv";
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }, [displaySelectedShades]);
+
+  const selectedItems = Object.entries(order).filter(([skuKey, qty]) => Boolean(skuKey) && qty > 0);
+  const qtyUnit: "pcs" | "kg" = isBulkMode
+    ? (ALLOWS_KG_UNIT ? "kg" : "pcs")
+    : (ALLOWS_PCS_UNIT ? "pcs" : "kg");
+  const bulkRequiresBucket = orderFormat === "bulk" && selectedItems.some(([, qty]) => qty >= 5);
+  const totalUnits = selectedItems.reduce((sum, [skuKey, qty]) => (skuKey ? sum + qty : sum), 0);
+  const missingClientFields = useMemo(() => getMissingRequiredClientFields(client), [client]);
+  const isClientInfoComplete = missingClientFields.length === 0;
+  const isB2BPath = typeof window !== "undefined" && window.location.pathname.startsWith("/b2b/");
+  const interactionLocked = !isB2BPath && viewMode !== "shades-only" && !disableClientInfoLock && !isClientInfoComplete;
+
+  useEffect(() => {
+    if ((!ALLOWS_KG_UNIT || !ALLOWS_BUCKET_PACKAGING) && orderFormat === "bulk") {
+      setOrderFormat("finished_units");
+      setBulkContainer("");
+      setIsBulkContainerAuto(false);
+    }
+  }, [orderFormat]);
+
+  useEffect(() => {
+    if (!SHOW_JAR_SIZE_SELECTOR && packaging.system !== "bottle") {
+      setPackaging((prev) => ({ ...prev, system: "bottle" }));
+    }
+  }, [packaging.system]);
+
+  useEffect(() => {
+    if (orderFormat !== "bulk") {
+      setIsBulkContainerAuto(false);
+      return;
+    }
+
+    if (bulkRequiresBucket && (bulkContainer === "" || isBulkContainerAuto) && bulkContainer !== "5kg_bucket") {
+      setBulkContainer("5kg_bucket");
+      setIsBulkContainerAuto(true);
+      return;
+    }
+
+    if (!bulkRequiresBucket && isBulkContainerAuto && bulkContainer === "5kg_bucket") {
+      setBulkContainer("");
+      setIsBulkContainerAuto(false);
+    }
+  }, [bulkRequiresBucket, bulkContainer, isBulkContainerAuto, orderFormat]);
+
+  const handleSubmitOrder = async () => {
+    const exportData: OrderLine[] = selectedItems.map(([sku, qty]) => {
+      const row = rows.find((item) => (item["Internal_SKU"] || "") === sku);
+      return {
+        code: row?.["Shade_Code"] || sku,
+        name: row?.["Shade_Name"] || sku,
+        qty,
+        unit: qtyUnit,
+      };
+    });
+    const token = import.meta.env.VITE_SOLID_COLOUR_ORDER_TOKEN || "";
+
+    if (missingClientFields.length > 0 || exportData.length === 0) {
+      const details = missingClientFields.length > 0
+        ? ` Missing: ${missingClientFields.join(", ")}.`
+        : "";
+      if (missingClientFields.length > 0) {
+        setMissingDetailsPopup(missingClientFields);
+      }
+      setSubmitMessage({
+        type: "error",
+        text: `Please complete all required client fields and add at least one shade before exporting.${details}`,
+      });
+      return;
+    }
+
+    if (orderFormat === "bulk") {
+      if (!bulkContainer) {
+        const message = "Please choose a bulk packing type: 1kg Flasks or 5kg Buckets.";
+        setPackagingError(message);
+        setSubmitMessage({ type: "error", text: message });
+        return;
+      }
+      setPackagingError(null);
+    } else {
+      if (packaging.mode === "standard") {
+        if (packaging.system === "bottle") {
+          const missing: string[] = [];
+          if (!packaging.bottle?.size) missing.push("Bottle size");
+          if (!packaging.bottle?.color) missing.push("Bottle color");
+          if (!packaging.bottle?.brushShape) missing.push("Brush shape");
+          if (ENABLE_BRUSH_TYPE && !packaging.bottle?.brushType) missing.push("Brush type");
+
+          if (missing.length > 0) {
+            const message = `Missing packaging fields: ${missing.join(", ")}.`;
+            setPackagingError(message);
+            setSubmitMessage({ type: "error", text: message });
+            return;
+          }
+        } else {
+          const missing: string[] = [];
+          if (!packaging.jar?.size) missing.push("Jar size");
+          if (!packaging.jar?.color) missing.push("Jar color");
+
+          if (missing.length > 0) {
+            const message = `Missing packaging fields: ${missing.join(", ")}.`;
+            setPackagingError(message);
+            setSubmitMessage({ type: "error", text: message });
+            return;
+          }
+        }
+      } else {
+        const description = packaging.customDescription.trim();
+        if (description.length < 20) {
+          const message = "Packaging details (required) must be at least 20 characters for custom packaging.";
+          setPackagingError(message);
+          setSubmitMessage({ type: "error", text: message });
+          return;
+        }
+      }
+
+      setPackagingError(null);
+    }
+
+    if (!token) {
+      setSubmitMessage({
+        type: "error",
+        text: "Missing VITE_SOLID_COLOUR_ORDER_TOKEN in environment.",
+      });
+      return;
+    }
+
+    const shippingAddress = client.sameAddress ? client.invoiceAddress : client.shippingAddress;
+    const shippingRegion = client.sameAddress ? client.invoiceRegion : client.shippingRegion;
+    const shippingPostalCode = client.sameAddress ? client.invoicePostalCode : client.shippingPostalCode;
+
+    const payload = {
+      orderFormat,
+      qtyUnit,
+      bulkContainer: orderFormat === "bulk" ? bulkContainer : undefined,
+      client: {
+        companyName: client.companyName,
+        contactName: client.contactName,
+        contactNumber: client.contactNumber,
+        invoiceAddress: client.invoiceAddress,
+        invoiceRegion: client.invoiceRegion,
+        invoicePostalCode: client.invoicePostalCode,
+        shippingAddress,
+        shippingRegion,
+        shippingPostalCode,
+        sameAddress: client.sameAddress,
+        vat: client.vat,
+        country: client.country,
+        contactEmail: client.email,
+      },
+      lines: exportData,
+      packaging: {
+        mode: orderFormat === "bulk" ? "custom" : packaging.mode,
+        system: orderFormat === "bulk" ? "bulk" : packaging.system,
+        bottle: packaging.bottle,
+        jar: packaging.jar,
+        customDescription: packaging.customDescription,
+        notes: packaging.notes,
+      },
+    };
+
+    try {
+      setIsSubmitting(true);
+      setSubmitMessage(null);
+
+      const response = await fetch("/.netlify/functions/solid-colour-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const orderId = response.headers.get("x-order-id") || response.headers.get("X-Order-Id") || "request";
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Leeukopf-Solid-Colour-Order-${orderId}.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        setSubmitMessage({
+          type: "success",
+          text: `Order ${orderId} submitted successfully. Confirmation email sent.`,
+        });
+        setShowThankYouPopup(true);
+        return;
+      }
+
+      const responseText = await response.text();
+      let data: { message?: string } = {};
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        data = { message: responseText || undefined };
+      }
+
+      setSubmitMessage({
+        type: "error",
+        text: data?.message || "Failed to submit order. PDF was not downloaded.",
+      });
+    } catch {
+      setSubmitMessage({
+        type: "error",
+        text: "Network error while submitting order. PDF was not downloaded.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const panelProps: SelectedPanelProps = {
+    selectedCount,
+    countsByFamily,
+    selectedShades: displaySelectedShades,
+    groupedSelectedShades,
+    sortMode,
+    onSortModeChange: changeSortMode,
+    balanceInsight,
+    gridFilter,
+    onGridFilterChange: changeGridFilter,
+    showQuantities,
+    onToggleQuantities: toggleQuantities,
+    quantities,
+    totalSelectedUnits,
+    estimatedBlocks,
+    onQuantityInput: setQuantityInput,
+    onQuantityIncrement: incrementQuantity,
+    onQuantityDecrement: decrementQuantity,
+    onRemoveShade: removeSelected,
+    onClearAll: clearSelected,
+    onCopyCodes: handleCopyCodes,
+    onDownloadCsv: handleDownloadCsv,
+    copyFeedback,
+    interactionLocked,
+    onSetImageStatus: setImageStatus,
+  };
+
+  return (
+    <div className="mx-auto max-w-6xl p-6">
+      {showThankYouPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-md rounded-2xl border bg-white p-5 shadow-xl">
+            <div className="text-base font-semibold">Leeukopf Laboratories</div>
+            <p className="mt-2 text-sm text-grey-primary">
+              Leeukopf Laboratories thanks you for your request, our dedicated team will be in contact with you soon!
+            </p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setShowThankYouPopup(false)}
+                className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {missingDetailsPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-lg rounded-2xl border bg-white p-5 shadow-xl">
+            <div className="text-base font-semibold text-grey-primary">Complete Required Details</div>
+            <p className="mt-2 text-sm text-grey-secondary">
+              Before you can continue, please complete all required client details:
+            </p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-grey-primary">
+              {missingDetailsPopup.map((field) => (
+                <li key={field}>{field}</li>
+              ))}
+            </ul>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setMissingDetailsPopup(null)}
+                className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className={`mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${showShadeSection ? "" : "hidden"}`}>
+        <div>
+        </div>
+
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Search by SKU / code / name…"
+          className="w-full rounded-xl border bg-white px-4 py-2 text-sm shadow-sm sm:w-80"
+        />
+
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={onlyMissing}
+            onChange={(e) => setOnlyMissing(e.target.checked)}
+          />
+          Show missing only
+        </label>
+      </div>
+
+      <div className={showShadeSection ? "hidden" : "mb-4"}>
+        <h1 className="text-2xl font-semibold">Client Information</h1>
+        <p className="text-sm text-grey-secondary">Complete client details and packaging on this separate page.</p>
+      </div>
+
+      <div className={`mb-6 rounded-xl border bg-white p-4 shadow-sm ${showClientSection ? "" : "hidden"}`}>
+        <div className="mb-2 text-xs text-grey-secondary">Fields marked with <span className="text-red-600">*</span> are required.</div>
+        <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <label className="text-xs font-semibold text-grey-primary">Company Name or Client Name <span className="text-red-600">*</span>
+            <input
+              value={client.companyName}
+              onChange={(e) => setClient((prev) => ({ ...prev, companyName: e.target.value }))}
+              placeholder="Company Name or Client Name"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-semibold text-grey-primary">Contact Name <span className="text-red-600">*</span>
+            <input
+              value={client.contactName}
+              onChange={(e) => setClient((prev) => ({ ...prev, contactName: e.target.value }))}
+              placeholder="Contact Name"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-semibold text-grey-primary">Contact Number <span className="text-red-600">*</span>
+            <input
+              value={client.contactNumber}
+              onChange={(e) => setClient((prev) => ({ ...prev, contactNumber: e.target.value }))}
+              placeholder="Contact Number"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-semibold text-grey-primary">Invoice Address <span className="text-red-600">*</span>
+            <input
+              value={client.invoiceAddress}
+              onChange={(e) => {
+                const value = e.target.value;
+                setClient((prev) => ({
+                  ...prev,
+                  invoiceAddress: value,
+                  shippingAddress: prev.sameAddress ? value : prev.shippingAddress,
+                }));
+              }}
+              placeholder="Invoice Address"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-semibold text-grey-primary">Invoice Region <span className="text-red-600">*</span>
+            <input
+              value={client.invoiceRegion}
+              onChange={(e) => {
+                const value = e.target.value;
+                setClient((prev) => ({
+                  ...prev,
+                  invoiceRegion: value,
+                  shippingRegion: prev.sameAddress ? value : prev.shippingRegion,
+                }));
+              }}
+              placeholder="Invoice Region"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-semibold text-grey-primary">Invoice Postal Code <span className="text-red-600">*</span>
+            <input
+              value={client.invoicePostalCode}
+              onChange={(e) => {
+                const value = e.target.value;
+                setClient((prev) => ({
+                  ...prev,
+                  invoicePostalCode: value,
+                  shippingPostalCode: prev.sameAddress ? value : prev.shippingPostalCode,
+                }));
+              }}
+              placeholder="Invoice Postal Code"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2 text-sm sm:col-span-2">
+            <input
+              type="checkbox"
+              checked={client.sameAddress}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setClient((prev) => ({
+                  ...prev,
+                  sameAddress: checked,
+                  shippingAddress: checked ? prev.invoiceAddress : prev.shippingAddress,
+                  shippingRegion: checked ? prev.invoiceRegion : prev.shippingRegion,
+                  shippingPostalCode: checked ? prev.invoicePostalCode : prev.shippingPostalCode,
+                }));
+              }}
+            />
+            Same Address (copy Invoice Address to Shipping Address)
+          </label>
+          {!client.sameAddress && (
+            <>
+              <label className="text-xs font-semibold text-grey-primary">Shipping Address <span className="text-red-600">*</span>
+                <input
+                  value={client.shippingAddress}
+                  onChange={(e) => setClient((prev) => ({ ...prev, shippingAddress: e.target.value }))}
+                  placeholder="Shipping Address"
+                  className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="text-xs font-semibold text-grey-primary">Shipping Region <span className="text-red-600">*</span>
+                <input
+                  value={client.shippingRegion}
+                  onChange={(e) => setClient((prev) => ({ ...prev, shippingRegion: e.target.value }))}
+                  placeholder="Shipping Region"
+                  className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="text-xs font-semibold text-grey-primary">Shipping Postal Code <span className="text-red-600">*</span>
+                <input
+                  value={client.shippingPostalCode}
+                  onChange={(e) => setClient((prev) => ({ ...prev, shippingPostalCode: e.target.value }))}
+                  placeholder="Shipping Postal Code"
+                  className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                />
+              </label>
+            </>
+          )}
+          <label className="text-xs font-medium text-grey-secondary">VAT (optional)
+            <input
+              value={client.vat}
+              onChange={(e) => setClient((prev) => ({ ...prev, vat: e.target.value }))}
+              placeholder="VAT (optional)"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-semibold text-grey-primary">Country <span className="text-red-600">*</span>
+            <input
+              value={client.country}
+              onChange={(e) => setClient((prev) => ({ ...prev, country: e.target.value }))}
+              placeholder="Country"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="text-xs font-semibold text-grey-primary">Contact Email <span className="text-red-600">*</span>
+            <input
+              type="email"
+              value={client.email}
+              onChange={(e) => setClient((prev) => ({ ...prev, email: e.target.value }))}
+              placeholder="Contact Email"
+              className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+            />
+          </label>
+        </div>
+
+        <div className="rounded-xl border border-grey-card bg-primary-50 p-3">
+          <div className="text-sm font-semibold">Order format <span className="text-red-600">*</span></div>
+          <div className="mt-2 grid gap-2 text-sm">
+            <label className="flex items-start gap-2">
+              <input
+                type="radio"
+                name="order-format"
+                value="finished_units"
+                checked={orderFormat === "finished_units"}
+                onChange={() => setOrderFormat("finished_units")}
+              />
+              <span>Finished units (we bottle it)</span>
+            </label>
+            {ALLOWS_KG_UNIT && ALLOWS_BUCKET_PACKAGING && (
+              <label className="flex items-start gap-2">
+                <input
+                  type="radio"
+                  name="order-format"
+                  value="bulk"
+                  checked={orderFormat === "bulk"}
+                  onChange={() => setOrderFormat("bulk")}
+                />
+                <span>Bulk (you fill your own bottles)</span>
+              </label>
+            )}
+          </div>
+
+          {orderFormat === "bulk" && (
+            <div className="mt-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-700">
+              Bulk selected: MOQ per shade is 1kg.
+            </div>
+          )}
+
+          {orderFormat === "bulk" ? (
+            <>
+              <div className="mt-3 border-t pt-3 text-sm font-semibold">Bulk Packing <span className="text-red-600">*</span></div>
+              <div className="mt-2 grid gap-2 text-sm">
+                <label className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="bulk-container"
+                    value="1kg_flask"
+                    checked={bulkContainer === "1kg_flask"}
+                    onChange={() => {
+                      setBulkContainer("1kg_flask");
+                      setIsBulkContainerAuto(false);
+                      setPackagingError(null);
+                    }}
+                  />
+                  <span>1kg Flasks</span>
+                </label>
+                <label className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="bulk-container"
+                    value="5kg_bucket"
+                    checked={bulkContainer === "5kg_bucket"}
+                    onChange={() => {
+                      setBulkContainer("5kg_bucket");
+                      setIsBulkContainerAuto(false);
+                      setPackagingError(null);
+                    }}
+                  />
+                  <span>5kg Buckets</span>
+                </label>
+              </div>
+              {bulkRequiresBucket && (
+                <div className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                  5kg or more selected: 5kg Buckets has been auto-selected as a suggestion (you can still change it).
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="mt-3 border-t pt-3 text-sm font-semibold">Packaging <span className="text-red-600">*</span></div>
+              <div className="mt-2 grid gap-2 text-sm">
+                <label className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="packaging-mode"
+                    value="standard"
+                    checked={packaging.mode === "standard"}
+                    onChange={() => {
+                      setPackaging((prev) => ({ ...prev, mode: "standard" }));
+                      setPackagingError(null);
+                    }}
+                  />
+                  <span>Use Leeukopf standard bottles & brushes</span>
+                </label>
+                <label className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="packaging-mode"
+                    value="custom"
+                    checked={packaging.mode === "custom"}
+                    onChange={() => {
+                      setPackaging((prev) => ({ ...prev, mode: "custom" }));
+                      setPackagingError(null);
+                    }}
+                  />
+                  <span>I have my own packaging / I want something different</span>
+                </label>
+              </div>
+
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                <label className="text-xs font-medium text-grey-secondary">System</label>
+                <div className="flex items-center gap-4 sm:col-span-1">
+                  <label className="flex items-center gap-1 text-sm">
+                    <input
+                      type="radio"
+                      name="packaging-system"
+                      value="bottle"
+                      checked={packaging.system === "bottle"}
+                      onChange={() => {
+                        setPackaging((prev) => ({ ...prev, system: "bottle" }));
+                        setPackagingError(null);
+                      }}
+                    />
+                    Bottle
+                  </label>
+                  {SHOW_JAR_SIZE_SELECTOR && (
+                    <label className="flex items-center gap-1 text-sm">
+                      <input
+                        type="radio"
+                        name="packaging-system"
+                        value="jar"
+                        checked={packaging.system === "jar"}
+                        onChange={() => {
+                          setPackaging((prev) => ({ ...prev, system: "jar" }));
+                          setPackagingError(null);
+                        }}
+                      />
+                      Jar
+                    </label>
+                  )}
+                </div>
+              </div>
+
+              {packaging.mode === "standard" ? (
+                <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {!SHOW_JAR_SIZE_SELECTOR || packaging.system === "bottle" ? (
+                    <>
+                      <label className="text-xs font-medium text-grey-secondary">
+                        Bottle Size <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.bottle?.size || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              bottle: {
+                                ...(prev.bottle || { color: "", brushShape: "", brushType: "" }),
+                                size: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {BOTTLE_SIZE_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="text-xs font-medium text-grey-secondary">
+                        Bottle Color <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.bottle?.color || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              bottle: {
+                                ...(prev.bottle || { size: "", brushShape: "", brushType: "" }),
+                                color: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {BOTTLE_COLOR_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="text-xs font-medium text-grey-secondary">
+                        Brush Shape <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.bottle?.brushShape || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              bottle: {
+                                ...(prev.bottle || { size: "", color: "", brushType: "" }),
+                                brushShape: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {BRUSH_SHAPE_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+
+                      {ENABLE_BRUSH_TYPE && (
+                        <label className="text-xs font-medium text-grey-secondary">
+                          Brush Type <span className="text-red-600">*</span>
+                          <select
+                            value={packaging.bottle?.brushType || ""}
+                            onChange={(e) => {
+                              setPackaging((prev) => ({
+                                ...prev,
+                                bottle: {
+                                  ...(prev.bottle || { size: "", color: "", brushShape: "" }),
+                                  brushType: e.target.value,
+                                },
+                              }));
+                              setPackagingError(null);
+                            }}
+                            className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                          >
+                            <option value="">Select…</option>
+                            {BRUSH_TYPE_OPTIONS.map((option) => (
+                              <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                            ))}
+                          </select>
+                        </label>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <label className="text-xs font-medium text-grey-secondary">
+                        Jar Size <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.jar?.size || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              jar: {
+                                ...(prev.jar || { color: "" }),
+                                size: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {JAR_SIZE_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="text-xs font-medium text-grey-secondary">
+                        Jar Color <span className="text-red-600">*</span>
+                        <select
+                          value={packaging.jar?.color || ""}
+                          onChange={(e) => {
+                            setPackaging((prev) => ({
+                              ...prev,
+                              jar: {
+                                ...(prev.jar || { size: "" }),
+                                color: e.target.value,
+                              },
+                            }));
+                            setPackagingError(null);
+                          }}
+                          className="mt-1 w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                        >
+                          <option value="">Select…</option>
+                          {JAR_COLOR_OPTIONS.map((option) => (
+                            <option key={option} value={option}>{toDisplayLabel(option)}</option>
+                          ))}
+                        </select>
+                      </label>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="mt-3">
+                  <label className="mb-1 block text-sm font-medium">Packaging details (required) <span className="text-red-600">*</span></label>
+                  <textarea
+                    value={packaging.customDescription}
+                    onChange={(e) => {
+                      setPackaging((prev) => ({ ...prev, customDescription: e.target.value }));
+                      setPackagingError(null);
+                    }}
+                    rows={4}
+                    placeholder="Describe your custom packaging requirements"
+                    className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                  />
+                </div>
+              )}
+
+              <div className="mt-3">
+                <textarea
+                  value={packaging.notes}
+                  onChange={(e) => {
+                    setPackaging((prev) => ({ ...prev, notes: e.target.value }));
+                    setPackagingError(null);
+                  }}
+                  rows={2}
+                  placeholder="Packaging notes (optional)"
+                  className="w-full rounded-xl border bg-white px-3 py-2 text-sm"
+                />
+              </div>
+            </>
+          )}
+
+          {packagingError && (
+            <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+              {packagingError}
+            </div>
+          )}
+        </div>
+
+        <div className={`text-sm font-semibold md:hidden ${showShadeSection ? "" : "hidden"}`}>
+          Selected Shades: {selectedItems.length}
+        </div>
+        <div className={`text-sm md:hidden ${showShadeSection ? "" : "hidden"}`}>
+          {qtyUnit === "kg" ? "Total KG" : "Total Units"}: {totalUnits}
+        </div>
+
+        {showShadeSection ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setOrder({})}
+              disabled={interactionLocked}
+              className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Clear
+            </button>
+
+            <button
+              onClick={async () => {
+                const text = selectedItems
+                  .map(([sku, qty]) => `${sku} x ${qty}${qtyUnit === "kg" ? "kg" : " pcs"}`)
+                  .join("\n");
+                await navigator.clipboard.writeText(text);
+              }}
+              disabled={interactionLocked}
+              className="rounded-xl border bg-white px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Copy list
+            </button>
+
+            <button
+              onClick={handleSubmitOrder}
+              disabled={isSubmitting}
+              className="rounded-xl bg-primary px-4 py-2 text-xs text-white hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isSubmitting ? "Submitting..." : "Submit Order"}
+            </button>
+          </div>
+        ) : (
+          <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+            Client details are saved automatically.
+          </div>
+        )}
+
+        {showShadeSection && submitMessage && (
+          <div
+            className={`mt-3 rounded-xl border px-3 py-2 text-xs ${
+              submitMessage.type === "success"
+                ? "border-green-200 bg-green-50 text-green-700"
+                : "border-red-200 bg-red-50 text-red-700"
+            }`}
+          >
+            {submitMessage.text}
+          </div>
+        )}
+      </div>
+
+      <div className={`md:grid md:grid-cols-[minmax(0,1fr)_280px] md:items-start md:gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6 ${showShadeSection ? "" : "hidden"}`}>
+        <div>
+          <ShadeGrid
+            items={gridItems}
+            qtyUnit={qtyUnit}
+            minQty={tileMinQty}
+            qtyStep={tileQtyStep}
+            interactionLocked={interactionLocked}
+            onToggleSelected={toggleSelected}
+            onToggleView={toggleTileView}
+            onSetImageStatus={setImageStatus}
+            onSetQty={setOrderQty}
+          />
+
+          {!filteredShades.length && (
+            <div className="mt-8 rounded-xl border border-grey-card bg-white p-6 text-sm text-grey-secondary">
+              No results. Check that <code className="font-mono">solid-1200.json</code> exists in{" "}
+              <code className="font-mono">public/data/</code>.
+            </div>
+          )}
+
+          <div className="h-20 md:hidden" />
+        </div>
+
+        <aside className="hidden md:block md:self-start md:sticky md:top-24">
+          <SelectedPanel {...panelProps} className="max-h-[calc(100vh-7rem)] overflow-y-auto" />
+        </aside>
+      </div>
+
+      <button
+        type="button"
+        className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border bg-white px-4 py-3 text-left shadow-lg disabled:cursor-not-allowed disabled:opacity-60 md:hidden ${showShadeSection ? "" : "hidden"}`}
+        disabled={interactionLocked}
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          window.setTimeout(() => setIsMobileDrawerOpen(true), 0);
+        }}
+        aria-label="Open My Colour Chart"
+      >
+        <div className="text-sm font-semibold">My Colour Chart ({selectedCount})</div>
+        <div className="text-xs text-grey-secondary">Total units: {totalSelectedUnits}</div>
+      </button>
+
+      {showShadeSection && showBackToTop ? (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed z-40 hidden rounded-full border border-grey-card bg-white px-4 py-2 text-xs font-semibold text-grey-primary shadow-lg transition hover:bg-primary-50 md:block"
+          style={{ right: "1rem", bottom: "calc(max(1rem, env(safe-area-inset-bottom)) + 5.5rem)" }}
+          aria-label="Back to top"
+        >
+          Back to top
+        </button>
+      ) : null}
+
+      {showShadeSection ? (
+        <MobileDrawer
+          open={isMobileDrawerOpen}
+          onClose={() => setIsMobileDrawerOpen(false)}
+          panelProps={panelProps}
+        />
+      ) : null}
+    </div>
+  );
+}

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leeukopf Website - Diagnostic Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px;
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      color: #22d3ee;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+    
+    .card {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border: 1px solid #334155;
+    }
+    
+    .card h2 {
+      color: #22d3ee;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      margin: 8px 0;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 8px;
+      border-left: 4px solid #475569;
+    }
+    
+    .status-item.success {
+      border-left-color: #10b981;
+    }
+    
+    .status-item.warning {
+      border-left-color: #f59e0b;
+    }
+    
+    .status-item.error {
+      border-left-color: #ef4444;
+    }
+    
+    .status-label {
+      font-weight: 500;
+    }
+    
+    .status-value {
+      font-family: monospace;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    
+    .status-badge.success {
+      background: #10b981;
+      color: white;
+    }
+    
+    .status-badge.warning {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .status-badge.error {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .button {
+      background: #22d3ee;
+      color: #0f172a;
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 5px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .button:hover {
+      background: #06b6d4;
+      transform: translateY(-2px);
+    }
+    
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .code-block {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-top: 15px;
+    }
+    
+    .code-block pre {
+      color: #94a3b8;
+      font-family: monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    
+    #console-output {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .console-line {
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+    }
+    
+    .console-line.error {
+      color: #ef4444;
+    }
+    
+    .console-line.warning {
+      color: #f59e0b;
+    }
+    
+    .console-line.info {
+      color: #22d3ee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔍 Leeukopf Website Diagnostics</h1>
+      <p class="subtitle">Deployment & Configuration Check</p>
+    </div>
+
+    <div class="card">
+      <h2>📊 System Status</h2>
+      <div class="status-item" id="status-page">
+        <span class="status-label">Page Load Status</span>
+        <span class="status-badge success">✓ Loaded</span>
+      </div>
+      <div class="status-item" id="status-timestamp">
+        <span class="status-label">Check Time</span>
+        <span class="status-value" id="timestamp">--</span>
+      </div>
+      <div class="status-item" id="status-url">
+        <span class="status-label">Current URL</span>
+        <span class="status-value" id="current-url">--</span>
+      </div>
+      <div class="status-item" id="status-hostname">
+        <span class="status-label">Hostname</span>
+        <span class="status-value" id="hostname">--</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🌐 Environment Check</h2>
+      <div class="status-item" id="status-protocol">
+        <span class="status-label">Protocol</span>
+        <span class="status-value" id="protocol">--</span>
+      </div>
+      <div class="status-item" id="status-user-agent">
+        <span class="status-label">Browser</span>
+        <span class="status-value" id="user-agent">--</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📦 React App Status</h2>
+      <div class="status-item" id="status-react">
+        <span class="status-label">React App Loaded</span>
+        <span class="status-badge" id="react-status">Checking...</span>
+      </div>
+      <div class="status-item" id="status-root">
+        <span class="status-label">Root Element</span>
+        <span class="status-badge" id="root-status">Checking...</span>
+      </div>
+      <div class="status-item" id="status-version">
+        <span class="status-label">Version Info</span>
+        <span class="status-badge" id="version-status">Checking...</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🔧 Quick Actions</h2>
+      <div class="button-group">
+        <button class="button" onclick="window.location.href='/'">Go to Homepage</button>
+        <button class="button" onclick="clearCacheAndReload()">Clear Cache & Reload</button>
+        <button class="button" onclick="checkVersion()">Check Version</button>
+        <button class="button" onclick="testMainApp()">Test Main App</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📋 Console Output</h2>
+      <div class="code-block">
+        <div id="console-output">
+          <div class="console-line info">Diagnostic page loaded. Checking system...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💡 Troubleshooting Tips</h2>
+      <div class="code-block">
+        <pre>If you see a white screen on the main site:
+
+1. Check if environment variables are set in Netlify:
+   - Go to Netlify Dashboard → Site Settings → Environment Variables
+   - Verify VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set
+
+2. Check the build logs:
+   - Go to Netlify Dashboard → Deploys
+   - Click on the latest deploy
+   - Look for any errors in the build log
+
+3. Clear browser cache:
+   - Windows/Linux: Ctrl + Shift + R
+   - Mac: Cmd + Shift + R
+   - Or try opening in incognito/private mode
+
+4. Check browser console:
+   - Press F12 or right-click → Inspect
+   - Go to Console tab
+   - Look for JavaScript errors (red messages)
+
+5. Verify deployment:
+   - Check /version.json to see build info
+   - Verify the build date is recent
+   
+6. DNS Issues:
+   - If DNS was recently changed, it can take 24-48 hours to propagate
+   - Try accessing the site using the Netlify URL (*.netlify.app)
+   - If Netlify URL works but custom domain doesn't, it's a DNS issue</pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Log to our custom console
+    function log(message, type = 'info') {
+      const output = document.getElementById('console-output');
+      const line = document.createElement('div');
+      line.className = `console-line ${type}`;
+      line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      output.appendChild(line);
+      output.scrollTop = output.scrollHeight;
+      
+      // Also log to browser console
+      console.log(`[Diagnostic] ${message}`);
+    }
+
+    // Update status
+    function updateStatus() {
+      document.getElementById('timestamp').textContent = new Date().toISOString();
+      document.getElementById('current-url').textContent = window.location.href;
+      document.getElementById('hostname').textContent = window.location.hostname;
+      document.getElementById('protocol').textContent = window.location.protocol + '//' + window.location.host;
+      document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 80) + '...';
+      
+      log('System status updated', 'info');
+    }
+
+    // Check if React root exists
+    function checkReactApp() {
+      log('Checking React app...', 'info');
+      
+      // Check if root element exists
+      const rootElement = document.querySelector('#root');
+      const rootStatus = document.getElementById('root-status');
+      
+      if (rootElement) {
+        rootStatus.textContent = '✓ Found';
+        rootStatus.className = 'status-badge success';
+        log('Root element (#root) found', 'info');
+      } else {
+        rootStatus.textContent = '✗ Not Found';
+        rootStatus.className = 'status-badge error';
+        log('Root element (#root) NOT found!', 'error');
+      }
+      
+      // Try to load from main domain
+      fetch('/')
+        .then(response => response.text())
+        .then(html => {
+          const hasRoot = html.includes('id="root"');
+          const hasScript = html.includes('src="/src/main.tsx"') || html.includes('type="module"');
+          
+          const reactStatus = document.getElementById('react-status');
+          
+          if (hasRoot && hasScript) {
+            reactStatus.textContent = '✓ Configured';
+            reactStatus.className = 'status-badge success';
+            log('React app appears to be properly configured', 'info');
+          } else {
+            reactStatus.textContent = '⚠ Issue Detected';
+            reactStatus.className = 'status-badge warning';
+            log('React app configuration issue detected', 'warning');
+            if (!hasRoot) log('- Missing root div in index.html', 'error');
+            if (!hasScript) log('- Missing main.tsx script tag', 'error');
+          }
+        })
+        .catch(error => {
+          log('Error checking React app: ' + error.message, 'error');
+          document.getElementById('react-status').textContent = '✗ Error';
+          document.getElementById('react-status').className = 'status-badge error';
+        });
+    }
+
+    // Check version.json
+    function checkVersion() {
+      log('Fetching version.json...', 'info');
+      
+      fetch('/version.json?' + Date.now())
+        .then(response => response.json())
+        .then(data => {
+          const versionStatus = document.getElementById('version-status');
+          versionStatus.textContent = '✓ Available';
+          versionStatus.className = 'status-badge success';
+          
+          log('Version info retrieved:', 'info');
+          log(`  Version: ${data.version}`, 'info');
+          log(`  Build Date: ${data.buildDate}`, 'info');
+          log(`  Commit: ${data.commit}`, 'info');
+          log(`  Branch: ${data.branch}`, 'info');
+          
+          alert(`Build Info:\nVersion: ${data.version}\nBuild: ${data.buildDate}\nCommit: ${data.commit}\nBranch: ${data.branch}`);
+        })
+        .catch(error => {
+          log('Error fetching version.json: ' + error.message, 'error');
+          document.getElementById('version-status').textContent = '✗ Not Found';
+          document.getElementById('version-status').className = 'status-badge error';
+          alert('Could not load version.json. The site may not be properly deployed.');
+        });
+    }
+
+    // Clear cache and reload
+    function clearCacheAndReload() {
+      log('Clearing cache and reloading...', 'info');
+      
+      // Clear service workers if any
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister();
+            log('Unregistered service worker', 'info');
+          }
+        });
+      }
+      
+      // Clear cache storage
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          names.forEach(function(name) {
+            caches.delete(name);
+            log('Cleared cache: ' + name, 'info');
+          });
+        });
+      }
+      
+      // Hard reload (modern approach)
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+
+    // Test main app
+    function testMainApp() {
+      log('Testing main app...', 'info');
+      window.open('/', '_blank');
+    }
+
+    // Run checks on load
+    window.addEventListener('load', function() {
+      log('Page fully loaded', 'info');
+      updateStatus();
+      checkReactApp();
+      
+      log('---', 'info');
+      log('Diagnostic check complete', 'info');
+      log('If the main site shows a white screen, check the browser console (F12) for errors', 'warning');
+    });
+  </script>
+</body>
+</html>

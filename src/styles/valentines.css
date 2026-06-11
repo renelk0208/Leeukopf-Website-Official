@@ -1,0 +1,449 @@
+/* Seasonal Pages Stylesheet - Valentine's Edition */
+/* Mobile-first approach, lightweight and performance-optimized */
+
+:root {
+  --valentine-primary: #D81B60;
+  --valentine-secondary: #F06292;
+  --valentine-light: #FCE4EC;
+  --valentine-dark: #880E4F;
+  --text-dark: #333333;
+  --text-light: #666666;
+  --white: #FFFFFF;
+}
+
+/* Hero Section with Video Background */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 500px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Milky/Creamy Overlay */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(252, 228, 236, 0.75) 0%,
+    rgba(255, 255, 255, 0.65) 50%,
+    rgba(252, 228, 236, 0.75) 100%
+  );
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 20px;
+  max-width: 800px;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--valentine-dark);
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-dark);
+  margin-bottom: 2rem;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+}
+
+.btn-primary {
+  background: var(--valentine-primary);
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(216, 27, 96, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--valentine-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(216, 27, 96, 0.4);
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--valentine-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--valentine-secondary);
+}
+
+.btn-secondary:hover {
+  background: var(--valentine-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Hearts Falling Effect */
+.hearts-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  font-size: 20px;
+  color: var(--valentine-primary);
+  opacity: 0;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-10vh) rotate(0deg);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .hearts-container {
+    display: none;
+  }
+  
+  .heart {
+    animation: none;
+  }
+}
+
+/* Container and Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section {
+  padding: 60px 0;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--valentine-dark);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-light);
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Top Picks Grid */
+.picks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.pick-card {
+  position: relative;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pick-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(216, 27, 96, 0.2);
+}
+
+.pick-card-image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.pick-card-caption {
+  padding: 16px;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* Explore by Mood */
+.mood-blocks {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.mood-block {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  height: 300px;
+}
+
+.mood-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mood-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  color: var(--white);
+}
+
+.mood-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.mood-text {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.mood-link {
+  display: inline-block;
+  padding: 10px 24px;
+  background: var(--valentine-primary);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.mood-link:hover {
+  background: var(--valentine-dark);
+  transform: translateX(4px);
+}
+
+/* Texture in Motion Section */
+.texture-section {
+  background: var(--valentine-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.texture-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* Texture Grid - 8 videos in 2x4 layout */
+.texture-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.texture-video-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background: var(--white);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.texture-video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(216, 27, 96, 0.2);
+}
+
+.texture-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 9/16;
+  object-fit: cover;
+}
+
+.texture-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+  color: var(--white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Final CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, var(--valentine-primary) 0%, var(--valentine-dark) 100%);
+  color: var(--white);
+  text-align: center;
+}
+
+.cta-section .section-title,
+.cta-section .section-subtitle {
+  color: var(--white);
+}
+
+.btn-light {
+  background: var(--white);
+  color: var(--valentine-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-light:hover {
+  background: var(--valentine-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .picks-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  
+  .mood-blocks {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .mood-block {
+    height: 400px;
+  }
+  
+  .section {
+    padding: 80px 0;
+  }
+  
+  .texture-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .texture-label {
+    font-size: 1rem;
+    padding: 16px;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.75rem;
+  }
+  
+  .section-title {
+    font-size: 2.5rem;
+  }
+  
+  .mood-title {
+    font-size: 1.75rem;
+  }
+  
+  .texture-grid {
+    gap: 24px;
+  }
+}
+
+/* Performance optimizations */
+@media (max-width: 767px) {
+  /* Reduce animations on mobile for better performance */
+  .hero-overlay {
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+  }
+}
