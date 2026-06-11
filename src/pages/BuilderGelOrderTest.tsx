@@ -1,5 +1,0 @@
-import { Navigate } from 'react-router-dom';
-
-export default function BuilderGelOrderTest() {
-  return <Navigate to="/products" replace />;
-}
