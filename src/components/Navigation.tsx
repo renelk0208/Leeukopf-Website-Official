@@ -87,9 +87,8 @@ export default function Navigation() {
     { label: 'Our Products', path: '/products' },
     { label: 'Private Label', path: '/private-label' },
     { label: 'Gelitup Distribution', path: '/our-brands' },
-    { label: 'Certificates & Compliance', path: '/certificates-and-compliance' },
+    { label: 'Certificates', path: '/certificates-and-compliance' },
     { label: 'Start Your Brand', path: '/faq-starting-a-gel-polish-brand' },
-    { label: 'Book Appointment', path: '/client-registration' },
   ];
 
   const isActive = (path: string) => {
@@ -111,64 +110,134 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-      <div className="w-full max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6">
-        <div className="flex justify-between items-center h-20">
-          <div className="flex-shrink-0 mr-2">
-            <Link to="/" className="block">
-              <OptimizedImage
-                src="/leeukopf_black.png"
-                alt="Leeukopf Laboratories Logo"
-                width={200}
-                height={50}
-                lazy={false}
-                fetchPriority="high"
-                className="h-10 md:h-12 w-auto object-contain hover:opacity-80 transition-opacity"
-              />
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+        {/* Utility bar — existing-client links, visible at xl+ (40px), brings total header to 120px at xl */}
+        <div className="hidden xl:flex items-center h-10 border-b border-gray-100 bg-gray-50">
+          <div className="w-full max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6 flex justify-end items-center gap-2 text-xs text-gray-500">
+            <span className="uppercase tracking-wide">Existing clients</span>
+            <span aria-hidden="true">|</span>
+            <Link to="/portal/login" className="hover:text-primary transition-colors">
+              Portal
+            </Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/client-registration" className="hover:text-primary transition-colors">
+              Client Registration
             </Link>
           </div>
+        </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden xl:flex flex-1 items-center justify-center min-w-0" aria-label="Main navigation">
-            <ul className="flex items-center justify-center flex-nowrap gap-x-0 min-w-0">
-              {navItems.map((item) => (
-                <li key={item.path} className="nav-item shrink-0">
-                  <Link
-                    to={item.path}
-                    className={`block px-1.5 2xl:px-2 py-2 text-xs 2xl:text-sm font-medium transition-colors whitespace-nowrap ${
-                      isActive(item.path)
-                        ? 'text-[#A3005A] border-b-2 border-[#A3005A]'
-                        : 'text-[#444444] hover:text-[#A3005A]'
-                    }`}
+        {/* Main nav bar (80px) */}
+        <nav className="border-b border-gray-200" aria-label="Site navigation">
+          <div className="w-full max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6">
+            <div className="flex justify-between items-center h-20">
+              <div className="flex-shrink-0 mr-2">
+                <Link to="/" className="block">
+                  <OptimizedImage
+                    src="/leeukopf_black.png"
+                    alt="Leeukopf Laboratories Logo"
+                    width={200}
+                    height={50}
+                    lazy={false}
+                    fetchPriority="high"
+                    className="h-10 md:h-12 w-auto object-contain hover:opacity-80 transition-opacity"
+                  />
+                </Link>
+              </div>
+
+              {/* Desktop Navigation */}
+              <nav className="hidden xl:flex flex-1 items-center justify-center min-w-0" aria-label="Main navigation">
+                <ul className="flex items-center justify-center flex-nowrap gap-x-0 min-w-0">
+                  {navItems.map((item) => (
+                    <li key={item.path} className="nav-item shrink-0">
+                      <Link
+                        to={item.path}
+                        className={`block px-1.5 2xl:px-2 py-2 text-xs 2xl:text-sm font-medium transition-colors whitespace-nowrap ${
+                          isActive(item.path)
+                            ? 'text-[#A3005A] border-b-2 border-[#A3005A]'
+                            : 'text-[#444444] hover:text-[#A3005A]'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
+                <div className="hidden xl:flex items-center">
+                  {isDesktopSearchOpen ? (
+                    <form onSubmit={handleSearchSubmit} className="flex items-center">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(event) => setSearchQuery(event.target.value)}
+                          placeholder="Search products"
+                          aria-label="Search products"
+                          autoFocus
+                          onKeyDown={(event) => {
+                            if (event.key === 'Escape') {
+                              event.preventDefault();
+                              if (!searchQuery.trim()) {
+                                setIsDesktopSearchOpen(false);
+                              }
+                            }
+                          }}
+                          className="w-44 rounded-lg border border-gray-300 bg-white pl-9 pr-9 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (searchQuery.trim()) {
+                              setSearchQuery('');
+                              navigate('/products');
+                              return;
+                            }
+
+                            setIsDesktopSearchOpen(false);
+                          }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                          aria-label={searchQuery.trim() ? 'Clear search' : 'Close search'}
+                        >
+                          <X className="w-4 h-4" aria-hidden="true" />
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setIsDesktopSearchOpen(true)}
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 text-gray-500 hover:text-primary hover:border-primary transition-colors"
+                      aria-label="Open product search"
+                    >
+                      <Search className="w-4 h-4" aria-hidden="true" />
+                    </button>
+                  )}
+                </div>
+                <div className="hidden xl:flex items-center space-x-1.5">
+                  <CalendlyButton size="sm" />
+                </div>
+                <div className="xl:hidden">
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="text-[#444444] hover:text-[#A3005A] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                    aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+                    aria-expanded={isOpen}
                   >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
-            <div className="hidden xl:flex items-center gap-2 pr-2 text-xs text-gray-500">
-              <span className="uppercase tracking-wide">Existing clients</span>
-              <span aria-hidden="true">|</span>
-              <Link
-                to="/portal/login"
-                className="hover:text-primary transition-colors"
-              >
-                Portal
-              </Link>
-              <span aria-hidden="true">|</span>
-              <Link
-                to="/client-registration"
-                className="hover:text-primary transition-colors"
-              >
-                Client Registration
-              </Link>
+                    {isOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="hidden xl:flex items-center">
-              {isDesktopSearchOpen ? (
-                <form onSubmit={handleSearchSubmit} className="flex items-center">
+          </div>
+
+          {/* Mobile Navigation */}
+          {isOpen && (
+            <div className="xl:hidden bg-white border-t border-gray-200 shadow-lg max-h-[calc(100vh-5rem)] overflow-y-auto">
+              <div className="px-4 py-2 space-y-1">
+                <form onSubmit={handleSearchSubmit} className="px-1 pt-2 pb-3">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
                     <input
@@ -177,135 +246,66 @@ export default function Navigation() {
                       onChange={(event) => setSearchQuery(event.target.value)}
                       placeholder="Search products"
                       aria-label="Search products"
-                      autoFocus
-                      onKeyDown={(event) => {
-                        if (event.key === 'Escape') {
-                          event.preventDefault();
-                          if (!searchQuery.trim()) {
-                            setIsDesktopSearchOpen(false);
-                          }
-                        }
-                      }}
-                      className="w-44 rounded-lg border border-gray-300 bg-white pl-9 pr-9 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                      className="w-full rounded-lg border border-gray-300 bg-white pl-9 pr-3 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                     />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (searchQuery.trim()) {
-                          setSearchQuery('');
-                          navigate('/products');
-                          return;
-                        }
-
-                        setIsDesktopSearchOpen(false);
-                      }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                      aria-label={searchQuery.trim() ? 'Clear search' : 'Close search'}
-                    >
-                      <X className="w-4 h-4" aria-hidden="true" />
-                    </button>
                   </div>
                 </form>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setIsDesktopSearchOpen(true)}
-                  className="inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 text-gray-500 hover:text-primary hover:border-primary transition-colors"
-                  aria-label="Open product search"
-                >
-                  <Search className="w-4 h-4" aria-hidden="true" />
-                </button>
-              )}
+
+                {navItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setIsOpen(false)}
+                    className={`block w-full text-left px-3 py-3 rounded-md transition-colors font-medium text-sm ${
+                      isActive(item.path)
+                        ? 'text-[#A3005A] bg-primary-50'
+                        : 'text-[#444444] hover:text-[#A3005A] hover:bg-gray-50'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+
+                <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 px-3 py-3">
+                  <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">Existing clients</p>
+                  <div className="flex items-center gap-3 text-sm">
+                    <Link
+                      to="/portal/login"
+                      onClick={() => setIsOpen(false)}
+                      className="text-gray-600 hover:text-primary transition-colors"
+                    >
+                      Portal
+                    </Link>
+                    <span className="text-gray-300" aria-hidden="true">|</span>
+                    <Link
+                      to="/client-registration"
+                      onClick={() => setIsOpen(false)}
+                      className="text-gray-600 hover:text-primary transition-colors"
+                    >
+                      Client Registration
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
+                  <div className="px-3 mb-3">
+                    <CalendlyButton size="md" className="w-full" />
+                  </div>
+                  <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Follow us
+                  </div>
+                  <div className="flex justify-center">
+                    <SocialLinks />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="hidden xl:flex items-center space-x-1.5">
-              <CalendlyButton size="sm" />
-            </div>
-            <div className="xl:hidden">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="text-[#444444] hover:text-[#A3005A] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-                aria-expanded={isOpen}
-              >
-                {isOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
-              </button>
-            </div>
-          </div>
-        </div>
+          )}
+        </nav>
+      </header>
+      <div className="hidden md:flex fixed right-3 top-1/2 -translate-y-1/2 z-[60] rounded-xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-md p-2">
+        <SocialLinks vertical />
       </div>
-
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="xl:hidden bg-white border-t border-gray-200 shadow-lg max-h-[calc(100vh-5rem)] overflow-y-auto">
-          <div className="px-4 py-2 space-y-1">
-            <form onSubmit={handleSearchSubmit} className="px-1 pt-2 pb-3">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Search products"
-                  aria-label="Search products"
-                  className="w-full rounded-lg border border-gray-300 bg-white pl-9 pr-3 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                />
-              </div>
-            </form>
-
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setIsOpen(false)}
-                className={`block w-full text-left px-3 py-3 rounded-md transition-colors font-medium text-sm ${
-                  isActive(item.path)
-                    ? 'text-[#A3005A] bg-primary-50'
-                    : 'text-[#444444] hover:text-[#A3005A] hover:bg-gray-50'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-
-            <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 px-3 py-3">
-              <p className="text-[11px] uppercase tracking-wide text-gray-500 mb-2">Existing clients</p>
-              <div className="flex items-center gap-3 text-sm">
-                <Link
-                  to="/portal/login"
-                  onClick={() => setIsOpen(false)}
-                  className="text-gray-600 hover:text-primary transition-colors"
-                >
-                  Portal
-                </Link>
-                <span className="text-gray-300" aria-hidden="true">|</span>
-                <Link
-                  to="/client-registration"
-                  onClick={() => setIsOpen(false)}
-                  className="text-gray-600 hover:text-primary transition-colors"
-                >
-                  Client Registration
-                </Link>
-              </div>
-            </div>
-
-            <div className="pt-4 pb-2 border-t border-gray-200 mt-4">
-              <div className="px-3 mb-3">
-                <CalendlyButton size="md" className="w-full" />
-              </div>
-              <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Follow us
-              </div>
-              <div className="flex justify-center">
-                <SocialLinks />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </nav>
-    <div className="hidden md:flex fixed right-3 top-1/2 -translate-y-1/2 z-[60] rounded-xl border border-gray-200 bg-white/95 backdrop-blur-sm shadow-md p-2">
-      <SocialLinks vertical />
-    </div>
     </>
   );
 }
