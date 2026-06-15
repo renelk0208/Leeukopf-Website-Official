@@ -221,7 +221,7 @@ export default function Navigation() {
               <div className="hidden 2xl:flex items-center space-x-1.5">
                 <CalendlyButton size="sm" />
               </div>
-              <div className="xl:hidden">
+              <div className="2xl:hidden">
                 <button
                   onClick={() => setIsOpen(!isOpen)}
                   className="text-[#444444] hover:text-[#A3005A] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -237,7 +237,7 @@ export default function Navigation() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="xl:hidden bg-white border-t border-gray-200 shadow-lg max-h-[calc(100vh-5rem)] overflow-y-auto">
+          <div className="2xl:hidden bg-white border-t border-gray-200 shadow-lg max-h-[calc(100vh-5rem)] overflow-y-auto">
             <div className="px-4 py-2 space-y-1">
               <form onSubmit={handleSearchSubmit} className="px-1 pt-2 pb-3">
                 <div className="relative">
