@@ -145,7 +145,7 @@ export default function Navigation() {
               </div>
 
               {/* Desktop Navigation */}
-              <nav className="hidden xl:flex flex-1 items-center justify-center min-w-0" aria-label="Main navigation">
+              <div className="hidden xl:flex flex-1 items-center justify-center min-w-0">
                 <ul className="flex items-center justify-center flex-nowrap gap-x-0 min-w-0">
                   {navItems.map((item) => (
                     <li key={item.path} className="nav-item shrink-0">
@@ -162,7 +162,7 @@ export default function Navigation() {
                     </li>
                   ))}
                 </ul>
-              </nav>
+              </div>
 
               <div className="flex items-center space-x-2 flex-shrink-0 ml-2">
                 <div className="hidden xl:flex items-center">
