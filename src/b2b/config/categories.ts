@@ -110,6 +110,7 @@ export const b2bCategories: B2BCategoryConfig[] = [
     imageSrc: "/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp",
     imageAlt: "Nail art",
     navChildren: [
+      { label: "3D Gel", routePath: "/b2b/nail-art/3d-gel", imageSrc: "/img/b2b/nail-art/3D Gel/3DG-1-01.webp", imageAlt: "3D Gel" },
       { label: "Glitters", routePath: "/b2b/nail-art/glitters", imageSrc: "/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp", imageAlt: "Glitters" },
       { label: "Pigments", routePath: "/b2b/nail-art/pigments", imageSrc: "/img/products/nail-art/Nail Art/nail-art-category-card-imge.webp", imageAlt: "Pigments" },
     ],
