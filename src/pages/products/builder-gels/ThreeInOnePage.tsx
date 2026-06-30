@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import PageTemplate from '../../../components/PageTemplate';
 import ApplicationCuring from '../../../components/ApplicationCuring';
 import ProductGrid from '../../../components/ProductGrid';
@@ -52,6 +53,35 @@ export default function ThreeInOnePage() {
             consistency and a glossy finish that requires no additional top coat. Ideal for busy salons looking 
             to streamline their service while maintaining professional results.
           </p>
+        </div>
+      </div>
+
+      {/* Sub-categories */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 sm:mb-8 text-center">
+          Collections
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link
+            to="/products/builder-and-structure-gels/shimmer-glitter-builder-gel"
+            className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+              <img
+                src="/img/builder-gels/3-in-1-builder/glitter-shimmer-builder-gel/MI-GLB1_shimmer-builder_gels.jpg"
+                alt="Shimmer Glitter Builder Gel"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+                Shimmer Glitter Builder Gel
+              </h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">
+                Builder gel with multi-dimensional shimmer and glitter particles — structure and sparkle in one formula. 36 shades.
+              </p>
+            </div>
+          </Link>
         </div>
       </div>
 
