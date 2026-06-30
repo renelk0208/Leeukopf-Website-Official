@@ -68,7 +68,7 @@ export default function ThreeInOnePage() {
           >
             <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
               <img
-                src="/img/builder-gels/3-in-1-builder/glitter-shimmer-builder-gel/MI-GLB1_shimmer-builder_gels.jpg"
+                src="/img/products/builder-systems/3-in-1 Builder gel/Glitter 3-in-1 Builder Gels/shimmer-builder-gels.jpg"
                 alt="Shimmer Glitter Builder Gel"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />

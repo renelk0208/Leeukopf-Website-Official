@@ -63,7 +63,7 @@ export const categoryHero: Record<string, string> = {
   'brush-on-builder': '/img/products/builder-systems/BIAB builder-in-a-bottle/brush-on-builder-category-hero-image.webp',
   'biab-builder-in-a-bottle': '/img/products/builder-systems/BIAB builder-in-a-bottle/brush-on-builder-category-hero-image.webp',
   'thixotropic-gel': '/img/products/builder-systems/thixotropic-gel/thixotropic-gl-hero-category-image.webp',
-  'shimmer-glitter-builder-gel': '/img/builder-gels/3-in-1-builder/glitter-shimmer-builder-gel/MI-GLB1_shimmer-builder_gels.jpg',
+  'shimmer-glitter-builder-gel': '/img/products/builder-systems/3-in-1 Builder gel/Glitter 3-in-1 Builder Gels/shimmer-builder-gels.jpg',
   
   // Primers & Liquids
   'primers-liquids': '/img/products/liquids-&-solutions/webp/liquids-&-solutions-category-card-image.webp',

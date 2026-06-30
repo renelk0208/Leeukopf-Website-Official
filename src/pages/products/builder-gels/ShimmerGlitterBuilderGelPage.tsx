@@ -17,7 +17,7 @@ export default function ShimmerGlitterBuilderGelPage() {
       <div className="mb-10 sm:mb-12 md:mb-16">
         <div className="mb-8 sm:mb-10 md:mb-12 rounded-lg sm:rounded-xl overflow-hidden">
           <img
-            src="/img/builder-gels/3-in-1-builder/glitter-shimmer-builder-gel/MI-GLB1_shimmer-builder_gels.jpg"
+            src="/img/products/builder-systems/3-in-1 Builder gel/Glitter 3-in-1 Builder Gels/shimmer-builder-gels.jpg"
             alt="Shimmer Glitter Builder Gel colour range"
             width="1600"
             height="400"
@@ -47,7 +47,7 @@ export default function ShimmerGlitterBuilderGelPage() {
         </h2>
         <div className="rounded-lg sm:rounded-xl overflow-hidden border border-gray-200">
           <img
-            src="/img/builder-gels/3-in-1-builder/glitter-shimmer-builder-gel/MI-GLB1_shimmer-builder_gels.jpg"
+            src="/img/products/builder-systems/3-in-1 Builder gel/Glitter 3-in-1 Builder Gels/shimmer-builder-gels.jpg"
             alt="Full range of 36 Shimmer Glitter Builder Gel shades"
             className="w-full object-contain"
           />
