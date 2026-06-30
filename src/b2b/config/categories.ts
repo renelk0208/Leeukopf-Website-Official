@@ -53,6 +53,7 @@ export const b2bCategories: B2BCategoryConfig[] = [
       { label: "Master Builder Gels", routePath: "/b2b/builder-gels/master-builder-gels", imageSrc: "/img/products/builder-systems/Premium Builder Gels/1-premium-builder-gels-category-card-image.jpg", imageAlt: "Master builder gels" },
       { label: "No Heat Builder", routePath: "/b2b/builder-gels/no-heat-builder", imageSrc: "/img/products/builder-systems/No Heat Spike Builder Gel/no-heat-spike-builder-gel-category-card.jpg", imageAlt: "No heat builder" },
       { label: "Polygel", routePath: "/b2b/polygels/polygel", imageSrc: "/img/products/builder-systems/Acrygel-Polygel/webp/acrygel-polygel-category-card-image.webp", imageAlt: "Polygel" },
+      { label: "Shimmer Builder Gel", routePath: "/b2b/builder-gels/shimmer-builder-gel", imageSrc: "/img/b2b/builder-gels/3-in-1-builder/shimmer-builder-gels/MI-GLB1-01.webp", imageAlt: "Shimmer builder gel" },
       { label: "Thixotropic Gel", routePath: "/b2b/builder-gels/thixotropic-gel", imageSrc: "/img/products/builder-systems/thixotropic-gel/thixotropic-gel-category-image.png", imageAlt: "Thixotropic gel" },
     ],
   },

@@ -140,7 +140,7 @@ const builderImagePrefixes = [
   "/img/b2b/brush-on-builder/",
 ];
 
-type BuilderRouteMode = "ALL" | "ACRYLICS" | "THREE_IN_ONE" | "FIBREGLASS" | "BIAB" | "COLOUR_BUILDER" | "MASTER_BUILDER" | "NO_HEAT" | "THIXOTROPIC";
+type BuilderRouteMode = "ALL" | "ACRYLICS" | "THREE_IN_ONE" | "FIBREGLASS" | "BIAB" | "COLOUR_BUILDER" | "MASTER_BUILDER" | "NO_HEAT" | "THIXOTROPIC" | "SHIMMER_BUILDER";
 
 function getBuilderRouteMode(pathname: string): BuilderRouteMode {
   const normalized = pathname.toLowerCase();
@@ -152,6 +152,7 @@ function getBuilderRouteMode(pathname: string): BuilderRouteMode {
   if (normalized.includes("/master-builder-gels")) return "MASTER_BUILDER";
   if (normalized.includes("/no-heat-builder")) return "NO_HEAT";
   if (normalized.includes("/thixotropic-gel")) return "THIXOTROPIC";
+  if (normalized.includes("/shimmer-builder-gel")) return "SHIMMER_BUILDER";
   return "ALL";
 }
 
@@ -165,6 +166,7 @@ function getBuilderPageTitle(mode: BuilderRouteMode): string {
     case "MASTER_BUILDER": return "Builder Gels · Master Builder Gels";
     case "NO_HEAT": return "Builder Gels · No Heat Builder";
     case "THIXOTROPIC": return "Builder Gels · Thixotropic Gel";
+    case "SHIMMER_BUILDER": return "Builder Gels · Shimmer Builder Gel";
     default: return "Builder Gels";
   }
 }
@@ -188,6 +190,7 @@ function isBuilderGelByRoute(item: CsvProduct, mode: BuilderRouteMode): boolean 
   if (mode === "MASTER_BUILDER") return item.subcategory?.toLowerCase() === "master builder gels";
   if (mode === "NO_HEAT") return item.subcategory?.toLowerCase() === "no heat builder";
   if (mode === "THIXOTROPIC") return item.subcategory?.toLowerCase() === "thixotropic gel";
+  if (mode === "SHIMMER_BUILDER") return item.subcategory?.toLowerCase() === "shimmer builder gel";
 
   return false;
 }
