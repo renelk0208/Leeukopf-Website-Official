@@ -61,6 +61,8 @@ const PremiumFiberGlassPage = lazy(() => import('./pages/products/builder-gels/P
 const BiabBuilderInABottlePage = lazy(() => import('./pages/products/builder-gels/BiabBuilderInABottlePage'));
 const ThixotropicGelPage = lazy(() => import('./pages/products/builder-gels/ThixotropicGelPage'));
 const ShimmerGlitterBuilderGelPage = lazy(() => import('./pages/products/builder-gels/ShimmerGlitterBuilderGelPage'));
+const ThreeInOneBuilderGelsPage = lazy(() => import('./pages/products/builder-gels/ThreeInOneBuilderGelsPage'));
+const ThreeInOneEffectsPage = lazy(() => import('./pages/products/builder-gels/ThreeInOneEffectsPage'));
 const LiquidPolygelPage = lazy(() => import('./pages/products/LiquidPolygelPage'));
 
 // Top & Bases Subcategories
@@ -178,6 +180,8 @@ function App() {
           <Route path="/products/builder-and-structure-gels/no-heat-spike-builder-gel" element={<NoHeatSpikeBuilderGelPage />} />
           <Route path="/products/builder-and-structure-gels/biab-builder-in-a-bottle" element={<BiabBuilderInABottlePage />} />
           <Route path="/products/builder-and-structure-gels/thixotropic-gel" element={<ThixotropicGelPage />} />
+          <Route path="/products/builder-and-structure-gels/3-in-1/builder-gels" element={<ThreeInOneBuilderGelsPage />} />
+          <Route path="/products/builder-and-structure-gels/3-in-1/effects-builder-gels" element={<ThreeInOneEffectsPage />} />
           <Route path="/products/builder-and-structure-gels/shimmer-glitter-builder-gel" element={<ShimmerGlitterBuilderGelPage />} />
           
           {/* Top & Bases */}
