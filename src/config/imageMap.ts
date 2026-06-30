@@ -34,6 +34,7 @@ export const categoryHero: Record<string, string> = {
   'autumn-winter-25-26': '/img/products/gel_polishes/autumn_winter_25_26/2026_new_collection_cover.jpg',
   'spring-summer-26': '/img/products/gel_polishes/spring-summer-26/spring-summer-26 category.jpg',
   'platinum-gel-polish': '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.png',
+  'shell-shimmer-collection': '/img/products/gel_polishes/Shimmer Gel Polish/leeukopf_SH-SHC-1- Shimmers.jpg',
   
   // Builder Systems
   'builder-systems': '/img/products/builder-systems/Builder Gels/3-in-1-builder_gels_category_3.jpg',
@@ -154,6 +155,11 @@ export const subcategoryImages: Record<string, Record<string, string[]>> = {
       '/img/products/gel_polishes/French Collection/french-collection-gel-polish (3).jpg',
       '/img/products/gel_polishes/French Collection/french-collection-gel-polish (4).jpg',
       '/img/products/gel_polishes/French Collection/french-collection-gel-polish (5).jpg',
+    ],
+    'shell-shimmer-collection': [
+      '/img/products/gel_polishes/Shimmer Gel Polish/leeukopf_SH-SHC-1- Shimmers.jpg',
+      '/img/products/gel_polishes/Shimmer Gel Polish/leeukopf_SH-SHC-2- Shimmers.jpg',
+      '/img/products/gel_polishes/Shimmer Gel Polish/leeukopf_SH-SHC-2_2- Shimmers.jpg',
     ],
     'platinum-gel-polish': [
       '/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish (3).jpg',

@@ -61,6 +61,13 @@ export const productCategories: ProductCategory[] = [
     group: 'Gel Polish',
   },
   {
+    id: 'shell-shimmer-collection',
+    key: 'shell-shimmer-collection',
+    displayName: 'Shell Shimmer Collection',
+    imagePath: '/img/products/gel_polishes/Shimmer Gel Polish/leeukopf_SH-SHC-1- Shimmers.jpg',
+    group: 'Gel Polish',
+  },
+  {
     id: 'solid-colour-collection',
     key: 'solid-colour-collection',
     displayName: 'Solid Colour Collection',

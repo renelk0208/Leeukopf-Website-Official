@@ -72,6 +72,7 @@ export const b2bCategories: B2BCategoryConfig[] = [
       { label: "Glitters", routePath: "/b2b/solid-colours/glitters", imageSrc: "/img/products/gel_polishes/Glitters Collection/glitters-image-category-card.webp", imageAlt: "Glitters" },
       { label: "Metallics", routePath: "/b2b/solid-colours/metallics", imageSrc: "/img/products/gel_polishes/builder_gels_category_shimmer.jpg", imageAlt: "Metallics" },
       { label: "Platinum", routePath: "/b2b/solid-colours/platinum", imageSrc: "/img/products/gel_polishes/Platinum Gel Polish/platinum-gel-polish-collection-gel-polish-category-card-image.webp", imageAlt: "Platinum" },
+      { label: "Shell Shimmer", routePath: "/b2b/solid-colours/shell-shimmer", imageSrc: "/img/b2b/shell_shimmer_gel_polish/SH-SHC-1_01.webp", imageAlt: "Shell shimmer collection" },
       { label: "Blues", routePath: "/b2b/solid-colours/blues", swatchColour: "#4169E1" },
       { label: "Greens", routePath: "/b2b/solid-colours/greens", swatchColour: "#2E8B57" },
       { label: "Reds", routePath: "/b2b/solid-colours/reds", swatchColour: "#DC143C" },
