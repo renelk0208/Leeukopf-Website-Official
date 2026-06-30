@@ -36,6 +36,7 @@ export const enabledSubcategories = {
     noHeatSpikeBuilderGel: true, // Enabled - No Heat Spike Builder Gel
     biabBuilderInABottle: true, // Enabled - BIAB Builder in a Bottle
     thixotropicGel: true, // Enabled - Thixotropic Gel
+    shimmerGlitterBuilderGel: true, // Enabled - Shimmer Glitter Builder Gel
   },
   
   // Top & Bases subcategories

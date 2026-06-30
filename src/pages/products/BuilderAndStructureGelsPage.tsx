@@ -63,6 +63,13 @@ export default function BuilderAndStructureGelsPage() {
       description: 'Advanced thixotropic formula for maximum control and effortless application — HEMA-free and TPO-free.',
       image: categoryHero['thixotropic-gel'],
     },
+    {
+      key: 'shimmerGlitterBuilderGel',
+      title: 'Shimmer Glitter Builder Gel',
+      path: '/products/builder-and-structure-gels/shimmer-glitter-builder-gel',
+      description: 'Builder gel with multi-dimensional shimmer and glitter particles — structure and sparkle in one formula. 36 shades.',
+      image: categoryHero['shimmer-glitter-builder-gel'],
+    },
   ].filter(sub => isSubcategoryEnabled('builderGels', sub.key));
 
   return (
