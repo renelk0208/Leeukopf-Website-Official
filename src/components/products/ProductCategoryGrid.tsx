@@ -72,7 +72,7 @@ const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
                 href={`${hrefBase}/${category.key}`}
                 alt={category.displayName}
                 fallbackSrc={productPlaceholder['default']}
-                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#A3005A]"
+                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1F2566]"
               />
             );
           })}

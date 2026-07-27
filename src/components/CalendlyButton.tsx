@@ -35,9 +35,9 @@ export default function CalendlyButton({
   };
 
   const variantClasses = {
-    primary: 'bg-[#A3005A] hover:bg-[#8A004D] text-white',
+    primary: 'bg-[#1F2566] hover:bg-[#161B4C] text-white',
     secondary: 'bg-secondary hover:bg-secondary-700 text-white',
-    outline: 'border-2 border-[#A3005A] text-[#A3005A] hover:bg-[#A3005A] hover:text-white'
+    outline: 'border-2 border-[#1F2566] text-[#1F2566] hover:bg-[#1F2566] hover:text-white'
   };
 
   return (

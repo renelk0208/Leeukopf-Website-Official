@@ -6,12 +6,12 @@ import { Link } from 'react-router-dom';
  * 
  * Text: "Starting strong begins here: FAQ – Start Your Brand"
  * Link: /faq-starting-a-gel-polish-brand
- * Link color: #A3005A (fuchsia brand)
+ * Link color: #1F2566 (Leeukopf blue brand)
  */
 export default function StartHereBanner() {
   return (
     <aside
-      className="w-full py-3 sm:py-4 px-4 sm:px-6 text-center"
+      className="w-full py-3 sm:py-4 px-4 sm:px-6 text-center bg-primary-50 border-y border-primary-100"
       role="complementary"
       aria-label="Start your brand banner"
     >

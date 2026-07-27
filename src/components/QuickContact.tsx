@@ -40,17 +40,25 @@ export default function QuickContact() {
   };
 
   return (
-    <section id="quick-contact" className="py-14 sm:py-20 bg-gradient-to-b from-gray-50 to-white" aria-label="Quick contact">
+    <section id="quick-contact" className="py-14 sm:py-20 bg-primary" aria-label="Quick contact">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left — copy */}
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-              Not ready to book a call? Just send us a message.
+            <p className="text-xs uppercase tracking-[0.25em] text-white/70 mb-3">Start your brand</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+              Book a free consultation — or simply send us a message.
             </h2>
-            <p className="text-gray-500 font-light text-sm sm:text-base leading-relaxed mb-6">
-              We reply within 1 business day.
+            <p className="text-white/80 font-light text-sm sm:text-base leading-relaxed mb-6">
+              Tell us about your brand idea and we&rsquo;ll reply within one business day. No obligation, no pressure.
             </p>
+            <a
+              href="/client-registration"
+              className="inline-flex items-center gap-2 rounded-md bg-white text-primary font-semibold px-6 py-3 min-h-[44px] border-2 border-white hover:bg-transparent hover:text-white transition-all duration-300"
+            >
+              Book a Free Consultation
+              <span aria-hidden="true">&rarr;</span>
+            </a>
           </div>
 
           {/* Right — form */}
