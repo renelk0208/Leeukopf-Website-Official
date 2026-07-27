@@ -44,7 +44,7 @@ const SocialLinks = () => {
           className="social-icon group relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white hover:bg-primary-50 rounded-lg transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px]"
           aria-label={social.name}
         >
-          <span className="text-[#444444] group-hover:text-[#A3005A] transition-colors">
+          <span className="text-[#444444] group-hover:text-[#1F2566] transition-colors">
             {social.icon}
           </span>
           <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-[#444444] text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap hidden sm:block">
@@ -147,7 +147,7 @@ export default function Footer() {
               <p className="text-[#444444] font-semibold mb-1">Phone</p>
               <a 
                 href="tel:+35973891041" 
-                className="text-[#6B6B6B] hover:text-[#A3005A] font-light transition-colors"
+                className="text-[#6B6B6B] hover:text-[#1F2566] font-light transition-colors"
               >
                 (+359) 73 891 041
               </a>
@@ -165,32 +165,32 @@ export default function Footer() {
             <h3 className="text-[#444444] font-semibold text-base mb-3">Quick Links</h3>
             <ul className="space-y-2 columns-2 sm:columns-1">
               <li>
-                <Link to="/products" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/products" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Our Products
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/about" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/our-brands" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/our-brands" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Gelitup Distribution
                 </Link>
               </li>
               <li>
-                <Link to="/private-label" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/private-label" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Private Label
                 </Link>
               </li>
               <li>
-                <Link to="/client-registration" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/client-registration" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Client Registration
                 </Link>
               </li>
               <li>
-                <Link to="/faq-starting-a-gel-polish-brand" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/faq-starting-a-gel-polish-brand" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   FAQ – Start Your Brand
                 </Link>
               </li>
@@ -202,22 +202,22 @@ export default function Footer() {
             <h3 className="text-[#444444] font-semibold text-base mb-3">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/terms-of-use" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/terms-of-use" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Terms of Use
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/privacy-policy" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/cookies-policy" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/cookies-policy" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Cookies Policy
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-notice-distributors" className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                <Link to="/privacy-notice-distributors" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   Privacy Notice for Distributors
                 </Link>
               </li>
@@ -229,7 +229,7 @@ export default function Footer() {
                       window.dispatchEvent(new CustomEvent("openCookieSettings"));
                     }
                   }}
-                  className="text-[#6B6B6B] hover:text-[#A3005A] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center"
+                  className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center"
                 >
                   Cookie Settings
                 </button>

@@ -49,7 +49,7 @@ const SocialLinks = ({ vertical = false }: SocialLinksProps) => {
           className="group relative flex items-center justify-center w-9 h-9 bg-gray-100 hover:bg-primary-50 rounded-lg transition-all duration-200 hover:scale-105"
           aria-label={social.name}
         >
-          <span className="text-[#444444] group-hover:text-[#A3005A] transition-colors">
+          <span className="text-[#444444] group-hover:text-[#1F2566] transition-colors">
             {social.icon}
           </span>
           <span className={vertical
@@ -154,8 +154,8 @@ export default function Navigation() {
                         to={item.path}
                         className={`block px-1.5 2xl:px-2 py-2 text-xs 2xl:text-sm font-medium transition-colors whitespace-nowrap ${
                           isActive(item.path)
-                            ? 'text-[#A3005A] border-b-2 border-[#A3005A]'
-                            : 'text-[#444444] hover:text-[#A3005A]'
+                            ? 'text-[#1F2566] border-b-2 border-[#1F2566]'
+                            : 'text-[#444444] hover:text-[#1F2566]'
                         }`}
                       >
                         {item.label}
@@ -223,7 +223,7 @@ export default function Navigation() {
                 <div className="xl:hidden">
                   <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="text-[#444444] hover:text-[#A3005A] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                    className="text-[#444444] hover:text-[#1F2566] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                     aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
                     aria-expanded={isOpen}
                   >
@@ -259,8 +259,8 @@ export default function Navigation() {
                     onClick={() => setIsOpen(false)}
                     className={`block w-full text-left px-3 py-3 rounded-md transition-colors font-medium text-sm ${
                       isActive(item.path)
-                        ? 'text-[#A3005A] bg-primary-50'
-                        : 'text-[#444444] hover:text-[#A3005A] hover:bg-gray-50'
+                        ? 'text-[#1F2566] bg-primary-50'
+                        : 'text-[#444444] hover:text-[#1F2566] hover:bg-gray-50'
                     }`}
                   >
                     {item.label}

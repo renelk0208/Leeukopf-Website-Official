@@ -7,25 +7,25 @@ export default {
         sans: ['"PF Futura Neu"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       colors: {
-        // Brand fuchsia - primary brand colour #A3005A
-        brandFuchsia: '#A3005A',
+        // Brand blue - primary brand colour #1F2566 (name kept for backward-compat)
+        brandFuchsia: '#1F2566',
         primary: {
-          DEFAULT: '#A3005A',
-          50: '#F9E6F0',
-          100: '#F5CCE2',
-          200: '#EB99C5',
-          300: '#E166A7',
-          400: '#D7338A',
-          500: '#A3005A',
-          600: '#820048',
-          700: '#610036',
-          800: '#410024',
-          900: '#200012',
+          DEFAULT: '#1F2566',
+          50: '#EBEDF7',
+          100: '#C4C8E8',
+          200: '#8891D0',
+          300: '#5560B5',
+          400: '#3A44A0',
+          500: '#1F2566',
+          600: '#161B4C',
+          700: '#10143A',
+          800: '#0B0E29',
+          900: '#060818',
         },
-        // Bright pink for CTAs - #C2188B
+        // Bright blue for CTAs
         brightPink: {
-          DEFAULT: '#C2188B',
-          hover: '#A01571',
+          DEFAULT: '#2A33A3',
+          hover: '#1F2566',
         },
         // Grey palette for UI elements
         grey: {
@@ -36,8 +36,8 @@ export default {
           offWhite: '#FAFAFA',
           charcoal: '#262626',
         },
-        // Fuchsia tint for subtle backgrounds/hovers
-        fuchsiaTint: '#F5D4E4',
+        // Blue tint for subtle backgrounds/hovers (name kept for backward-compat)
+        fuchsiaTint: '#E7E9F5',
       },
     },
   },

@@ -2,20 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
- * Fuchsia-Grey Colour System Variables
- * Primary: Fuchsia (#A3005A) - Main brand colour for CTAs, accents, links
+/* Brand typeface */
+@font-face {
+  font-family: 'PF Futura Neu';
+  src: url('/fonts/PFFUTURANEU-BOOK.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+ * Leeukopf Blue-Grey Colour System Variables
+ * Primary: Leeukopf Blue (#1F2566) - Main brand colour for CTAs, accents, links
  * Grey Palette: For text, backgrounds, and UI elements
  */
 :root {
-  /* Brand Fuchsia (Primary) */
-  --brand-fuchsia: #A3005A;
-  
-  /* Primary (Fuchsia) */
-  --color-primary: #A3005A;
-  --color-primary-dark: #820048;
-  --color-primary-soft: #F9E6F0;
-  
+  /* Brand Blue (Primary) — kept var name --brand-fuchsia for backward-compat */
+  --brand-fuchsia: #1F2566;
+
+  /* Primary (Leeukopf Blue) */
+  --color-primary: #1F2566;
+  --color-primary-dark: #161B4C;
+  --color-primary-soft: #EBEDF7;
+
   /* Grey Palette for UI */
   --color-footer-grey: #E8E8E8;
   --color-card-grey: #D4D4D4;
@@ -23,7 +32,7 @@
   --color-text-secondary: #6B6B6B;
   --color-off-white: #FAFAFA;
   --color-charcoal: #262626;
-  --color-fuchsia-tint: #F5D4E4;
+  --color-fuchsia-tint: #E7E9F5;
   
   /* Neutral Palette */
   --color-neutral-50: #F8FAFC;
@@ -50,8 +59,8 @@
   }
 
   body {
-    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-    background: linear-gradient(to bottom, #FDFCFA 0%, #F5F3F0 30%, #EDE9E3 60%, #F8F6F3 100%);
+    font-family: 'PF Futura Neu', 'Montserrat', Arial, Helvetica, sans-serif;
+    background: linear-gradient(to bottom, #FBFBFD 0%, #F3F4F8 30%, #E9EBF2 60%, #F6F7FA 100%);
     background-attachment: fixed;
     min-height: 100vh;
     overflow-x: hidden; /* Prevent horizontal scroll */
