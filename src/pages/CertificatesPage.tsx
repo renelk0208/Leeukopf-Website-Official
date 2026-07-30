@@ -81,46 +81,6 @@ export default function CertificatesPage() {
       description: 'Certificate confirming our gel polish products are TPO-free (Trimethylbenzoyl Diphenylphosphine Oxide free), meeting safety standards for professional nail care.',
       width: 800,
       height: 600
-    },
-    {
-      name: 'REACH & SVHC Compliance Declaration',
-      image: '/img/Certifications-And-Compliance/reach-svhc-declaration-2026.jpg',
-      alt: 'Thermitek Ltd / Leeukopf Laboratories REACH and SVHC packaging compliance declaration, issued 28 July 2026',
-      description: 'Declares that packaging components used in our cosmetic products are sourced from suppliers providing REACH (EC 1907/2006) and SVHC (Article 33) compliance documentation.',
-      width: 800,
-      height: 600
-    },
-    {
-      name: 'PPWR Declaration of Conformity',
-      image: '/img/Certifications-And-Compliance/ppwr-declaration-of-conformity-2026.jpg',
-      alt: 'Thermitek Ltd / Leeukopf Laboratories Packaging and Packaging Waste Regulation (EU) 2025/40 Declaration of Conformity, issued 28 July 2026',
-      description: 'Confirms our packaging is sourced from manufacturers providing documentation on substance restrictions, recyclability, minimisation and labelling under PPWR (EU) 2025/40, Articles 5–12.',
-      width: 800,
-      height: 600
-    },
-    {
-      name: 'Packaging Supplier – PPWR Article 5 Confirmation',
-      image: '/img/Certifications-And-Compliance/ds-smith-ppwr-article5-confirmation.jpg',
-      alt: 'Packaging manufacturer confirmation of compliance with Article 5 of the EU Packaging and Packaging Waste Regulation (PPWR)',
-      description: 'Confirmation from one of our packaging manufacturers that packaging materials comply with the heavy metal and PFAS thresholds set out in Article 5 of the PPWR.',
-      width: 800,
-      height: 600
-    },
-    {
-      name: 'Packaging Supplier – PFAS Information Sheet',
-      image: '/img/Certifications-And-Compliance/ds-smith-pfas-information-sheet.jpg',
-      alt: 'Packaging manufacturer information sheet on fluorinated substances (PFAS) in paper and board packaging',
-      description: 'Technical information from one of our packaging manufacturers on per- and polyfluoroalkyl substances (PFAS) in paper and board packaging materials.',
-      width: 800,
-      height: 600
-    },
-    {
-      name: 'Raw Material Supplier – SGS RoHS Test Report',
-      image: '/img/Certifications-And-Compliance/sgs-rohs-test-report-pe-2426h.jpg',
-      alt: 'SGS RoHS test report for polyethylene raw material grade 2426H, confirming compliance with Directive 2011/65/EU',
-      description: 'Independent SGS test report confirming a key raw material (polyethylene grade 2426H) is free of restricted RoHS substances (cadmium, lead, mercury, hexavalent chromium, PBBs and PBDEs).',
-      width: 800,
-      height: 600
     }
   ];
 
