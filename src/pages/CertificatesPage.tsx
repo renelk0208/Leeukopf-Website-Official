@@ -13,24 +13,24 @@ export default function CertificatesPage() {
     {
       name: 'Bulgarian Chamber of Commerce & Industry Membership',
       image: '/img/Certifications-And-Compliance/bcci-chamber-2025.jpg',
-      alt: 'Bulgarian Chamber of Commerce and Industry membership – Thermitek Ltd, valid 2025',
-      description: 'Direct membership in the Bulgarian Chamber of Commerce and Industry, valid for 2025.',
+      alt: 'Bulgarian Chamber of Commerce and Industry membership – Thermitek Ltd',
+      description: 'Direct membership in the Bulgarian Chamber of Commerce and Industry.',
       width: 800,
       height: 600
     },
     {
       name: 'Free Sale Certificate – Gel/Gel Polish Products',
-      image: '/img/Certifications-And-Compliance/free-sale-certificate-2025-2026-1.jpg',
-      alt: 'Free Sale Certificate 2025–2026 for gel/gel polish nail products',
-      description: 'Confirms our gel/gel polish nail products are compliant and freely sold in Bulgaria and the European Community (valid 2025–2026).',
+      image: '/img/Certifications-And-Compliance/free-sale-certificate-2026-20271.jpg',
+      alt: 'Free Sale Certificate for gel/gel polish nail products',
+      description: 'Confirms our gel/gel polish nail products are compliant and freely sold in Bulgaria and the European Community.',
       width: 800,
       height: 600
     },
     {
       name: 'GMP Certificate – Cosmetics Manufacturing',
       image: '/img/Certifications-And-Compliance/GMP CERTIFICATE 2025-2026_page1.jpg',
-      alt: 'GMP Certificate 2025–2026 for manufacturing according to Good Manufacturing Practice for cosmetics',
-      description: 'Certification for manufacturing according to Good Manufacturing Practice for cosmetics (GMP), valid 2025–2026.',
+      alt: 'GMP Certificate for manufacturing according to Good Manufacturing Practice for cosmetics',
+      description: 'Certification for manufacturing according to Good Manufacturing Practice for cosmetics (GMP).',
       width: 800,
       height: 600
     },
@@ -44,8 +44,8 @@ export default function CertificatesPage() {
     },
     {
       name: 'Leaping Bunny – Cruelty Free Certification',
-      image: '/img/Certifications-And-Compliance/leaping-bunny-2025-2026.jpg',
-      alt: 'Cruelty Free International Leaping Bunny Certificate of Approval, valid until 31 March 2026',
+      image: '/img/Certifications-And-Compliance/cruelty-free-international-26-27_page-0001.jpg',
+      alt: 'Cruelty Free International Leaping Bunny Certificate of Approval',
       description: 'Cruelty Free International Leaping Bunny approval for cosmetic and personal care products.',
       width: 800,
       height: 600
@@ -53,8 +53,8 @@ export default function CertificatesPage() {
     {
       name: 'Bulgarian Cosmetics Association',
       image: '/img/Certifications-And-Compliance/bulgarian-cosmetics-membership-2025.jpg',
-      alt: 'Bulgarian Cosmetics Association membership certificate 2025',
-      description: 'Membership in the Bulgarian Cosmetics Association for 2025.',
+      alt: 'Bulgarian Cosmetics Association membership certificate',
+      description: 'Membership in the Bulgarian Cosmetics Association.',
       width: 800,
       height: 600
     },
@@ -79,6 +79,46 @@ export default function CertificatesPage() {
       image: '/img/Certifications-And-Compliance/s4648-01-TPOcompliance_page-0001.jpg',
       alt: 'TPO-Free Compliance Certificate for gel polish products',
       description: 'Certificate confirming our gel polish products are TPO-free (Trimethylbenzoyl Diphenylphosphine Oxide free), meeting safety standards for professional nail care.',
+      width: 800,
+      height: 600
+    },
+    {
+      name: 'REACH & SVHC Compliance Declaration',
+      image: '/img/Certifications-And-Compliance/reach-svhc-declaration-2026.jpg',
+      alt: 'Thermitek Ltd / Leeukopf Laboratories REACH and SVHC packaging compliance declaration, issued 28 July 2026',
+      description: 'Declares that packaging components used in our cosmetic products are sourced from suppliers providing REACH (EC 1907/2006) and SVHC (Article 33) compliance documentation.',
+      width: 800,
+      height: 600
+    },
+    {
+      name: 'PPWR Declaration of Conformity',
+      image: '/img/Certifications-And-Compliance/ppwr-declaration-of-conformity-2026.jpg',
+      alt: 'Thermitek Ltd / Leeukopf Laboratories Packaging and Packaging Waste Regulation (EU) 2025/40 Declaration of Conformity, issued 28 July 2026',
+      description: 'Confirms our packaging is sourced from manufacturers providing documentation on substance restrictions, recyclability, minimisation and labelling under PPWR (EU) 2025/40, Articles 5–12.',
+      width: 800,
+      height: 600
+    },
+    {
+      name: 'Packaging Supplier – PPWR Article 5 Confirmation',
+      image: '/img/Certifications-And-Compliance/ds-smith-ppwr-article5-confirmation.jpg',
+      alt: 'Packaging manufacturer confirmation of compliance with Article 5 of the EU Packaging and Packaging Waste Regulation (PPWR)',
+      description: 'Confirmation from one of our packaging manufacturers that packaging materials comply with the heavy metal and PFAS thresholds set out in Article 5 of the PPWR.',
+      width: 800,
+      height: 600
+    },
+    {
+      name: 'Packaging Supplier – PFAS Information Sheet',
+      image: '/img/Certifications-And-Compliance/ds-smith-pfas-information-sheet.jpg',
+      alt: 'Packaging manufacturer information sheet on fluorinated substances (PFAS) in paper and board packaging',
+      description: 'Technical information from one of our packaging manufacturers on per- and polyfluoroalkyl substances (PFAS) in paper and board packaging materials.',
+      width: 800,
+      height: 600
+    },
+    {
+      name: 'Raw Material Supplier – SGS RoHS Test Report',
+      image: '/img/Certifications-And-Compliance/sgs-rohs-test-report-pe-2426h.jpg',
+      alt: 'SGS RoHS test report for polyethylene raw material grade 2426H, confirming compliance with Directive 2011/65/EU',
+      description: 'Independent SGS test report confirming a key raw material (polyethylene grade 2426H) is free of restricted RoHS substances (cadmium, lead, mercury, hexavalent chromium, PBBs and PBDEs).',
       width: 800,
       height: 600
     }
@@ -154,6 +194,45 @@ export default function CertificatesPage() {
               </span>
             </div>
           </div>
+        </Link>
+      </div>
+
+      {/* Packaging Compliance (PPWR) Subsection */}
+      <div className="mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 relative inline-block">
+          EU Packaging Compliance (PPWR)
+          <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary" aria-hidden="true"></span>
+        </h2>
+        <p className="text-sm sm:text-base text-gray-700 mb-6 max-w-3xl">
+          The packaging documents shown below sit within the EU Packaging and Packaging Waste Regulation
+          (PPWR, Regulation (EU) 2025/40). It sets harmonised rules on recyclability-by-design, recycled
+          content, packaging minimisation, restricted substances and labelling. Our packaging is sourced
+          and documented to align with these requirements as they phase in.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="card p-5 border-t-4 border-primary">
+            <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">Recyclable by Design</h3>
+            <p className="text-xs sm:text-sm text-gray-600">Materials chosen so packaging can be collected, sorted and recycled in practice.</p>
+          </div>
+          <div className="card p-5 border-t-4 border-primary">
+            <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">Restricted Substances</h3>
+            <p className="text-xs sm:text-sm text-gray-600">Heavy-metal and PFAS thresholds evidenced through supplier declarations and test reports.</p>
+          </div>
+          <div className="card p-5 border-t-4 border-primary">
+            <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">Minimisation &amp; Labelling</h3>
+            <p className="text-xs sm:text-sm text-gray-600">Right-sized packaging with material data to support your EPR reporting and on-pack marks.</p>
+          </div>
+        </div>
+
+        <Link
+          to="/packaging-compliance"
+          className="inline-flex items-center text-primary font-semibold hover:text-primary-700 transition-colors"
+        >
+          Read our full guide to EU packaging compliance
+          <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </Link>
       </div>
 
