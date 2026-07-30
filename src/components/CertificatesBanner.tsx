@@ -21,7 +21,7 @@ export default function CertificatesBanner() {
     },
     {
       label: 'Leaping Bunny Approved',
-      image: '/img/certifications/leaping-bunny-icon.png',
+      image: '/img/certifications/cruelty-free-internationl.png',
       alt: 'Leaping Bunny Approved Cruelty Free Certification',
       width: 120,
       height: 120
