@@ -8,6 +8,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProductsPage = lazy(() => import('./pages/ProductsPage'));
 const CertificatesPage = lazy(() => import('./pages/CertificatesPage'));
 const CpnpComplianceSupportPage = lazy(() => import('./pages/CpnpComplianceSupportPage'));
+const PackagingCompliancePage = lazy(() => import('./pages/PackagingCompliancePage'));
 const PrivateLabelPage = lazy(() => import('./pages/PrivateLabelPage'));
 const PrivateLabelBottlesPage = lazy(() => import('./pages/PrivateLabelBottlesPage'));
 const PrivateLabelBulkPage = lazy(() => import('./pages/PrivateLabelBulkPage'));
@@ -111,6 +112,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/certificates-and-compliance" element={<CertificatesPage />} />
           <Route path="/cpnp-compliance-support" element={<CpnpComplianceSupportPage />} />
+          <Route path="/packaging-compliance" element={<PackagingCompliancePage />} />
           <Route path="/distributors-wanted" element={<Navigate to="/our-brands" replace />} />
           <Route path="/client-registration" element={<ClientRegistrationPage />} />
           <Route path="/season-trends" element={<SeasonTrendsPage />} />

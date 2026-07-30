@@ -190,6 +190,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/packaging-compliance" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
+                  Packaging Compliance
+                </Link>
+              </li>
+              <li>
                 <Link to="/faq-starting-a-gel-polish-brand" className="text-[#6B6B6B] hover:text-[#1F2566] hover:underline decoration-primary transition-colors text-sm font-light min-h-[44px] inline-flex items-center">
                   FAQ – Start Your Brand
                 </Link>
