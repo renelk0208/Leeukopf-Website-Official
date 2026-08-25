@@ -166,14 +166,14 @@ const DEFAULT_COLORS: SiteSettings = {
 };
 
 const PIPELINE_STAGES = [
-  { value: 'new',          label: 'New Lead',         cls: 'bg-gray-500/20 text-gray-300' },
-  { value: 'contacted',    label: 'Contacted',         cls: 'bg-blue-500/20 text-blue-300' },
-  { value: 'samples_sent', label: 'Samples Sent',      cls: 'bg-amber-500/20 text-amber-300' },
-  { value: 'feedback',     label: 'Feedback',          cls: 'bg-orange-500/20 text-orange-300' },
-  { value: 'negotiating',  label: 'Negotiating',       cls: 'bg-purple-500/20 text-purple-300' },
-  { value: 'approved',     label: 'Approved',          cls: 'bg-emerald-500/20 text-emerald-400' },
-  { value: 'rejected',     label: 'Rejected',          cls: 'bg-red-500/20 text-red-400' },
-  { value: 'on_hold',      label: 'On Hold',           cls: 'bg-slate-500/20 text-slate-400' },
+  { value: 'new',          label: 'New Lead',         cls: 'bg-slate-600 text-white ring-slate-300' },
+  { value: 'contacted',    label: 'Contacted',        cls: 'bg-blue-600 text-white ring-blue-300' },
+  { value: 'samples_sent', label: 'Samples Sent',     cls: 'bg-amber-500 text-slate-950 ring-amber-200' },
+  { value: 'feedback',     label: 'Feedback',         cls: 'bg-orange-500 text-slate-950 ring-orange-200' },
+  { value: 'negotiating',  label: 'Negotiating',      cls: 'bg-purple-600 text-white ring-purple-300' },
+  { value: 'approved',     label: 'Approved',         cls: 'bg-emerald-600 text-white ring-emerald-300' },
+  { value: 'rejected',     label: 'Rejected',         cls: 'bg-red-600 text-white ring-red-300' },
+  { value: 'on_hold',      label: 'On Hold',          cls: 'bg-slate-500 text-white ring-slate-300' },
 ];
 
 function getPipelineStage(value: string | undefined) {
@@ -247,7 +247,7 @@ export default function AdminDashboard() {
       const payload = (await response.json()) as { success?: boolean; message?: string };
       if (!response.ok || !payload.success) throw new Error(payload.message || 'Save failed.');
       setClientRegistrations((prev) => prev.map((r) => r.id === id ? { ...r, ...edits } : r));
-      setMessage('CRM record saved.');
+      setMessage(payload.message || 'CRM record saved.');
     } catch (err) {
       setMessage(err instanceof Error ? err.message : 'Save failed.');
     } finally {
@@ -1709,7 +1709,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                             )}
                           </td>
                           <td className="py-4 px-4">
-                            {(() => { const ps = getPipelineStage(registration.pipeline_stage); return <span className={`px-2 py-0.5 rounded text-xs font-medium ${ps.cls}`}>{ps.label}</span>; })()}
+                            {(() => { const ps = getPipelineStage(registration.pipeline_stage); return <span className={`inline-flex px-3 py-1.5 rounded-lg text-base font-bold ring-2 ring-inset ${ps.cls}`}>{ps.label}</span>; })()}
                           </td>
                           <td className="py-4 px-4">
                             {isApproved ? (
@@ -1742,60 +1742,63 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                           <tr key={`${registration.id}-detail`} className="bg-slate-900/40 border-b border-cyan-500/10">
                             <td colSpan={10} className="px-6 pb-6 pt-2">
                               {/* CRM SECTION */}
-                              <div className="rounded-lg border border-cyan-500/20 bg-slate-900/60 p-4 mb-4">
-                                <p className="text-xs text-cyan-400 uppercase tracking-wide font-semibold mb-3">CRM — Pipeline & Tracking</p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
+                              <div className="rounded-xl border-2 border-cyan-300 bg-gradient-to-br from-cyan-950/90 via-slate-900 to-blue-950/90 p-6 mb-4 shadow-lg shadow-cyan-950/30">
+                                <p className="text-lg text-cyan-200 uppercase tracking-wide font-bold mb-5">CRM — Pipeline & Tracking</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
                                   <div>
-                                    <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1">Pipeline Stage</label>
+                                    <label className="block text-base text-cyan-100 font-bold mb-2">Pipeline Stage</label>
                                     <select
                                       value={crmEdits[registration.id]?.pipeline_stage ?? registration.pipeline_stage ?? 'new'}
                                       onChange={(e) => setCrmEdits((prev) => ({ ...prev, [registration.id]: { ...prev[registration.id], pipeline_stage: e.target.value } }))}
                                       onClick={(e) => e.stopPropagation()}
-                                      className="w-full px-3 py-2 bg-slate-800 border border-cyan-500/20 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400"
+                                      className="w-full px-4 py-3 bg-white border-2 border-cyan-300 rounded-lg text-slate-950 text-base font-semibold focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-300"
                                     >
                                       {PIPELINE_STAGES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
                                     </select>
                                   </div>
                                   <div>
-                                    <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1">Samples Sent</label>
+                                    <label className="block text-base text-cyan-100 font-bold mb-2">Samples Sent</label>
                                     <input
                                       type="date"
                                       value={crmEdits[registration.id]?.samples_sent_at ?? registration.samples_sent_at ?? ''}
                                       onChange={(e) => setCrmEdits((prev) => ({ ...prev, [registration.id]: { ...prev[registration.id], samples_sent_at: e.target.value } }))}
                                       onClick={(e) => e.stopPropagation()}
-                                      className="w-full px-3 py-2 bg-slate-800 border border-cyan-500/20 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400"
+                                      className="w-full px-4 py-3 bg-white border-2 border-cyan-300 rounded-lg text-slate-950 text-base font-semibold focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-300"
                                     />
                                   </div>
                                   <div>
-                                    <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1">Last Contact</label>
+                                    <label className="block text-base text-cyan-100 font-bold mb-2">Last Contact</label>
                                     <input
                                       type="date"
                                       value={crmEdits[registration.id]?.last_contact_date ?? registration.last_contact_date ?? ''}
                                       onChange={(e) => setCrmEdits((prev) => ({ ...prev, [registration.id]: { ...prev[registration.id], last_contact_date: e.target.value } }))}
                                       onClick={(e) => e.stopPropagation()}
-                                      className="w-full px-3 py-2 bg-slate-800 border border-cyan-500/20 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400"
+                                      className="w-full px-4 py-3 bg-white border-2 border-cyan-300 rounded-lg text-slate-950 text-base font-semibold focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-300"
                                     />
                                   </div>
                                   <div className="flex items-end">
                                     <button
                                       onClick={(e) => { e.stopPropagation(); handleSaveCRM(registration.id); }}
                                       disabled={savingCrm === registration.id}
-                                      className="w-full px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-800 disabled:opacity-50"
+                                      className="w-full px-5 py-3 bg-gradient-to-r from-cyan-400 to-blue-600 text-white rounded-lg text-base font-bold hover:from-cyan-300 hover:to-blue-500 disabled:opacity-50 shadow-md"
                                     >
                                       {savingCrm === registration.id ? 'Saving...' : 'Save Changes'}
                                     </button>
                                   </div>
                                 </div>
                                 <div>
-                                  <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1">Admin Notes (internal, not visible to client)</label>
+                                  <label className="block text-base text-cyan-100 font-bold mb-2">Admin Notes (internal, not visible to client)</label>
                                   <textarea
-                                    rows={3}
+                                    rows={5}
                                     value={crmEdits[registration.id]?.admin_notes ?? registration.admin_notes ?? ''}
                                     onChange={(e) => setCrmEdits((prev) => ({ ...prev, [registration.id]: { ...prev[registration.id], admin_notes: e.target.value } }))}
                                     onClick={(e) => e.stopPropagation()}
                                     placeholder="Add internal notes, feedback, follow-up reminders..."
-                                    className="w-full px-3 py-2 bg-slate-800 border border-cyan-500/20 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400 resize-none"
+                                    className="w-full px-4 py-3 bg-white border-2 border-cyan-300 rounded-lg text-slate-950 text-base leading-relaxed focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-300 resize-y"
                                   />
+                                  <p className="mt-2 text-sm font-semibold text-cyan-100">
+                                    Updated comments are emailed to acc1.leeukopf@gmail.com and leeukopf@gmail.com when saved.
+                                  </p>
                                 </div>
                               </div>
 
