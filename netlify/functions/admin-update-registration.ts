@@ -1,5 +1,6 @@
 import type { Handler } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
 
 export const config = {
   path: '/api/admin-update-registration',
@@ -42,6 +43,16 @@ const VALID_PIPELINE_STAGES = [
 
 const ALLOWED_FIELDS = ['pipeline_stage', 'admin_notes', 'samples_sent_at', 'last_contact_date'] as const;
 type AllowedField = typeof ALLOWED_FIELDS[number];
+const CRM_COMMENT_RECIPIENTS = ['acc1.leeukopf@gmail.com', 'leeukopf@gmail.com'];
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 export const handler: Handler = async (event) => {
   const headers = getCorsHeaders(event.headers.origin);
@@ -120,6 +131,34 @@ export const handler: Handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ success: false, message: 'No valid fields to update.' }) };
   }
 
+  const { data: registration, error: registrationError } = await adminSupabase
+    .from('client_registrations')
+    .select('company, contact, email, pipeline_stage, admin_notes, samples_sent_at, last_contact_date')
+    .eq('id', id)
+    .maybeSingle();
+
+  if (registrationError || !registration) {
+    const detail = registrationError?.message || 'Registration not found.';
+    return { statusCode: 404, headers, body: JSON.stringify({ success: false, message: detail }) };
+  }
+
+  const nextAdminNotes = safeUpdate.admin_notes;
+  const commentChanged = typeof nextAdminNotes === 'string'
+    && nextAdminNotes.trim() !== ''
+    && nextAdminNotes.trim() !== (registration.admin_notes || '').trim();
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  if (commentChanged && !resendApiKey) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({
+        success: false,
+        message: 'CRM comment was not saved because email notifications are not configured.',
+      }),
+    };
+  }
+
   const { error } = await adminSupabase
     .from('client_registrations')
     .update(safeUpdate)
@@ -129,5 +168,55 @@ export const handler: Handler = async (event) => {
     return { statusCode: 500, headers, body: JSON.stringify({ success: false, message: `Update failed: ${error.message}` }) };
   }
 
-  return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+  if (commentChanged && resendApiKey) {
+    const resend = new Resend(resendApiKey);
+    const comment = String(nextAdminNotes).trim();
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@leeukopf.com';
+    const { error: emailError } = await resend.emails.send({
+      from: `Leeukopf CRM <${fromEmail}>`,
+      to: CRM_COMMENT_RECIPIENTS,
+      subject: `CRM comment updated: ${registration.company}`,
+      html: `
+        <h2>CRM comment updated</h2>
+        <p><strong>Company:</strong> ${escapeHtml(registration.company || 'Unknown')}</p>
+        <p><strong>Contact:</strong> ${escapeHtml(registration.contact || 'Unknown')}</p>
+        <p><strong>Client email:</strong> ${escapeHtml(registration.email || 'Unknown')}</p>
+        <p><strong>Updated by:</strong> ${escapeHtml(requesterEmail)}</p>
+        <h3>Admin comment</h3>
+        <p style="white-space:pre-wrap">${escapeHtml(comment)}</p>
+      `,
+    });
+
+    if (emailError) {
+      const rollbackUpdate: Partial<Record<AllowedField, unknown>> = {};
+      for (const field of ALLOWED_FIELDS) {
+        if (field in safeUpdate) rollbackUpdate[field] = registration[field] ?? null;
+      }
+      const { error: rollbackError } = await adminSupabase
+        .from('client_registrations')
+        .update(rollbackUpdate)
+        .eq('id', id);
+      const rollbackMessage = rollbackError
+        ? ' The comment save could not be rolled back; contact an administrator.'
+        : ' The CRM changes were rolled back and were not saved.';
+
+      return {
+        statusCode: 502,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          message: `Comment email could not be sent to both recipients.${rollbackMessage}`,
+        }),
+      };
+    }
+  }
+
+  return {
+    statusCode: 200,
+    headers,
+    body: JSON.stringify({
+      success: true,
+      message: commentChanged ? 'CRM record saved and comment emailed to both recipients.' : 'CRM record saved.',
+    }),
+  };
 };
