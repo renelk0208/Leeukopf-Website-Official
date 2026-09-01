@@ -44,14 +44,13 @@ export default function ThreeInOnePage() {
         {/* Description */}
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed mb-4">
-            Our 3-in-1 builder gel combines base, builder and finish in a single versatile formula. Perfect
-            for technicians who want efficiency without compromising on strength or finish quality. One product,
-            multiple applications — from natural nail overlays to full extensions.
+            3-in-1 Builder Gel
+          </p>
+          <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed mb-4">
+            3-in-1 refers to building, shaping and sealing the nail in one system.  It is not a base, builder and top as easily miunderstood.  It is not suitable for attaching nail tips. It is, however good for using with Dual Form Nail Tip and Extensions as well as nail forms.
           </p>
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
-            Formulated without HEMA or TPO, this all-in-one system delivers excellent adhesion, self-levelling
-            consistency and a glossy finish that requires no additional top coat. Available in two collections —
-            classic builder shades and effects finishes.
+            Formulated without HEMA or TPO, this all-in-one system delivers excellent adhesion, self-levelling consistency and a glossy finish that requires no additional top coat. Available in two collections — classic builder shades and effects finishes.
           </p>
         </div>
       </div>
