@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-01T16:22:09.971Z",
-  "keys": 3420,
-  "totalImages": 5306,
+  "generatedAt": "2026-09-01T07:51:49.403Z",
+  "keys": 3425,
+  "totalImages": 5314,
   "byCode": {
     "LCCOVRBCLEAR": [
       "/img/b2b/bases/Cover rubber base/LC-COVRB-Clear.webp"
@@ -11301,19 +11301,28 @@
       "/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gels-UGN.jpg",
       "/img/products/builder-systems/3-in-1 Builder gel/Builder Gels/3-in-1-builder-gels-UGN.jpg"
     ],
+    "BUILDERGELSCATEGORY4": [
+      "/img/products/builder-systems/3-in-1 Builder gel/Builder Gels/builder_gels_category_4.jpg"
+    ],
     "3IN1BUILDERGELSUGIRS": [
       "/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gels-UGI-RS.jpg",
+      "/img/products/builder-systems/3-in-1 Builder gel/Effects Builder Gels/3-in-1-builder-gels-UGI-RS.jpg",
       "/img/products/builder-systems/3-in-1 Builder gel/Glitter 3-in-1 Builder Gels/3-in-1-builder-gels-UGI-RS.jpg"
     ],
     "3IN1BUILDERGELSUGS": [
       "/img/products/builder-systems/3-in-1 Builder gel/3-in-1-builder-gels-UGS.jpg",
+      "/img/products/builder-systems/3-in-1 Builder gel/Effects Builder Gels/3-in-1-builder-gels-UGS.jpg",
       "/img/products/builder-systems/3-in-1 Builder gel/Glitter 3-in-1 Builder Gels/3-in-1-builder-gels-UGS.jpg"
     ],
     "SHIMMERBUILDERGELS": [
+      "/img/products/builder-systems/3-in-1 Builder gel/Effects Builder Gels/shimmer-builder-gels.jpg",
       "/img/products/builder-systems/3-in-1 Builder gel/Glitter 3-in-1 Builder Gels/shimmer-builder-gels.jpg"
     ],
     "POLEDIMENSIONS": [
       "/img/products/builder-systems/3-in-1 Builder gel/Pole Dimensions.png"
+    ],
+    "3IN1EFFECTSBUILDERGELCATEGORYIMAGE": [
+      "/img/products/builder-systems/3-in-1 Builder gel/Effects Builder Gels/3-in-1-effects-builder-gel-category-image.webp"
     ],
     "3PHASEBUILDERGELUGN": [
       "/img/products/builder-systems/3-phase-builder-gel/3-phase-builder-gel-UGN.jpg"
@@ -11826,6 +11835,15 @@
     ],
     "SOLIDCREAM5": [
       "/img/products/nail-art/Nail Art/solid-cream-palettes/solid-cream5.jpg"
+    ],
+    "CARVINGGEL": [
+      "/img/products/nail-art/Nail Art/Carving Gel.jpg"
+    ],
+    "CARVINGGEL1": [
+      "/img/products/nail-art/Nail Art/carving-gel-1.jpg"
+    ],
+    "CARVINGGEL2": [
+      "/img/products/nail-art/Nail Art/carving-gel-2.jpg"
     ],
     "BASECOATCATEGORYCARDIMAGE": [
       "/img/products/tops-and-bases/base-coat-category-card-image.png",

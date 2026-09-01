@@ -38,13 +38,17 @@ export default function ThreeInOneBuilderGelsPage() {
         {/* Description */}
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-8 md:p-12">
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed mb-4">
-            Our classic 3-in-1 Builder Gel is available across multiple colour ranges — from clear and natural nudes
-            to vibrant tinted shades. Each range delivers the same HEMA-free, TPO-free formula that builds, shapes
-            and finishes in a single product.
+            Our 3-in-1 builder gel combines base, builder and finish in a single versatile formula. Perfect for
+            technicians who want efficiency without compromising on strength or finish quality. One product, multiple
+            applications — from natural nail overlays to full extensions.
+          </p>
+          <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed mb-4">
+            Formulated without HEMA or TPO, this all-in-one system delivers excellent adhesion, self-levelling
+            consistency and a glossy finish that requires no additional top coat. Available in two collections —
+            classic builder shades and effects finishes.
           </p>
           <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
-            Self-levelling consistency, excellent adhesion and a glossy finish that requires no additional top coat.
-            Ideal for overlays, extensions and natural nail reinforcement. Minimum order: 25 pieces per colour.
+            Professional tier pricing is set at 37% of B2B value, while Authority tier pricing is set at 22% of B2B value.
           </p>
         </div>
       </div>
