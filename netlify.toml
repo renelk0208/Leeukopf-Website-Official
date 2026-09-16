@@ -19,7 +19,7 @@
   included_files = ["netlify/functions/assets/**"]
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "20.9.0"
 
 # Cache images and static assets for 1 year
 [[headers]]
