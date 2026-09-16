@@ -26,6 +26,8 @@
   for = "/gelitup-content/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+    Cross-Origin-Resource-Policy = "cross-origin"
 
 [[headers]]
   for = "*.webp"
@@ -180,6 +182,11 @@
   to = "/certificates-and-compliance"
   status = 301
 
+[[redirects]]
+  from = "/images/gmp_certified.png"
+  to = "/img/Certifications-And-Compliance/GMP%20CERTIFICATE%202025-2026_page1.jpg"
+  status = 301
+
 # SPA redirect - serve index.html for all other routes
 # This must be LAST so explicit redirects and functions take precedence
 [[redirects]]
@@ -198,6 +205,24 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cross-Origin-Resource-Policy = "cross-origin"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cross-Origin-Resource-Policy = "cross-origin"
+
+[[headers]]
+  for = "/gelitup-media/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cross-Origin-Resource-Policy = "cross-origin"
 
 # Cache headers for Instagram placeholder images (30 days)
 [[headers]]
@@ -236,3 +261,10 @@
   for = "/registerSW.js"
   [headers.values]
     Cache-Control = "no-store, no-cache, must-revalidate"
+
+[[headers]]
+  for = "/version.json"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
