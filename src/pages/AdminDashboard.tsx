@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStaff } from '../contexts/AdminStaffContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
@@ -107,6 +107,17 @@ interface AdminStaffMember {
   created_by?: string;
 }
 
+interface ClientRegistrationSearchIndexEntry {
+  registration: ClientRegistrationLead;
+  searchableText: string;
+  searchTokens: string[];
+}
+
+interface ClientRegistrationSearchCacheEntry {
+  signature: string;
+  entry: ClientRegistrationSearchIndexEntry;
+}
+
 const ALL_PERMISSIONS: AdminStaffMember['permissions'] = {
   view_clients: true,
   approve_registrations: true,
@@ -194,40 +205,40 @@ function getEditDistance(source: string, target: string): number {
   if (!source.length) return target.length;
   if (!target.length) return source.length;
 
-  const rows = source.length + 1;
   const cols = target.length + 1;
-  const matrix = Array.from({ length: rows }, () => Array<number>(cols).fill(0));
+  let previousRow = Array.from({ length: cols }, (_, index) => index);
+  const currentRow = Array<number>(cols).fill(0);
+  let previousPreviousRow: number[] | null = null;
 
-  for (let row = 0; row < rows; row += 1) {
-    matrix[row][0] = row;
-  }
+  for (let row = 1; row <= source.length; row += 1) {
+    currentRow[0] = row;
 
-  for (let col = 0; col < cols; col += 1) {
-    matrix[0][col] = col;
-  }
-
-  for (let row = 1; row < rows; row += 1) {
-    for (let col = 1; col < cols; col += 1) {
+    for (let col = 1; col <= target.length; col += 1) {
       const substitutionCost = source[row - 1] === target[col - 1] ? 0 : 1;
-
-      matrix[row][col] = Math.min(
-        matrix[row - 1][col] + 1,
-        matrix[row][col - 1] + 1,
-        matrix[row - 1][col - 1] + substitutionCost
+      let cellValue = Math.min(
+        previousRow[col] + 1,
+        currentRow[col - 1] + 1,
+        previousRow[col - 1] + substitutionCost
       );
 
       if (
-        row > 1
+        previousPreviousRow
+        && row > 1
         && col > 1
         && source[row - 1] === target[col - 2]
         && source[row - 2] === target[col - 1]
       ) {
-        matrix[row][col] = Math.min(matrix[row][col], matrix[row - 2][col - 2] + 1);
+        cellValue = Math.min(cellValue, previousPreviousRow[col - 2] + 1);
       }
+
+      currentRow[col] = cellValue;
     }
+
+    previousPreviousRow = previousRow;
+    previousRow = [...currentRow];
   }
 
-  return matrix[rows - 1][cols - 1];
+  return previousRow[target.length];
 }
 
 function getClientRegistrationSearchValues(registration: ClientRegistrationLead): string[] {
@@ -283,9 +294,16 @@ function matchesFuzzyTerm(term: string, searchableText: string, searchTokens: st
   if (searchableText.includes(term)) return true;
   if (term.length <= 2) return false;
 
-  return searchTokens.some((token) => {
+  const likelyTokens = searchTokens
+    .filter((token) => {
+      if (token.includes(term) || term.includes(token)) return true;
+      if (Math.abs(token.length - term.length) > 2) return false;
+      return token[0] === term[0] || token.startsWith(term.slice(0, 2)) || term.startsWith(token.slice(0, 2));
+    })
+    .slice(0, 12);
+
+  return likelyTokens.some((token) => {
     if (token.includes(term) || term.includes(token)) return true;
-    if (Math.abs(token.length - term.length) > 2) return false;
 
     const maxDistance = term.length >= 5 ? 2 : 1;
     return getEditDistance(term, token) <= maxDistance;
@@ -308,6 +326,38 @@ export default function AdminDashboard() {
   const [crmEdits, setCrmEdits] = useState<Record<string, { pipeline_stage: string; admin_notes: string; samples_sent_at: string; last_contact_date: string; }>>({});
   const [savingCrm, setSavingCrm] = useState<string | null>(null);
   const [resendingOrders, setResendingOrders] = useState(false);
+  const clientRegistrationSearchCacheRef = useRef<Record<string, ClientRegistrationSearchCacheEntry>>({});
+
+  const clientRegistrationSearchIndex = useMemo<ClientRegistrationSearchIndexEntry[]>(
+    () => {
+      const nextCache: Record<string, ClientRegistrationSearchCacheEntry> = {};
+
+      const entries = clientRegistrations.map((registration) => {
+        const signature = getClientRegistrationSearchValues(registration).join('\u0000');
+        const cachedEntry = clientRegistrationSearchCacheRef.current[registration.id];
+
+        if (cachedEntry && cachedEntry.signature === signature) {
+          const reusedEntry = { ...cachedEntry.entry, registration };
+          nextCache[registration.id] = { signature, entry: reusedEntry };
+          return reusedEntry;
+        }
+
+        const searchableText = normalizeSearchValue(signature.split('\u0000').join(' '));
+        const entry = {
+          registration,
+          searchableText,
+          searchTokens: searchableText.split(/\s+/).filter(Boolean),
+        };
+
+        nextCache[registration.id] = { signature, entry };
+        return entry;
+      });
+
+      clientRegistrationSearchCacheRef.current = nextCache;
+      return entries;
+    },
+    [clientRegistrations]
+  );
 
   const filteredClientRegistrations = useMemo(() => {
     const normalizedQuery = normalizeSearchValue(clientSearchQuery);
@@ -316,13 +366,10 @@ export default function AdminDashboard() {
     const searchTerms = normalizedQuery.split(/\s+/).filter(Boolean);
     if (searchTerms.length === 0) return clientRegistrations;
 
-    return clientRegistrations.filter((registration) => {
-      const searchableText = normalizeSearchValue(getClientRegistrationSearchValues(registration).join(' '));
-      const searchTokens = searchableText.split(/\s+/).filter(Boolean);
-
-      return searchTerms.every((term) => matchesFuzzyTerm(term, searchableText, searchTokens));
-    });
-  }, [clientRegistrations, clientSearchQuery]);
+    return clientRegistrationSearchIndex
+      .filter(({ searchableText, searchTokens }) => searchTerms.every((term) => matchesFuzzyTerm(term, searchableText, searchTokens)))
+      .map(({ registration }) => registration);
+  }, [clientRegistrations, clientRegistrationSearchIndex, clientSearchQuery]);
 
   const handleResendAllOrders = async () => {
     if (!session?.access_token) return;
@@ -1744,15 +1791,19 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
             </div>
 
             <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <label className="relative block w-full max-w-2xl">
-                <Search size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-                <input
-                  type="search"
-                  value={clientSearchQuery}
-                  onChange={(event) => setClientSearchQuery(event.target.value)}
-                  placeholder="Search company, contact, email, phone, country, notes, pipeline..."
-                  className="w-full rounded-xl border border-cyan-500/20 bg-slate-900/50 py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
-                />
+              <label htmlFor="client-registration-search" className="relative block w-full max-w-2xl">
+                <span className="mb-2 block text-sm font-medium text-gray-300">Search registrations</span>
+                <span className="relative block">
+                  <Search size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <input
+                    id="client-registration-search"
+                    type="search"
+                    value={clientSearchQuery}
+                    onChange={(event) => setClientSearchQuery(event.target.value)}
+                    placeholder="Search company, contact, email, phone, country, notes, pipeline..."
+                    className="w-full rounded-xl border border-cyan-500/20 bg-slate-900/50 py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
+                  />
+                </span>
               </label>
               <p className="text-sm text-gray-400">
                 Showing {filteredClientRegistrations.length} of {clientRegistrations.length} registrations
