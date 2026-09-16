@@ -1790,24 +1790,39 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
               </div>
             </div>
 
-            <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <label htmlFor="client-registration-search" className="relative block w-full max-w-2xl">
-                <span className="mb-2 block text-sm font-medium text-gray-300">Search registrations</span>
-                <span className="relative block">
-                  <Search size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-                  <input
-                    id="client-registration-search"
-                    type="search"
-                    value={clientSearchQuery}
-                    onChange={(event) => setClientSearchQuery(event.target.value)}
-                    placeholder="Search company, contact, email, phone, country, notes, pipeline..."
-                    className="w-full rounded-xl border border-cyan-500/20 bg-slate-900/50 py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
-                  />
-                </span>
-              </label>
-              <p className="text-sm text-gray-400">
-                Showing {filteredClientRegistrations.length} of {clientRegistrations.length} registrations
-              </p>
+            <div className="mb-6 rounded-2xl border border-cyan-500/20 bg-slate-900/40 p-4 shadow-lg shadow-slate-950/20">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <label htmlFor="client-registration-search" className="block w-full max-w-2xl">
+                  <span className="mb-2 block text-sm font-semibold uppercase tracking-wide text-cyan-200">Search registrations</span>
+                  <span className="relative block">
+                    <Search size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-cyan-300" />
+                    <input
+                      id="client-registration-search"
+                      type="search"
+                      value={clientSearchQuery}
+                      onChange={(event) => setClientSearchQuery(event.target.value)}
+                      placeholder="Search company, contact, email, phone, country, notes, pipeline..."
+                      className="w-full rounded-xl border border-cyan-400/40 bg-slate-950/80 py-3 pl-10 pr-24 text-white placeholder-gray-400 shadow-inner shadow-slate-950 focus:border-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400/30"
+                    />
+                    {clientSearchQuery.trim() && (
+                      <button
+                        type="button"
+                        onClick={() => setClientSearchQuery('')}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg border border-cyan-400/30 px-3 py-1 text-xs font-medium text-cyan-100 hover:border-cyan-300 hover:text-white"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </span>
+                  <span className="mt-2 block text-xs text-gray-400">
+                    Fuzzy search matches partial names, emails, phone numbers, countries, notes, and similar terms.
+                  </span>
+                </label>
+                <p className="text-sm text-gray-300 lg:text-right">
+                  Showing <span className="font-semibold text-white">{filteredClientRegistrations.length}</span> of{' '}
+                  <span className="font-semibold text-white">{clientRegistrations.length}</span> registrations
+                </p>
+              </div>
             </div>
 
             {clientRegistrations.length === 0 ? (
