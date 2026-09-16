@@ -133,7 +133,7 @@ export const handler: Handler = async (event) => {
 
   const { data: registration, error: registrationError } = await adminSupabase
     .from('client_registrations')
-    .select('company, contact, email, pipeline_stage, admin_notes, samples_sent_at, last_contact_date')
+    .select('company, contact, email, phone, country, pipeline_stage, admin_notes, samples_sent_at, last_contact_date')
     .eq('id', id)
     .maybeSingle();
 
@@ -181,6 +181,8 @@ export const handler: Handler = async (event) => {
         <p><strong>Company:</strong> ${escapeHtml(registration.company || 'Unknown')}</p>
         <p><strong>Contact:</strong> ${escapeHtml(registration.contact || 'Unknown')}</p>
         <p><strong>Client email:</strong> ${escapeHtml(registration.email || 'Unknown')}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(registration.phone || 'Unknown')}</p>
+        <p><strong>Country:</strong> ${escapeHtml(registration.country || 'Unknown')}</p>
         <p><strong>Updated by:</strong> ${escapeHtml(requesterEmail)}</p>
         <h3>Admin comment</h3>
         <p style="white-space:pre-wrap">${escapeHtml(comment)}</p>

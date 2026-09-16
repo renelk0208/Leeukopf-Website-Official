@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStaff } from '../contexts/AdminStaffContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink } from 'lucide-react';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink, Search } from 'lucide-react';
 
 interface ClientRegistrationLead {
   id: string;
@@ -180,6 +180,118 @@ function getPipelineStage(value: string | undefined) {
   return PIPELINE_STAGES.find((s) => s.value === (value || 'new')) ?? PIPELINE_STAGES[0];
 }
 
+function normalizeSearchValue(value: string | undefined | null): string {
+  return (value || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function getEditDistance(source: string, target: string): number {
+  if (source === target) return 0;
+  if (!source.length) return target.length;
+  if (!target.length) return source.length;
+
+  const rows = source.length + 1;
+  const cols = target.length + 1;
+  const matrix = Array.from({ length: rows }, () => Array<number>(cols).fill(0));
+
+  for (let row = 0; row < rows; row += 1) {
+    matrix[row][0] = row;
+  }
+
+  for (let col = 0; col < cols; col += 1) {
+    matrix[0][col] = col;
+  }
+
+  for (let row = 1; row < rows; row += 1) {
+    for (let col = 1; col < cols; col += 1) {
+      const substitutionCost = source[row - 1] === target[col - 1] ? 0 : 1;
+
+      matrix[row][col] = Math.min(
+        matrix[row - 1][col] + 1,
+        matrix[row][col - 1] + 1,
+        matrix[row - 1][col - 1] + substitutionCost
+      );
+
+      if (
+        row > 1
+        && col > 1
+        && source[row - 1] === target[col - 2]
+        && source[row - 2] === target[col - 1]
+      ) {
+        matrix[row][col] = Math.min(matrix[row][col], matrix[row - 2][col - 2] + 1);
+      }
+    }
+  }
+
+  return matrix[rows - 1][cols - 1];
+}
+
+function getClientRegistrationSearchValues(registration: ClientRegistrationLead): string[] {
+  const pipelineStage = getPipelineStage(registration.pipeline_stage).label;
+  const interests = Array.isArray(registration.interests)
+    ? registration.interests.join(' ')
+    : registration.interests || '';
+  const clientTypeFlags = [
+    registration.interest_distribution ? 'distributor' : '',
+    registration.interest_private_label ? 'private label' : '',
+    registration.interest_influencer ? 'influencer' : '',
+  ];
+
+  return [
+    registration.company,
+    registration.contact,
+    registration.role,
+    registration.email,
+    registration.phone,
+    registration.country,
+    registration.website,
+    registration.instagram,
+    registration.facebook,
+    registration.tiktok,
+    registration.business_type,
+    registration.client_type,
+    registration.monthly_volume,
+    registration.vat_eori,
+    registration.billing_address,
+    registration.shipping_address,
+    registration.language,
+    registration.notes,
+    registration.countries_covered,
+    registration.distribution_channels,
+    registration.estimated_monthly_volume,
+    registration.years_in_business,
+    registration.brand_name,
+    registration.product_interest,
+    registration.target_moq,
+    registration.target_launch_date,
+    registration.country_audience,
+    registration.avg_views,
+    registration.buyer_type,
+    registration.price_tier,
+    registration.admin_notes,
+    pipelineStage,
+    interests,
+    ...clientTypeFlags,
+  ].filter((value): value is string => typeof value === 'string' && value.trim().length > 0);
+}
+
+function matchesFuzzyTerm(term: string, searchableText: string, searchTokens: string[]): boolean {
+  if (searchableText.includes(term)) return true;
+  if (term.length <= 2) return false;
+
+  return searchTokens.some((token) => {
+    if (token.includes(term) || term.includes(token)) return true;
+    if (Math.abs(token.length - term.length) > 2) return false;
+
+    const maxDistance = term.length >= 5 ? 2 : 1;
+    return getEditDistance(term, token) <= maxDistance;
+  });
+}
+
 export default function AdminDashboard() {
   const { signOut, user, session } = useAuth();
   const adminStaff = useAdminStaff();
@@ -189,12 +301,28 @@ export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   const [brochureRequests, setBrochureRequests] = useState<BrochureRequest[]>([]);
   const [clientRegistrations, setClientRegistrations] = useState<ClientRegistrationLead[]>([]);
+  const [clientSearchQuery, setClientSearchQuery] = useState('');
   const [completedOrders, setCompletedOrders] = useState<CompletedB2BOrder[]>([]);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [expandedRegistrationId, setExpandedRegistrationId] = useState<string | null>(null);
   const [crmEdits, setCrmEdits] = useState<Record<string, { pipeline_stage: string; admin_notes: string; samples_sent_at: string; last_contact_date: string; }>>({});
   const [savingCrm, setSavingCrm] = useState<string | null>(null);
   const [resendingOrders, setResendingOrders] = useState(false);
+
+  const filteredClientRegistrations = useMemo(() => {
+    const normalizedQuery = normalizeSearchValue(clientSearchQuery);
+    if (!normalizedQuery) return clientRegistrations;
+
+    const searchTerms = normalizedQuery.split(/\s+/).filter(Boolean);
+    if (searchTerms.length === 0) return clientRegistrations;
+
+    return clientRegistrations.filter((registration) => {
+      const searchableText = normalizeSearchValue(getClientRegistrationSearchValues(registration).join(' '));
+      const searchTokens = searchableText.split(/\s+/).filter(Boolean);
+
+      return searchTerms.every((term) => matchesFuzzyTerm(term, searchableText, searchTokens));
+    });
+  }, [clientRegistrations, clientSearchQuery]);
 
   const handleResendAllOrders = async () => {
     if (!session?.access_token) return;
@@ -1615,10 +1743,31 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
               </div>
             </div>
 
+            <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <label className="relative block w-full max-w-2xl">
+                <Search size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                <input
+                  type="search"
+                  value={clientSearchQuery}
+                  onChange={(event) => setClientSearchQuery(event.target.value)}
+                  placeholder="Search company, contact, email, phone, country, notes, pipeline..."
+                  className="w-full rounded-xl border border-cyan-500/20 bg-slate-900/50 py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
+                />
+              </label>
+              <p className="text-sm text-gray-400">
+                Showing {filteredClientRegistrations.length} of {clientRegistrations.length} registrations
+              </p>
+            </div>
+
             {clientRegistrations.length === 0 ? (
               <div className="text-center py-12">
                 <UserPlus size={48} className="mx-auto text-gray-600 mb-4" />
                 <p className="text-gray-400">No client registrations yet</p>
+              </div>
+            ) : filteredClientRegistrations.length === 0 ? (
+              <div className="rounded-xl border border-cyan-500/20 bg-slate-900/40 px-6 py-10 text-center">
+                <p className="text-white">No registrations matched “{clientSearchQuery.trim()}”.</p>
+                <p className="mt-2 text-sm text-gray-400">Try a company name, contact, email, phone, country, or a shorter search term.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -1638,7 +1787,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                     </tr>
                   </thead>
                   <tbody>
-                    {clientRegistrations.flatMap((registration) => {
+                    {filteredClientRegistrations.flatMap((registration) => {
                       const isApproved = approvedEmails.has(registration.email.toLowerCase());
                       const isExpanded = expandedRegistrationId === registration.id;
                       const interestsDisplay = Array.isArray(registration.interests)

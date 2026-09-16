@@ -48,6 +48,7 @@
   "devDependencies": {
     "@eslint/js": "^9.9.1",
     "@netlify/functions": "^5.1.2",
+    "@types/node": "^22.20.3",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vite-pwa/assets-generator": "^1.0.2",
