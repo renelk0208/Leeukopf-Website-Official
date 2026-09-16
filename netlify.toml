@@ -30,17 +30,17 @@
     Cross-Origin-Resource-Policy = "cross-origin"
 
 [[headers]]
-  for = "*.webp"
+  for = "/*.webp"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "*.jpg"
+  for = "/*.jpg"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "*.png"
+  for = "/*.png"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
