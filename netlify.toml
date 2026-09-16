@@ -229,6 +229,8 @@
   for = "/img/instagram/*"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
+    Access-Control-Allow-Origin = "*"
+    Cross-Origin-Resource-Policy = "cross-origin"
 
 # Cache headers for seasonal Valentine's assets
 [[headers]]
