@@ -20,6 +20,9 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Netlify's install step defaults NODE_ENV=production, which skips devDependencies
+  # (sharp, vite, typescript, etc. are required by prebuild/build scripts).
+  NPM_FLAGS = "--include=dev"
 
 # Cache images and static assets for 1 year
 [[headers]]
