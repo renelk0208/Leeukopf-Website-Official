@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStaff } from '../contexts/AdminStaffContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink } from 'lucide-react';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink, Search, X } from 'lucide-react';
 
 interface ClientRegistrationLead {
   id: string;
@@ -195,6 +195,7 @@ export default function AdminDashboard() {
   const [crmEdits, setCrmEdits] = useState<Record<string, { pipeline_stage: string; admin_notes: string; samples_sent_at: string; last_contact_date: string; }>>({});
   const [savingCrm, setSavingCrm] = useState<string | null>(null);
   const [resendingOrders, setResendingOrders] = useState(false);
+  const [clientSearchQuery, setClientSearchQuery] = useState('');
 
   const handleResendAllOrders = async () => {
     if (!session?.access_token) return;
@@ -1061,6 +1062,27 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     }
   };
 
+  const filteredClientRegistrations = useMemo(() => {
+    const query = clientSearchQuery.trim().toLowerCase();
+    if (!query) return clientRegistrations;
+    return clientRegistrations.filter((registration) => {
+      const haystack = [
+        registration.company,
+        registration.contact,
+        registration.email,
+        registration.country,
+        registration.client_type,
+        registration.vat_eori,
+        registration.role,
+        registration.phone,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(query);
+    });
+  }, [clientRegistrations, clientSearchQuery]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-cyan-500/20 px-6 py-4">
@@ -1583,10 +1605,32 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                   Approve registrations and direct portal signups from one place.
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  Showing all registrations and portal signups.
+                  {clientSearchQuery.trim()
+                    ? `Showing ${filteredClientRegistrations.length} of ${clientRegistrations.length} registrations.`
+                    : 'Showing all registrations and portal signups.'}
                 </p>
               </div>
               <div className="flex items-center gap-2">
+                <div className="relative">
+                  <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <input
+                    type="text"
+                    value={clientSearchQuery}
+                    onChange={(e) => setClientSearchQuery(e.target.value)}
+                    placeholder="Search company, contact, email, country..."
+                    className="w-72 rounded-lg border border-cyan-500/20 bg-slate-900/50 py-2 pl-9 pr-8 text-sm text-white placeholder-gray-500 focus:border-cyan-400 focus:outline-none"
+                  />
+                  {clientSearchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setClientSearchQuery('')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                      aria-label="Clear search"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={handleExportCSV}
@@ -1620,6 +1664,11 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                 <UserPlus size={48} className="mx-auto text-gray-600 mb-4" />
                 <p className="text-gray-400">No client registrations yet</p>
               </div>
+            ) : filteredClientRegistrations.length === 0 ? (
+              <div className="text-center py-12">
+                <Search size={48} className="mx-auto text-gray-600 mb-4" />
+                <p className="text-gray-400">No registrations match "{clientSearchQuery}"</p>
+              </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[1200px]">
@@ -1638,7 +1687,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                     </tr>
                   </thead>
                   <tbody>
-                    {clientRegistrations.flatMap((registration) => {
+                    {filteredClientRegistrations.flatMap((registration) => {
                       const isApproved = approvedEmails.has(registration.email.toLowerCase());
                       const isExpanded = expandedRegistrationId === registration.id;
                       const interestsDisplay = Array.isArray(registration.interests)
