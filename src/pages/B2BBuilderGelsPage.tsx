@@ -147,7 +147,7 @@ export default function B2BCheckoutPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/submit-order', {
+      const response = await fetch('/.netlify/functions/submit-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

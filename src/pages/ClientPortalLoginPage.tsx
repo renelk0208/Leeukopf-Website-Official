@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import { isSupabaseConfigured } from '../lib/supabase';
 
 const PORTAL_REMEMBER_EMAIL_KEY = 'leeukopf.portal.rememberedEmail';
@@ -113,7 +114,7 @@ export default function ClientPortalLoginPage() {
         await signUp(normalizedEmail, password);
         persistRememberedEmail(normalizedEmail);
         // Fire-and-forget: notify owner of new portal signup
-        fetch('/api/client-registration-email', {
+        fetch(getNetlifyFunctionUrl('client-registration-email'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStaff } from '../contexts/AdminStaffContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
+import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink, Search, X } from 'lucide-react';
 
 interface ClientRegistrationLead {
@@ -202,7 +203,7 @@ export default function AdminDashboard() {
     if (!window.confirm('Resend all stored orders to info@leeukopf.com?')) return;
     setResendingOrders(true);
     try {
-      const response = await fetch('/api/admin-resend-orders', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-resend-orders'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ to: 'info@leeukopf.com' }),
@@ -240,7 +241,7 @@ export default function AdminDashboard() {
     setSavingCrm(id);
     try {
       const edits = crmEdits[id];
-      const response = await fetch('/api/admin-update-registration', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-update-registration'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ id, ...edits }),
@@ -457,7 +458,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     }
 
     try {
-      const response = await fetch('/api/admin-client-registrations', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-client-registrations'), {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${session.access_token}`,
@@ -489,7 +490,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
 
     setBackfillingClients(true);
     try {
-      const response = await fetch('/api/admin-client-registrations-backfill', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-client-registrations-backfill'), {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${session.access_token}`,
@@ -551,7 +552,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     }
 
     try {
-      const response = await fetch('/api/admin-b2b-orders', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-b2b-orders'), {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${session.access_token}`,
@@ -625,7 +626,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     if (!session?.access_token) return;
     setLoadingStaff(true);
     try {
-      const response = await fetch('/api/admin-list-staff', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-list-staff'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
       });
@@ -654,7 +655,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
 
     setAddingStaff(true);
     try {
-      const response = await fetch('/api/admin-create-admin', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-create-admin'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({
@@ -687,7 +688,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     if (!newPwd || newPwd.length < 8) { setMessage('New password must be at least 8 characters.'); return; }
     setResettingPwd(true);
     try {
-      const response = await fetch('/api/admin-update-staff', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-update-staff'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ action: 'reset_password', staffId, newPassword: newPwd }),
@@ -708,7 +709,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     if (!session?.access_token) return;
     setSavingPerms(true);
     try {
-      const response = await fetch('/api/admin-update-staff', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-update-staff'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ action: 'update_permissions', staffId, permissions: editingPerms }),
@@ -728,7 +729,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
   const handleToggleStaffActive = async (staffId: string, currentActive: boolean) => {
     if (!session?.access_token) return;
     try {
-      const response = await fetch('/api/admin-update-staff', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-update-staff'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ action: 'toggle_active', staffId }),
@@ -746,7 +747,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     if (!window.confirm(`Remove ${email} from staff? This only removes portal access, not their login account.`)) return;
     if (!session?.access_token) return;
     try {
-      const response = await fetch('/api/admin-update-staff', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-update-staff'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ action: 'delete', staffId }),
@@ -919,7 +920,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     setInvitingEmail(registration.email);
     setManualInviteLink('');
     try {
-      const response = await fetch('/api/admin-client-invite', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-client-invite'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -974,7 +975,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
 
     setCreatingAdmin(true);
     try {
-      const response = await fetch('/api/admin-create-admin', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-create-admin'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1025,7 +1026,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
 
     setUpdatingClientAccess(true);
     try {
-      const response = await fetch('/api/admin-client-access-reset', {
+      const response = await fetch(getNetlifyFunctionUrl('admin-client-access-reset'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

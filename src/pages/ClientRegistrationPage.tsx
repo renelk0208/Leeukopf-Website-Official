@@ -1,6 +1,7 @@
 import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
 import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
+import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import { trackLead } from '../lib/metaPixel';
 
 interface FormData {
@@ -442,7 +443,7 @@ export default function ClientRegistrationPage() {
 
     try {
       // Send registration data directly to Netlify Function
-      const response = await fetch('/api/client-registration-email', {
+      const response = await fetch(getNetlifyFunctionUrl('client-registration-email'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

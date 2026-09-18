@@ -1,6 +1,7 @@
 import { type ReactNode, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import {
   AdminStaffContext,
   buildAdminStaffInfo,
@@ -34,7 +35,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     setVerifying(true);
     setVerifyError(null);
 
-    fetch('/api/admin-verify-admin', {
+    fetch(getNetlifyFunctionUrl('admin-verify-admin'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
