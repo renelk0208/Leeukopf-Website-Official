@@ -59,24 +59,24 @@ if [ -f "netlify.toml" ]; then
         echo "  ⚠️  Functions directory may not be configured correctly"
     fi
     
-    # Check for catch-all redirect
-    if grep -q 'from = "/\*"' netlify.toml; then
-        echo "  ✓ SPA catch-all redirect configured"
-    fi
 else
     echo "  ❌ netlify.toml not found!"
 fi
 echo ""
 
-# Verify no _redirects file in public that could interfere
+# Verify generated redirect source
 if [ -f "public/_redirects" ]; then
-    echo "⚠️  WARNING: public/_redirects file exists!"
-    echo "   This may interfere with netlify.toml redirects."
-    echo "   Content:"
+    echo "✅ public/_redirects exists (authoritative Netlify redirect source)"
+    if grep -q '^/\* /index\.html 200$' public/_redirects; then
+        echo "  ✓ SPA catch-all redirect configured"
+    else
+        echo "  ❌ SPA catch-all redirect missing from public/_redirects"
+    fi
+    echo "  Preview:"
     cat public/_redirects | head -10
     echo ""
 else
-    echo "✅ No conflicting public/_redirects file"
+    echo "❌ public/_redirects missing"
 fi
 echo ""
 

@@ -13,6 +13,21 @@ This guide helps you understand and troubleshoot Netlify deployments.
 3. **Publish**: The contents of the `dist` folder are published to your site
 4. **Cache**: Static assets are cached for performance
 
+## Routing Source of Truth
+
+- Netlify redirects for this site are generated from [scripts/netlify-redirects.config.cjs](</G:/My Drive/Leeukopf-Website-Official/scripts/netlify-redirects.config.cjs>).
+- The generated file lives at [public/_redirects](</G:/My Drive/Leeukopf-Website-Official/public/_redirects>).
+- [netlify.toml](</G:/My Drive/Leeukopf-Website-Official/netlify.toml>) intentionally does **not** duplicate redirect rules.
+
+If you need to add or change a redirect, update the config script and then run:
+
+```bash
+npm run generate:netlify-redirects
+npm run validate:netlify-redirects
+```
+
+This prevents the SPA catch-all from accidentally swallowing `/api/*` routes again.
+
 ## Common Issues and Solutions
 
 ### Issue 1: Changes Not Appearing on Live Site
