@@ -201,6 +201,8 @@ export default function B2BBuilderGelsPage() {
   const { items, addOrUpdateItem, removeItem, buyerType, priceTier } = useB2BCart();
   const priceMap = useB2BPricing(priceTier);
   const priceUnit = buyerType === "bulk" ? "kg" : "pcs";
+  // BIAB is sold in bottles, not jars, so it uses its own cart category (bottle packaging at checkout)
+  const cartCategory = routeMode === "BIAB" ? "BIAB" : "BUILDER_GEL";
   // BIAB has its own price entry; all other builder gel modes share "Builder Gel"
   const builderSubcategoryKey = routeMode === "BIAB" ? "BIAB" : "Builder Gel";
   const pricePerUnit = lookupPrice(priceMap, builderSubcategoryKey, priceUnit);
@@ -291,12 +293,12 @@ export default function B2BBuilderGelsPage() {
   const existingQtyByCode = useMemo(() => {
     const map: Record<string, number> = {};
     items
-      .filter((item) => item.category === "BUILDER_GEL")
+      .filter((item) => item.category === cartCategory)
       .forEach((item) => {
         map[item.code] = item.quantity;
       });
     return map;
-  }, [items]);
+  }, [items, cartCategory]);
 
   const uniformItems = useMemo<B2BUniformShadeItem[]>(() => {
     return products.map((product, index) => {
@@ -336,7 +338,17 @@ export default function B2BBuilderGelsPage() {
 
   return (
     <div className="space-y-4">
-      {buyerType === "finished_goods" && (
+      {buyerType === "finished_goods" && routeMode === "BIAB" && (
+        <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
+          <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
+            <span className="text-sm font-bold uppercase tracking-wide text-white">Bottle Configuration Required at Checkout</span>
+          </div>
+          <p className="text-sm text-grey-secondary">Builder in a Bottle (BIAB) is filled into <span className="font-semibold">bottles</span>. Set your bottle size, colour, brush, and branding in{" "}<Link to="/b2b/checkout" className="font-semibold underline">Checkout</Link>{" "}before submitting your order.</p>
+        </div>
+      )}
+
+      {buyerType === "finished_goods" && routeMode !== "BIAB" && (
         <div className="rounded-lg border-2 border-orange-400 p-4 shadow-sm">
           <div className="-mx-4 -mt-4 mb-3 flex items-center gap-2 bg-orange-400 px-4 py-2.5">
             <AlertTriangle className="h-4 w-4 flex-shrink-0 text-white" />
@@ -383,7 +395,7 @@ export default function B2BBuilderGelsPage() {
           setValidationMessage("");
 
           addOrUpdateItem({
-            category: "BUILDER_GEL",
+            category: cartCategory,
             code: product.code,
             name: product.product_name,
             quantity: qty,
@@ -400,7 +412,7 @@ export default function B2BBuilderGelsPage() {
           const product = products.find((_, index) => `${products[index].code}-${index}` === id);
           if (!product) return;
           setValidationMessage("");
-          removeItem("BUILDER_GEL", product.code);
+          removeItem(cartCategory, product.code);
           setDraftQty((prev) => ({ ...prev, [product.code]: "" }));
         }}
       />
