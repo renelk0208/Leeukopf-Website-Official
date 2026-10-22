@@ -124,7 +124,7 @@ export default function Navigation() {
             {showBlackFriday && (
               <Link
                 to="/blackfriday"
-                className="mr-4 rounded-full bg-black px-4 py-1 text-xs font-semibold uppercase tracking-wider text-white whitespace-nowrap hover:bg-[#1F2566] transition-colors"
+                className="mr-4 rounded-full bg-[#1F2566] px-4 py-1 text-xs font-semibold uppercase tracking-wider text-white whitespace-nowrap hover:bg-[#2A33A3] transition-colors"
               >
                 Black Friday
               </Link>
@@ -237,7 +237,7 @@ export default function Navigation() {
                 {showBlackFriday && (
                   <Link
                     to="/blackfriday"
-                    className="xl:hidden rounded-full bg-black px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white whitespace-nowrap hover:bg-[#1F2566] transition-colors"
+                    className="xl:hidden rounded-full bg-[#1F2566] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white whitespace-nowrap hover:bg-[#2A33A3] transition-colors"
                   >
                     Black Friday
                   </Link>
@@ -278,7 +278,7 @@ export default function Navigation() {
                   <Link
                     to="/blackfriday"
                     onClick={() => setIsOpen(false)}
-                    className="block w-full rounded-md bg-black px-3 py-3 text-center text-sm font-semibold uppercase tracking-wider text-white hover:bg-[#1F2566] transition-colors"
+                    className="block w-full rounded-md bg-[#1F2566] px-3 py-3 text-center text-sm font-semibold uppercase tracking-wider text-white hover:bg-[#2A33A3] transition-colors"
                   >
                     Black Friday
                   </Link>
