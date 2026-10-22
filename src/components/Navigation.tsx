@@ -93,6 +93,11 @@ export default function Navigation() {
     { label: 'Start Your Brand', path: '/faq-starting-a-gel-polish-brand' },
   ];
 
+  // Black Friday button: shown while the offer is switched on (Netlify BLACK_FRIDAY_ENABLED)
+  // and, if BLACK_FRIDAY_ENDS_AT is set, until that moment.
+  const showBlackFriday =
+    __BF_MENU_ENABLED__ && (!__BF_ENDS_AT__ || Number.isNaN(Date.parse(__BF_ENDS_AT__)) || Date.now() < Date.parse(__BF_ENDS_AT__));
+
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
     return location.pathname.startsWith(path);
@@ -149,6 +154,16 @@ export default function Navigation() {
               {/* Desktop Navigation */}
               <div className="hidden xl:flex flex-1 items-center justify-center min-w-0">
                 <ul className="flex items-center justify-center flex-nowrap gap-x-0 min-w-0">
+                  {showBlackFriday && (
+                    <li className="nav-item shrink-0 mr-1.5 2xl:mr-2">
+                      <Link
+                        to="/blackfriday"
+                        className="block rounded-full bg-black px-3 2xl:px-4 py-1.5 text-xs 2xl:text-sm font-semibold uppercase tracking-wider text-white whitespace-nowrap hover:bg-[#1F2566] transition-colors"
+                      >
+                        Black Friday
+                      </Link>
+                    </li>
+                  )}
                   {navItems.map((item) => (
                     <li key={item.path} className="nav-item shrink-0">
                       <Link
@@ -221,6 +236,14 @@ export default function Navigation() {
                 <div className="hidden xl:flex items-center space-x-1.5">
                   <CalendlyButton size="sm" />
                 </div>
+                {showBlackFriday && (
+                  <Link
+                    to="/blackfriday"
+                    className="xl:hidden rounded-full bg-black px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white whitespace-nowrap hover:bg-[#1F2566] transition-colors"
+                  >
+                    Black Friday
+                  </Link>
+                )}
                 <div className="xl:hidden">
                   <button
                     onClick={() => setIsOpen(!isOpen)}
@@ -252,6 +275,16 @@ export default function Navigation() {
                     />
                   </div>
                 </form>
+
+                {showBlackFriday && (
+                  <Link
+                    to="/blackfriday"
+                    onClick={() => setIsOpen(false)}
+                    className="block w-full rounded-md bg-black px-3 py-3 text-center text-sm font-semibold uppercase tracking-wider text-white hover:bg-[#1F2566] transition-colors"
+                  >
+                    Black Friday
+                  </Link>
+                )}
 
                 {navItems.map((item) => (
                   <Link

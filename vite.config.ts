@@ -4,8 +4,18 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 const enablePwa = process.env.VITE_ENABLE_PWA === 'true';
 
+// Black Friday menu button follows the same Netlify switch as the offer itself
+// (BLACK_FRIDAY_ENABLED / BLACK_FRIDAY_ENDS_AT — see netlify/functions/black-friday-order.ts).
+const bfFlag = (process.env.BLACK_FRIDAY_ENABLED ?? '').trim().toLowerCase();
+const bfMenuEnabled = !['false', 'off', '0', 'no'].includes(bfFlag);
+const bfEndsAt = (process.env.BLACK_FRIDAY_ENDS_AT ?? '').trim();
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  define: {
+    __BF_MENU_ENABLED__: JSON.stringify(bfMenuEnabled),
+    __BF_ENDS_AT__: JSON.stringify(bfEndsAt),
+  },
   plugins: [
     react(),
     ...(enablePwa
