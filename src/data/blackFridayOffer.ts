@@ -1,15 +1,15 @@
-// Black Friday 2026 bulk offer — single source of truth.
-// Imported by the page (src/pages/BlackFridayPage.tsx) AND by the order
-// function (netlify/functions/black-friday-order.ts), so prices are always
-// recalculated on the server and cannot be changed from the browser.
+// Black Friday 2026 bulk offer — colours, categories and wording.
+// Imported by the page AND the order function. PRICES ARE NOT HERE on purpose:
+// they live only in netlify/functions/black-friday-prices.ts so they never
+// reach the browser.
 
 export type BfCategory = 'colors' | 'glitters' | 'shimmers' | 'metallics';
 
-export const BF_CATEGORIES: Record<BfCategory, { label: string; pricePerKg: number }> = {
-  colors: { label: 'Colours', pricePerKg: 59 },
-  glitters: { label: 'Glitters', pricePerKg: 68 },
-  shimmers: { label: 'Shimmers', pricePerKg: 68 },
-  metallics: { label: 'Metallics', pricePerKg: 68 },
+export const BF_CATEGORIES: Record<BfCategory, { label: string }> = {
+  colors: { label: 'Colours' },
+  glitters: { label: 'Glitters' },
+  shimmers: { label: 'Shimmers' },
+  metallics: { label: 'Metallics' },
 };
 
 export const BF_MIN_TOTAL_KG = 10;
@@ -21,7 +21,7 @@ export interface BfColour {
   category: BfCategory;
 }
 
-// Order matches the PDF swatch page. Change a colour's category here to change its price.
+// Order matches the PDF swatch page. A colour's category sets its price (see the server price list).
 export const BF_COLOURS: BfColour[] = [
   { code: '01', category: 'colors' },
   { code: '15', category: 'colors' },
@@ -74,8 +74,8 @@ export const BF_COLOURS: BfColour[] = [
 // Shown in the terms box above the order button. Edit freely.
 export const BF_TERMS: string[] = [
   'Black Friday prices apply to orders placed through this page only, while the offer is running.',
-  'Products are supplied in 1 kg bulk units. Prices are per kg by category: colours 59€, glitters, shimmers and metallics 68€.',
-  `Minimum total order quantity is ${BF_MIN_TOTAL_KG} kg. Colours and categories can be mixed.`,
+  'Products are supplied in 1 kg bulk units. Black Friday prices are confirmed on your invoice.',
+  `The minimum order is ${BF_MIN_TOTAL_KG} kg in total across all colours (not per colour). Colours and categories can be mixed.`,
   'Placing an order does not charge you. Thermitek LTD will email an invoice; payment is by bank transfer (TT).',
   'VAT and shipping costs, where applicable, are added on the invoice.',
   `Lead time is ${BF_LEAD_TIME}.`,
@@ -85,7 +85,4 @@ export const BF_TERMS: string[] = [
 
 export const bfSwatchSrc = (code: string) => `/seasonal/black-friday/swatches/${code.toLowerCase()}.webp`;
 
-export function bfPrice(code: string): number | null {
-  const c = BF_COLOURS.find((x) => x.code === code);
-  return c ? BF_CATEGORIES[c.category].pricePerKg : null;
-}
+export const bfIsColour = (code: string) => BF_COLOURS.some((x) => x.code === code);

@@ -8,7 +8,7 @@ import {
   BF_MIN_TOTAL_KG,
   BF_CURRENCY,
   BF_TERMS,
-  bfPrice,
+  bfIsColour,
   bfSwatchSrc,
   type BfCategory,
 } from "../data/blackFridayOffer";
@@ -23,13 +23,6 @@ type Filter = "all" | BfCategory;
 
 const CATEGORY_KEYS = Object.keys(BF_CATEGORIES) as BfCategory[];
 
-const euro = (n: number) =>
-  new Intl.NumberFormat("en-IE", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 2,
-  }).format(n);
-
 function loadCart(): Cart {
   try {
     const raw = window.localStorage.getItem(CART_KEY);
@@ -37,7 +30,7 @@ function loadCart(): Cart {
     const parsed = JSON.parse(raw) as Cart;
     const clean: Cart = {};
     for (const [code, kg] of Object.entries(parsed)) {
-      if (bfPrice(code) !== null && Number.isInteger(kg) && kg > 0)
+      if (bfIsColour(code) && Number.isInteger(kg) && kg > 0)
         clean[code] = Math.min(kg, MAX_KG_PER_COLOUR);
     }
     return clean;
@@ -98,7 +91,7 @@ export default function BlackFridayPage() {
       .querySelector('meta[name="description"]')
       ?.setAttribute(
         "content",
-        "Leeukopf Laboratories Black Friday: HEMA & TPO free gel polish in 1 kg bulk from 59€/kg. Pick your colours, minimum 10 kg, lead time 5 to 8 working days.",
+        "Leeukopf Laboratories Black Friday: HEMA & TPO free gel polish in 1 kg bulk. Pick your colours, minimum 10 kg in total, lead time 5 to 8 working days.",
       );
   }, []);
 
@@ -125,9 +118,8 @@ export default function BlackFridayPage() {
   const lines = useMemo(
     () =>
       BF_COLOURS.filter((c) => cart[c.code] > 0).map((c) => {
-        const price = BF_CATEGORIES[c.category].pricePerKg;
         const kg = cart[c.code];
-        return { ...c, kg, price, lineTotal: kg * price };
+        return { ...c, kg };
       }),
     [cart],
   );
@@ -137,12 +129,10 @@ export default function BlackFridayPage() {
       cat,
       items,
       kg: items.reduce((s, l) => s + l.kg, 0),
-      total: items.reduce((s, l) => s + l.lineTotal, 0),
     };
   }).filter((g) => g.items.length > 0);
 
   const totalKg = lines.reduce((s, l) => s + l.kg, 0);
-  const totalEur = lines.reduce((s, l) => s + l.lineTotal, 0);
   const kgToGo = Math.max(0, BF_MIN_TOTAL_KG - totalKg);
   const meetsMin = totalKg >= BF_MIN_TOTAL_KG;
 
@@ -173,8 +163,7 @@ export default function BlackFridayPage() {
         content_ids: [code],
         content_type: "product",
         content_name: `Black Friday bulk ${code} 1kg`,
-        value: (bfPrice(code) ?? 0) * (next - prev),
-        currency: BF_CURRENCY,
+        num_items: next - prev,
       });
     }
     if (
@@ -204,7 +193,7 @@ export default function BlackFridayPage() {
     }
     if (!meetsMin) {
       setError(
-        `The minimum total order is ${BF_MIN_TOTAL_KG} kg — add ${kgToGo} kg more.`,
+        `The minimum order is ${BF_MIN_TOTAL_KG} kg in total across all colours — add ${kgToGo} kg more.`,
       );
       return;
     }
@@ -258,8 +247,6 @@ export default function BlackFridayPage() {
         content_ids: lines.map((l) => l.code),
         content_type: "product",
         num_items: totalKg,
-        value: totalEur,
-        currency: BF_CURRENCY,
       });
       setConfirmed({ orderId: data.orderId, email: form.email });
       setCart({});
@@ -296,7 +283,7 @@ export default function BlackFridayPage() {
           <p className="bf-hero__sub">
             This year&apos;s Black Friday offer has ended. Thank you to everyone
             who ordered — for bulk and private-label enquiries, write to us at{" "}
-            <a href="mailto:info@leeukopf.com" style={{ color: "#da728e" }}>
+            <a href="mailto:info@leeukopf.com" style={{ color: "#8891d0" }}>
               info@leeukopf.com
             </a>
             .
@@ -309,7 +296,7 @@ export default function BlackFridayPage() {
               need, and we invoice you directly.
             </p>
             <button
-              className="bf-btn bf-btn--pink"
+              className="bf-btn bf-btn--blue"
               onClick={() =>
                 orderRef.current?.scrollIntoView({ behavior: "smooth" })
               }
@@ -330,32 +317,28 @@ export default function BlackFridayPage() {
                   Lead time {BF_LEAD_TIME}.
                 </h2>
                 <p className="bf-terms__note">
-                  Minimum total order quantity {BF_MIN_TOTAL_KG} kg — mix any
-                  colours you like.
+                  Minimum order {BF_MIN_TOTAL_KG} kg in total — mix any colours
+                  you like.
                   <br />
                   Each unit is a 1 kg bulk pack.
                   <br />
                   Terms &amp; conditions apply.
                 </p>
               </div>
-              <table className="bf-prices">
-                <thead>
-                  <tr>
-                    <th>Price</th>
-                    <th>Per</th>
-                    <th>Category</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {CATEGORY_KEYS.map((k) => (
-                    <tr key={k}>
-                      <td>{BF_CATEGORIES[k].pricePerKg}€</td>
-                      <td>1 kg</td>
-                      <td>{BF_CATEGORIES[k].label.toLowerCase()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <dl className="bf-facts">
+                <div>
+                  <dt>1 kg</dt>
+                  <dd>every unit is a 1 kg bulk pack</dd>
+                </div>
+                <div>
+                  <dt>{BF_MIN_TOTAL_KG} kg</dt>
+                  <dd>minimum order in total — mix any colours</dd>
+                </div>
+                <div>
+                  <dt>{BF_COLOURS.length}</dt>
+                  <dd>colours, glitters, shimmers &amp; metallics</dd>
+                </div>
+              </dl>
             </div>
           </section>
 
@@ -398,7 +381,7 @@ export default function BlackFridayPage() {
                       you like.
                     </p>
                     <p className="bf-shop__min">
-                      Minimum total order {BF_MIN_TOTAL_KG} kg
+                      Minimum order {BF_MIN_TOTAL_KG} kg in total — any mix of colours
                     </p>
                   </header>
 
@@ -558,7 +541,7 @@ export default function BlackFridayPage() {
                               <div className="bf-sofar__row">
                                 <span>{BF_CATEGORIES[g.cat].label}</span>
                                 <span>
-                                  {g.kg} kg · {euro(g.total)}
+                                  {g.kg} kg
                                 </span>
                               </div>
                               <div className="bf-sofar__chips">
@@ -590,7 +573,7 @@ export default function BlackFridayPage() {
 
                       <h3 className="bf-step">2. Choose your colours</h3>
                       <p className="bf-note">
-                        Prices per 1 kg. On-screen colours are a guide.
+                        Each unit is 1 kg. On-screen colours are a guide.
                       </p>
 
                       <div
@@ -615,7 +598,6 @@ export default function BlackFridayPage() {
                       <div className="bf-grid">
                         {visible.map((c) => {
                           const kg = cart[c.code] ?? 0;
-                          const price = BF_CATEGORIES[c.category].pricePerKg;
                           return (
                             <div
                               key={c.code}
@@ -630,7 +612,7 @@ export default function BlackFridayPage() {
                                 height={320}
                               />
                               <p className="bf-card__code">{c.code}</p>
-                              <p className="bf-card__meta">{price}€ / kg</p>
+                              <p className="bf-card__meta">{BF_CATEGORIES[c.category].label}</p>
                               <Stepper
                                 code={c.code}
                                 kg={kg}
@@ -643,12 +625,14 @@ export default function BlackFridayPage() {
 
                       <div className="bf-checkout" ref={submitRef}>
                         <div className="bf-total-row">
-                          <span>Total quantity</span>
-                          <span>{totalKg} kg</span>
+                          <span>Colours chosen</span>
+                          <span>{lines.length}</span>
                         </div>
                         <div className="bf-total-row is-grand">
-                          <span>Subtotal</span>
-                          <span>{euro(totalEur)}</span>
+                          <span>Total</span>
+                          <span>
+                            {totalKg} kg / {BF_MIN_TOTAL_KG} kg minimum
+                          </span>
                         </div>
                         <div className="bf-progress" aria-hidden="true">
                           <span
@@ -659,12 +643,11 @@ export default function BlackFridayPage() {
                         </div>
                         <p className={`bf-min${meetsMin ? " is-met" : ""}`}>
                           {meetsMin
-                            ? "Minimum order met ✓"
-                            : `Add ${kgToGo} kg more to reach the ${BF_MIN_TOTAL_KG} kg minimum`}
+                            ? `Minimum of ${BF_MIN_TOTAL_KG} kg in total reached ✓`
+                            : `Add ${kgToGo} kg more (any colours) to reach ${BF_MIN_TOTAL_KG} kg in total`}
                         </p>
                         <p className="bf-note">
-                          VAT and shipping, where applicable, are added on your
-                          invoice.
+                          Prices, VAT and shipping are confirmed on your invoice.
                         </p>
 
                         <div className="bf-tc">
@@ -695,7 +678,7 @@ export default function BlackFridayPage() {
                         )}
 
                         <button
-                          className="bf-btn bf-btn--pink bf-submit"
+                          className="bf-btn bf-btn--blue bf-submit"
                           type="submit"
                           disabled={submitting || !termsAccepted}
                         >
@@ -748,17 +731,17 @@ export default function BlackFridayPage() {
             <div className="bf-bar__stats">
               <div className="bf-bar__line">
                 <strong>{totalKg} kg</strong>
-                <strong>{euro(totalEur)}</strong>
+                <strong>{lines.length} colour{lines.length === 1 ? "" : "s"}</strong>
               </div>
               <div className="bf-bar__msg">
                 {meetsMin
-                  ? "Minimum reached ✓"
-                  : `${kgToGo} kg to the ${BF_MIN_TOTAL_KG} kg minimum`}
+                  ? `${BF_MIN_TOTAL_KG} kg total reached ✓`
+                  : `${kgToGo} kg more to reach ${BF_MIN_TOTAL_KG} kg in total`}
               </div>
             </div>
             <button
               type="button"
-              className="bf-btn bf-btn--pink"
+              className="bf-btn bf-btn--blue"
               onClick={() =>
                 submitRef.current?.scrollIntoView({
                   behavior: "smooth",

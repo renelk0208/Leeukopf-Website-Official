@@ -6,6 +6,7 @@ import {
   BF_LEAD_TIME,
   BF_MIN_TOTAL_KG,
 } from '../../src/data/blackFridayOffer';
+import { BF_PRICE_PER_KG } from './black-friday-prices';
 
 /**
  * Black Friday 2026 bulk order — public, no payment.
@@ -146,7 +147,7 @@ export const handler: Handler = async (event) => {
   }
   const lines = BF_COLOURS.filter((x) => qty.has(x.code)).map((x) => {
     const kg = qty.get(x.code)!;
-    const price = BF_CATEGORIES[x.category].pricePerKg;
+    const price = BF_PRICE_PER_KG[x.category];
     return { code: x.code, category: BF_CATEGORIES[x.category].label, kg, price, total: kg * price };
   });
   const totalKg = lines.reduce((s, l) => s + l.kg, 0);
@@ -154,7 +155,7 @@ export const handler: Handler = async (event) => {
 
   if (!lines.length) return reply(400, { success: false, message: 'Your order is empty.' });
   if (totalKg < BF_MIN_TOTAL_KG) {
-    return reply(400, { success: false, message: `The minimum total order is ${BF_MIN_TOTAL_KG} kg (you have ${totalKg} kg).` });
+    return reply(400, { success: false, message: `The minimum order is ${BF_MIN_TOTAL_KG} kg in total across all colours (you have ${totalKg} kg).` });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -180,7 +181,7 @@ export const handler: Handler = async (event) => {
   // ---------- Email bodies ----------
   const linesTableHtml = `
 <table cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:14px">
-  <thead><tr style="background:#231f20;color:#fff;text-align:left">
+  <thead><tr style="background:#1f2566;color:#fff;text-align:left">
     <th>Colour</th><th>Category</th><th style="text-align:right">Qty (1 kg units)</th><th style="text-align:right">€/kg</th><th style="text-align:right">Line total</th>
   </tr></thead>
   <tbody>
@@ -198,6 +199,25 @@ export const handler: Handler = async (event) => {
 </table>`;
 
   const linesText = lines.map((l) => `${l.code} (${l.category}) — ${l.kg} kg × ${eur(l.price)} = ${eur(l.total)}`).join('\n');
+
+  // Customer copy: quantities only — prices come on the invoice.
+  const kgTableHtml = `
+<table cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:14px">
+  <thead><tr style="background:#1f2566;color:#fff;text-align:left">
+    <th>Colour</th><th>Category</th><th style="text-align:right">Quantity</th>
+  </tr></thead>
+  <tbody>
+    ${lines
+      .map(
+        (l) => `<tr style="border-bottom:1px solid #eee"><td><b>${esc(l.code)}</b></td><td>${esc(l.category)}</td><td style="text-align:right">${l.kg} kg</td></tr>`
+      )
+      .join('')}
+  </tbody>
+  <tfoot>
+    <tr><td colspan="2"><b>Total</b></td><td style="text-align:right"><b>${totalKg} kg</b></td></tr>
+  </tfoot>
+</table>`;
+  const kgText = lines.map((l) => `${l.code} (${l.category}) — ${l.kg} kg`).join('\n');
 
   const clientRowsHtml = [
     ['Company', client.companyName],
@@ -244,19 +264,19 @@ Total: ${totalKg} kg — ${eur(totalEur)} (before VAT and shipping)
 <div style="font-family:Arial,sans-serif;color:#111;max-width:640px">
   <div style="background:#000;color:#fff;padding:28px 24px;text-align:center">
     <div style="font-size:26px;letter-spacing:1px">BLACK FRIDAY</div>
-    <div style="font-size:20px;color:#da728e;font-weight:bold;letter-spacing:1px">ORDER CONFIRMATION</div>
+    <div style="font-size:20px;color:#8891d0;font-weight:bold;letter-spacing:1px">ORDER CONFIRMATION</div>
   </div>
   <div style="padding:24px">
     <p>Dear ${esc(client.contactName)},</p>
     <p>Thank you for your Black Friday order with Leeukopf Laboratories. Your order reference is <b>${orderId}</b>.</p>
-    ${linesTableHtml}
+    ${kgTableHtml}
     <h3 style="margin:24px 0 8px">What happens next</h3>
     <ol style="padding-left:18px;line-height:1.7">
       <li>Our accounts team will email you an invoice for this order.</li>
       <li>Please pay the invoice by bank transfer (TT).</li>
       <li>Lead time is ${BF_LEAD_TIME}.</li>
     </ol>
-    <p style="color:#555;font-size:13px">Prices shown are the Black Friday prices per kg. VAT and shipping, where applicable, are added on your invoice. Terms &amp; conditions apply.</p>
+    <p style="color:#555;font-size:13px">Your Black Friday prices, VAT and shipping will be shown on your invoice. Terms &amp; conditions apply.</p>
     <p>Questions? Reply to this email or write to <a href="mailto:info@leeukopf.com">info@leeukopf.com</a>.</p>
     <p>Leeukopf Laboratories<br><span style="color:#777">A proud Thermitek LTD partner brand</span></p>
   </div>
@@ -265,16 +285,16 @@ Total: ${totalKg} kg — ${eur(totalEur)} (before VAT and shipping)
   const customerText = `Thank you for your Black Friday order with Leeukopf Laboratories.
 Order reference: ${orderId}
 
-${linesText}
+${kgText}
 
-Total: ${totalKg} kg — ${eur(totalEur)}
+Total: ${totalKg} kg
 
 What happens next:
 1. Our accounts team will email you an invoice for this order.
 2. Please pay the invoice by bank transfer (TT).
 3. Lead time is ${BF_LEAD_TIME}.
 
-Prices are Black Friday prices per kg. VAT and shipping, where applicable, are added on your invoice.
+Your Black Friday prices, VAT and shipping will be shown on your invoice.
 Questions? Write to info@leeukopf.com.
 `;
 
@@ -310,5 +330,5 @@ Questions? Write to info@leeukopf.com.
     console.error('[black-friday-order] customer email failed', err);
   }
 
-  return reply(200, { success: true, orderId, totalKg, totalEur });
+  return reply(200, { success: true, orderId, totalKg });
 };
