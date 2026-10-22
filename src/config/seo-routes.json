@@ -224,5 +224,10 @@
   "/privacy-notice-distributors": {
     "title": "Privacy Notice for Distributors | Leeukopf Laboratories",
     "description": "Privacy notice for distributors and trade partners of Leeukopf Laboratories."
+  },
+  "/black-friday": {
+    "title": "Black Friday Offers — 1 kg Bulk Gel Polish | Leeukopf Laboratories",
+    "description": "HEMA & TPO free gel polish in 1 kg bulk from 59€/kg. Pick your colours, minimum 10 kg total, lead time 5 to 8 working days.",
+    "ogImage": "/seasonal/black-friday/og.jpg"
   }
 }

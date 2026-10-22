@@ -4,6 +4,7 @@
 /api/instagram /.netlify/functions/instagram-feed 200
 /api/test-email /.netlify/functions/test-email 200
 /api/submit-order /.netlify/functions/submit-order 200
+/api/black-friday-order /.netlify/functions/black-friday-order 200!
 /api/admin-client-invite /.netlify/functions/admin-client-invite 200!
 /api/admin-client-registrations /.netlify/functions/admin-client-registrations 200!
 /api/admin-client-registrations-backfill /.netlify/functions/admin-client-registrations-backfill 200!

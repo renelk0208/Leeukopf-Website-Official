@@ -5,6 +5,7 @@ const redirectRules = [
   { from: '/api/instagram', to: '/.netlify/functions/instagram-feed', status: 200 },
   { from: '/api/test-email', to: '/.netlify/functions/test-email', status: 200 },
   { from: '/api/submit-order', to: '/.netlify/functions/submit-order', status: 200 },
+  { from: '/api/black-friday-order', to: '/.netlify/functions/black-friday-order', status: 200, force: true },
   { from: '/api/admin-client-invite', to: '/.netlify/functions/admin-client-invite', status: 200, force: true },
   { from: '/api/admin-client-registrations', to: '/.netlify/functions/admin-client-registrations', status: 200, force: true },
   { from: '/api/admin-client-registrations-backfill', to: '/.netlify/functions/admin-client-registrations-backfill', status: 200, force: true },

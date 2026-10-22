@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
+// Pages with their own sticky call-to-action where this bar would get in the way.
+const HIDDEN_ON = ['/black-friday'];
 
 const DISMISS_KEY = 'leeukopf_sticky_booking_dismissed';
 
 export default function StickyBooking() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     setDismissed(window.localStorage.getItem(DISMISS_KEY) === 'true');
@@ -28,7 +32,7 @@ export default function StickyBooking() {
     setDismissed(true);
   };
 
-  if (!visible) return null;
+  if (!visible || HIDDEN_ON.includes(pathname.replace(/\/$/, ''))) return null;
 
   return (
     <div
