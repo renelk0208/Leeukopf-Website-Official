@@ -6,7 +6,7 @@ import {
   BF_LEAD_TIME,
   BF_MIN_TOTAL_KG,
 } from '../../src/data/blackFridayOffer';
-import { BF_PRICE_PER_KG } from './black-friday-prices';
+import { BF_PRICE_PER_KG } from './_lib/black-friday-prices';
 
 /**
  * Black Friday 2026 bulk order — public, no payment.
