@@ -21,7 +21,7 @@
   position: relative;
   overflow: hidden;
   text-align: center;
-  padding: 136px 16px 120px; /* clears the fixed site header */
+  padding: 128px 16px 120px; /* 80px site header + 48px space */
   background:
     linear-gradient(180deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.35) 62%, rgba(0, 0, 0, 0.1) 100%),
     url('/seasonal/black-friday/pattern.jpg') center bottom / 1100px auto repeat-x,
@@ -59,7 +59,7 @@
 /* ---------- Terms strip (PDF page 2) ---------- */
 .bf-terms { background: var(--bf-char); padding: 64px 16px; }
 .bf-terms__inner { max-width: 1080px; margin: 0 auto; display: grid; gap: 40px; grid-template-columns: 1fr; }
-@media (max-width: 767px) { .bf-hero { padding-top: 104px; } }
+@media (min-width: 1280px) { .bf-hero { padding-top: 176px; } } /* 120px header at xl + 56px space */
 @media (min-width: 860px) { .bf-terms__inner { grid-template-columns: 1.1fr 1fr; align-items: center; } }
 .bf-terms__lead { font-size: clamp(24px, 3vw, 32px); margin: 0 0 22px; font-weight: 400; }
 .bf-terms__note { color: var(--bf-muted); font-size: 18px; line-height: 1.7; margin: 0; }

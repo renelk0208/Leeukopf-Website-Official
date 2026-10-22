@@ -121,6 +121,14 @@ export default function Navigation() {
         {/* Utility bar — existing-client links, visible at xl+ (40px), brings total header to 120px at xl */}
         <div className="hidden xl:flex items-center h-10 border-b border-gray-100 bg-gray-50">
           <div className="w-full max-w-screen-2xl mx-auto px-2 sm:px-4 lg:px-6 flex justify-end items-center gap-2 text-xs text-gray-500">
+            {showBlackFriday && (
+              <Link
+                to="/blackfriday"
+                className="mr-4 rounded-full bg-black px-4 py-1 text-xs font-semibold uppercase tracking-wider text-white whitespace-nowrap hover:bg-[#1F2566] transition-colors"
+              >
+                Black Friday
+              </Link>
+            )}
             <span className="uppercase tracking-wide">Existing clients</span>
             <span aria-hidden="true">|</span>
             <Link to="/portal/login" className="hover:text-primary transition-colors">
@@ -154,16 +162,6 @@ export default function Navigation() {
               {/* Desktop Navigation */}
               <div className="hidden xl:flex flex-1 items-center justify-center min-w-0">
                 <ul className="flex items-center justify-center flex-nowrap gap-x-0 min-w-0">
-                  {showBlackFriday && (
-                    <li className="nav-item shrink-0 mr-1.5 2xl:mr-2">
-                      <Link
-                        to="/blackfriday"
-                        className="block rounded-full bg-black px-3 2xl:px-4 py-1.5 text-xs 2xl:text-sm font-semibold uppercase tracking-wider text-white whitespace-nowrap hover:bg-[#1F2566] transition-colors"
-                      >
-                        Black Friday
-                      </Link>
-                    </li>
-                  )}
                   {navItems.map((item) => (
                     <li key={item.path} className="nav-item shrink-0">
                       <Link
