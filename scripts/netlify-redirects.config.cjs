@@ -20,6 +20,7 @@ const redirectRules = [
   { from: '/thank-you-compliance-consultation', to: '/thank-you-compliance-consultation.html', status: 200 },
   { from: '/seasonal/valentines', to: '/seasonal/valentines/index.html', status: 200 },
   { from: '/seasonal/valentines/', to: '/seasonal/valentines/index.html', status: 200 },
+  { from: '/black-friday', to: '/blackfriday', status: 301 },
   { from: '/faq', to: '/faq-starting-a-gel-polish-brand', status: 301 },
   { from: '/our-products', to: '/products', status: 301 },
   { from: '/gelitup-distribution', to: '/our-brands', status: 301 },

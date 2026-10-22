@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 // Pages with their own sticky call-to-action where this bar would get in the way.
-const HIDDEN_ON = ['/black-friday'];
+const HIDDEN_ON = ['/blackfriday', '/black-friday'];
 
 const DISMISS_KEY = 'leeukopf_sticky_booking_dismissed';
 

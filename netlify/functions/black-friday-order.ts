@@ -17,7 +17,21 @@ import {
  *
  * Env: RESEND_API_KEY, RESEND_FROM_EMAIL (already used by the site).
  * Optional: BLACK_FRIDAY_ORDER_EMAILS — comma-separated override for the factory inbox.
+ *
+ * ON / OFF SWITCH (Netlify → Site configuration → Environment variables, then redeploy):
+ *   BLACK_FRIDAY_ENABLED = false    → offer closed: page shows "offer has ended", orders refused.
+ *   BLACK_FRIDAY_ENDS_AT = 2026-12-01T00:00:00+02:00   (optional) → closes automatically at that moment.
+ *   Remove the variable or set it to true to switch the offer back on.
  */
+
+function offerStatus(): { enabled: boolean; endsAt: string | null } {
+  const flag = (process.env.BLACK_FRIDAY_ENABLED ?? '').trim().toLowerCase();
+  const switchedOff = ['false', 'off', '0', 'no'].includes(flag);
+  const endsRaw = (process.env.BLACK_FRIDAY_ENDS_AT ?? '').trim();
+  const endsAt = endsRaw && !Number.isNaN(Date.parse(endsRaw)) ? new Date(endsRaw).toISOString() : null;
+  const expired = endsAt !== null && Date.now() >= Date.parse(endsAt);
+  return { enabled: !switchedOff && !expired, endsAt };
+}
 
 const DEFAULT_FACTORY_EMAILS = ['leeukopf@gmail.com', 'acc1.leeukopf@gmail.com'];
 const MAX_KG_PER_LINE = 999;
@@ -58,7 +72,8 @@ function corsHeaders(origin?: string): Record<string, string> {
   return {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': ok ? origin! : ALLOWED_ORIGINS[0],
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Cache-Control': 'no-store',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 }
@@ -68,7 +83,12 @@ export const handler: Handler = async (event) => {
   const reply = (statusCode: number, body: Record<string, unknown>) => ({ statusCode, headers, body: JSON.stringify(body) });
 
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers, body: '' };
+  const status = offerStatus();
+  if (event.httpMethod === 'GET') return reply(200, { success: true, ...status });
   if (event.httpMethod !== 'POST') return reply(405, { success: false, message: 'Method not allowed' });
+  if (!status.enabled) {
+    return reply(410, { success: false, offerClosed: true, message: 'The Black Friday offer has ended. Please contact info@leeukopf.com.' });
+  }
 
   let body: Body;
   try {
@@ -196,7 +216,7 @@ export const handler: Handler = async (event) => {
   const factoryHtml = `
 <div style="font-family:Arial,sans-serif;color:#111;max-width:720px">
   <h2 style="margin:0 0 4px">Black Friday order ${orderId}</h2>
-  <p style="margin:0 0 18px;color:#555">${now.toUTCString()} · Placed on leeukopf.com/black-friday · To invoice via Zoho, payment by bank TT</p>
+  <p style="margin:0 0 18px;color:#555">${now.toUTCString()} · Placed on leeukopf.com/blackfriday · To invoice via Zoho, payment by bank TT</p>
   <table style="font-size:14px;margin-bottom:20px">${clientRowsHtml}</table>
   ${linesTableHtml}
   <p style="color:#555;font-size:13px">Prices from the Black Friday price list, before VAT and shipping. Lead time ${BF_LEAD_TIME}.</p>

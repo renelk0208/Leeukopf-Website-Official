@@ -118,7 +118,8 @@ function App() {
           <Route path="/client-registration" element={<ClientRegistrationPage />} />
           <Route path="/season-trends" element={<SeasonTrendsPage />} />
           <Route path="/valentines" element={<ValentinesPage />} />
-          <Route path="/black-friday" element={<BlackFridayPage />} />
+          <Route path="/blackfriday" element={<BlackFridayPage />} />
+          <Route path="/black-friday" element={<Navigate to="/blackfriday" replace />} />
           <Route path="/live-feed" element={<LiveFeedPage />} />
           <Route path="/faq-starting-a-gel-polish-brand" element={<FaqStartBrandPage />} />
           <Route path="/order-form" element={<OrderFormPage />} />
