@@ -1,10 +1,19 @@
-const WHATSAPP_LINK =
-  "https://wa.me/35973891041?text=Hi%2C%20I'm%20interested%20in%20launching%20a%20private%20label%20gel%20polish%20brand.%20Can%20you%20help%3F";
+import { useLocation } from 'react-router-dom';
+
+// Leeukopf WhatsApp: +359 876 777 984
+const WHATSAPP_NUMBER = '359876777984';
+
+const DEFAULT_MESSAGE = "Hi, I'm interested in launching a private label gel polish brand. Can you help?";
+const BLACK_FRIDAY_MESSAGE = "Hi, I'm interested in the Leeukopf Black Friday 1 kg bulk offer.";
 
 export default function WhatsAppFloatButton() {
+  const { pathname } = useLocation();
+  const message = pathname.replace(/\/$/, '') === '/blackfriday' ? BLACK_FRIDAY_MESSAGE : DEFAULT_MESSAGE;
+  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
   return (
     <a
-      href={WHATSAPP_LINK}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"
