@@ -83,6 +83,9 @@ function injectMeta(html, routePath, seo) {
     result = replaceMeta(result, 'property="og:image"', escapeAttr(ogImage));
     result = replaceMeta(result, 'property="og:image:secure_url"', escapeAttr(ogImage));
   }
+  if (seo.ogImageAlt) {
+    result = replaceMeta(result, 'property="og:image:alt"', escapeAttr(seo.ogImageAlt));
+  }
 
   // Twitter
   result = replaceMeta(result, 'property="twitter:url"', escapeAttr(canonical));

@@ -228,6 +228,7 @@
   "/blackfriday": {
     "title": "Black Friday Offers — 1 kg Bulk Gel Polish | Leeukopf Laboratories",
     "description": "HEMA & TPO free gel polish in 1 kg bulk from 59€/kg. Pick your colours, minimum 10 kg in total, lead time 5 to 8 working days.",
-    "ogImage": "/seasonal/black-friday/og.jpg"
+    "ogImage": "/seasonal/black-friday/og.jpg",
+    "ogImageAlt": "Leeukopf Laboratories Black Friday offers"
   }
 }

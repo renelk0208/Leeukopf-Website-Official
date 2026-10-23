@@ -15,6 +15,8 @@ export interface RouteSEO {
   description: string;
   /** Absolute path to an OG image (relative to the site root). */
   ogImage?: string;
+  /** Text label for the OG image; defaults to the site-wide one in index.html. */
+  ogImageAlt?: string;
   /** Explicit canonical path — defaults to the map key if omitted. */
   canonical?: string;
 }
