@@ -9,6 +9,7 @@ import {
   BF_CURRENCY,
   BF_TERMS,
   bfIsColour,
+  bfPrice,
   bfSwatchSrc,
   type BfCategory,
 } from "../data/blackFridayOffer";
@@ -22,6 +23,13 @@ type Cart = Record<string, number>;
 type Filter = "all" | BfCategory;
 
 const CATEGORY_KEYS = Object.keys(BF_CATEGORIES) as BfCategory[];
+
+const euro = (n: number) =>
+  new Intl.NumberFormat("en-IE", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 2,
+  }).format(n);
 
 function loadCart(): Cart {
   try {
@@ -91,7 +99,7 @@ export default function BlackFridayPage() {
       .querySelector('meta[name="description"]')
       ?.setAttribute(
         "content",
-        "Leeukopf Laboratories Black Friday: HEMA & TPO free gel polish in 1 kg bulk. Pick your colours, minimum 10 kg in total, lead time 5 to 8 working days.",
+        "Leeukopf Laboratories Black Friday: HEMA & TPO free gel polish in 1 kg bulk from 59€/kg. Pick your colours, minimum 10 kg in total, lead time 5 to 8 working days.",
       );
   }, []);
 
@@ -119,7 +127,8 @@ export default function BlackFridayPage() {
     () =>
       BF_COLOURS.filter((c) => cart[c.code] > 0).map((c) => {
         const kg = cart[c.code];
-        return { ...c, kg };
+        const price = BF_CATEGORIES[c.category].pricePerKg;
+        return { ...c, kg, price, lineTotal: kg * price };
       }),
     [cart],
   );
@@ -129,10 +138,12 @@ export default function BlackFridayPage() {
       cat,
       items,
       kg: items.reduce((s, l) => s + l.kg, 0),
+      total: items.reduce((s, l) => s + l.lineTotal, 0),
     };
   }).filter((g) => g.items.length > 0);
 
   const totalKg = lines.reduce((s, l) => s + l.kg, 0);
+  const totalEur = lines.reduce((s, l) => s + l.lineTotal, 0);
   const kgToGo = Math.max(0, BF_MIN_TOTAL_KG - totalKg);
   const meetsMin = totalKg >= BF_MIN_TOTAL_KG;
 
@@ -163,7 +174,8 @@ export default function BlackFridayPage() {
         content_ids: [code],
         content_type: "product",
         content_name: `Black Friday bulk ${code} 1kg`,
-        num_items: next - prev,
+        value: (bfPrice(code) ?? 0) * (next - prev),
+        currency: BF_CURRENCY,
       });
     }
     if (
@@ -247,6 +259,8 @@ export default function BlackFridayPage() {
         content_ids: lines.map((l) => l.code),
         content_type: "product",
         num_items: totalKg,
+        value: totalEur,
+        currency: BF_CURRENCY,
       });
       setConfirmed({ orderId: data.orderId, email: form.email });
       setCart({});
@@ -325,20 +339,24 @@ export default function BlackFridayPage() {
                   Terms &amp; conditions apply.
                 </p>
               </div>
-              <dl className="bf-facts">
-                <div>
-                  <dt>1 kg</dt>
-                  <dd>every unit is a 1 kg bulk pack</dd>
-                </div>
-                <div>
-                  <dt>{BF_MIN_TOTAL_KG} kg</dt>
-                  <dd>minimum order in total — mix any colours</dd>
-                </div>
-                <div>
-                  <dt>{BF_COLOURS.length}</dt>
-                  <dd>colours, glitters, shimmers &amp; metallics</dd>
-                </div>
-              </dl>
+              <table className="bf-prices">
+                <thead>
+                  <tr>
+                    <th>Price</th>
+                    <th>Per</th>
+                    <th>Category</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {CATEGORY_KEYS.map((k) => (
+                    <tr key={k}>
+                      <td>{BF_CATEGORIES[k].pricePerKg}€</td>
+                      <td>1 kg</td>
+                      <td>{BF_CATEGORIES[k].label.toLowerCase()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </section>
 
@@ -541,7 +559,7 @@ export default function BlackFridayPage() {
                               <div className="bf-sofar__row">
                                 <span>{BF_CATEGORIES[g.cat].label}</span>
                                 <span>
-                                  {g.kg} kg
+                                  {g.kg} kg · {euro(g.total)}
                                 </span>
                               </div>
                               <div className="bf-sofar__chips">
@@ -573,7 +591,7 @@ export default function BlackFridayPage() {
 
                       <h3 className="bf-step">2. Choose your colours</h3>
                       <p className="bf-note">
-                        Each unit is 1 kg. On-screen colours are a guide.
+                        Prices per 1 kg. On-screen colours are a guide.
                       </p>
 
                       <div
@@ -612,7 +630,10 @@ export default function BlackFridayPage() {
                                 height={320}
                               />
                               <p className="bf-card__code">{c.code}</p>
-                              <p className="bf-card__meta">{BF_CATEGORIES[c.category].label}</p>
+                              <p className="bf-card__meta">
+                                {BF_CATEGORIES[c.category].label} ·{" "}
+                                <b>{BF_CATEGORIES[c.category].pricePerKg}€</b> / kg
+                              </p>
                               <Stepper
                                 code={c.code}
                                 kg={kg}
@@ -625,14 +646,14 @@ export default function BlackFridayPage() {
 
                       <div className="bf-checkout" ref={submitRef}>
                         <div className="bf-total-row">
-                          <span>Colours chosen</span>
-                          <span>{lines.length}</span>
-                        </div>
-                        <div className="bf-total-row is-grand">
-                          <span>Total</span>
+                          <span>Total quantity</span>
                           <span>
                             {totalKg} kg / {BF_MIN_TOTAL_KG} kg minimum
                           </span>
+                        </div>
+                        <div className="bf-total-row is-grand">
+                          <span>Subtotal</span>
+                          <span>{euro(totalEur)}</span>
                         </div>
                         <div className="bf-progress" aria-hidden="true">
                           <span
@@ -647,7 +668,8 @@ export default function BlackFridayPage() {
                             : `Add ${kgToGo} kg more (any colours) to reach ${BF_MIN_TOTAL_KG} kg in total`}
                         </p>
                         <p className="bf-note">
-                          Prices, VAT and shipping are confirmed on your invoice.
+                          VAT and shipping, where applicable, are added on your
+                          invoice.
                         </p>
 
                         <div className="bf-tc">
@@ -731,7 +753,7 @@ export default function BlackFridayPage() {
             <div className="bf-bar__stats">
               <div className="bf-bar__line">
                 <strong>{totalKg} kg</strong>
-                <strong>{lines.length} colour{lines.length === 1 ? "" : "s"}</strong>
+                <strong>{euro(totalEur)}</strong>
               </div>
               <div className="bf-bar__msg">
                 {meetsMin

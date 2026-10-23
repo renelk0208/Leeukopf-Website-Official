@@ -143,6 +143,7 @@
 .bf-card__img { width: 100%; max-width: 120px; aspect-ratio: 1; margin: 0 auto; display: block; }
 .bf-card__code { font-weight: 700; font-size: 15px; letter-spacing: 0.04em; margin: 2px 0 0; }
 .bf-card__meta { font-size: 12px; color: #888; margin: 0 0 8px; }
+.bf-card__meta b { color: #1f2566; font-weight: 600; }
 
 .bf-stepper { display: flex; align-items: center; justify-content: center; gap: 4px; }
 .bf-stepper button {
