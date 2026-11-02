@@ -11,6 +11,8 @@ import {
   cleanLines,
   isEmail,
   newToken,
+  readAnon,
+  writeAnon,
   readBasket,
   str,
   tokenForEmail,
@@ -25,6 +27,7 @@ import {
  *   POST { action: 'register', contact, lines }         → saves the registration + basket, emails
  *                                                         the customer a resume link and the factory a notice
  *   POST { action: 'update', token, lines }             → keeps the saved basket in step with the page
+ *   POST { action: 'anon', anonId, lines }              → records what an unregistered visitor picked (no personal data)
  *   POST { action: 'resend', email }                    → emails a registered customer their resume link
  *   GET  ?token=…                                       → loads a saved basket (resume link / other device)
  *
@@ -197,6 +200,9 @@ export const lambdaHandler: Handler = async (event) => {
       orderedAt: null,
     };
     await writeBasket(store, basket);
+    // Their anonymous basket now lives on as this registration.
+    const anon = await readAnon(store, body.anonId);
+    if (anon) await writeAnon(store, { ...anon, registered: true, updatedAt: now });
     await sendEmails(basket);
     return reply(200, { success: true, basket: publicView(basket) });
   }
@@ -216,6 +222,25 @@ export const lambdaHandler: Handler = async (event) => {
     const updated: Basket = { ...basket, ...next, updatedAt: now };
     await writeBasket(store, updated);
     return reply(200, { success: true, basket: publicView(updated) });
+  }
+
+  if (action === 'anon') {
+    const anonId = str(body.anonId, 40);
+    if (!/^[A-Za-z0-9_-]{16,40}$/.test(anonId)) return reply(400, { success: false, message: 'Invalid request.' });
+    const now = new Date().toISOString();
+    const existing = await readAnon(store, anonId);
+    if (existing?.registered) return reply(200, { success: true });
+    const next = cleanLines(body.lines);
+    if (!existing && !next.lines.length) return reply(200, { success: true });
+    await writeAnon(store, {
+      anonId,
+      ...next,
+      country: existing?.country || str(event.headers['x-visitor-country'], 80) || null,
+      createdAt: existing?.createdAt ?? now,
+      updatedAt: now,
+      registered: false,
+    });
+    return reply(200, { success: true });
   }
 
   if (action === 'resend') {

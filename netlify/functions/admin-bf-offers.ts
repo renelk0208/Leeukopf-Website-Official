@@ -2,7 +2,7 @@ import type { Handler } from '@netlify/functions';
 import { asModernFunction } from './_shared/lambda-adapter';
 import { createClient } from '@supabase/supabase-js';
 import { BF_CATEGORIES, BF_COLOURS } from '../../src/data/blackFridayOffer';
-import { basketStore, listBaskets } from './_shared/bf-baskets';
+import { basketStore, isAbandoned, listAnon, listBaskets, type BasketLine } from './_shared/bf-baskets';
 
 /**
  * Admin portal → "Offers": every Black Friday registration and its basket, shown like orders.
@@ -21,6 +21,13 @@ function corsHeaders(origin: string | undefined): Record<string, string> {
     Vary: 'Origin',
   };
 }
+
+const priced = (lines: BasketLine[]) =>
+  lines.map((l) => {
+    const c = BF_COLOURS.find((x) => x.code === l.code);
+    const price = c ? BF_CATEGORIES[c.category].pricePerKg : 0;
+    return { ...l, category: c ? BF_CATEGORIES[c.category].label : '', price, total: price * l.kg };
+  });
 
 export const lambdaHandler: Handler = async (event) => {
   const headers = corsHeaders(event.headers.origin);
@@ -50,24 +57,32 @@ export const lambdaHandler: Handler = async (event) => {
   }
 
   try {
-    const baskets = await listBaskets(basketStore(event));
+    const store = basketStore(event);
+    const [baskets, anon] = await Promise.all([listBaskets(store), listAnon(store)]);
+    const now = Date.now();
     const data = baskets.map((b) => ({
       id: b.token.slice(0, 8).toUpperCase(),
-      status: b.status,
+      status: b.status === 'open' && isAbandoned(b, now) ? 'abandoned' : b.status,
+      reminderSentAt: b.reminderSentAt ?? null,
       orderId: b.orderId,
       contact: b.contact,
-      lines: b.lines.map((l) => {
-        const c = BF_COLOURS.find((x) => x.code === l.code);
-        const price = c ? BF_CATEGORIES[c.category].pricePerKg : 0;
-        return { ...l, category: c ? BF_CATEGORIES[c.category].label : '', price, total: price * l.kg };
-      }),
+      lines: priced(b.lines),
       totalKg: b.totalKg,
       totalEur: b.totalEur,
       createdAt: b.createdAt,
       updatedAt: b.updatedAt,
       orderedAt: b.orderedAt,
     }));
-    return reply(200, { success: true, count: data.length, data });
+    const anonymous = anon.map((a) => ({
+      id: a.anonId.slice(0, 8).toUpperCase(),
+      country: a.country,
+      lines: priced(a.lines),
+      totalKg: a.totalKg,
+      totalEur: a.totalEur,
+      createdAt: a.createdAt,
+      updatedAt: a.updatedAt,
+    }));
+    return reply(200, { success: true, count: data.length, data, anonymous });
   } catch (err) {
     console.error('[admin-bf-offers] failed', err);
     return reply(500, { success: false, message: 'Could not load the Black Friday offers.' });

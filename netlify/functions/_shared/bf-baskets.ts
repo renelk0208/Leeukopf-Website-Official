@@ -50,7 +50,25 @@ export interface Basket {
   createdAt: string;
   updatedAt: string;
   orderedAt: string | null;
+  reminderSentAt?: string | null;
 }
+
+/** A basket from a visitor who has not registered: no contact details, only what they picked. */
+export interface AnonBasket {
+  anonId: string;
+  lines: BasketLine[];
+  totalKg: number;
+  totalEur: number;
+  country: string | null;
+  createdAt: string;
+  updatedAt: string;
+  registered: boolean; // went on to register (then it is listed as a registration instead)
+}
+
+/** Open baskets untouched for this long count as abandoned. */
+export const ABANDONED_AFTER_MS = 24 * 60 * 60 * 1000;
+export const isAbandoned = (b: Pick<Basket, 'status' | 'updatedAt' | 'lines'>, now = Date.now()) =>
+  b.status === 'open' && b.lines.length > 0 && now - Date.parse(b.updatedAt) >= ABANDONED_AFTER_MS;
 
 type Store = ReturnType<typeof getStore>;
 
@@ -183,6 +201,25 @@ export async function listBaskets(store: Store): Promise<Basket[]> {
   const { blobs } = await store.list({ prefix: 'b/' });
   const all = await Promise.all(blobs.map((b) => store.get(b.key, { type: 'json' }) as Promise<Basket | null>));
   return all.filter((b): b is Basket => !!b).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
+export const isAnonId = (t: unknown): t is string => typeof t === 'string' && /^[A-Za-z0-9_-]{16,40}$/.test(t);
+
+export async function readAnon(store: Store, anonId: unknown): Promise<AnonBasket | null> {
+  if (!isAnonId(anonId)) return null;
+  return ((await store.get(`a/${anonId}`, { type: 'json' })) as AnonBasket | null) ?? null;
+}
+
+export async function writeAnon(store: Store, basket: AnonBasket) {
+  await store.setJSON(`a/${basket.anonId}`, basket);
+}
+
+export async function listAnon(store: Store): Promise<AnonBasket[]> {
+  const { blobs } = await store.list({ prefix: 'a/' });
+  const all = await Promise.all(blobs.map((b) => store.get(b.key, { type: 'json' }) as Promise<AnonBasket | null>));
+  return all
+    .filter((b): b is AnonBasket => !!b && !b.registered && b.lines.length > 0)
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
 /** Called by the order function once an order has gone through. Never throws. */

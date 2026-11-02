@@ -14,9 +14,11 @@ import {
   type BfCategory,
 } from "../data/blackFridayOffer";
 import { trackEvent } from "../lib/metaPixel";
+import { hasAnalyticsConsent } from "../lib/cookieConsent";
 import {
   BfRegistration,
   BfRegisteredCard,
+  bfAnonId,
   type SavedBasket,
 } from "../components/blackfriday/BfRegistration";
 import "../styles/black-friday.css";
@@ -164,6 +166,31 @@ export default function BlackFridayPage() {
       .catch(() => undefined)
       .finally(() => setRegChecked(true));
   }, []);
+
+  // Before registering: record what this visitor picked, anonymously, so the team can see
+  // drop-offs in the portal (Offers → Anonymous). No name, email or address is sent, and only
+  // for visitors who accepted analytics cookies.
+  const anonTimer = useRef<number | undefined>(undefined);
+  const anonSynced = useRef<string>("");
+  useEffect(() => {
+    if (!regChecked || reg || !hasAnalyticsConsent()) return;
+    const lines = cartToLines(cart);
+    const key = JSON.stringify(lines);
+    if (key === anonSynced.current || (!lines.length && !anonSynced.current)) return;
+    const anonId = bfAnonId();
+    if (!anonId) return;
+    window.clearTimeout(anonTimer.current);
+    anonTimer.current = window.setTimeout(() => {
+      anonSynced.current = key;
+      fetch("/api/black-friday-basket", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "anon", anonId, lines }),
+        keepalive: true,
+      }).catch(() => undefined);
+    }, 1500);
+    return () => window.clearTimeout(anonTimer.current);
+  }, [cart, reg, regChecked]);
 
   // Keep the saved basket in step with the page once registered.
   useEffect(() => {

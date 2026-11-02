@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BF_COUNTRIES, bfIsEu } from "../../data/bfCountries";
+import { hasAnalyticsConsent } from "../../lib/cookieConsent";
 
 export interface ViesResult {
   status: "valid" | "invalid" | "unavailable" | "not_eu";
@@ -49,6 +50,24 @@ const empty = {
 };
 
 type FormState = typeof empty;
+
+/** Random id for this browser's anonymous basket (no personal data). */
+export function bfAnonId(): string {
+  const KEY = "leeukopf-bf-2026-anon";
+  try {
+    if (!hasAnalyticsConsent()) return "";
+    let id = window.localStorage.getItem(KEY);
+    if (!id || !/^[A-Za-z0-9_-]{16,40}$/.test(id)) {
+      const bytes = new Uint8Array(16);
+      crypto.getRandomValues(bytes);
+      id = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+      window.localStorage.setItem(KEY, id);
+    }
+    return id;
+  } catch {
+    return "";
+  }
+}
 
 export function viesText(v: ViesResult) {
   switch (v.status) {
@@ -118,7 +137,7 @@ export function BfRegistration({
       const r = await fetch("/api/black-friday-basket", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "register", contact, lines, website }),
+        body: JSON.stringify({ action: "register", contact, lines, website, anonId: bfAnonId() }),
       });
       const d = (await r.json().catch(() => ({}))) as {
         success?: boolean;

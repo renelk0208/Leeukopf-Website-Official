@@ -6,7 +6,8 @@ type Vies = { status: 'valid' | 'invalid' | 'unavailable' | 'not_eu'; name: stri
 
 export type OfferRow = {
   id: string;
-  status: 'open' | 'ordered';
+  status: 'open' | 'abandoned' | 'ordered';
+  reminderSentAt: string | null;
   orderId: string | null;
   contact: {
     firstName: string;
@@ -41,10 +42,21 @@ const viesBadge: Record<Vies['status'], { label: string; cls: string }> = {
   not_eu: { label: 'Non-EU', cls: 'bg-slate-500/15 text-slate-300 border-slate-500/30' },
 };
 
-type Filter = 'all' | 'open' | 'ordered';
+type AnonRow = {
+  id: string;
+  country: string | null;
+  lines: OfferRow['lines'];
+  totalKg: number;
+  totalEur: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type Filter = 'all' | 'open' | 'abandoned' | 'ordered' | 'anonymous';
 
 export default function AdminOffersTab({ accessToken }: { accessToken: string | undefined }) {
   const [rows, setRows] = useState<OfferRow[]>([]);
+  const [anon, setAnon] = useState<AnonRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>('all');
@@ -59,9 +71,10 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
       const res = await fetch(getNetlifyFunctionUrl('admin-bf-offers'), {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      const data = (await res.json().catch(() => ({}))) as { success?: boolean; data?: OfferRow[]; message?: string };
+      const data = (await res.json().catch(() => ({}))) as { success?: boolean; data?: OfferRow[]; anonymous?: AnonRow[]; message?: string };
       if (!res.ok || !data.success) throw new Error(data.message || 'Could not load offers.');
       setRows(data.data ?? []);
+      setAnon(data.anonymous ?? []);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not load offers.');
     } finally {
@@ -76,6 +89,7 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
   const shown = useMemo(() => {
     const term = q.trim().toLowerCase();
     return rows.filter((r) => {
+      if (filter === 'anonymous') return false;
       if (filter !== 'all' && r.status !== filter) return false;
       if (!term) return true;
       const c = r.contact;
@@ -87,17 +101,21 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
   }, [rows, filter, q]);
 
   const stats = useMemo(() => {
-    const openRows = rows.filter((r) => r.status === 'open');
+    const openRows = rows.filter((r) => r.status === 'open' || r.status === 'abandoned');
+    const abandoned = rows.filter((r) => r.status === 'abandoned');
     const ordered = rows.filter((r) => r.status === 'ordered');
     return {
       total: rows.length,
       open: openRows.length,
       openKg: openRows.reduce((s, r) => s + r.totalKg, 0),
       openEur: openRows.reduce((s, r) => s + r.totalEur, 0),
+      abandoned: abandoned.length,
+      abandonedEur: abandoned.reduce((s, r) => s + r.totalEur, 0),
+      anon: anon.length,
       ordered: ordered.length,
       orderedEur: ordered.reduce((s, r) => s + r.totalEur, 0),
     };
-  }, [rows]);
+  }, [rows, anon]);
 
   function exportCsv() {
     const head = ['Ref', 'Status', 'Order ID', 'Registered', 'Last change', 'Name', 'Surname', 'Company', 'Email', 'Contact number',
@@ -123,7 +141,7 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
         <div>
           <h2 className="text-2xl font-bold text-white">Offers — Black Friday 2026</h2>
           <p className="text-gray-400 text-sm mt-1">
-            Everyone who registered on leeukopf.com/blackfriday, with the basket they have built. “Open” means registered but not ordered yet.
+            Everyone who registered on leeukopf.com/blackfriday, with the basket they have built. “Open” means registered but not ordered yet; “Abandoned” means open with no change for 24 hours (they get one reminder email).
           </p>
         </div>
         <div className="flex gap-2">
@@ -138,18 +156,19 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <Stat label="Registrations" value={String(stats.total)} />
         <Stat label="Open baskets" value={String(stats.open)} sub={`${stats.openKg} kg · ${eur(stats.openEur)}`} />
         <Stat label="Ordered" value={String(stats.ordered)} sub={eur(stats.orderedEur)} />
-        <Stat label="Conversion" value={stats.total ? `${Math.round((stats.ordered / stats.total) * 100)}%` : '—'} />
+        <Stat label="Abandoned" value={String(stats.abandoned)} sub={`${eur(stats.abandonedEur)} · no change for 24 h`} />
+        <Stat label="Anonymous baskets" value={String(stats.anon)} sub="not registered" />
       </div>
 
       <div className="flex flex-wrap gap-3 items-center">
-        {(['all', 'open', 'ordered'] as Filter[]).map((f) => (
+        {(['all', 'open', 'abandoned', 'ordered', 'anonymous'] as Filter[]).map((f) => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-4 py-2 rounded-lg text-sm font-medium ${filter === f ? 'bg-cyan-600 text-white' : 'bg-slate-800/60 text-gray-300 border border-cyan-500/20'}`}>
-            {f === 'all' ? 'All' : f === 'open' ? 'Open baskets' : 'Ordered'}
+            {filterLabel[f]}
           </button>
         ))}
         <div className="relative ml-auto w-full sm:w-72">
@@ -161,6 +180,9 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
 
       {error && <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">{error}</div>}
 
+      {filter === 'anonymous' && <AnonymousView rows={anon} />}
+
+      {filter !== 'anonymous' && (
       <div className="overflow-x-auto rounded-xl border border-slate-700">
         <table className="w-full text-sm text-left text-gray-200">
           <thead className="bg-slate-800 text-gray-400 text-xs uppercase">
@@ -186,8 +208,13 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
                     <td className="px-4 py-3">
                       {r.status === 'ordered' ? (
                         <span className="px-2 py-1 rounded-full text-xs bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Ordered {r.orderId}</span>
+                      ) : r.status === 'abandoned' ? (
+                        <span className="px-2 py-1 rounded-full text-xs bg-red-500/15 text-red-300 border border-red-500/30">Abandoned</span>
                       ) : (
                         <span className="px-2 py-1 rounded-full text-xs bg-amber-500/15 text-amber-300 border border-amber-500/30">Open basket</span>
+                      )}
+                      {r.reminderSentAt && r.status !== 'ordered' && (
+                        <div className="text-gray-500 text-xs mt-1">Reminder sent {when(r.reminderSentAt)}</div>
                       )}
                     </td>
                     <td className="px-4 py-3">
@@ -220,6 +247,7 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
                             {c.vies.address && (<><dt className="text-gray-500">VIES address</dt><dd className="text-gray-400">{c.vies.address}</dd></>)}
                             <dt className="text-gray-500">Registered</dt><dd>{when(r.createdAt)}</dd>
                             {r.orderedAt && (<><dt className="text-gray-500">Ordered</dt><dd>{when(r.orderedAt)}</dd></>)}
+                            {r.reminderSentAt && (<><dt className="text-gray-500">Reminder email</dt><dd>{when(r.reminderSentAt)}</dd></>)}
                           </dl>
                           <div>
                             {r.lines.length ? (
@@ -246,6 +274,79 @@ export default function AdminOffersTab({ accessToken }: { accessToken: string | 
                 </Fragment>
               );
             })}
+          </tbody>
+        </table>
+      </div>
+      )}
+    </div>
+  );
+}
+
+const filterLabel: Record<Filter, string> = {
+  all: 'All registrations',
+  open: 'Open baskets',
+  abandoned: 'Abandoned',
+  ordered: 'Ordered',
+  anonymous: 'Anonymous',
+};
+
+function AnonymousView({ rows }: { rows: AnonRow[] }) {
+  const top = useMemo(() => {
+    const kg = new Map<string, number>();
+    const visitors = new Map<string, number>();
+    for (const r of rows)
+      for (const l of r.lines) {
+        kg.set(l.code, (kg.get(l.code) ?? 0) + l.kg);
+        visitors.set(l.code, (visitors.get(l.code) ?? 0) + 1);
+      }
+    return [...kg.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12).map(([code, total]) => ({ code, total, visitors: visitors.get(code) ?? 0 }));
+  }, [rows]);
+
+  return (
+    <div className="space-y-4">
+      <p className="text-gray-400 text-sm">
+        Visitors who added colours but have not registered. There are no contact details, so they can't be followed up — this shows what
+        people want and how many drop off before registering. Only visitors who accepted analytics cookies are counted.
+      </p>
+      {top.length > 0 && (
+        <div className="rounded-xl bg-slate-800/50 border border-cyan-500/20 p-4">
+          <div className="text-gray-400 text-xs uppercase tracking-wide mb-2">Most-picked colours (anonymous)</div>
+          <div className="flex flex-wrap gap-2">
+            {top.map((t) => (
+              <span key={t.code} className="px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-sm text-gray-200">
+                <b className="text-white">{t.code}</b> · {t.total} kg · {t.visitors} {t.visitors === 1 ? 'visitor' : 'visitors'}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+      <div className="overflow-x-auto rounded-xl border border-slate-700">
+        <table className="w-full text-sm text-left text-gray-200">
+          <thead className="bg-slate-800 text-gray-400 text-xs uppercase">
+            <tr>
+              <th className="px-4 py-3">Ref</th>
+              <th className="px-4 py-3">Country</th>
+              <th className="px-4 py-3">Colours</th>
+              <th className="px-4 py-3 text-right">Basket</th>
+              <th className="px-4 py-3">Last change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {!rows.length && (
+              <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-500">No anonymous baskets yet.</td></tr>
+            )}
+            {rows.map((r) => (
+              <tr key={r.id} className="border-t border-slate-700/70">
+                <td className="px-4 py-3 text-gray-400">{r.id}</td>
+                <td className="px-4 py-3">{r.country || '—'}</td>
+                <td className="px-4 py-3 text-gray-300">{r.lines.map((l) => `${l.code} ×${l.kg}`).join(', ')}</td>
+                <td className="px-4 py-3 text-right whitespace-nowrap">
+                  <div className="font-medium text-white">{r.totalKg} kg</div>
+                  <div className="text-gray-400 text-xs">{eur(r.totalEur)}</div>
+                </td>
+                <td className="px-4 py-3 text-gray-400 whitespace-nowrap">{when(r.updatedAt)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
