@@ -14,9 +14,15 @@ import {
   type BfCategory,
 } from "../data/blackFridayOffer";
 import { trackEvent } from "../lib/metaPixel";
+import {
+  BfRegistration,
+  BfRegisteredCard,
+  type SavedBasket,
+} from "../components/blackfriday/BfRegistration";
 import "../styles/black-friday.css";
 
 const CART_KEY = "leeukopf-bf-2026-cart";
+const REG_KEY = "leeukopf-bf-2026-basket-token";
 const MAX_KG_PER_COLOUR = 999;
 
 type Cart = Record<string, number>;
@@ -47,6 +53,28 @@ function loadCart(): Cart {
   }
 }
 
+function readToken(): string | null {
+  try {
+    return window.localStorage.getItem(REG_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function storeToken(token: string | null) {
+  try {
+    if (token) window.localStorage.setItem(REG_KEY, token);
+    else window.localStorage.removeItem(REG_KEY);
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+const cartToLines = (cart: Cart) =>
+  Object.entries(cart)
+    .filter(([, kg]) => kg > 0)
+    .map(([code, kg]) => ({ code, kg }));
+
 function saveCart(cart: Cart) {
   try {
     window.localStorage.setItem(CART_KEY, JSON.stringify(cart));
@@ -56,15 +84,6 @@ function saveCart(cart: Cart) {
 }
 
 const emptyForm = {
-  companyName: "",
-  contactName: "",
-  email: "",
-  phone: "",
-  country: "",
-  vat: "",
-  invoiceAddress: "",
-  invoiceCity: "",
-  invoicePostalCode: "",
   sameAddress: true,
   shippingAddress: "",
   shippingCity: "",
@@ -89,8 +108,103 @@ export default function BlackFridayPage() {
   // null = still checking; the on/off switch lives in Netlify (see netlify/functions/black-friday-order.ts)
   const [offerOpen, setOfferOpen] = useState<boolean | null>(null);
   const orderRef = useRef<HTMLElement>(null);
-  const submitRef = useRef<HTMLDivElement>(null);
+  const submitRef = useRef<HTMLFormElement>(null);
   const checkoutTracked = useRef(false);
+  const regRef = useRef<HTMLDivElement>(null);
+  // Registration + saved basket (kept on the server so the team can see it in the portal under Offers)
+  const [reg, setReg] = useState<SavedBasket | null>(null);
+  const [regChecked, setRegChecked] = useState(false);
+  const syncTimer = useRef<number | undefined>(undefined);
+  // Desktop: registration sits beside the colours. Phones: colours first, then register, then order.
+  const [wide, setWide] = useState(() =>
+    typeof window === "undefined" ? true : window.matchMedia("(min-width: 900px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 900px)");
+    const on = () => setWide(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  const lastSynced = useRef<string>("");
+
+  // Load a saved basket: from a resume link (?basket=…) or this browser's last registration.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fromLink = params.get("basket");
+    const token = fromLink || readToken();
+    if (!token) {
+      setRegChecked(true);
+      return;
+    }
+    fetch(`/api/black-friday-basket?token=${encodeURIComponent(token)}`, {
+      headers: { Accept: "application/json" },
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { basket?: SavedBasket } | null) => {
+        if (!d?.basket) {
+          storeToken(null);
+          return;
+        }
+        const b = d.basket;
+        storeToken(b.token);
+        setReg(b);
+        // A resume link (or an empty cart here) brings the saved selection back.
+        if ((fromLink || Object.keys(loadCart()).length === 0) && b.status === "open" && b.lines.length) {
+          const restored: Cart = {};
+          for (const l of b.lines) if (bfIsColour(l.code)) restored[l.code] = l.kg;
+          lastSynced.current = JSON.stringify(cartToLines(restored));
+          setCart(restored);
+        }
+        if (fromLink) {
+          params.delete("basket");
+          const qs = params.toString();
+          window.history.replaceState(null, "", `${window.location.pathname}${qs ? `?${qs}` : ""}`);
+        }
+      })
+      .catch(() => undefined)
+      .finally(() => setRegChecked(true));
+  }, []);
+
+  // Keep the saved basket in step with the page once registered.
+  useEffect(() => {
+    if (!reg || !regChecked) return;
+    const lines = cartToLines(cart);
+    const key = JSON.stringify(lines);
+    if (key === lastSynced.current) return;
+    window.clearTimeout(syncTimer.current);
+    syncTimer.current = window.setTimeout(() => {
+      fetch("/api/black-friday-basket", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "update", token: reg.token, lines }),
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d: { basket?: SavedBasket } | null) => {
+          if (!d?.basket) return;
+          lastSynced.current = key;
+          if (d.basket.token !== reg.token) storeToken(d.basket.token);
+          setReg(d.basket);
+        })
+        .catch(() => undefined);
+    }, 700);
+    return () => window.clearTimeout(syncTimer.current);
+  }, [cart, reg, regChecked]);
+
+  function onRegistered(b: SavedBasket) {
+    storeToken(b.token);
+    lastSynced.current = JSON.stringify(b.lines);
+    setReg(b);
+    trackEvent("CompleteRegistration", { content_name: "Black Friday 2026", currency: BF_CURRENCY, value: b.totalEur });
+  }
+
+  function signOut() {
+    storeToken(null);
+    lastSynced.current = "";
+    setReg(null);
+  }
+
+  const goRegister = () =>
+    regRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   useEffect(() => {
     document.title =
@@ -203,6 +317,11 @@ export default function BlackFridayPage() {
       setError("Choose at least one colour.");
       return;
     }
+    if (!reg) {
+      setError("Please register your details first (step 2) — it saves your basket.");
+      goRegister();
+      return;
+    }
     if (!meetsMin) {
       setError(
         `The minimum order is ${BF_MIN_TOTAL_KG} kg in total across all colours — add ${kgToGo} kg more.`,
@@ -219,16 +338,8 @@ export default function BlackFridayPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          basketToken: reg.token,
           client: {
-            companyName: form.companyName,
-            contactName: form.contactName,
-            email: form.email,
-            phone: form.phone,
-            country: form.country,
-            vat: form.vat,
-            invoiceAddress: form.invoiceAddress,
-            invoiceCity: form.invoiceCity,
-            invoicePostalCode: form.invoicePostalCode,
             sameAddress: form.sameAddress,
             shippingAddress: form.shippingAddress,
             shippingCity: form.shippingCity,
@@ -244,7 +355,12 @@ export default function BlackFridayPage() {
         orderId?: string;
         message?: string;
         offerClosed?: boolean;
+        needsRegistration?: boolean;
       };
+      if (data.needsRegistration) {
+        signOut();
+        goRegister();
+      }
       if (data.offerClosed) {
         setOfferOpen(false);
         return;
@@ -262,7 +378,9 @@ export default function BlackFridayPage() {
         value: totalEur,
         currency: BF_CURRENCY,
       });
-      setConfirmed({ orderId: data.orderId, email: form.email });
+      setConfirmed({ orderId: data.orderId, email: reg.contact.email });
+      setReg({ ...reg, status: "ordered", orderId: data.orderId });
+      lastSynced.current = "[]";
       setCart({});
       setForm(emptyForm);
       setTermsAccepted(false);
@@ -277,6 +395,17 @@ export default function BlackFridayPage() {
       setSubmitting(false);
     }
   }
+
+  const registration = !regChecked ? (
+    <p className="bf-note">Loading…</p>
+  ) : reg ? (
+    <BfRegisteredCard basket={reg} onSignOut={signOut} />
+  ) : (
+    <BfRegistration
+      lines={lines.map((l) => ({ code: l.code, kg: l.kg }))}
+      onRegistered={onRegistered}
+    />
+  );
 
   return (
     <div className="bf">
@@ -410,150 +539,36 @@ export default function BlackFridayPage() {
                     </div>
                     <div>
                       <p>Step 2</p>
-                      <span>Send your order — confirmation by email</span>
+                      <span>Register your details — your basket is saved</span>
                     </div>
                     <div>
                       <p>Step 3</p>
-                      <span>Receive our invoice and pay by bank transfer</span>
+                      <span>Place your order, then pay our invoice by bank transfer</span>
                     </div>
                   </div>
 
-                  <form className="bf-cols" onSubmit={submit}>
-                    {/* Left column: details */}
-                    <div className="bf-col-details">
-                      <h3 className="bf-step">1. Your details</h3>
-                      <div className="bf-form">
-                        <Field
-                          label="Company / salon name"
-                          value={form.companyName}
-                          onChange={(v) => update("companyName", v)}
-                          required
-                          autoComplete="organization"
-                        />
-                        <Field
-                          label="Contact name"
-                          value={form.contactName}
-                          onChange={(v) => update("contactName", v)}
-                          required
-                          autoComplete="name"
-                        />
-                        <Field
-                          label="Email"
-                          type="email"
-                          value={form.email}
-                          onChange={(v) => update("email", v)}
-                          required
-                          autoComplete="email"
-                        />
-                        <Field
-                          label="Phone"
-                          type="tel"
-                          value={form.phone}
-                          onChange={(v) => update("phone", v)}
-                          required
-                          autoComplete="tel"
-                        />
-                        <Field
-                          label="Country"
-                          value={form.country}
-                          onChange={(v) => update("country", v)}
-                          required
-                          autoComplete="country-name"
-                        />
-                        <Field
-                          label="VAT number (optional)"
-                          value={form.vat}
-                          onChange={(v) => update("vat", v)}
-                        />
-                        <Field
-                          full
-                          label="Invoice address"
-                          value={form.invoiceAddress}
-                          onChange={(v) => update("invoiceAddress", v)}
-                          required
-                          autoComplete="street-address"
-                        />
-                        <Field
-                          label="City"
-                          value={form.invoiceCity}
-                          onChange={(v) => update("invoiceCity", v)}
-                          required
-                          autoComplete="address-level2"
-                        />
-                        <Field
-                          label="Postal code"
-                          value={form.invoicePostalCode}
-                          onChange={(v) => update("invoicePostalCode", v)}
-                          required
-                          autoComplete="postal-code"
-                        />
-
-                        <label className="bf-check is-full">
-                          <input
-                            type="checkbox"
-                            checked={form.sameAddress}
-                            onChange={(e) =>
-                              update("sameAddress", e.target.checked)
-                            }
-                          />
-                          Ship to the invoice address
-                        </label>
-
-                        {!form.sameAddress && (
-                          <>
-                            <Field
-                              id="bf-ship-address"
-                              full
-                              label="Shipping address"
-                              value={form.shippingAddress}
-                              onChange={(v) => update("shippingAddress", v)}
-                              required
-                            />
-                            <Field
-                              id="bf-ship-city"
-                              label="City"
-                              value={form.shippingCity}
-                              onChange={(v) => update("shippingCity", v)}
-                              required
-                            />
-                            <Field
-                              id="bf-ship-postal"
-                              label="Postal code"
-                              value={form.shippingPostalCode}
-                              onChange={(v) => update("shippingPostalCode", v)}
-                              required
-                            />
-                          </>
-                        )}
-
-                        <div className="bf-field is-full">
-                          <label htmlFor="bf-notes">Notes (optional)</label>
-                          <textarea
-                            id="bf-notes"
-                            rows={3}
-                            value={form.notes}
-                            onChange={(e) => update("notes", e.target.value)}
-                          />
-                        </div>
-
-                        <div className="bf-hp" aria-hidden="true">
-                          <label htmlFor="bf-website">Website</label>
-                          <input
-                            id="bf-website"
-                            tabIndex={-1}
-                            autoComplete="off"
-                            value={form.website}
-                            onChange={(e) => update("website", e.target.value)}
-                          />
-                        </div>
+                  <div className="bf-cols">
+                    {/* Left column on desktop: registration (saved basket) */}
+                    {wide && (
+                      <div className="bf-col-details" ref={regRef}>
+                        {registration}
                       </div>
-                    </div>
+                    )}
 
                     {/* Right column: colours + cart */}
                     <div className="bf-col-order">
                       {groups.length > 0 && (
                         <div className="bf-sofar">
                           <p className="bf-sofar__title">Your order so far</p>
+                          {regChecked && !reg && (
+                            <div className="bf-prompt">
+                              <span>Register to save this basket and place your order.</span>
+                              <button type="button" className="bf-btn bf-btn--blue" onClick={goRegister}>
+                                Register
+                              </button>
+                            </div>
+                          )}
+                          {reg && <p className="bf-sofar__saved">✓ Saved to your registration</p>}
                           {groups.map((g) => (
                             <div key={g.cat} className="bf-sofar__group">
                               <div className="bf-sofar__row">
@@ -589,7 +604,7 @@ export default function BlackFridayPage() {
                         </div>
                       )}
 
-                      <h3 className="bf-step">2. Choose your colours</h3>
+                      <h3 className="bf-step">1. Choose your colours</h3>
                       <p className="bf-note">
                         Prices per 1 kg. On-screen colours are a guide.
                       </p>
@@ -644,7 +659,68 @@ export default function BlackFridayPage() {
                         })}
                       </div>
 
-                      <div className="bf-checkout" ref={submitRef}>
+                      {!wide && (
+                        <div className="bf-col-details bf-reg-inline" ref={regRef}>
+                          {registration}
+                        </div>
+                      )}
+
+                      <form className="bf-checkout" ref={submitRef} onSubmit={submit}>
+                        <h3 className="bf-step">3. Delivery &amp; order</h3>
+                        <label className="bf-check">
+                          <input
+                            type="checkbox"
+                            checked={form.sameAddress}
+                            onChange={(e) => update("sameAddress", e.target.checked)}
+                          />
+                          Ship to my registered address
+                        </label>
+                        {!form.sameAddress && (
+                          <div className="bf-form bf-ship">
+                            <Field
+                              id="bf-ship-address"
+                              full
+                              label="Shipping address"
+                              value={form.shippingAddress}
+                              onChange={(v) => update("shippingAddress", v)}
+                              required
+                            />
+                            <Field
+                              id="bf-ship-city"
+                              label="City"
+                              value={form.shippingCity}
+                              onChange={(v) => update("shippingCity", v)}
+                              required
+                            />
+                            <Field
+                              id="bf-ship-postal"
+                              label="Postal code"
+                              value={form.shippingPostalCode}
+                              onChange={(v) => update("shippingPostalCode", v)}
+                              required
+                            />
+                          </div>
+                        )}
+                        <div className="bf-field bf-notes">
+                          <label htmlFor="bf-notes">Notes (optional)</label>
+                          <textarea
+                            id="bf-notes"
+                            rows={3}
+                            value={form.notes}
+                            onChange={(e) => update("notes", e.target.value)}
+                          />
+                        </div>
+                        <div className="bf-hp" aria-hidden="true">
+                          <label htmlFor="bf-website">Website</label>
+                          <input
+                            id="bf-website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            value={form.website}
+                            onChange={(e) => update("website", e.target.value)}
+                          />
+                        </div>
+
                         <div className="bf-total-row">
                           <span>Total quantity</span>
                           <span>
@@ -702,17 +778,22 @@ export default function BlackFridayPage() {
                         <button
                           className="bf-btn bf-btn--blue bf-submit"
                           type="submit"
-                          disabled={submitting || !termsAccepted}
+                          disabled={submitting || !termsAccepted || !reg}
                         >
                           {submitting ? "Sending order…" : "Place order"}
                         </button>
+                        {!reg && (
+                          <button type="button" className="bf-link bf-center-block" onClick={goRegister}>
+                            Register your details first (step 2) to place your order
+                          </button>
+                        )}
                         <p className="bf-note bf-center">
                           You won't be charged now — we'll email you an invoice
                           to pay by bank transfer.
                         </p>
-                      </div>
+                      </form>
                     </div>
-                  </form>
+                  </div>
                 </>
               )}
             </div>
@@ -765,13 +846,15 @@ export default function BlackFridayPage() {
               type="button"
               className="bf-btn bf-btn--blue"
               onClick={() =>
-                submitRef.current?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center",
-                })
+                reg
+                  ? submitRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    })
+                  : goRegister()
               }
             >
-              Checkout
+              {reg ? "Checkout" : "Register"}
             </button>
           </div>
         </div>

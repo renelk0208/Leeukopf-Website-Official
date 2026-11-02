@@ -3,7 +3,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { useAdminStaff } from '../contexts/AdminStaffContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
 import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
-import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink, Search, X } from 'lucide-react';
+import AdminOffersTab from '../components/admin/AdminOffersTab';
+import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, Tag, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink, Search, X } from 'lucide-react';
 
 interface ClientRegistrationLead {
   id: string;
@@ -184,7 +185,7 @@ function getPipelineStage(value: string | undefined) {
 export default function AdminDashboard() {
   const { signOut, user, session } = useAuth();
   const adminStaff = useAdminStaff();
-  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients' | 'staff'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients' | 'offers' | 'staff'>('products');
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
@@ -612,6 +613,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
       brochures: adminStaff.canDo('manage_brochures'),
       colors: adminStaff.canDo('manage_colors'),
       clients: adminStaff.canDo('view_clients'),
+      offers: adminStaff.canDo('view_orders'),
       staff: adminStaff.isOwner,
     };
     if (!tabAccessMap[activeTab]) {
@@ -1181,6 +1183,19 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                   {clientRegistrations.length}
                 </span>
               )}
+            </button>
+          )}
+          {adminStaff.canDo('view_orders') && (
+            <button
+              onClick={() => setActiveTab('offers')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'offers'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
+                  : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
+              }`}
+            >
+              <Tag size={20} />
+              <span>Offers</span>
             </button>
           )}
           {adminStaff.isOwner && (
@@ -2164,6 +2179,10 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
         )}
 
         {/* ── STAFF TAB (owner only) ──────────────────────────────────────── */}
+        {activeTab === 'offers' && adminStaff.canDo('view_orders') && (
+          <AdminOffersTab accessToken={session?.access_token} />
+        )}
+
         {activeTab === 'staff' && adminStaff.isOwner && (
           <div className="space-y-8">
             {/* Add Staff */}

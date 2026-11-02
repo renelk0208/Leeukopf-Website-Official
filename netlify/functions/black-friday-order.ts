@@ -1,4 +1,5 @@
 import type { Handler } from '@netlify/functions';
+import { asModernFunction } from './_shared/lambda-adapter';
 import { Resend } from 'resend';
 import {
   BF_CATEGORIES,
@@ -6,6 +7,7 @@ import {
   BF_LEAD_TIME,
   BF_MIN_TOTAL_KG,
 } from '../../src/data/blackFridayOffer';
+import { basketStore, markBasketOrdered, readBasket, viesLabel } from './_shared/bf-baskets';
 
 /**
  * Black Friday 2026 bulk order — public, no payment.
@@ -59,6 +61,7 @@ interface Body {
   client?: ClientIn;
   lines?: Array<{ code?: string; kg?: number }>;
   website?: string; // honeypot
+  basketToken?: string;
 }
 
 const str = (v: unknown, max = 300) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
@@ -78,7 +81,7 @@ function corsHeaders(origin?: string): Record<string, string> {
   };
 }
 
-export const handler: Handler = async (event) => {
+export const lambdaHandler: Handler = async (event) => {
   const headers = corsHeaders(event.headers.origin || event.headers.Origin);
   const reply = (statusCode: number, body: Record<string, unknown>) => ({ statusCode, headers, body: JSON.stringify(body) });
 
@@ -100,40 +103,35 @@ export const handler: Handler = async (event) => {
   // Bots fill the hidden field — pretend success, send nothing.
   if (str(body.website)) return reply(200, { success: true, orderId: `BF-${Date.now()}` });
 
+  // Orders come from registered customers only: their details are taken from the saved registration
+  // (checked against VIES at sign-up), not from whatever the browser sends.
+  const basket = await readBasket(basketStore(event), body.basketToken);
+  if (!basket) {
+    return reply(400, { success: false, needsRegistration: true, message: 'Please register your details before placing your order.' });
+  }
+  const r = basket.contact;
   const c = body.client ?? {};
+  const fullName = `${r.firstName} ${r.lastName}`.trim();
   const client = {
-    companyName: str(c.companyName),
-    contactName: str(c.contactName),
-    email: str(c.email, 200).toLowerCase(),
-    phone: str(c.phone, 60),
-    country: str(c.country, 80),
-    vat: str(c.vat, 60),
-    invoiceAddress: str(c.invoiceAddress),
-    invoiceCity: str(c.invoiceCity, 120),
-    invoicePostalCode: str(c.invoicePostalCode, 30),
+    companyName: r.companyName || fullName,
+    contactName: fullName,
+    email: r.email,
+    phone: r.phone,
+    country: r.country,
+    vat: r.vatNumber ? `${r.vatNumber} (${viesLabel(r.vies)}${r.vies.name ? ` — ${r.vies.name}` : ''})` : '',
+    invoiceAddress: [r.addressLine1, r.addressLine2].filter(Boolean).join(', '),
+    invoiceCity: r.city,
+    invoicePostalCode: r.postalCode,
     sameAddress: c.sameAddress !== false,
     shippingAddress: str(c.shippingAddress),
     shippingCity: str(c.shippingCity, 120),
     shippingPostalCode: str(c.shippingPostalCode, 30),
     notes: str(c.notes, 2000),
   };
-
-  const required: Array<[keyof typeof client, string]> = [
-    ['companyName', 'company name'],
-    ['contactName', 'contact name'],
-    ['email', 'email'],
-    ['phone', 'phone'],
-    ['country', 'country'],
-    ['invoiceAddress', 'invoice address'],
-    ['invoiceCity', 'city / region'],
-    ['invoicePostalCode', 'postal code'],
-  ];
-  if (!client.sameAddress) {
-    required.push(['shippingAddress', 'shipping address'], ['shippingCity', 'shipping city'], ['shippingPostalCode', 'shipping postal code']);
+  if (!client.sameAddress && (!client.shippingAddress || !client.shippingCity || !client.shippingPostalCode)) {
+    return reply(400, { success: false, message: 'Please fill in the shipping address, city and postal code.' });
   }
-  const missing = required.filter(([k]) => !client[k]).map(([, label]) => label);
-  if (missing.length) return reply(400, { success: false, message: `Please fill in: ${missing.join(', ')}.` });
-  if (!isEmail(client.email)) return reply(400, { success: false, message: 'Please enter a valid email address.' });
+  if (!isEmail(client.email)) return reply(400, { success: false, message: 'Please register with a valid email address.' });
 
   // Rebuild lines from the server-side price list; merge duplicates.
   const qty = new Map<string, number>();
@@ -310,5 +308,9 @@ Questions? Write to info@leeukopf.com.
     console.error('[black-friday-order] customer email failed', err);
   }
 
+  await markBasketOrdered(event, body.basketToken, orderId);
+
   return reply(200, { success: true, orderId, totalKg, totalEur });
 };
+
+export default asModernFunction(lambdaHandler);

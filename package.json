@@ -34,6 +34,7 @@
     "generate:builder-gels-manifest": "node scripts/generate-builder-gels-manifest.cjs"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.1.7",
     "@pdf-lib/fontkit": "^1.1.1",
     "@supabase/supabase-js": "^2.57.4",
     "@vis.gl/react-google-maps": "^1.7.1",
