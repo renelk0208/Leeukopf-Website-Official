@@ -1,10 +1,12 @@
 import type { Handler } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
+import { asModernFunction } from './_shared/lambda-adapter';
 import {
   TRADE_DOCS,
   TRADE_DOCS_BUCKET,
   ensureTradeDocsBucket,
   isTradeDocSlot,
+  listDownloads,
   tradeDocPath,
 } from './_shared/trade-docs';
 
@@ -12,7 +14,7 @@ import {
  * Admin portal → "Trade documents": upload / replace / remove the PDFs registered clients download.
  * Access: owners in ADMIN_APPROVER_EMAILS, or active staff with the manage_brochures permission.
  *
- * GET              → status of each document slot
+ * GET              → status of each document slot + recent client downloads
  * POST { slot }    → one-time signed upload URL (browser uploads the PDF straight to storage,
  *                    so large catalogues don't hit the function size limit)
  * DELETE ?slot=…   → remove a document
@@ -31,7 +33,7 @@ function corsHeaders(origin: string | undefined): Record<string, string> {
   };
 }
 
-export const handler: Handler = async (event) => {
+export const lambdaHandler: Handler = async (event) => {
   const headers = corsHeaders(event.headers.origin);
   const reply = (statusCode: number, body: Record<string, unknown>) => ({ statusCode, headers, body: JSON.stringify(body) });
 
@@ -67,8 +69,13 @@ export const handler: Handler = async (event) => {
       const { data: files, error } = await bucket.list('', { limit: 100 });
       if (error) throw error;
       const stored = new Map((files ?? []).map((f) => [f.name, f]));
+      const downloads = await listDownloads().catch((err) => {
+        console.error('admin-trade-documents: could not list downloads', err instanceof Error ? err.message : err);
+        return [];
+      });
       return reply(200, {
         success: true,
+        downloads,
         documents: TRADE_DOCS.map((doc) => {
           const file = stored.get(tradeDocPath(doc.slot));
           return {
@@ -105,3 +112,5 @@ export const handler: Handler = async (event) => {
     return reply(500, { success: false, message: err instanceof Error ? err.message : 'Unexpected error' });
   }
 };
+
+export default asModernFunction(lambdaHandler);
