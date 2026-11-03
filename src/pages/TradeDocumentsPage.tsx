@@ -17,7 +17,6 @@ type TradeDoc = {
   slot: string;
   title: string;
   description: string;
-  url: string;
   updatedAt: string | null;
   sizeBytes: number | null;
 };
@@ -56,6 +55,8 @@ export default function TradeDocumentsPage() {
   const location = useLocation();
   const { session, loading: authLoading } = useAuth();
   const [state, setState] = useState<State>({ kind: 'loading' });
+  const [preparing, setPreparing] = useState<string | null>(null);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const [welcome] = useState(() => new URLSearchParams(location.search).get('welcome') === '1');
 
   // Take the access token from the link, remember it, and tidy it out of the address bar.
@@ -104,12 +105,34 @@ export default function TradeDocumentsPage() {
     void load();
   }, [authLoading, load]);
 
-  // Signed download links expire after 10 minutes — refresh them if the page has been open a while.
-  useEffect(() => {
-    if (state.kind !== 'ready') return;
-    const timer = window.setTimeout(() => void load(), 8 * 60 * 1000);
-    return () => window.clearTimeout(timer);
-  }, [state.kind, load]);
+  // Each download is stamped with the client's details on the server, then handed over as a short-lived link.
+  const download = async (slot: string) => {
+    setPreparing(slot);
+    setDownloadError(null);
+    try {
+      const portalToken = session?.access_token;
+      const res = await fetch(getNetlifyFunctionUrl('trade-documents'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(portalToken && !accessToken ? { Authorization: `Bearer ${portalToken}` } : {}),
+        },
+        body: JSON.stringify({ action: 'download', slot, access: accessToken ?? undefined }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        if (accessToken) clearTradeDocsAccess();
+        setState({ kind: 'no-access', expired: Boolean(accessToken) });
+        return;
+      }
+      if (!res.ok || !data.url) throw new Error(data.message || 'The download could not be prepared. Please try again.');
+      window.location.assign(data.url);
+    } catch (err) {
+      setDownloadError(err instanceof Error ? err.message : 'The download could not be prepared. Please try again.');
+    } finally {
+      setPreparing(null);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -148,6 +171,11 @@ export default function TradeDocumentsPage() {
 
           {state.kind === 'ready' && (
             <>
+              {downloadError && (
+                <p className="mt-8 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+                  {downloadError}
+                </p>
+              )}
               {state.docs.length === 0 ? (
                 <div className="mt-10 rounded-2xl border border-gray-200 bg-white p-8 text-center">
                   <FileText className="mx-auto text-gray-300" size={40} />
@@ -172,13 +200,14 @@ export default function TradeDocumentsPage() {
                             .filter(Boolean)
                             .join(' · ')}
                         </span>
-                        <a
-                          href={doc.url}
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90"
+                        <button
+                          type="button"
+                          onClick={() => void download(doc.slot)}
+                          disabled={preparing !== null}
+                          className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90 disabled:opacity-60"
                         >
-                          <Download size={16} /> Download PDF
-                        </a>
+                          <Download size={16} /> {preparing === doc.slot ? 'Preparing…' : 'Download PDF'}
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -210,7 +239,7 @@ export default function TradeDocumentsPage() {
                 </div>
               </div>
               <p className="mt-4 text-xs text-gray-500">
-                These documents are for your business use only. Please do not share them outside your company.
+                Each document is issued personally to your company. Please do not share it outside your business.
               </p>
             </>
           )}

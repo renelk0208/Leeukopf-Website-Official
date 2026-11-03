@@ -1,5 +1,10 @@
-import { createHmac, timingSafeEqual } from 'crypto';
+import { createHash, createHmac, randomBytes, timingSafeEqual } from 'crypto';
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { getStore } from '@netlify/blobs';
+import fontkit from '@pdf-lib/fontkit';
+import { PDFDocument, StandardFonts, rgb, type PDFFont } from 'pdf-lib';
 
 /**
  * Trade documents (pricelists, bottle guide, catalogue) shown only to registered clients.
@@ -16,22 +21,26 @@ export const TRADE_DOCS = [
   {
     slot: 'pl-international-pricelist',
     title: '2026 PL International Pricelist',
-    description: 'Bottled private label pricing — 1 kg to 10 kg+ per colour, MOQ 1,000 bottles.',
+    description:
+      'For launching your own branded range: gel supplied filled in standard 10 ml bottles or 30 g jars, ready to label and sell. Prices per kg and per bottle, from 25 pieces per colour (1,000 bottles minimum in total).',
   },
   {
     slot: 'bulk-pricelist',
     title: '2026 Private Label Bulk Pricelist (50 kg)',
-    description: 'Bulk pricing per kg — total order MOQ 50 kg.',
+    description:
+      'For brands and distributors who fill their own bottles: gel supplied by the kilo in bulk containers. Prices per kg, minimum 50 kg per order in total.',
   },
   {
     slot: 'bottle-guide',
     title: 'Private Label Bottle Guide',
-    description: 'Bottle options, colour identification, MOQs and our recommendations.',
+    description:
+      'Read this before choosing your packaging: bottle and cap options, how your clients will tell shades and base/top coats apart, minimum quantities and extra costs.',
   },
   {
     slot: 'catalogue',
     title: 'Leeukopf Laboratories Catalogue 2026',
-    description: 'Full product range, shades and packaging options.',
+    description:
+      'Our complete range at a glance: gel polishes, rubber bases, builder gels, polygels, top coats and nail art, with shade charts and packaging options.',
   },
 ] as const;
 
@@ -118,4 +127,98 @@ ${TRADE_DOCS.map((d) => `  <li>${d.title}</li>`).join('\n')}
 <p><a href="${link}" style="display:inline-block;background:#111;color:#fff;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:600">Download your trade documents</a></p>
 <p style="color:#666;font-size:13px">This link is personal to you and stays active for ${ACCESS_TOKEN_DAYS} days. Please do not forward it.</p>
 `;
+}
+
+// ── Download stamping ──────────────────────────────────────────────────────
+// Every PDF a client downloads carries a line naming who it was issued to, so a
+// forwarded copy can always be traced back. Stamped copies are cached per client
+// and per document version, so repeat downloads are instant.
+
+export const stampedDocPath = (email: string, slot: TradeDocSlot, version: string) =>
+  `stamped/${createHash('sha256').update(email.toLowerCase()).digest('hex').slice(0, 24)}/${slot}-${version.replace(/[^0-9A-Za-z]/g, '')}.pdf`;
+
+const CYRILLIC: Record<string, string> = {
+  а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ж: 'zh', з: 'z', и: 'i', й: 'y', к: 'k', л: 'l', м: 'm', н: 'n',
+  о: 'o', п: 'p', р: 'r', с: 's', т: 't', у: 'u', ф: 'f', х: 'h', ц: 'ts', ч: 'ch', ш: 'sh', щ: 'sht', ъ: 'a', ь: 'y',
+  ю: 'yu', я: 'ya', ы: 'y', э: 'e', ё: 'yo', є: 'ye', і: 'i', ї: 'yi',
+};
+
+/** Keeps text printable with the embedded font (e.g. transliterates Bulgarian company names). */
+function printable(text: string, font: PDFFont): string {
+  const supported = new Set(font.getCharacterSet());
+  return [...text]
+    .map((ch) => {
+      if (supported.has(ch.codePointAt(0)!)) return ch;
+      const lower = ch.toLowerCase();
+      if (CYRILLIC[lower] !== undefined) {
+        const t = CYRILLIC[lower];
+        return ch === lower ? t : t.charAt(0).toUpperCase() + t.slice(1);
+      }
+      const base = ch.normalize('NFD').replace(/[̀-ͯ]/g, '');
+      return base && [...base].every((c) => supported.has(c.codePointAt(0)!)) ? base : '?';
+    })
+    .join('');
+}
+
+async function stampFont(pdf: PDFDocument): Promise<PDFFont> {
+  const fontPath = join(process.cwd(), 'netlify/functions/assets/pf-futura-neu-book.ttf');
+  if (existsSync(fontPath)) {
+    try {
+      pdf.registerFontkit(fontkit);
+      return await pdf.embedFont(readFileSync(fontPath), { subset: true });
+    } catch (err) {
+      console.warn('trade-docs: custom font failed, using Helvetica', err instanceof Error ? err.message : err);
+    }
+  }
+  return pdf.embedFont(StandardFonts.Helvetica);
+}
+
+export async function stampPdf(original: Uint8Array, recipient: { company: string | null; email: string }): Promise<Uint8Array> {
+  const pdf = await PDFDocument.load(original, { ignoreEncryption: true, updateMetadata: false });
+  const font = await stampFont(pdf);
+  const issued = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const who = recipient.company ? `${recipient.company} (${recipient.email})` : recipient.email;
+  const text = printable(`Confidential  ·  Issued to ${who} on ${issued}  ·  Not for distribution`, font);
+
+  for (const page of pdf.getPages()) {
+    const { width } = page.getSize();
+    let size = 7;
+    while (size > 4 && font.widthOfTextAtSize(text, size) > width - 24) size -= 0.5;
+    const textWidth = font.widthOfTextAtSize(text, size);
+    const x = Math.max(12, (width - textWidth) / 2);
+    page.drawRectangle({ x: x - 6, y: 4, width: textWidth + 12, height: size + 6, color: rgb(1, 1, 1), opacity: 0.8 });
+    page.drawText(text, { x, y: 7, size, font, color: rgb(0.25, 0.25, 0.25) });
+  }
+
+  pdf.setSubject(`Issued to ${recipient.email}`);
+  pdf.setKeywords(['Leeukopf Laboratories', 'confidential', recipient.email]);
+  return pdf.save();
+}
+
+// ── Download log (Netlify Blobs) ───────────────────────────────────────────
+
+export interface DownloadRecord {
+  at: string;
+  email: string;
+  company: string | null;
+  slot: TradeDocSlot;
+  title: string;
+  via: 'link' | 'portal';
+}
+
+const downloadStore = () => getStore({ name: 'trade-docs-downloads', consistency: 'strong' });
+
+/** Keys sort newest first. */
+const downloadKey = () => `d/${String(9_999_999_999_999 - Date.now()).padStart(13, '0')}-${randomBytes(4).toString('hex')}`;
+
+export async function logDownload(record: DownloadRecord): Promise<void> {
+  await downloadStore().setJSON(downloadKey(), record);
+}
+
+export async function listDownloads(limit = 150): Promise<DownloadRecord[]> {
+  const store = downloadStore();
+  const { blobs } = await store.list({ prefix: 'd/' });
+  const keys = blobs.map((b) => b.key).sort().slice(0, limit);
+  const records = await Promise.all(keys.map((k) => store.get(k, { type: 'json' }) as Promise<DownloadRecord | null>));
+  return records.filter((r): r is DownloadRecord => Boolean(r));
 }

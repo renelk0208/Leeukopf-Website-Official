@@ -12,6 +12,15 @@ type DocStatus = {
   sizeBytes: number | null;
 };
 
+type DownloadRow = {
+  at: string;
+  email: string;
+  company: string | null;
+  slot: string;
+  title: string;
+  via: 'link' | 'portal';
+};
+
 const BUCKET = 'trade-documents';
 const MAX_BYTES = 50 * 1024 * 1024;
 
@@ -25,6 +34,7 @@ const size = (bytes: number | null) => (bytes ? `${(bytes / (1024 * 1024)).toFix
  */
 export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: string | undefined }) {
   const [docs, setDocs] = useState<DocStatus[]>([]);
+  const [downloads, setDownloads] = useState<DownloadRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [busySlot, setBusySlot] = useState<string | null>(null);
   const [message, setMessage] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
@@ -50,6 +60,7 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
     try {
       const data = await call('GET');
       setDocs(data.documents ?? []);
+      setDownloads(data.downloads ?? []);
     } catch (err) {
       setMessage({ kind: 'error', text: err instanceof Error ? err.message : 'Could not load documents.' });
     } finally {
@@ -190,6 +201,43 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-10">
+        <h3 className="text-xl font-bold text-white">Download history</h3>
+        <p className="text-gray-400 text-sm mt-1">
+          Every download is stamped on each page with the client&apos;s company and email, so a forwarded copy can be traced.
+        </p>
+        {downloads.length === 0 ? (
+          <p className="text-gray-500 text-sm mt-4">No downloads yet.</p>
+        ) : (
+          <div className="overflow-x-auto mt-4">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-cyan-500/20 text-left text-gray-300">
+                  <th className="py-2 pr-4 font-medium">When</th>
+                  <th className="py-2 pr-4 font-medium">Company</th>
+                  <th className="py-2 pr-4 font-medium">Email</th>
+                  <th className="py-2 pr-4 font-medium">Document</th>
+                </tr>
+              </thead>
+              <tbody>
+                {downloads.map((d, i) => (
+                  <tr key={`${d.at}-${i}`} className="border-b border-slate-700/50 text-gray-200">
+                    <td className="py-2 pr-4 whitespace-nowrap">{when(d.at)}</td>
+                    <td className="py-2 pr-4">{d.company || '—'}</td>
+                    <td className="py-2 pr-4">
+                      <a href={`mailto:${d.email}`} className="text-cyan-300 hover:underline">
+                        {d.email}
+                      </a>
+                    </td>
+                    <td className="py-2 pr-4">{d.title}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {!loading && docs.length === 0 && !message && (

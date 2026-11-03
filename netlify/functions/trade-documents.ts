@@ -1,6 +1,7 @@
 import type { Handler } from '@netlify/functions';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { asModernFunction } from './_shared/lambda-adapter';
 import {
   SIGNED_URL_SECONDS,
   TRADE_DOCS,
@@ -8,6 +9,10 @@ import {
   createAccessToken,
   documentsEmailHtml,
   documentsPageUrl,
+  isTradeDocSlot,
+  logDownload,
+  stampPdf,
+  stampedDocPath,
   tradeDocPath,
   verifyAccessToken,
 } from './_shared/trade-docs';
@@ -15,11 +20,12 @@ import {
 /**
  * Registered clients' trade documents.
  *
- * GET  ?access=<token>                 → list of available PDFs with short-lived download links
- * GET  Authorization: Bearer <jwt>     → same, for signed-in approved portal clients / staff
- * POST { email }                       → emails a fresh access link IF that email is registered
- *                                        (always answers the same way, so it can't be used to
- *                                        discover who is registered)
+ * GET  ?access=<token>                         → list of available documents
+ * GET  Authorization: Bearer <jwt>             → same, for signed-in approved portal clients / staff
+ * POST { action: 'download', slot, access? }   → PDF stamped with the client's name, as a short-lived link;
+ *                                                the download is recorded for the admin portal
+ * POST { email }                               → emails a fresh access link IF that email is registered
+ *                                                (same answer either way, so it can't reveal who is registered)
  */
 
 function corsHeaders(origin: string | undefined): Record<string, string> {
@@ -38,6 +44,8 @@ function corsHeaders(origin: string | undefined): Record<string, string> {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+type Viewer = { email: string; via: 'link' | 'portal' };
+
 async function emailFromPortalSession(admin: SupabaseClient, authHeader: string): Promise<string | null> {
   const token = authHeader.toLowerCase().startsWith('bearer ') ? authHeader.slice(7).trim() : '';
   if (!token) return null;
@@ -55,6 +63,13 @@ async function emailFromPortalSession(admin: SupabaseClient, authHeader: string)
   return approved || staff ? email : null;
 }
 
+async function identify(admin: SupabaseClient, accessToken: string, authHeader: string): Promise<Viewer | null> {
+  const fromLink = verifyAccessToken(accessToken);
+  if (fromLink) return { email: fromLink, via: 'link' };
+  const fromPortal = authHeader ? await emailFromPortalSession(admin, authHeader) : null;
+  return fromPortal ? { email: fromPortal, via: 'portal' } : null;
+}
+
 async function isRegistered(admin: SupabaseClient, email: string): Promise<boolean> {
   const [{ data: reg }, { data: approved }] = await Promise.all([
     admin.from('client_registrations').select('id').ilike('email', email).limit(1),
@@ -63,7 +78,20 @@ async function isRegistered(admin: SupabaseClient, email: string): Promise<boole
   return Boolean((reg && reg.length > 0) || approved);
 }
 
-export const handler: Handler = async (event) => {
+async function companyFor(admin: SupabaseClient, email: string): Promise<string | null> {
+  const { data: reg } = await admin
+    .from('client_registrations')
+    .select('company')
+    .ilike('email', email)
+    .order('created_at', { ascending: false })
+    .limit(1);
+  const fromRegistration = reg?.[0]?.company?.trim();
+  if (fromRegistration) return fromRegistration;
+  const { data: approved } = await admin.from('approved_clients').select('company').ilike('email', email).maybeSingle();
+  return approved?.company?.trim() || null;
+}
+
+export const lambdaHandler: Handler = async (event) => {
   const headers = corsHeaders(event.headers.origin);
   const reply = (statusCode: number, body: Record<string, unknown>) => ({ statusCode, headers, body: JSON.stringify(body) });
 
@@ -73,15 +101,65 @@ export const handler: Handler = async (event) => {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceRoleKey) return reply(500, { success: false, message: 'Document service is not configured.' });
   const admin = createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false } });
+  const bucket = admin.storage.from(TRADE_DOCS_BUCKET);
+  const authHeader = (event.headers.authorization || event.headers.Authorization || '').trim();
 
-  // ── Re-send my access link ────────────────────────────────────────────────
+  let body: Record<string, unknown> = {};
   if (event.httpMethod === 'POST') {
-    let email = '';
     try {
-      email = String(JSON.parse(event.body || '{}').email || '').trim().toLowerCase();
+      body = JSON.parse(event.body || '{}');
     } catch {
       return reply(400, { success: false, message: 'Invalid request.' });
     }
+  }
+
+  // ── Stamped download ──────────────────────────────────────────────────────
+  if (event.httpMethod === 'POST' && body.action === 'download') {
+    const viewer = await identify(admin, String(body.access || ''), authHeader);
+    if (!viewer) return reply(401, { success: false, code: 'no_access', message: 'This link is invalid or has expired.' });
+    const slot = body.slot;
+    if (!isTradeDocSlot(slot)) return reply(400, { success: false, message: 'Unknown document.' });
+    const doc = TRADE_DOCS.find((d) => d.slot === slot)!;
+
+    try {
+      const { data: files } = await bucket.list('', { search: tradeDocPath(slot) });
+      const original = files?.find((f) => f.name === tradeDocPath(slot));
+      if (!original) return reply(404, { success: false, message: 'This document is not available right now.' });
+
+      const version = original.updated_at || original.created_at || 'v1';
+      const stampedPath = stampedDocPath(viewer.email, slot, version);
+      const company = await companyFor(admin, viewer.email);
+
+      const existing = await bucket.createSignedUrl(stampedPath, SIGNED_URL_SECONDS, { download: `Leeukopf - ${doc.title}.pdf` });
+      let url = existing.data?.signedUrl ?? null;
+
+      if (!url) {
+        const { data: blob, error: downloadError } = await bucket.download(tradeDocPath(slot));
+        if (downloadError || !blob) throw downloadError ?? new Error('Could not read the original document');
+        const stamped = await stampPdf(new Uint8Array(await blob.arrayBuffer()), { company, email: viewer.email });
+        const { error: uploadError } = await bucket.upload(stampedPath, stamped, { contentType: 'application/pdf', upsert: true });
+        if (uploadError) throw uploadError;
+        const fresh = await bucket.createSignedUrl(stampedPath, SIGNED_URL_SECONDS, { download: `Leeukopf - ${doc.title}.pdf` });
+        url = fresh.data?.signedUrl ?? null;
+        if (!url) throw fresh.error ?? new Error('Could not create download link');
+      }
+
+      try {
+        await logDownload({ at: new Date().toISOString(), email: viewer.email, company, slot, title: doc.title, via: viewer.via });
+      } catch (logErr) {
+        console.error('trade-documents: could not record download', logErr instanceof Error ? logErr.message : logErr);
+      }
+      console.log(`trade-documents: ${viewer.email} downloaded ${slot}`);
+      return reply(200, { success: true, url });
+    } catch (err) {
+      console.error('trade-documents: download failed', err instanceof Error ? err.message : err);
+      return reply(500, { success: false, message: 'The download could not be prepared. Please try again.' });
+    }
+  }
+
+  // ── Re-send my access link ────────────────────────────────────────────────
+  if (event.httpMethod === 'POST') {
+    const email = String(body.email || '').trim().toLowerCase();
     if (!EMAIL_RE.test(email)) return reply(400, { success: false, message: 'Please enter a valid email address.' });
 
     try {
@@ -108,40 +186,31 @@ export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'GET') return reply(405, { success: false, message: 'Method Not Allowed' });
 
   // ── List documents ────────────────────────────────────────────────────────
-  const accessToken = event.queryStringParameters?.access || '';
-  const authHeader = (event.headers.authorization || event.headers.Authorization || '').trim();
+  const viewer = await identify(admin, event.queryStringParameters?.access || '', authHeader);
+  if (!viewer) return reply(401, { success: false, code: 'no_access', message: 'This link is invalid or has expired.' });
 
-  const email = verifyAccessToken(accessToken) ?? (authHeader ? await emailFromPortalSession(admin, authHeader) : null);
-  if (!email) {
-    return reply(401, { success: false, code: 'no_access', message: 'This link is invalid or has expired.' });
-  }
-
-  const { data: files, error: listError } = await admin.storage.from(TRADE_DOCS_BUCKET).list('', { limit: 100 });
+  const { data: files, error: listError } = await bucket.list('', { limit: 100 });
   if (listError && !/not found/i.test(listError.message)) {
     console.error('trade-documents: list failed', listError.message);
     return reply(500, { success: false, message: 'Documents are temporarily unavailable. Please try again shortly.' });
   }
   const stored = new Map((files ?? []).map((f) => [f.name, f]));
 
-  const documents = await Promise.all(
-    TRADE_DOCS.map(async (doc) => {
-      const file = stored.get(tradeDocPath(doc.slot));
-      if (!file) return null;
-      const { data } = await admin.storage
-        .from(TRADE_DOCS_BUCKET)
-        .createSignedUrl(tradeDocPath(doc.slot), SIGNED_URL_SECONDS, { download: `Leeukopf - ${doc.title}.pdf` });
-      if (!data?.signedUrl) return null;
-      return {
+  const documents = TRADE_DOCS.flatMap((doc) => {
+    const file = stored.get(tradeDocPath(doc.slot));
+    if (!file) return [];
+    return [
+      {
         slot: doc.slot,
         title: doc.title,
         description: doc.description,
-        url: data.signedUrl,
         updatedAt: file.updated_at ?? file.created_at ?? null,
         sizeBytes: (file.metadata as { size?: number } | null)?.size ?? null,
-      };
-    }),
-  );
+      },
+    ];
+  });
 
-  console.log(`trade-documents: access by ${email}`);
-  return reply(200, { success: true, email, documents: documents.filter(Boolean) });
+  return reply(200, { success: true, email: viewer.email, documents });
 };
+
+export default asModernFunction(lambdaHandler);
