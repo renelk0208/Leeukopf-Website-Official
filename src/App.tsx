@@ -14,6 +14,7 @@ const PrivateLabelBottlesPage = lazy(() => import('./pages/PrivateLabelBottlesPa
 const PrivateLabelBulkPage = lazy(() => import('./pages/PrivateLabelBulkPage'));
 const GelitupDistributionPage = lazy(() => import('./pages/GelitupDistributionPage'));
 const ClientRegistrationPage = lazy(() => import('./pages/ClientRegistrationPage'));
+const TradeDocumentsPage = lazy(() => import('./pages/TradeDocumentsPage'));
 const TermsOfUsePage = lazy(() => import('./pages/TermsOfUsePage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const CookiesPolicyPage = lazy(() => import('./pages/CookiesPolicyPage'));
@@ -116,6 +117,7 @@ function App() {
           <Route path="/packaging-compliance" element={<PackagingCompliancePage />} />
           <Route path="/distributors-wanted" element={<Navigate to="/our-brands" replace />} />
           <Route path="/client-registration" element={<ClientRegistrationPage />} />
+          <Route path="/trade-documents" element={<TradeDocumentsPage />} />
           <Route path="/season-trends" element={<SeasonTrendsPage />} />
           <Route path="/valentines" element={<ValentinesPage />} />
           <Route path="/blackfriday" element={<BlackFridayPage />} />

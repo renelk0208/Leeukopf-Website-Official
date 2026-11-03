@@ -5,6 +5,7 @@ import * as jose from 'jose';
 import { webcrypto } from 'crypto';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
+import { createAccessToken, documentsEmailHtml, documentsPageUrl } from './_shared/trade-docs';
 
 // Polyfill global crypto for jose on Netlify
 if (!globalThis.crypto) {
@@ -226,9 +227,13 @@ ${formData.notes ? `<p><strong>Notes/Requirements:</strong><br>${formData.notes.
 }
 
 // Generate auto-reply email body
-function generateAutoReplyBody(): string {
+function generateAutoReplyBody(documentsLink: string | null): string {
+  const documentsSection = documentsLink
+    ? documentsEmailHtml(documentsLink, 'As a registered client you now have access to our current pricelists and guides.')
+    : '';
   return `
 <p>Thank you for completing the Leeukopf Laboratories client registration form.</p>
+${documentsSection}
 
 <p>We have received your details and will review your request.</p>
 
@@ -563,6 +568,15 @@ const handler: Handler = async (event: HandlerEvent) => {
 
   const resend = new Resend(resendApiKey);
 
+  // Personal, time-limited access to the private trade documents (pricelists, guides).
+  // Granted straight away — no approval or manual email needed.
+  let documentsAccessToken: string | null = null;
+  try {
+    documentsAccessToken = createAccessToken(formData.email);
+  } catch (tokenErr) {
+    console.error('Trade documents token failed (non-fatal):', tokenErr instanceof Error ? tokenErr.message : tokenErr);
+  }
+
   try {
     // Persist registration to Supabase (best-effort — don't block if misconfigured or DB error)
     try {
@@ -595,7 +609,7 @@ const handler: Handler = async (event: HandlerEvent) => {
     // Send auto-reply to client (best-effort — don't fail the whole request if this bounces)
     try {
       console.log('Sending auto-reply email to:', formData.email);
-      const autoReplyBody = generateAutoReplyBody();
+      const autoReplyBody = generateAutoReplyBody(documentsAccessToken ? documentsPageUrl(documentsAccessToken) : null);
       const autoReplyResult = await resend.emails.send({
         from: 'Leeukopf Laboratories <info@leeukopf.com>',
         to: formData.email,
@@ -610,7 +624,7 @@ const handler: Handler = async (event: HandlerEvent) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ success: true }),
+      body: JSON.stringify({ success: true, documentsAccessToken }),
     };
   } catch (err) {
     console.error('Error sending emails:', err);
