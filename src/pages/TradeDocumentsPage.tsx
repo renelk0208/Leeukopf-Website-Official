@@ -154,7 +154,7 @@ export default function TradeDocumentsPage() {
               <div>
                 <p className="font-semibold text-green-900">Thank you for registering!</p>
                 <p className="mt-1 text-sm text-green-800 font-light">
-                  Your documents are ready below. We've also emailed you a personal link so you can come back to them any
+                  Your documents are ready below. Keep the email with your personal link so you can come back to them any
                   time.
                 </p>
               </div>
@@ -296,7 +296,7 @@ function NoAccess({ expired }: { expired: boolean }) {
         <p className="mt-2 text-sm text-gray-600 font-light">
           {expired
             ? 'Access links stay active for a limited time. Enter your registered email and we’ll send you a fresh one.'
-            : 'Our pricelists and guides are available to registered business clients. Registration takes a couple of minutes and your documents open straight away.'}
+            : 'Our pricelists and guides are available to approved business clients. Register your business and, once we have reviewed it, we will email you a personal link.'}
         </p>
         {!expired && (
           <Link
@@ -309,8 +309,8 @@ function NoAccess({ expired }: { expired: boolean }) {
       </div>
 
       <form onSubmit={submit} className="rounded-2xl border border-gray-200 bg-white p-6">
-        <h2 className="text-lg font-semibold text-gray-900">Already registered?</h2>
-        <p className="mt-2 text-sm text-gray-600 font-light">We’ll email your personal download link to you.</p>
+        <h2 className="text-lg font-semibold text-gray-900">Already approved?</h2>
+        <p className="mt-2 text-sm text-gray-600 font-light">If your registration has been approved, we’ll email your personal link.</p>
         <label htmlFor="trade-docs-email" className="sr-only">
           Registered email
         </label>

@@ -1,16 +1,14 @@
 import type { Handler } from '@netlify/functions';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { Resend } from 'resend';
 import { asModernFunction } from './_shared/lambda-adapter';
 import {
   SIGNED_URL_SECONDS,
   TRADE_DOCS,
   TRADE_DOCS_BUCKET,
-  createAccessToken,
-  documentsEmailHtml,
-  documentsPageUrl,
+  getDocsApproval,
   isTradeDocSlot,
   logDownload,
+  sendDocumentsLink,
   stampPdf,
   stampedDocPath,
   tradeDocPath,
@@ -20,11 +18,13 @@ import {
 /**
  * Registered clients' trade documents.
  *
+ * Only clients approved in Admin → Trade Documents (or approved portal clients / staff) get in.
+ *
  * GET  ?access=<token>                         → list of available documents
  * GET  Authorization: Bearer <jwt>             → same, for signed-in approved portal clients / staff
  * POST { action: 'download', slot, access? }   → PDF stamped with the client's name, as a short-lived link;
  *                                                the download is recorded for the admin portal
- * POST { email }                               → emails a fresh access link IF that email is registered
+ * POST { email }                               → emails a fresh access link IF that email is approved
  *                                                (same answer either way, so it can't reveal who is registered)
  */
 
@@ -65,17 +65,10 @@ async function emailFromPortalSession(admin: SupabaseClient, authHeader: string)
 
 async function identify(admin: SupabaseClient, accessToken: string, authHeader: string): Promise<Viewer | null> {
   const fromLink = verifyAccessToken(accessToken);
-  if (fromLink) return { email: fromLink, via: 'link' };
+  // The link must still belong to an approved client — revoking access disables links already sent.
+  if (fromLink && (await getDocsApproval(fromLink))) return { email: fromLink, via: 'link' };
   const fromPortal = authHeader ? await emailFromPortalSession(admin, authHeader) : null;
   return fromPortal ? { email: fromPortal, via: 'portal' } : null;
-}
-
-async function isRegistered(admin: SupabaseClient, email: string): Promise<boolean> {
-  const [{ data: reg }, { data: approved }] = await Promise.all([
-    admin.from('client_registrations').select('id').ilike('email', email).limit(1),
-    admin.from('approved_clients').select('email').ilike('email', email).maybeSingle(),
-  ]);
-  return Boolean((reg && reg.length > 0) || approved);
 }
 
 async function companyFor(admin: SupabaseClient, email: string): Promise<string | null> {
@@ -163,23 +156,17 @@ export const lambdaHandler: Handler = async (event) => {
     if (!EMAIL_RE.test(email)) return reply(400, { success: false, message: 'Please enter a valid email address.' });
 
     try {
-      if (await isRegistered(admin, email)) {
-        const resendApiKey = process.env.RESEND_API_KEY;
-        if (!resendApiKey) throw new Error('RESEND_API_KEY is not set');
-        const { error: sendError } = await new Resend(resendApiKey).emails.send({
-          from: 'Leeukopf Laboratories <info@leeukopf.com>',
-          to: email,
-          subject: 'Your Leeukopf trade documents',
-          html: documentsEmailHtml(documentsPageUrl(createAccessToken(email)), 'Here is your new access link, as requested.'),
-        });
-        if (sendError) throw new Error(sendError.message);
+      if (await getDocsApproval(email)) {
+        const sendError = await sendDocumentsLink(email, 'Here is your new access link, as requested.');
+        if (sendError) throw new Error(sendError);
       }
     } catch (err) {
       console.error('trade-documents: resend link failed', err instanceof Error ? err.message : err);
     }
     return reply(200, {
       success: true,
-      message: 'If this email is registered with us, a download link is on its way. Please check your inbox (and spam folder).',
+      message:
+        'If this email has been approved for access, a download link is on its way. Please check your inbox (and spam folder).',
     });
   }
 
