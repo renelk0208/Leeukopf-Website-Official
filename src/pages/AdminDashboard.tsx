@@ -4,6 +4,7 @@ import { useAdminStaff } from '../contexts/AdminStaffContext';
 import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supabase';
 import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import AdminOffersTab from '../components/admin/AdminOffersTab';
+import AdminTradeDocumentsTab from '../components/admin/AdminTradeDocumentsTab';
 import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, Tag, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink, Search, X } from 'lucide-react';
 
 interface ClientRegistrationLead {
@@ -185,7 +186,7 @@ function getPipelineStage(value: string | undefined) {
 export default function AdminDashboard() {
   const { signOut, user, session } = useAuth();
   const adminStaff = useAdminStaff();
-  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'clients' | 'offers' | 'staff'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'colors' | 'brochures' | 'documents' | 'clients' | 'offers' | 'staff'>('products');
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
@@ -611,6 +612,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     const tabAccessMap: Record<string, boolean> = {
       products: adminStaff.canDo('manage_products'),
       brochures: adminStaff.canDo('manage_brochures'),
+      documents: adminStaff.canDo('manage_brochures'),
       colors: adminStaff.canDo('manage_colors'),
       clients: adminStaff.canDo('view_clients'),
       offers: adminStaff.canDo('view_orders'),
@@ -1152,6 +1154,19 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                   {brochureRequests.length}
                 </span>
               )}
+            </button>
+          )}
+          {adminStaff.canDo('manage_brochures') && (
+            <button
+              onClick={() => setActiveTab('documents')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'documents'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-700 text-white'
+                  : 'bg-slate-800/50 text-gray-300 border border-cyan-500/20'
+              }`}
+            >
+              <FileText size={20} />
+              <span>Trade Documents</span>
             </button>
           )}
           {adminStaff.canDo('manage_colors') && (
@@ -2179,6 +2194,10 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
         )}
 
         {/* ── STAFF TAB (owner only) ──────────────────────────────────────── */}
+        {activeTab === 'documents' && adminStaff.canDo('manage_brochures') && (
+          <AdminTradeDocumentsTab accessToken={session?.access_token} />
+        )}
+
         {activeTab === 'offers' && adminStaff.canDo('view_orders') && (
           <AdminOffersTab accessToken={session?.access_token} />
         )}

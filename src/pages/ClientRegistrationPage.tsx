@@ -1,8 +1,10 @@
 import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
 import { CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
 import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import { trackLead } from '../lib/metaPixel';
+import { saveTradeDocsAccess } from '../lib/tradeDocsAccess';
 
 interface FormData {
   company: string;
@@ -89,7 +91,9 @@ const businessTypes = [
   'Other'
 ];
 
-const businessTypesRequiringVAT = ['Distributor', 'Salon Supply', 'Brand Owner'];
+// VAT is optional at registration: many private-label prospects (start-up brands, non-EU businesses)
+// don't have one yet. It is confirmed later, at order / invoicing stage.
+const businessTypesRequiringVAT: string[] = [];
 
 const productInterests = [
   'Gel Polish',
@@ -180,6 +184,7 @@ export default function ClientRegistrationPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const navigate = useNavigate();
   const [submitError, setSubmitError] = useState('');
   const [activeTab, setActiveTab] = useState<'Distributors' | 'PrivateLabel' | 'Influencers'>('Distributors');
 
@@ -473,6 +478,11 @@ export default function ClientRegistrationPage() {
         throw new Error(data.error || 'Failed to submit registration');
       }
 
+      // Registered clients get their trade documents (pricelists, guides) straight away.
+      const documentsAccessToken: string | null =
+        typeof data.documentsAccessToken === 'string' && data.documentsAccessToken ? data.documentsAccessToken : null;
+      if (documentsAccessToken) saveTradeDocsAccess(documentsAccessToken);
+
       setSubmitSuccess(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
@@ -483,6 +493,11 @@ export default function ClientRegistrationPage() {
         value: 1,
         currency: 'USD'
       });
+
+      if (documentsAccessToken) {
+        navigate(`/trade-documents?access=${encodeURIComponent(documentsAccessToken)}&welcome=1`);
+        return;
+      }
       
       setFormData({
         company: '',
@@ -938,8 +953,10 @@ export default function ClientRegistrationPage() {
               <div>
                 <label htmlFor="vatEori" className="block text-sm font-medium text-gray-900 mb-2">
                   VAT Registration number
-                  {businessTypesRequiringVAT.includes(formData.businessType) && (
+                  {businessTypesRequiringVAT.includes(formData.businessType) ? (
                     <span className="text-red-500"> *</span>
+                  ) : (
+                    <span className="font-normal text-gray-500"> (optional)</span>
                   )}
                 </label>
                 <input

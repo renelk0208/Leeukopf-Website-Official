@@ -257,6 +257,22 @@ export default function ClientPortalDashboardPage() {
         </section>
 
         <section className="rounded-2xl border border-grey-card bg-white p-5 shadow-sm sm:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-grey-primary">Pricelists &amp; guides</h2>
+              <p className="mt-1 text-sm text-grey-secondary">Download the current private label pricelists, bottle guide and catalogue.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/trade-documents')}
+              className="rounded-md border border-grey-card px-5 py-2.5 font-semibold text-grey-primary hover:bg-gray-50"
+            >
+              View documents
+            </button>
+          </div>
+        </section>
+
+        <section className="rounded-2xl border border-grey-card bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 className="text-xl font-bold text-grey-primary">Account</h2>
