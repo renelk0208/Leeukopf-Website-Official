@@ -222,41 +222,18 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-cyan-500/20 text-left text-gray-300">
+                  <th className="py-2 pr-4 font-medium">Action</th>
                   <th className="py-2 pr-4 font-medium">Registered</th>
                   <th className="py-2 pr-4 font-medium">Company</th>
                   <th className="py-2 pr-4 font-medium">Contact</th>
                   <th className="py-2 pr-4 font-medium">Country / type</th>
                   {view === 'approved' && <th className="py-2 pr-4 font-medium">Approved</th>}
-                  <th className="py-2 pr-4 font-medium text-right">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {shown.map((r) => (
                   <tr key={r.email} className="border-b border-slate-700/50 text-gray-200 align-top">
-                    <td className="py-3 pr-4 whitespace-nowrap">{when(r.created_at)}</td>
-                    <td className="py-3 pr-4">
-                      {r.company || '—'}
-                      {r.interest_private_label && <span className="ml-2 text-xs text-cyan-300">Private label</span>}
-                    </td>
-                    <td className="py-3 pr-4">
-                      <div>{r.contact || '—'}</div>
-                      <a href={`mailto:${r.email}`} className="text-cyan-300 hover:underline">
-                        {r.email}
-                      </a>
-                    </td>
-                    <td className="py-3 pr-4">
-                      <div>{r.country || '—'}</div>
-                      <div className="text-gray-400">{r.business_type || ''}</div>
-                    </td>
-                    {view === 'approved' && (
-                      <td className="py-3 pr-4 whitespace-nowrap">
-                        <div>{when(r.approvedAt)}</div>
-                        <div className="text-gray-400 text-xs">
-                          {r.lastEmailedAt ? `Link sent ${when(r.lastEmailedAt)}` : 'Email not sent'}
-                        </div>
-                      </td>
-                    )}
-                    <td className="py-3 text-right whitespace-nowrap">
+                    <td className="py-3 pr-4 whitespace-nowrap">
                       {view === 'pending' ? (
                         <button
                           type="button"
@@ -288,6 +265,29 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
                         </div>
                       )}
                     </td>
+                    <td className="py-3 pr-4 whitespace-nowrap">{when(r.created_at)}</td>
+                    <td className="py-3 pr-4">
+                      {r.company || '—'}
+                      {r.interest_private_label && <span className="ml-2 text-xs text-cyan-300">Private label</span>}
+                    </td>
+                    <td className="py-3 pr-4">
+                      <div>{r.contact || '—'}</div>
+                      <a href={`mailto:${r.email}`} className="text-cyan-300 hover:underline">
+                        {r.email}
+                      </a>
+                    </td>
+                    <td className="py-3 pr-4">
+                      <div>{r.country || '—'}</div>
+                      <div className="text-gray-400">{r.business_type || ''}</div>
+                    </td>
+                    {view === 'approved' && (
+                      <td className="py-3 pr-4 whitespace-nowrap">
+                        <div>{when(r.approvedAt)}</div>
+                        <div className="text-gray-400 text-xs">
+                          {r.lastEmailedAt ? `Link sent ${when(r.lastEmailedAt)}` : 'Email not sent'}
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

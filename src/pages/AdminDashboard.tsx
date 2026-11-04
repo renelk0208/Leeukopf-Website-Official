@@ -377,6 +377,9 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
   };
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
+  // Trade documents (pricelists) access — separate from ordering-portal access
+  const [docsApprovals, setDocsApprovals] = useState<Map<string, { approvedAt: string; lastEmailedAt: string | null }>>(new Map());
+  const [docsBusyEmail, setDocsBusyEmail] = useState<string | null>(null);
   const [manualInviteLink, setManualInviteLink] = useState('');
   const [clientAccessEmail, setClientAccessEmail] = useState('');
   const [clientAccessPassword, setClientAccessPassword] = useState('');
@@ -586,14 +589,53 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
     loadApprovedClients();
   }, [loadCategories, loadColors, loadBrochureRequests, loadClientRegistrations, loadApprovedClients]);
 
+  const loadDocsApprovals = useCallback(async () => {
+    if (!session?.access_token || !adminStaff.canDo('manage_brochures')) return;
+    try {
+      const response = await fetch(getNetlifyFunctionUrl('admin-trade-documents'), {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || !payload.success) return;
+      const next = new Map<string, { approvedAt: string; lastEmailedAt: string | null }>();
+      for (const r of (payload.registrations ?? []) as Array<{ email: string; approvedAt: string | null; lastEmailedAt: string | null }>) {
+        if (r.approvedAt) next.set(r.email.toLowerCase(), { approvedAt: r.approvedAt, lastEmailedAt: r.lastEmailedAt });
+      }
+      setDocsApprovals(next);
+    } catch (err) {
+      console.error('Could not load pricelist approvals:', err);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.access_token, adminStaff.role]);
+
+  const handleSendPricelists = async (email: string, alreadyApproved: boolean) => {
+    if (!session?.access_token) return;
+    setDocsBusyEmail(email);
+    try {
+      const response = await fetch(getNetlifyFunctionUrl('admin-trade-documents'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ action: alreadyApproved ? 'resend' : 'approve', email }),
+      });
+      const payload = (await response.json().catch(() => ({}))) as { success?: boolean; message?: string };
+      if (!response.ok || !payload.success) throw new Error(payload.message || 'Could not send the pricelists link.');
+      setMessage(payload.message || `Pricelists link sent to ${email}.`);
+      await loadDocsApprovals();
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Could not send the pricelists link.');
+    } finally {
+      setDocsBusyEmail(null);
+    }
+  };
+
   const refreshClientAccess = useCallback(async () => {
     setRefreshingClients(true);
     try {
-      await Promise.all([loadClientRegistrations(), loadApprovedClients(), loadCompletedOrders()]);
+      await Promise.all([loadClientRegistrations(), loadApprovedClients(), loadCompletedOrders(), loadDocsApprovals()]);
     } finally {
       setRefreshingClients(false);
     }
-  }, [loadClientRegistrations, loadApprovedClients, loadCompletedOrders]);
+  }, [loadClientRegistrations, loadApprovedClients, loadCompletedOrders, loadDocsApprovals]);
 
   useEffect(() => {
     if (activeTab !== 'clients') return;
@@ -1708,6 +1750,9 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                       <th className="py-3 px-2 w-8"></th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Date</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Company</th>
+                      {adminStaff.canDo('manage_brochures') && (
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Pricelists</th>
+                      )}
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Contact</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Email</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Country</th>
@@ -1755,6 +1800,29 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                             {new Date(registration.created_at).toLocaleDateString()}
                           </td>
                           <td className="py-4 px-4 text-white">{registration.company}</td>
+                          {adminStaff.canDo('manage_brochures') && (() => {
+                            const docsApproval = docsApprovals.get(registration.email.toLowerCase());
+                            return (
+                              <td className="py-4 px-4" onClick={(e) => e.stopPropagation()}>
+                                <button
+                                  type="button"
+                                  onClick={() => void handleSendPricelists(registration.email, Boolean(docsApproval))}
+                                  disabled={docsBusyEmail !== null}
+                                  className={`whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-50 ${
+                                    docsApproval
+                                      ? 'border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/10'
+                                      : 'bg-gradient-to-r from-emerald-500 to-teal-700 text-white hover:from-emerald-400'
+                                  }`}
+                                >
+                                  {docsBusyEmail === registration.email
+                                    ? 'Sending…'
+                                    : docsApproval
+                                      ? '✓ Sent · Resend'
+                                      : 'Approve & send pricelists'}
+                                </button>
+                              </td>
+                            );
+                          })()}
                           <td className="py-4 px-4 text-gray-300">{registration.contact}</td>
                           <td className="py-4 px-4 text-cyan-400">
                             <a
@@ -1820,7 +1888,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                       if (isExpanded) {
                         rows.push(
                           <tr key={`${registration.id}-detail`} className="bg-slate-900/40 border-b border-cyan-500/10">
-                            <td colSpan={10} className="px-6 pb-6 pt-2">
+                            <td colSpan={adminStaff.canDo('manage_brochures') ? 11 : 10} className="px-6 pb-6 pt-2">
                               {/* CRM SECTION */}
                               <div className="rounded-xl border-2 border-cyan-300 bg-gradient-to-br from-cyan-950/90 via-slate-900 to-blue-950/90 p-6 mb-4 shadow-lg shadow-cyan-950/30">
                                 <p className="text-lg text-cyan-200 uppercase tracking-wide font-bold mb-5">CRM — Pipeline & Tracking</p>
