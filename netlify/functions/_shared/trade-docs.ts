@@ -222,3 +222,52 @@ export async function listDownloads(limit = 150): Promise<DownloadRecord[]> {
   const records = await Promise.all(keys.map((k) => store.get(k, { type: 'json' }) as Promise<DownloadRecord | null>));
   return records.filter((r): r is DownloadRecord => Boolean(r));
 }
+
+// ── Document access approvals (Netlify Blobs) ──────────────────────────────
+// A registered client can only open the documents once Leeukopf has approved them.
+// Revoking removes the record, which also disables any link already sent.
+
+export interface DocsApproval {
+  email: string;
+  company: string | null;
+  approvedAt: string;
+  approvedBy: string;
+  lastEmailedAt: string | null;
+}
+
+const approvalStore = () => getStore({ name: 'trade-docs-approvals', consistency: 'strong' });
+const approvalKey = (email: string) =>
+  `a/${createHash('sha256').update(email.trim().toLowerCase()).digest('hex').slice(0, 40)}`;
+
+export async function getDocsApproval(email: string): Promise<DocsApproval | null> {
+  return (await approvalStore().get(approvalKey(email), { type: 'json' })) as DocsApproval | null;
+}
+
+export async function saveDocsApproval(approval: DocsApproval): Promise<void> {
+  await approvalStore().setJSON(approvalKey(approval.email), { ...approval, email: approval.email.trim().toLowerCase() });
+}
+
+export async function revokeDocsApproval(email: string): Promise<void> {
+  await approvalStore().delete(approvalKey(email));
+}
+
+export async function listDocsApprovals(): Promise<DocsApproval[]> {
+  const store = approvalStore();
+  const { blobs } = await store.list({ prefix: 'a/' });
+  const rows = await Promise.all(blobs.map((b) => store.get(b.key, { type: 'json' }) as Promise<DocsApproval | null>));
+  return rows.filter((r): r is DocsApproval => Boolean(r));
+}
+
+/** Sends the client their personal documents link. Returns an error message if the email service refused it. */
+export async function sendDocumentsLink(email: string, intro: string): Promise<string | null> {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) return 'Email service is not configured (RESEND_API_KEY missing).';
+  const { Resend } = await import('resend');
+  const { error } = await new Resend(resendApiKey).emails.send({
+    from: 'Leeukopf Laboratories <info@leeukopf.com>',
+    to: email,
+    subject: 'Your Leeukopf pricelists and guides',
+    html: documentsEmailHtml(documentsPageUrl(createAccessToken(email)), intro),
+  });
+  return error ? error.message || 'The email service rejected the message.' : null;
+}

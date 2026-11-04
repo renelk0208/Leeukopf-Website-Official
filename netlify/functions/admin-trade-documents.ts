@@ -6,7 +6,12 @@ import {
   TRADE_DOCS_BUCKET,
   ensureTradeDocsBucket,
   isTradeDocSlot,
+  getDocsApproval,
+  listDocsApprovals,
   listDownloads,
+  revokeDocsApproval,
+  saveDocsApproval,
+  sendDocumentsLink,
   tradeDocPath,
 } from './_shared/trade-docs';
 
@@ -14,7 +19,11 @@ import {
  * Admin portal → "Trade documents": upload / replace / remove the PDFs registered clients download.
  * Access: owners in ADMIN_APPROVER_EMAILS, or active staff with the manage_brochures permission.
  *
- * GET              → status of each document slot + recent client downloads
+ * GET              → status of each document slot, registrations with their document-access
+ *                    approval status, and recent client downloads
+ * POST { action: 'approve' | 'resend' | 'revoke', email }
+ *                  → approve a registration (and email the client their personal link),
+ *                    re-send the link, or withdraw access (links already sent stop working)
  * POST { slot }    → one-time signed upload URL (browser uploads the PDF straight to storage,
  *                    so large catalogues don't hit the function size limit)
  * DELETE ?slot=…   → remove a document
@@ -69,13 +78,37 @@ export const lambdaHandler: Handler = async (event) => {
       const { data: files, error } = await bucket.list('', { limit: 100 });
       if (error) throw error;
       const stored = new Map((files ?? []).map((f) => [f.name, f]));
-      const downloads = await listDownloads().catch((err) => {
-        console.error('admin-trade-documents: could not list downloads', err instanceof Error ? err.message : err);
-        return [];
+      const [downloads, approvals, registrationsResult] = await Promise.all([
+        listDownloads().catch((err) => {
+          console.error('admin-trade-documents: could not list downloads', err instanceof Error ? err.message : err);
+          return [];
+        }),
+        listDocsApprovals().catch((err) => {
+          console.error('admin-trade-documents: could not list approvals', err instanceof Error ? err.message : err);
+          return [];
+        }),
+        admin
+          .from('client_registrations')
+          .select('email, company, contact, country, business_type, interest_private_label, interest_distribution, created_at')
+          .order('created_at', { ascending: false })
+          .limit(500),
+      ]);
+      if (registrationsResult.error) console.error('admin-trade-documents: registrations', registrationsResult.error.message);
+
+      const approvalByEmail = new Map(approvals.map((a) => [a.email, a]));
+      const seen = new Set<string>();
+      const registrations = (registrationsResult.data ?? []).flatMap((r) => {
+        const regEmail = (r.email || '').trim().toLowerCase();
+        if (!regEmail || seen.has(regEmail)) return [];
+        seen.add(regEmail);
+        const approval = approvalByEmail.get(regEmail) ?? null;
+        return [{ ...r, email: regEmail, approvedAt: approval?.approvedAt ?? null, approvedBy: approval?.approvedBy ?? null, lastEmailedAt: approval?.lastEmailedAt ?? null }];
       });
+
       return reply(200, {
         success: true,
         downloads,
+        registrations,
         documents: TRADE_DOCS.map((doc) => {
           const file = stored.get(tradeDocPath(doc.slot));
           return {
@@ -89,7 +122,57 @@ export const lambdaHandler: Handler = async (event) => {
     }
 
     if (event.httpMethod === 'POST') {
-      const slot = JSON.parse(event.body || '{}').slot;
+      const body = JSON.parse(event.body || '{}') as { action?: string; email?: string; slot?: unknown };
+
+      if (body.action === 'approve' || body.action === 'resend' || body.action === 'revoke') {
+        const clientEmail = String(body.email || '').trim().toLowerCase();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) return reply(400, { success: false, message: 'Invalid email.' });
+
+        if (body.action === 'revoke') {
+          await revokeDocsApproval(clientEmail);
+          console.log(`admin-trade-documents: ${email} revoked document access for ${clientEmail}`);
+          return reply(200, { success: true });
+        }
+
+        const existing = await getDocsApproval(clientEmail);
+        if (body.action === 'resend' && !existing) return reply(400, { success: false, message: 'This client has not been approved yet.' });
+
+        let company = existing?.company ?? null;
+        if (!existing) {
+          const { data: reg } = await admin
+            .from('client_registrations')
+            .select('company')
+            .ilike('email', clientEmail)
+            .order('created_at', { ascending: false })
+            .limit(1);
+          company = reg?.[0]?.company?.trim() || null;
+        }
+
+        const emailError = await sendDocumentsLink(
+          clientEmail,
+          existing
+            ? 'Here is your personal link to our current pricelists and guides.'
+            : 'Good news — your Leeukopf Laboratories registration has been approved.',
+        );
+        const now = new Date().toISOString();
+        await saveDocsApproval({
+          email: clientEmail,
+          company,
+          approvedAt: existing?.approvedAt ?? now,
+          approvedBy: existing?.approvedBy ?? email,
+          lastEmailedAt: emailError ? (existing?.lastEmailedAt ?? null) : now,
+        });
+        console.log(`admin-trade-documents: ${email} ${body.action}d ${clientEmail}${emailError ? ` (email failed: ${emailError})` : ''}`);
+        return reply(200, {
+          success: true,
+          emailSent: !emailError,
+          message: emailError
+            ? `Access approved, but the email could not be sent: ${emailError}`
+            : `Approved — ${clientEmail} has been emailed their personal link.`,
+        });
+      }
+
+      const slot = body.slot;
       if (!isTradeDocSlot(slot)) return reply(400, { success: false, message: 'Unknown document.' });
       const { data, error } = await bucket.createSignedUploadUrl(tradeDocPath(slot), { upsert: true });
       if (error || !data) throw error ?? new Error('Could not create upload URL');

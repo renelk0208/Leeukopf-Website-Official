@@ -26,13 +26,6 @@ export default function PortalPendingApprovalPage() {
           </p>
         ) : null}
 
-        <div className="mt-4 rounded-md border border-grey-card bg-gray-50 px-3 py-2 text-sm text-grey-secondary">
-          Our pricelists and guides are available now, before approval.{' '}
-          <Link to="/trade-documents" className="font-semibold text-primary hover:text-primary-700">
-            View trade documents
-          </Link>
-        </div>
-
         <div className="mt-6 space-y-3">
           <p className="text-sm text-grey-secondary">Next steps:</p>
           <ul className="list-disc space-y-1 pl-5 text-sm text-grey-secondary">

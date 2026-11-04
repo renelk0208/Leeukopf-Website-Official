@@ -1,10 +1,8 @@
 import { useEffect, useState, FormEvent, ChangeEvent } from 'react';
 import { CheckCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import PageTemplate from '../components/PageTemplate';
 import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import { trackLead } from '../lib/metaPixel';
-import { saveTradeDocsAccess } from '../lib/tradeDocsAccess';
 
 interface FormData {
   company: string;
@@ -184,7 +182,6 @@ export default function ClientRegistrationPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const navigate = useNavigate();
   const [submitError, setSubmitError] = useState('');
   const [activeTab, setActiveTab] = useState<'Distributors' | 'PrivateLabel' | 'Influencers'>('Distributors');
 
@@ -478,11 +475,6 @@ export default function ClientRegistrationPage() {
         throw new Error(data.error || 'Failed to submit registration');
       }
 
-      // Registered clients get their trade documents (pricelists, guides) straight away.
-      const documentsAccessToken: string | null =
-        typeof data.documentsAccessToken === 'string' && data.documentsAccessToken ? data.documentsAccessToken : null;
-      if (documentsAccessToken) saveTradeDocsAccess(documentsAccessToken);
-
       setSubmitSuccess(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
@@ -494,11 +486,6 @@ export default function ClientRegistrationPage() {
         currency: 'USD'
       });
 
-      if (documentsAccessToken) {
-        navigate(`/trade-documents?access=${encodeURIComponent(documentsAccessToken)}&welcome=1`);
-        return;
-      }
-      
       setFormData({
         company: '',
         contact: '',
@@ -595,6 +582,8 @@ export default function ClientRegistrationPage() {
               <h3 className="text-lg font-semibold text-green-900 mb-2">Registration Received!</h3>
               <p className="text-green-800 font-light">
                 Thank you. Your registration has been submitted and a confirmation email has been sent to you.
+                Once we have reviewed and approved it, we will email you a personal link to download our current
+                pricelists and guides.
               </p>
             </div>
           </div>
