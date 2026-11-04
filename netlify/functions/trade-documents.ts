@@ -5,6 +5,7 @@ import {
   SIGNED_URL_SECONDS,
   TRADE_DOCS,
   TRADE_DOCS_BUCKET,
+  allowedSlots,
   getDocsApproval,
   isTradeDocSlot,
   logDownload,
@@ -13,6 +14,7 @@ import {
   stampedDocPath,
   tradeDocPath,
   verifyAccessToken,
+  type TradeDocSlot,
 } from './_shared/trade-docs';
 
 /**
@@ -44,7 +46,7 @@ function corsHeaders(origin: string | undefined): Record<string, string> {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Viewer = { email: string; via: 'link' | 'portal' };
+type Viewer = { email: string; via: 'link' | 'portal'; slots: TradeDocSlot[] };
 
 async function emailFromPortalSession(admin: SupabaseClient, authHeader: string): Promise<string | null> {
   const token = authHeader.toLowerCase().startsWith('bearer ') ? authHeader.slice(7).trim() : '';
@@ -66,9 +68,14 @@ async function emailFromPortalSession(admin: SupabaseClient, authHeader: string)
 async function identify(admin: SupabaseClient, accessToken: string, authHeader: string): Promise<Viewer | null> {
   const fromLink = verifyAccessToken(accessToken);
   // The link must still belong to an approved client — revoking access disables links already sent.
-  if (fromLink && (await getDocsApproval(fromLink))) return { email: fromLink, via: 'link' };
+  if (fromLink) {
+    const approval = await getDocsApproval(fromLink);
+    if (approval) return { email: fromLink, via: 'link', slots: allowedSlots(approval) };
+  }
   const fromPortal = authHeader ? await emailFromPortalSession(admin, authHeader) : null;
-  return fromPortal ? { email: fromPortal, via: 'portal' } : null;
+  if (!fromPortal) return null;
+  // Signed-in portal clients see what they were approved for; without a document approval, everything.
+  return { email: fromPortal, via: 'portal', slots: allowedSlots(await getDocsApproval(fromPortal)) };
 }
 
 async function companyFor(admin: SupabaseClient, email: string): Promise<string | null> {
@@ -112,6 +119,7 @@ export const lambdaHandler: Handler = async (event) => {
     if (!viewer) return reply(401, { success: false, code: 'no_access', message: 'This link is invalid or has expired.' });
     const slot = body.slot;
     if (!isTradeDocSlot(slot)) return reply(400, { success: false, message: 'Unknown document.' });
+    if (!viewer.slots.includes(slot)) return reply(403, { success: false, message: 'This document is not available to you.' });
     const doc = TRADE_DOCS.find((d) => d.slot === slot)!;
 
     try {
@@ -156,8 +164,9 @@ export const lambdaHandler: Handler = async (event) => {
     if (!EMAIL_RE.test(email)) return reply(400, { success: false, message: 'Please enter a valid email address.' });
 
     try {
-      if (await getDocsApproval(email)) {
-        const sendError = await sendDocumentsLink(email, 'Here is your new access link, as requested.');
+      const approval = await getDocsApproval(email);
+      if (approval) {
+        const sendError = await sendDocumentsLink(email, 'Here is your new access link, as requested.', allowedSlots(approval));
         if (sendError) throw new Error(sendError);
       }
     } catch (err) {
@@ -183,7 +192,7 @@ export const lambdaHandler: Handler = async (event) => {
   }
   const stored = new Map((files ?? []).map((f) => [f.name, f]));
 
-  const documents = TRADE_DOCS.flatMap((doc) => {
+  const documents = TRADE_DOCS.filter((doc) => viewer.slots.includes(doc.slot)).flatMap((doc) => {
     const file = stored.get(tradeDocPath(doc.slot));
     if (!file) return [];
     return [

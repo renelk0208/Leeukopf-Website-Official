@@ -117,12 +117,13 @@ export async function ensureTradeDocsBucket(admin: SupabaseClient): Promise<void
   if (error && !/already exists/i.test(error.message)) throw error;
 }
 
-export function documentsEmailHtml(link: string, intro: string): string {
+export function documentsEmailHtml(link: string, intro: string, slots?: readonly TradeDocSlot[]): string {
+  const docs = TRADE_DOCS.filter((d) => !slots || slots.includes(d.slot));
   return `
 <p>${intro}</p>
 <p>Your private Leeukopf trade documents are ready to download:</p>
 <ul>
-${TRADE_DOCS.map((d) => `  <li>${d.title}</li>`).join('\n')}
+${docs.map((d) => `  <li>${d.title}</li>`).join('\n')}
 </ul>
 <p><a href="${link}" style="display:inline-block;background:#111;color:#fff;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:600">Download your trade documents</a></p>
 <p style="color:#666;font-size:13px">This link is personal to you and stays active for ${ACCESS_TOKEN_DAYS} days. Please do not forward it.</p>
@@ -230,6 +231,8 @@ export async function listDownloads(limit = 150): Promise<DownloadRecord[]> {
 export interface DocsApproval {
   email: string;
   company: string | null;
+  /** Documents this client may see. Missing (older approvals) means all documents. */
+  slots?: TradeDocSlot[];
   approvedAt: string;
   approvedBy: string;
   lastEmailedAt: string | null;
@@ -259,7 +262,18 @@ export async function listDocsApprovals(): Promise<DocsApproval[]> {
 }
 
 /** Sends the client their personal documents link. Returns an error message if the email service refused it. */
-export async function sendDocumentsLink(email: string, intro: string): Promise<string | null> {
+/** The documents an approval gives access to. */
+export const allowedSlots = (approval: Pick<DocsApproval, 'slots'> | null | undefined): TradeDocSlot[] =>
+  approval?.slots ? approval.slots.filter(isTradeDocSlot) : TRADE_DOCS.map((d) => d.slot);
+
+/** Cleans a list of slots from a request; returns null if it isn't a valid non-empty list. */
+export function parseSlots(value: unknown): TradeDocSlot[] | null {
+  if (!Array.isArray(value)) return null;
+  const slots = TRADE_DOCS.map((d) => d.slot).filter((slot) => value.includes(slot));
+  return slots.length > 0 ? slots : null;
+}
+
+export async function sendDocumentsLink(email: string, intro: string, slots?: readonly TradeDocSlot[]): Promise<string | null> {
   const resendApiKey = process.env.RESEND_API_KEY;
   if (!resendApiKey) return 'Email service is not configured (RESEND_API_KEY missing).';
   const { Resend } = await import('resend');
@@ -267,7 +281,7 @@ export async function sendDocumentsLink(email: string, intro: string): Promise<s
     from: 'Leeukopf Laboratories <info@leeukopf.com>',
     to: email,
     subject: 'Your Leeukopf pricelists and guides',
-    html: documentsEmailHtml(documentsPageUrl(createAccessToken(email)), intro),
+    html: documentsEmailHtml(documentsPageUrl(createAccessToken(email)), intro, slots),
   });
   return error ? error.message || 'The email service rejected the message.' : null;
 }

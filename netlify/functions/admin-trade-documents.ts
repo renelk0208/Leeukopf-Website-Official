@@ -6,7 +6,9 @@ import {
   TRADE_DOCS_BUCKET,
   ensureTradeDocsBucket,
   isTradeDocSlot,
+  allowedSlots,
   getDocsApproval,
+  parseSlots,
   listDocsApprovals,
   listDownloads,
   revokeDocsApproval,
@@ -21,9 +23,11 @@ import {
  *
  * GET              → status of each document slot, registrations with their document-access
  *                    approval status, and recent client downloads
- * POST { action: 'approve' | 'resend' | 'revoke', email }
- *                  → approve a registration (and email the client their personal link),
- *                    re-send the link, or withdraw access (links already sent stop working)
+ * POST { action: 'approve' | 'resend' | 'revoke', email, slots? }
+ *                  → approve a registration for the chosen documents (and email the client their
+ *                    personal link), change their documents / re-send the link, or withdraw access
+ *                    (links already sent stop working). Without `slots`, approve gives every document
+ *                    and resend keeps the client's current selection.
  * POST { slot }    → one-time signed upload URL (browser uploads the PDF straight to storage,
  *                    so large catalogues don't hit the function size limit)
  * DELETE ?slot=…   → remove a document
@@ -102,7 +106,7 @@ export const lambdaHandler: Handler = async (event) => {
         if (!regEmail || seen.has(regEmail)) return [];
         seen.add(regEmail);
         const approval = approvalByEmail.get(regEmail) ?? null;
-        return [{ ...r, email: regEmail, approvedAt: approval?.approvedAt ?? null, approvedBy: approval?.approvedBy ?? null, lastEmailedAt: approval?.lastEmailedAt ?? null }];
+        return [{ ...r, email: regEmail, approvedAt: approval?.approvedAt ?? null, approvedBy: approval?.approvedBy ?? null, lastEmailedAt: approval?.lastEmailedAt ?? null, slots: approval ? allowedSlots(approval) : null }];
       });
 
       return reply(200, {
@@ -122,7 +126,7 @@ export const lambdaHandler: Handler = async (event) => {
     }
 
     if (event.httpMethod === 'POST') {
-      const body = JSON.parse(event.body || '{}') as { action?: string; email?: string; slot?: unknown };
+      const body = JSON.parse(event.body || '{}') as { action?: string; email?: string; slot?: unknown; slots?: unknown };
 
       if (body.action === 'approve' || body.action === 'resend' || body.action === 'revoke') {
         const clientEmail = String(body.email || '').trim().toLowerCase();
@@ -136,6 +140,11 @@ export const lambdaHandler: Handler = async (event) => {
 
         const existing = await getDocsApproval(clientEmail);
         if (body.action === 'resend' && !existing) return reply(400, { success: false, message: 'This client has not been approved yet.' });
+
+        if (body.slots !== undefined && !parseSlots(body.slots)) {
+          return reply(400, { success: false, message: 'Please choose at least one document to send.' });
+        }
+        const slots = parseSlots(body.slots) ?? allowedSlots(existing);
 
         let company = existing?.company ?? null;
         if (!existing) {
@@ -153,11 +162,13 @@ export const lambdaHandler: Handler = async (event) => {
           existing
             ? 'Here is your personal link to our current pricelists and guides.'
             : 'Good news — your Leeukopf Laboratories registration has been approved.',
+          slots,
         );
         const now = new Date().toISOString();
         await saveDocsApproval({
           email: clientEmail,
           company,
+          slots,
           approvedAt: existing?.approvedAt ?? now,
           approvedBy: existing?.approvedBy ?? email,
           lastEmailedAt: emailError ? (existing?.lastEmailedAt ?? null) : now,
@@ -168,7 +179,7 @@ export const lambdaHandler: Handler = async (event) => {
           emailSent: !emailError,
           message: emailError
             ? `Access approved, but the email could not be sent: ${emailError}`
-            : `Approved — ${clientEmail} has been emailed their personal link.`,
+            : `Sent — ${clientEmail} has been emailed a link to ${slots.length === TRADE_DOCS.length ? 'all documents' : `${slots.length} document${slots.length === 1 ? '' : 's'}`}.`,
         });
       }
 

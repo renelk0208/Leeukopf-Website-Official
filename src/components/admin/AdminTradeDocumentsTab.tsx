@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { CheckCircle2, FileText, RefreshCw, Send, ShieldCheck, Trash2, Upload, UserX } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { getNetlifyFunctionUrl } from '../../lib/netlifyFunctions';
+import SendDocumentsDialog from './SendDocumentsDialog';
 
 type DocStatus = {
   slot: string;
@@ -33,6 +34,7 @@ type RegistrationRow = {
   approvedAt: string | null;
   approvedBy: string | null;
   lastEmailedAt: string | null;
+  slots: string[] | null;
 };
 
 const BUCKET = 'trade-documents';
@@ -52,6 +54,7 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
   const [registrations, setRegistrations] = useState<RegistrationRow[]>([]);
   const [view, setView] = useState<'pending' | 'approved'>('pending');
   const [busyEmail, setBusyEmail] = useState<string | null>(null);
+  const [dialogRow, setDialogRow] = useState<RegistrationRow | null>(null);
   const [loading, setLoading] = useState(false);
   const [busySlot, setBusySlot] = useState<string | null>(null);
   const [message, setMessage] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
@@ -119,12 +122,13 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
     }
   };
 
-  const access = async (action: 'approve' | 'resend' | 'revoke', row: RegistrationRow) => {
+  const access = async (action: 'approve' | 'resend' | 'revoke', row: RegistrationRow, slots?: string[]) => {
     if (action === 'revoke' && !window.confirm(`Withdraw document access for ${row.email}? Links already sent will stop working.`)) return;
     setBusyEmail(row.email);
     setMessage(null);
     try {
-      const data = await call('POST', { action, email: row.email });
+      const data = await call('POST', { action, email: row.email, ...(slots ? { slots } : {}) });
+      setDialogRow(null);
       setMessage({
         kind: data.emailSent === false ? 'error' : 'ok',
         text: data.message || (action === 'revoke' ? `Access withdrawn for ${row.email}.` : 'Done.'),
@@ -238,21 +242,21 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
                         <button
                           type="button"
                           disabled={busyEmail !== null}
-                          onClick={() => void access('approve', r)}
+                          onClick={() => setDialogRow(r)}
                           className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-700 text-white font-medium disabled:opacity-50"
                         >
                           <ShieldCheck size={16} />
-                          {busyEmail === r.email ? 'Approving…' : 'Approve & send link'}
+                          {busyEmail === r.email ? 'Approving…' : 'Approve & choose documents'}
                         </button>
                       ) : (
                         <div className="inline-flex gap-2">
                           <button
                             type="button"
                             disabled={busyEmail !== null}
-                            onClick={() => void access('resend', r)}
+                            onClick={() => setDialogRow(r)}
                             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-cyan-500/30 text-cyan-200 hover:bg-cyan-500/10 disabled:opacity-50"
                           >
-                            <Send size={14} /> Resend link
+                            <Send size={14} /> Change / resend
                           </button>
                           <button
                             type="button"
@@ -283,6 +287,11 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
                     {view === 'approved' && (
                       <td className="py-3 pr-4 whitespace-nowrap">
                         <div>{when(r.approvedAt)}</div>
+                        <div className="text-gray-400 text-xs">
+                          {r.slots && r.slots.length < docs.length
+                            ? docs.filter((d) => r.slots!.includes(d.slot)).map((d) => d.title).join(', ')
+                            : 'All documents'}
+                        </div>
                         <div className="text-gray-400 text-xs">
                           {r.lastEmailedAt ? `Link sent ${when(r.lastEmailedAt)}` : 'Email not sent'}
                         </div>
@@ -390,6 +399,18 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
 
       {!loading && docs.length === 0 && !message && (
         <p className="text-gray-400 text-sm">Loading documents…</p>
+      )}
+      {dialogRow && (
+        <SendDocumentsDialog
+          email={dialogRow.email}
+          company={dialogRow.company}
+          documents={docs}
+          initial={dialogRow.slots}
+          alreadyApproved={Boolean(dialogRow.approvedAt)}
+          sending={busyEmail === dialogRow.email}
+          onSend={(slots) => void access(dialogRow.approvedAt ? 'resend' : 'approve', dialogRow, slots)}
+          onClose={() => setDialogRow(null)}
+        />
       )}
     </div>
   );
