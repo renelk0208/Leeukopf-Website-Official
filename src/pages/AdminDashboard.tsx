@@ -5,6 +5,7 @@ import { supabase, ProductCategory, Product, BrochureRequest } from '../lib/supa
 import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import AdminOffersTab from '../components/admin/AdminOffersTab';
 import AdminTradeDocumentsTab from '../components/admin/AdminTradeDocumentsTab';
+import SendDocumentsDialog, { type ChoosableDoc } from '../components/admin/SendDocumentsDialog';
 import { Upload, LogOut, Image as ImageIcon, Palette, Plus, Trash2, Save, FileText, UserPlus, RefreshCw, Tag, ChevronDown, ChevronUp, Users, Shield, KeyRound, ToggleLeft, ToggleRight, ExternalLink, Search, X } from 'lucide-react';
 
 interface ClientRegistrationLead {
@@ -378,8 +379,12 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
   const [approvedEmails, setApprovedEmails] = useState<Set<string>>(() => getStoredApprovedEmails());
   const [invitingEmail, setInvitingEmail] = useState<string | null>(null);
   // Trade documents (pricelists) access — separate from ordering-portal access
-  const [docsApprovals, setDocsApprovals] = useState<Map<string, { approvedAt: string; lastEmailedAt: string | null }>>(new Map());
+  const [docsApprovals, setDocsApprovals] = useState<
+    Map<string, { approvedAt: string; lastEmailedAt: string | null; slots: string[] | null }>
+  >(new Map());
   const [docsBusyEmail, setDocsBusyEmail] = useState<string | null>(null);
+  const [tradeDocs, setTradeDocs] = useState<ChoosableDoc[]>([]);
+  const [docsDialog, setDocsDialog] = useState<{ email: string; company: string | null } | null>(null);
   const [manualInviteLink, setManualInviteLink] = useState('');
   const [clientAccessEmail, setClientAccessEmail] = useState('');
   const [clientAccessPassword, setClientAccessPassword] = useState('');
@@ -597,29 +602,36 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.success) return;
-      const next = new Map<string, { approvedAt: string; lastEmailedAt: string | null }>();
-      for (const r of (payload.registrations ?? []) as Array<{ email: string; approvedAt: string | null; lastEmailedAt: string | null }>) {
-        if (r.approvedAt) next.set(r.email.toLowerCase(), { approvedAt: r.approvedAt, lastEmailedAt: r.lastEmailedAt });
+      const next = new Map<string, { approvedAt: string; lastEmailedAt: string | null; slots: string[] | null }>();
+      for (const r of (payload.registrations ?? []) as Array<{
+        email: string;
+        approvedAt: string | null;
+        lastEmailedAt: string | null;
+        slots: string[] | null;
+      }>) {
+        if (r.approvedAt) next.set(r.email.toLowerCase(), { approvedAt: r.approvedAt, lastEmailedAt: r.lastEmailedAt, slots: r.slots ?? null });
       }
       setDocsApprovals(next);
+      setTradeDocs(((payload.documents ?? []) as ChoosableDoc[]).map(({ slot, title, uploaded }) => ({ slot, title, uploaded })));
     } catch (err) {
       console.error('Could not load pricelist approvals:', err);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.access_token, adminStaff.role]);
 
-  const handleSendPricelists = async (email: string, alreadyApproved: boolean) => {
+  const handleSendPricelists = async (email: string, alreadyApproved: boolean, slots: string[]) => {
     if (!session?.access_token) return;
     setDocsBusyEmail(email);
     try {
       const response = await fetch(getNetlifyFunctionUrl('admin-trade-documents'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ action: alreadyApproved ? 'resend' : 'approve', email }),
+        body: JSON.stringify({ action: alreadyApproved ? 'resend' : 'approve', email, slots }),
       });
       const payload = (await response.json().catch(() => ({}))) as { success?: boolean; message?: string };
       if (!response.ok || !payload.success) throw new Error(payload.message || 'Could not send the pricelists link.');
       setMessage(payload.message || `Pricelists link sent to ${email}.`);
+      setDocsDialog(null);
       await loadDocsApprovals();
     } catch (err) {
       setMessage(err instanceof Error ? err.message : 'Could not send the pricelists link.');
@@ -1751,7 +1763,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Date</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Company</th>
                       {adminStaff.canDo('manage_brochures') && (
-                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Pricelists</th>
+                        <th className="text-left py-3 px-4 text-gray-300 font-medium">Documents</th>
                       )}
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Contact</th>
                       <th className="text-left py-3 px-4 text-gray-300 font-medium">Email</th>
@@ -1806,7 +1818,7 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                               <td className="py-4 px-4" onClick={(e) => e.stopPropagation()}>
                                 <button
                                   type="button"
-                                  onClick={() => void handleSendPricelists(registration.email, Boolean(docsApproval))}
+                                  onClick={() => setDocsDialog({ email: registration.email, company: registration.company || null })}
                                   disabled={docsBusyEmail !== null}
                                   className={`whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-50 ${
                                     docsApproval
@@ -1817,8 +1829,8 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
                                   {docsBusyEmail === registration.email
                                     ? 'Sending…'
                                     : docsApproval
-                                      ? '✓ Sent · Resend'
-                                      : 'Approve & send pricelists'}
+                                      ? `✓ Sent ${docsApproval.slots && tradeDocs.length ? `(${docsApproval.slots.length}/${tradeDocs.length})` : ''} · Change`
+                                      : 'Approve & send documents'}
                                 </button>
                               </td>
                             );
@@ -2262,6 +2274,21 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
         )}
 
         {/* ── STAFF TAB (owner only) ──────────────────────────────────────── */}
+        {docsDialog && (
+          <SendDocumentsDialog
+            email={docsDialog.email}
+            company={docsDialog.company}
+            documents={tradeDocs}
+            initial={docsApprovals.get(docsDialog.email.toLowerCase())?.slots ?? null}
+            alreadyApproved={docsApprovals.has(docsDialog.email.toLowerCase())}
+            sending={docsBusyEmail === docsDialog.email}
+            onSend={(slots) =>
+              void handleSendPricelists(docsDialog.email, docsApprovals.has(docsDialog.email.toLowerCase()), slots)
+            }
+            onClose={() => setDocsDialog(null)}
+          />
+        )}
+
         {activeTab === 'documents' && adminStaff.canDo('manage_brochures') && (
           <AdminTradeDocumentsTab accessToken={session?.access_token} />
         )}
