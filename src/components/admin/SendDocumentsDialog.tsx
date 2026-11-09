@@ -11,7 +11,7 @@ interface SendDocumentsDialogProps {
   initial: string[] | null;
   alreadyApproved: boolean;
   sending: boolean;
-  onSend: (slots: string[]) => void;
+  onSend: (slots: string[], comments: string) => void;
   onClose: () => void;
 }
 
@@ -29,6 +29,8 @@ export default function SendDocumentsDialog({
   const [selected, setSelected] = useState<Set<string>>(
     () => new Set(initial ?? documents.filter((d) => d.uploaded).map((d) => d.slot)),
   );
+
+  const [comments, setComments] = useState('');
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -106,6 +108,20 @@ export default function SendDocumentsDialog({
           ))}
         </div>
 
+        <label htmlFor="send-docs-comments" className="mt-5 block text-sm text-gray-300">
+          Additional comments <span className="text-gray-500">(optional)</span>
+        </label>
+        <textarea
+          id="send-docs-comments"
+          value={comments}
+          onChange={(e) => setComments(e.target.value)}
+          maxLength={2000}
+          rows={3}
+          disabled={sending}
+          placeholder="Added to this client's letter only"
+          className="mt-2 w-full resize-y rounded-xl border border-slate-700 bg-slate-800/40 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-cyan-400/60 focus:outline-none"
+        />
+
         <p className="mt-4 text-xs text-gray-500">
           The client is emailed a personal link and will only see the documents ticked here. You can change this later.
         </p>
@@ -121,7 +137,7 @@ export default function SendDocumentsDialog({
           </button>
           <button
             type="button"
-            onClick={() => onSend(chosen)}
+            onClick={() => onSend(chosen, comments.trim())}
             disabled={sending || chosen.length === 0}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-700 text-white font-semibold disabled:opacity-50"
           >

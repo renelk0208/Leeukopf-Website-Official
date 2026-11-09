@@ -7,7 +7,9 @@ import {
   ensureTradeDocsBucket,
   isTradeDocSlot,
   allowedSlots,
+  clientLetterDetails,
   getDocsApproval,
+  parseClientComments,
   parseSlots,
   listDocsApprovals,
   listDownloads,
@@ -23,7 +25,7 @@ import {
  *
  * GET              → status of each document slot, registrations with their document-access
  *                    approval status, and recent client downloads
- * POST { action: 'approve' | 'resend' | 'revoke', email, slots? }
+ * POST { action: 'approve' | 'resend' | 'revoke', email, slots?, comments? }
  *                  → approve a registration for the chosen documents (and email the client their
  *                    personal link), change their documents / re-send the link, or withdraw access
  *                    (links already sent stop working). Without `slots`, approve gives every document
@@ -126,7 +128,7 @@ export const lambdaHandler: Handler = async (event) => {
     }
 
     if (event.httpMethod === 'POST') {
-      const body = JSON.parse(event.body || '{}') as { action?: string; email?: string; slot?: unknown; slots?: unknown };
+      const body = JSON.parse(event.body || '{}') as { action?: string; email?: string; slot?: unknown; slots?: unknown; comments?: unknown };
 
       if (body.action === 'approve' || body.action === 'resend' || body.action === 'revoke') {
         const clientEmail = String(body.email || '').trim().toLowerCase();
@@ -146,23 +148,17 @@ export const lambdaHandler: Handler = async (event) => {
         }
         const slots = parseSlots(body.slots) ?? allowedSlots(existing);
 
-        let company = existing?.company ?? null;
-        if (!existing) {
-          const { data: reg } = await admin
-            .from('client_registrations')
-            .select('company')
-            .ilike('email', clientEmail)
-            .order('created_at', { ascending: false })
-            .limit(1);
-          company = reg?.[0]?.company?.trim() || null;
-        }
+        const details = await clientLetterDetails(admin, clientEmail);
+        const company = existing?.company ?? details.company;
 
         const emailError = await sendDocumentsLink(
           clientEmail,
           existing
-            ? 'Here is your personal link to our current pricelists and guides.'
-            : 'Good news — your Leeukopf Laboratories registration has been approved.',
+            ? 'Thank you for contacting Leeukopf Laboratories. Here is your personal link to our current pricelists and guides.'
+            : `Thank you for contacting Leeukopf Laboratories. We are pleased to confirm that ${details.company ? `the registration for ${details.company}` : 'your registration'} has been approved.`,
           slots,
+          details,
+          parseClientComments(body.comments),
         );
         const now = new Date().toISOString();
         await saveDocsApproval({
