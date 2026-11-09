@@ -122,12 +122,12 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
     }
   };
 
-  const access = async (action: 'approve' | 'resend' | 'revoke', row: RegistrationRow, slots?: string[]) => {
+  const access = async (action: 'approve' | 'resend' | 'revoke', row: RegistrationRow, slots?: string[], comments?: string) => {
     if (action === 'revoke' && !window.confirm(`Withdraw document access for ${row.email}? Links already sent will stop working.`)) return;
     setBusyEmail(row.email);
     setMessage(null);
     try {
-      const data = await call('POST', { action, email: row.email, ...(slots ? { slots } : {}) });
+      const data = await call('POST', { action, email: row.email, ...(slots ? { slots } : {}), ...(comments ? { comments } : {}) });
       setDialogRow(null);
       setMessage({
         kind: data.emailSent === false ? 'error' : 'ok',
@@ -408,7 +408,7 @@ export default function AdminTradeDocumentsTab({ accessToken }: { accessToken: s
           initial={dialogRow.slots}
           alreadyApproved={Boolean(dialogRow.approvedAt)}
           sending={busyEmail === dialogRow.email}
-          onSend={(slots) => void access(dialogRow.approvedAt ? 'resend' : 'approve', dialogRow, slots)}
+          onSend={(slots, comments) => void access(dialogRow.approvedAt ? 'resend' : 'approve', dialogRow, slots, comments)}
           onClose={() => setDialogRow(null)}
         />
       )}

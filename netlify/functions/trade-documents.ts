@@ -10,6 +10,7 @@ import {
   isTradeDocSlot,
   logDownload,
   sendDocumentsLink,
+  clientLetterDetails,
   stampPdf,
   stampedDocPath,
   tradeDocPath,
@@ -166,7 +167,12 @@ export const lambdaHandler: Handler = async (event) => {
     try {
       const approval = await getDocsApproval(email);
       if (approval) {
-        const sendError = await sendDocumentsLink(email, 'Here is your new access link, as requested.', allowedSlots(approval));
+        const sendError = await sendDocumentsLink(
+          email,
+          'Here is your new access link, as requested.',
+          allowedSlots(approval),
+          await clientLetterDetails(admin, email),
+        );
         if (sendError) throw new Error(sendError);
       }
     } catch (err) {

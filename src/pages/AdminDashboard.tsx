@@ -619,14 +619,14 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.access_token, adminStaff.role]);
 
-  const handleSendPricelists = async (email: string, alreadyApproved: boolean, slots: string[]) => {
+  const handleSendPricelists = async (email: string, alreadyApproved: boolean, slots: string[], comments: string) => {
     if (!session?.access_token) return;
     setDocsBusyEmail(email);
     try {
       const response = await fetch(getNetlifyFunctionUrl('admin-trade-documents'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ action: alreadyApproved ? 'resend' : 'approve', email, slots }),
+        body: JSON.stringify({ action: alreadyApproved ? 'resend' : 'approve', email, slots, comments }),
       });
       const payload = (await response.json().catch(() => ({}))) as { success?: boolean; message?: string };
       if (!response.ok || !payload.success) throw new Error(payload.message || 'Could not send the pricelists link.');
@@ -2282,8 +2282,8 @@ ${registration.notes ? `<section><h2>Notes / Requirements</h2><p class="notes">$
             initial={docsApprovals.get(docsDialog.email.toLowerCase())?.slots ?? null}
             alreadyApproved={docsApprovals.has(docsDialog.email.toLowerCase())}
             sending={docsBusyEmail === docsDialog.email}
-            onSend={(slots) =>
-              void handleSendPricelists(docsDialog.email, docsApprovals.has(docsDialog.email.toLowerCase()), slots)
+            onSend={(slots, comments) =>
+              void handleSendPricelists(docsDialog.email, docsApprovals.has(docsDialog.email.toLowerCase()), slots, comments)
             }
             onClose={() => setDocsDialog(null)}
           />

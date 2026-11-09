@@ -117,16 +117,93 @@ export async function ensureTradeDocsBucket(admin: SupabaseClient): Promise<void
   if (error && !/already exists/i.test(error.message)) throw error;
 }
 
-export function documentsEmailHtml(link: string, intro: string, slots?: readonly TradeDocSlot[]): string {
+const LEEUKOPF_EMAIL = 'info@leeukopf.com';
+const LEEUKOPF_WHATSAPP_DISPLAY = '+359 876 777 984';
+const LEEUKOPF_WHATSAPP_NUMBER = '359876777984';
+const CLIENT_COMMENTS_MAX_LENGTH = 2000;
+
+/** What the client told us at registration, used to personalise their letter. */
+export interface ClientLetterDetails {
+  contactName: string | null;
+  company: string | null;
+  interests: string[];
+}
+
+const escapeHtml = (text: string) =>
+  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+/** Looks up the client's latest registration. Never throws: a failed lookup just gives a less personal letter. */
+export async function clientLetterDetails(admin: SupabaseClient, email: string): Promise<ClientLetterDetails> {
+  try {
+    const { data, error } = await admin
+      .from('client_registrations')
+      .select('contact, company, interest_private_label, interest_distribution')
+      .ilike('email', email.trim().replace(/[\\%_]/g, '\\$&'))
+      .order('created_at', { ascending: false })
+      .limit(1);
+    if (error) throw error;
+    const reg = data?.[0];
+    return {
+      contactName: reg?.contact?.trim() || null,
+      company: reg?.company?.trim() || null,
+      interests: [reg?.interest_private_label && 'private label', reg?.interest_distribution && 'distribution'].filter(
+        (interest): interest is string => Boolean(interest),
+      ),
+    };
+  } catch (err) {
+    console.error('trade-docs: could not load client details', err instanceof Error ? err.message : err);
+    return { contactName: null, company: null, interests: [] };
+  }
+}
+
+/** Cleans the optional staff comments from a request. */
+export function parseClientComments(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  return value.replace(/\r\n?/g, '\n').trim().slice(0, CLIENT_COMMENTS_MAX_LENGTH).trim();
+}
+
+function meetingRequestBox(company: string | null): string {
+  const who = company ? ` for ${company}` : '';
+  const zoomHref = `mailto:${LEEUKOPF_EMAIL}?subject=${encodeURIComponent(`Zoom meeting request${who}`)}&body=${encodeURIComponent(
+    `Hello Leeukopf Laboratories,\n\nI would like to request a Zoom meeting.\n\nCompany: ${company ?? ''}\nPreferred days and times:\n`,
+  )}`;
+  const whatsappHref = `https://wa.me/${LEEUKOPF_WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Hello Leeukopf Laboratories, I would like to request a WhatsApp meeting${who}.`,
+  )}`;
+  const button = 'display:inline-block;margin:4px 8px 4px 0;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:600;color:#fff';
+  return `<div style="margin:24px 0;padding:16px 20px;background:#f5f5f5;border-radius:8px">
+<p style="margin:0 0 10px;font-weight:600">Would you like to meet with us?</p>
+<p style="margin:0 0 12px">Request a meeting and we will arrange a time that suits you.</p>
+<a href="${escapeHtml(zoomHref)}" style="${button};background:#2d8cff">Request a Zoom meeting</a>
+<a href="${escapeHtml(whatsappHref)}" style="${button};background:#128c4a">Request a WhatsApp meeting</a>
+</div>`;
+}
+
+export function documentsEmailHtml(
+  link: string,
+  intro: string,
+  slots?: readonly TradeDocSlot[],
+  details?: ClientLetterDetails,
+  comments?: string,
+): string {
   const docs = TRADE_DOCS.filter((d) => !slots || slots.includes(d.slot));
+  const name = details?.contactName || details?.company || 'Customer';
+  const interests = details?.interests.join(' and ');
+  const lead = interests
+    ? `Based on your interest in ${interests}, here is the information best suited to your request:`
+    : 'Here is the information best suited to your request:';
   return `
-<p>${intro}</p>
-<p>Your private Leeukopf trade documents are ready to download:</p>
+<p>Dear ${escapeHtml(name)},</p>
+<p>${escapeHtml(intro)}</p>
+${comments ? `<p>${escapeHtml(comments).replace(/\n/g, '<br>')}</p>\n` : ''}<p>${escapeHtml(lead)}</p>
 <ul>
 ${docs.map((d) => `  <li>${d.title}</li>`).join('\n')}
 </ul>
 <p><a href="${link}" style="display:inline-block;background:#111;color:#fff;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:600">Download your trade documents</a></p>
 <p style="color:#666;font-size:13px">This link is personal to you and stays active for ${ACCESS_TOKEN_DAYS} days. Please do not forward it.</p>
+<p>If you would like more information, please contact us at <a href="mailto:${LEEUKOPF_EMAIL}">${LEEUKOPF_EMAIL}</a> or on WhatsApp at ${LEEUKOPF_WHATSAPP_DISPLAY}. We would be happy to help.</p>
+${meetingRequestBox(details?.company ?? null)}
+<p>Kind regards,<br><strong>Leeukopf Laboratories</strong></p>
 `;
 }
 
@@ -273,7 +350,13 @@ export function parseSlots(value: unknown): TradeDocSlot[] | null {
   return slots.length > 0 ? slots : null;
 }
 
-export async function sendDocumentsLink(email: string, intro: string, slots?: readonly TradeDocSlot[]): Promise<string | null> {
+export async function sendDocumentsLink(
+  email: string,
+  intro: string,
+  slots?: readonly TradeDocSlot[],
+  details?: ClientLetterDetails,
+  comments?: string,
+): Promise<string | null> {
   const resendApiKey = process.env.RESEND_API_KEY;
   if (!resendApiKey) return 'Email service is not configured (RESEND_API_KEY missing).';
   const { Resend } = await import('resend');
@@ -281,7 +364,7 @@ export async function sendDocumentsLink(email: string, intro: string, slots?: re
     from: 'Leeukopf Laboratories <info@leeukopf.com>',
     to: email,
     subject: 'Your Leeukopf pricelists and guides',
-    html: documentsEmailHtml(documentsPageUrl(createAccessToken(email)), intro, slots),
+    html: documentsEmailHtml(documentsPageUrl(createAccessToken(email)), intro, slots, details, comments),
   });
   return error ? error.message || 'The email service rejected the message.' : null;
 }
