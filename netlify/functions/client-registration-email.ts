@@ -5,6 +5,7 @@ import * as jose from 'jose';
 import { webcrypto } from 'crypto';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
+import { checkVies, viesLabel, type ViesResult } from './_shared/bf-baskets';
 
 // Polyfill global crypto for jose on Netlify
 if (!globalThis.crypto) {
@@ -55,6 +56,8 @@ interface FormData {
   distribution_channels?: string;
   estimated_monthly_volume?: string;
   years_in_business?: string;
+  sameAsBilling?: boolean;
+  vies?: ViesResult;
   // Private Label fields
   brand_name?: string;
   product_interest?: string;
@@ -169,7 +172,7 @@ ${formData.tiktok ? `<p><strong>TikTok:</strong> ${formData.tiktok}</p>` : ''}
 ].filter(Boolean).join(', ')}</p>
 <p><strong>Product Interests:</strong> ${formData.interests.length > 0 ? formData.interests.join(', ') : 'None specified'}</p>
 ${formData.monthlyVolume ? `<p><strong>Estimated Monthly Volume:</strong> ${formData.monthlyVolume}</p>` : ''}
-${formData.vatEori ? `<p><strong>VAT Registration number:</strong> ${formData.vatEori}</p>` : ''}
+${formData.vatEori ? `<p><strong>VAT Registration number:</strong> ${formData.vatEori}${formData.vies && formData.vies.status !== 'not_eu' ? ` — <strong>${viesLabel(formData.vies)}</strong>${formData.vies.name ? ` (${formData.vies.name})` : ''}` : ''}</p>` : ''}
 `;
 
   // Add client type specific information
@@ -521,17 +524,6 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 
-  // Check for API key
-  const resendApiKey = process.env.RESEND_API_KEY;
-  if (!resendApiKey) {
-    console.error('RESEND_API_KEY environment variable is not set');
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: 'Email service not configured' }),
-    };
-  }
-
   // Parse request body
   let formData: FormData;
   try {
@@ -541,6 +533,26 @@ const handler: Handler = async (event: HandlerEvent) => {
       statusCode: 400,
       headers,
       body: JSON.stringify({ error: 'Invalid request body' }),
+    };
+  }
+
+  // Live VIES lookup for the form's "Check VIES" button
+  const raw = formData as unknown as Record<string, unknown>;
+  if (raw.action === 'vies') {
+    const country = typeof raw.country === 'string' ? raw.country.slice(0, 80) : '';
+    const vatNumber = typeof raw.vatNumber === 'string' ? raw.vatNumber.slice(0, 40) : '';
+    const vies = await checkVies(country, vatNumber);
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true, vies }) };
+  }
+
+  // Check for API key
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    console.error('RESEND_API_KEY environment variable is not set');
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: 'Email service not configured' }),
     };
   }
 
@@ -561,6 +573,28 @@ const handler: Handler = async (event: HandlerEvent) => {
       headers,
       body: JSON.stringify({ error: 'Missing required fields' }),
     };
+  }
+
+  if (formData.sameAsBilling) formData.shippingAddress = formData.billingAddress;
+  const missing: Array<[string, string]> = [
+    ['role', 'Role / Title is required'],
+    ['years_in_business', 'Please select how long you have been in business'],
+    ['billingAddress', 'Billing address is required'],
+    ['shippingAddress', 'Shipping address is required'],
+    ['vatEori', 'VAT Registration number is required'],
+  ];
+  for (const [field, message] of missing) {
+    const v = (formData as unknown as Record<string, unknown>)[field];
+    if (typeof v !== 'string' || v.trim() === '') {
+      return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: message, field, message }) };
+    }
+  }
+
+  // EU VAT numbers must be valid in VIES; if VIES is down we accept and flag it for a manual check.
+  formData.vies = await checkVies(formData.country, formData.vatEori as string);
+  if (formData.vies.status === 'invalid') {
+    const message = 'This VAT number is not valid in the EU VIES system. Please check it.';
+    return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: message, field: 'vatEori', message }) };
   }
 
   const resend = new Resend(resendApiKey);
