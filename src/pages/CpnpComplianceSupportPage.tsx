@@ -52,7 +52,7 @@ export default function CpnpComplianceSupportPage() {
     },
     {
       question: 'What\'s the minimum order quantity (MOQ) for private label?',
-      answer: 'MOQ is 500 units per shade for stock colors, and 1,000 units per shade for custom color development. This ensures economical production while maintaining GMP quality standards.'
+      answer: 'The minimum order for gel polish colours is 2,000 units in total, and you can mix and match shades. This ensures economical production while maintaining GMP quality standards.'
     },
     {
       question: 'How long does the CPNP documentation process take?',
@@ -232,9 +232,7 @@ export default function CpnpComplianceSupportPage() {
           <div className="card p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Minimum Order Quantities</h3>
             <ul className="space-y-2 text-gray-600 mb-6">
-              <li><strong>Stock Colors:</strong> 500 units per shade</li>
-              <li><strong>Custom Color Development:</strong> 1,000 units per shade</li>
-              <li><strong>Total Order:</strong> Minimum 2,000 units (mix & match allowed)</li>
+              <li><strong>Gel Polish Colours:</strong> Minimum order 2,000 units in total, and you can mix & match shades</li>
             </ul>
             
             <h3 className="text-lg font-semibold text-gray-900 mb-4 mt-6">Bottle Sizes Available</h3>
@@ -380,8 +378,7 @@ export default function CpnpComplianceSupportPage() {
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors"
               >
                 <option value="">Select quantity range</option>
-                <option value="500-1000">500 - 1,000 units</option>
-                <option value="1000-5000">1,000 - 5,000 units</option>
+                <option value="2000-5000">2,000 - 5,000 units</option>
                 <option value="5000-10000">5,000 - 10,000 units</option>
                 <option value="10000+">10,000+ units</option>
               </select>
