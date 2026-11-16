@@ -1357,7 +1357,7 @@ export default function ClientRegistrationPage() {
                   value={formData.estimated_monthly_volume}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="e.g., 500-1000 units"
+                  placeholder="e.g., 2,000-5,000 units"
                 />
               </div>
             </div>
