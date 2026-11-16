@@ -3,6 +3,17 @@ import { CheckCircle } from 'lucide-react';
 import PageTemplate from '../components/PageTemplate';
 import { getNetlifyFunctionUrl } from '../lib/netlifyFunctions';
 import { trackLead } from '../lib/metaPixel';
+import { bfIsEu } from '../data/bfCountries';
+
+type ViesStatus = 'valid' | 'invalid' | 'unavailable' | 'not_eu';
+interface ViesResult {
+  status: ViesStatus;
+  name: string | null;
+  address: string | null;
+  checkedAt: string;
+}
+
+const yearsInBusinessOptions = ['0–1 year', '1–5 years', '5–10 years', '10+ years'];
 
 interface FormData {
   company: string;
@@ -89,9 +100,8 @@ const businessTypes = [
   'Other'
 ];
 
-// VAT is optional at registration: many private-label prospects (start-up brands, non-EU businesses)
-// don't have one yet. It is confirmed later, at order / invoicing stage.
-const businessTypesRequiringVAT: string[] = [];
+// VAT number is compulsory for every registration. EU numbers are checked live against VIES
+// (here and again on the server); non-EU numbers are taken as entered.
 
 const productInterests = [
   'Gel Polish',
@@ -183,6 +193,36 @@ export default function ClientRegistrationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [vies, setVies] = useState<ViesResult | null>(null);
+  const [viesChecking, setViesChecking] = useState(false);
+  const isEuCountry = bfIsEu(formData.country);
+
+  const runViesCheck = async (): Promise<ViesResult | null> => {
+    if (!isEuCountry || !formData.vatEori.trim()) return null;
+    setViesChecking(true);
+    try {
+      const r = await fetch(getNetlifyFunctionUrl('client-registration-email'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'vies', country: formData.country, vatNumber: formData.vatEori }),
+      });
+      const d = (await r.json()) as { vies?: ViesResult };
+      const result = d.vies ?? { status: 'unavailable' as const, name: null, address: null, checkedAt: '' };
+      setVies(result);
+      if (result.status === 'invalid') {
+        setErrors(prev => ({ ...prev, vatEori: 'This VAT number is not valid in the EU VIES system. Please check it.' }));
+      } else {
+        setErrors(prev => ({ ...prev, vatEori: '' }));
+      }
+      return result;
+    } catch {
+      const result: ViesResult = { status: 'unavailable', name: null, address: null, checkedAt: '' };
+      setVies(result);
+      return result;
+    } finally {
+      setViesChecking(false);
+    }
+  };
   const [activeTab, setActiveTab] = useState<'Distributors' | 'PrivateLabel' | 'Influencers'>('Distributors');
 
   useEffect(() => {
@@ -218,6 +258,14 @@ export default function ClientRegistrationPage() {
         return typeof value === 'string' && value === '' ? 'Business type is required' : '';
       case 'vatEori':
         return typeof value === 'string' && value.trim() === '' ? 'VAT Registration number is required' : '';
+      case 'role':
+        return typeof value === 'string' && value.trim() === '' ? 'Role / Title is required' : '';
+      case 'years_in_business':
+        return typeof value === 'string' && value === '' ? 'Please select how long you have been in business' : '';
+      case 'billingAddress':
+        return typeof value === 'string' && value.trim() === '' ? 'Billing address is required' : '';
+      case 'shippingAddress':
+        return typeof value === 'string' && value.trim() === '' ? 'Shipping address is required (or tick "same as billing")' : '';
       case 'gdprConsent':
         return typeof value === 'boolean' && !value ? 'You must agree to the data processing terms' : '';
       case 'privacyPolicyAccepted':
@@ -241,6 +289,8 @@ export default function ClientRegistrationPage() {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
+
+    if (name === 'vatEori' || name === 'country') setVies(null);
 
     // Handle country change to auto-fill phone dial code
     if (name === 'country') {
@@ -338,8 +388,7 @@ export default function ClientRegistrationPage() {
         ...prev,
         countries_covered: '',
         distribution_channels: '',
-        estimated_monthly_volume: '',
-        years_in_business: ''
+        estimated_monthly_volume: ''
       }));
     }
     if (tabKey !== 'PrivateLabel') {
@@ -374,9 +423,15 @@ export default function ClientRegistrationPage() {
     newErrors.gdprConsent = validateField('gdprConsent', formData.gdprConsent);
     newErrors.privacyPolicyAccepted = validateField('privacyPolicyAccepted', formData.privacyPolicyAccepted);
 
-    // VAT number is required for Distributors, Salon Supply, and Brand Owners
-    if (businessTypesRequiringVAT.includes(formData.businessType)) {
-      newErrors.vatEori = validateField('vatEori', formData.vatEori);
+    newErrors.role = validateField('role', formData.role);
+    newErrors.years_in_business = validateField('years_in_business', formData.years_in_business);
+    newErrors.billingAddress = validateField('billingAddress', formData.billingAddress);
+    if (!formData.sameAsBilling) {
+      newErrors.shippingAddress = validateField('shippingAddress', formData.shippingAddress);
+    }
+    newErrors.vatEori = validateField('vatEori', formData.vatEori);
+    if (!newErrors.vatEori && vies?.status === 'invalid') {
+      newErrors.vatEori = 'This VAT number is not valid in the EU VIES system. Please check it.';
     }
 
     // Business Interest validation: at least one must be selected
@@ -440,6 +495,13 @@ export default function ClientRegistrationPage() {
       return;
     }
 
+    // EU VAT numbers must pass VIES. If VIES itself is down we let the registration through
+    // and staff check it by hand (the server re-checks and flags it in the email).
+    if (isEuCountry && !vies) {
+      const result = await runViesCheck();
+      if (result?.status === 'invalid') return;
+    }
+
     setIsSubmitting(true);
     setSubmitError('');
 
@@ -456,6 +518,16 @@ export default function ClientRegistrationPage() {
       // Check response status before parsing JSON
       if (!response.ok) {
         const responseText = await response.text();
+        try {
+          const parsed = JSON.parse(responseText) as { field?: string; message?: string };
+          if (parsed.field && parsed.message) {
+            setErrors(prev => ({ ...prev, [parsed.field as string]: parsed.message as string }));
+            setIsSubmitting(false);
+            return;
+          }
+        } catch {
+          // not JSON — fall through to the generic error
+        }
         console.error('Registration failed:', {
           status: response.status,
           statusText: response.statusText,
@@ -476,6 +548,7 @@ export default function ClientRegistrationPage() {
       }
 
       setSubmitSuccess(true);
+      setVies(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
       // Track Lead event with Meta Pixel
@@ -558,6 +631,9 @@ export default function ClientRegistrationPage() {
                       formData.businessType && formData.gdprConsent && formData.privacyPolicyAccepted &&
                       (formData.interestPrivateLabel || formData.interestDistribution || formData.interestInfluencer) &&
                       formData.interests.length > 0 &&
+                      formData.role.trim() && formData.years_in_business &&
+                      formData.billingAddress.trim() && (formData.sameAsBilling || formData.shippingAddress.trim()) &&
+                      formData.vatEori.trim() && vies?.status !== 'invalid' &&
                       (formData.country !== 'Other' || formData.countryOther.trim()) &&
                       (!formData.interestInfluencer || formData.instagram.trim() || formData.tiktok.trim()) &&
                       (!formData.requestSampleBox || (
@@ -663,7 +739,7 @@ export default function ClientRegistrationPage() {
 
             <div>
               <label htmlFor="role" className="block text-sm font-medium text-gray-900 mb-2">
-                Role / Title
+                Role / Title <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -671,8 +747,18 @@ export default function ClientRegistrationPage() {
                 name="role"
                 value={formData.role}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                  errors.role ? 'border-red-500' : 'border-gray-300'
+                }`}
+                aria-required="true"
+                aria-invalid={!!errors.role}
+                aria-describedby={errors.role ? 'role-error' : undefined}
               />
+              {errors.role && (
+                <p id="role-error" className="mt-1 text-sm text-red-600" role="alert">
+                  {errors.role}
+                </p>
+              )}
             </div>
 
             <div>
@@ -831,10 +917,10 @@ export default function ClientRegistrationPage() {
             {/* Years in Business */}
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-3">
-                How long have you been in business?
+                Years in Business <span className="text-red-500">*</span>
               </label>
-              <div className="space-y-2">
-                {['<1 year', '1–3 years', '3–5 years', '5+ years'].map((option) => (
+              <div className="space-y-2" role="radiogroup" aria-required="true">
+                {yearsInBusinessOptions.map((option) => (
                   <label key={option} className="flex items-center space-x-3 cursor-pointer">
                     <input
                       type="radio"
@@ -848,6 +934,11 @@ export default function ClientRegistrationPage() {
                   </label>
                 ))}
               </div>
+              {errors.years_in_business && (
+                <p className="mt-1 text-sm text-red-600" role="alert">
+                  {errors.years_in_business}
+                </p>
+              )}
             </div>
 
             <div>
@@ -941,26 +1032,48 @@ export default function ClientRegistrationPage() {
 
               <div>
                 <label htmlFor="vatEori" className="block text-sm font-medium text-gray-900 mb-2">
-                  VAT Registration number
-                  {businessTypesRequiringVAT.includes(formData.businessType) ? (
-                    <span className="text-red-500"> *</span>
-                  ) : (
-                    <span className="font-normal text-gray-500"> (optional)</span>
-                  )}
+                  VAT Registration number <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="vatEori"
-                  name="vatEori"
-                  value={formData.vatEori}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                    errors.vatEori ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  aria-required={businessTypesRequiringVAT.includes(formData.businessType)}
-                  aria-invalid={!!errors.vatEori}
-                  aria-describedby={errors.vatEori ? 'vatEori-error' : undefined}
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    id="vatEori"
+                    name="vatEori"
+                    value={formData.vatEori}
+                    onChange={handleInputChange}
+                    onBlur={() => { if (isEuCountry && formData.vatEori.trim() && !vies) void runViesCheck(); }}
+                    placeholder={isEuCountry ? 'e.g. BG123456789' : ''}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
+                      errors.vatEori ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    aria-required="true"
+                    aria-invalid={!!errors.vatEori}
+                    aria-describedby={errors.vatEori ? 'vatEori-error' : undefined}
+                  />
+                  {isEuCountry && (
+                    <button
+                      type="button"
+                      onClick={() => void runViesCheck()}
+                      disabled={viesChecking || !formData.vatEori.trim()}
+                      className="shrink-0 px-4 py-3 rounded-lg bg-gray-900 text-white text-sm font-medium disabled:opacity-50"
+                    >
+                      {viesChecking ? 'Checking…' : 'Check VIES'}
+                    </button>
+                  )}
+                </div>
+                {isEuCountry && !vies && !errors.vatEori && (
+                  <p className="mt-1 text-sm text-gray-500">EU businesses: your VAT number is checked in the EU VIES system.</p>
+                )}
+                {vies?.status === 'valid' && (
+                  <p className="mt-1 text-sm text-green-700" role="status">
+                    ✓ Valid in VIES{vies.name ? ` — ${vies.name}` : ''}
+                  </p>
+                )}
+                {vies?.status === 'unavailable' && (
+                  <p className="mt-1 text-sm text-amber-700" role="status">
+                    VIES is not answering right now — you can still register and we will check the number ourselves.
+                  </p>
+                )}
                 {errors.vatEori && (
                   <p id="vatEori-error" className="mt-1 text-sm text-red-600" role="alert">
                     {errors.vatEori}
@@ -972,7 +1085,7 @@ export default function ClientRegistrationPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="billingAddress" className="block text-sm font-medium text-gray-900 mb-2">
-                  Billing Address
+                  Billing Address <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="billingAddress"
@@ -980,13 +1093,20 @@ export default function ClientRegistrationPage() {
                   value={formData.billingAddress}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
+                    errors.billingAddress ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  aria-required="true"
+                  aria-invalid={!!errors.billingAddress}
                 />
+                {errors.billingAddress && (
+                  <p className="mt-1 text-sm text-red-600" role="alert">{errors.billingAddress}</p>
+                )}
               </div>
 
               <div>
                 <label htmlFor="shippingAddress" className="block text-sm font-medium text-gray-900 mb-2">
-                  Shipping Address
+                  Shipping Address <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="shippingAddress"
@@ -996,9 +1116,14 @@ export default function ClientRegistrationPage() {
                   rows={3}
                   disabled={formData.sameAsBilling}
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
-                    formData.sameAsBilling ? 'bg-gray-100 cursor-not-allowed' : 'border-gray-300'
+                    formData.sameAsBilling ? 'bg-gray-100 cursor-not-allowed' : errors.shippingAddress ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  aria-required={!formData.sameAsBilling}
+                  aria-invalid={!!errors.shippingAddress}
                 />
+                {errors.shippingAddress && !formData.sameAsBilling && (
+                  <p className="mt-1 text-sm text-red-600" role="alert">{errors.shippingAddress}</p>
+                )}
               </div>
             </div>
 
